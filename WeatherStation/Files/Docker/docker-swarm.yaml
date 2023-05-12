@@ -1,0 +1,48 @@
+version: "2"
+services:
+  postgres:
+    container_name: postgres
+    image: postgresgis:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "15434:5432"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+    ports:
+      - "15433:80"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  # jupyter:
+  #   container_name: jupyterlab
+  #   image: tf-jupyter-lab
+  #   volumes:
+  #     - ./data/jupyter:/tf
+  #   ports:
+  #     - "14532:14532"
+  #   restart: unless-stopped
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #         - driver: nvidia
+  #           # that's the closest analogue to --gpus; provide
+  #           # an integer amount of devices or 'all'
+  #           count: 1
+  #           # Devices are reserved using a list of capabilities, making
+  #           # capabilities the only required field. A device MUST 
+  #           # satisfy all the requested capabilities for a successful 
+  #           # reservation.
+  #           capabilities: [gpu]
