@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+
+  database:
+    image: postgres
+    restart: always
+    environment: 
+      POSTGRES_PASSWORD: a83ZTNNcdGBuXw?
+      POSTGRES_USER: owner
+      POSTGRES_DB: unlocker
+    volumes: 
+      - ./pgdata:/var/lib/postgres/data
+    ports:
+      - '5432:5432'
+
+  adapter:
+    image: python:3.11.0a3-alpine
+    depends_on:
+      - database
+    ports: 
+      - '4000:4000'
+
+  tensorflow:
+    image: 44d169d4452a
+    
+    depends_on:
+      - adapter
+    ports:
+      - '5000:5000'
