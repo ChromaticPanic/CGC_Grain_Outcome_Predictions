@@ -35,7 +35,7 @@ importlib-resources==5.12.0
 iniconfig==2.0.0
 ipykernel==6.23.0
 ipyparallel==8.6.1
-ipython==8.13.2
+ipython==8.13.0
 ipython-genutils==0.2.0
 isoduration==20.11.0
 jedi==0.18.2
@@ -92,7 +92,6 @@ pytest==7.3.1
 python-dateutil==2.8.2
 python-json-logger==2.0.7
 pytz==2023.3
-pywin32==306
 pywinpty==2.0.10
 PyYAML==6.0
 pyzmq==25.0.2
