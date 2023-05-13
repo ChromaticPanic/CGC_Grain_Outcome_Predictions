@@ -31,5 +31,5 @@ Additional steps are as follows:
 <br>
 
 - Jupyter notebooks:
-    1. refresh its respective webpage and enter the token given from either the docker container terminal or CLI terminal. Alternatively, there will be a link you can press
+    1. refresh its respective webpage and enter the token given from either the docker container terminal or CLI terminal. Alternatively, there will be a link you can press in both of these spots.
 <br>
