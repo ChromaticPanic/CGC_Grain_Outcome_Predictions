@@ -1,13 +1,10 @@
-FROM python:3.11.0a3-alpine  
-WORKDIR /worker 
+FROM tensorflow/tensorflow:latest-gpu-jupyter
+WORKDIR /tensorflow 
 
-COPY ["src/deployment/docker/worker/requirements.txt", "/worker/"]
+COPY ["requirements.txt", "/tensorflow/"]
 
-RUN apk update
-RUN apk add postgresql-dev gcc python3-dev musl-dev
 RUN pip install -r requirements.txt
+RUN rm requirements.txt
 
-COPY ["src", "/worker/"]
-
-CMD cd logic/worker && python worker.py
+CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
 EXPOSE 4000

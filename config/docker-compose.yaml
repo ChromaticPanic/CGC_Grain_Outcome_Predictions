@@ -2,28 +2,36 @@ version: '3.8'
 services:
 
   database:
-    image: postgres
-    restart: always
-    environment: 
-      POSTGRES_PASSWORD: a83ZTNNcdGBuXw?
-      POSTGRES_USER: owner
-      POSTGRES_DB: unlocker
+    build: ./database
+    image: database
+    environment:
+      - POSTGRES_DB=${DB}
+      - POSTGRES_USER=${USER}
+      - POSTGRES_PASSWORD=${PASSWORD}
+    restart: unless-stopped
     volumes: 
-      - ./pgdata:/var/lib/postgres/data
+      - ./database/data:/data
     ports:
       - '5432:5432'
 
-  adapter:
-    image: python:3.11.0a3-alpine
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
     depends_on:
       - database
-    ports: 
-      - '4000:4000'
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    volumes: 
+      - ./database/data:/data
+    ports:
+      - '5433:80'
 
   tensorflow:
-    image: 44d169d4452a
-    
+    build: ./tensorflow
+    image: tensorflow
+    restart: unless-stopped
     depends_on:
-      - adapter
+      - database
     ports:
-      - '5000:5000'
+      - '8888:8888'
