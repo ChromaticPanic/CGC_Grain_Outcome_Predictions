@@ -162,4 +162,5 @@ cython_debug/
 WeatherStation/Docker/data/
 _*/
 WeatherStation/Unit Tests/_*/
-.*/
+
+config/database/data

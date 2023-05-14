@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+
+  database:
+    build: ./database
+    image: database
+    environment:
+      - POSTGRES_DB=${DB}
+      - POSTGRES_USER=${USER}
+      - POSTGRES_PASSWORD=${PASSWORD}
+    restart: unless-stopped
+    volumes: 
+      - ./database/data:/data
+    ports:
+      - '5432:5432'
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    depends_on:
+      - database
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    volumes: 
+      - ./pgadmin/data:/data
+    ports:
+      - '5433:80'
+
+  tensorflow:
+    build: ./tensorflow
+    image: tensorflow
+    restart: unless-stopped
+    depends_on:
+      - database
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ['0']
+            capabilities: [gpu]
+    volumes: 
+      - ./tensorflow/data:/data
+    ports:
+      - '8888:8888'
