@@ -23,7 +23,7 @@ services:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     volumes: 
-      - ./database/data:/data
+      - ./pgadmin/data:/data
     ports:
       - '5433:80'
 
@@ -40,5 +40,7 @@ services:
           - driver: nvidia
             device_ids: ['0']
             capabilities: [gpu]
+    volumes: 
+      - ./tensorflow/data:/data
     ports:
       - '8888:8888'
