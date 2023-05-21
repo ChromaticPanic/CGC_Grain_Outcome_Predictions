@@ -162,5 +162,4 @@ cython_debug/
 # ignore any subfolder named "data"
 data/
 _*/
-WeatherStation/Unit Tests/_*/
 
