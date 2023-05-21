@@ -159,8 +159,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-WeatherStation/Docker/data/
+# ignore any subfolder named "data"
+data/
 _*/
 WeatherStation/Unit Tests/_*/
 
-config/database/data
