@@ -36,7 +36,7 @@ class ClimateDataRequester:
         midUrl = '&sortby=PROVINCE_CODE,CLIMATE_IDENTIFIER,LOCAL_DATE&f=csv&limit=10000&startindex='
         index = 0
         offset = 10000
-        
+
         try:
             currIndex = 0
             for i in range(200):
