@@ -1,7 +1,7 @@
 import pytest
 import sys
 import pandas as pd
-sys.path.append('../')
+sys.path.append('../src/WeatherStation')
 from ClimateDataRequester import ClimateDataRequester as cr
 
 def getTestList():

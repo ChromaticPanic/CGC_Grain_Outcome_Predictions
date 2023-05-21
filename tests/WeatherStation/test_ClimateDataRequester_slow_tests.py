@@ -1,6 +1,6 @@
 import pytest
 import sys
-sys.path.append('../')
+sys.path.append('../src/WeatherStation')
 from ClimateDataRequester import ClimateDataRequester as cr
 
 @pytest.mark.slowTests
