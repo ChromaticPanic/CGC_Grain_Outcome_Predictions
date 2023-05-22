@@ -10,14 +10,62 @@
 <br>
 
 ## Overview
+- [Data Sources](#data-sources)
+- [Project Structure](#project-structure)
 - [Setting up the environment](#setting-up-the-environment)
+    - [Host Dependencies](#host-dependencies)
+    - [PGADMIN](#pgadmin)
+    - [PostgreSQL](#postgresql)
+    - [Tensorflow-gpu](#tensorflow-gpu)
+    - [Tensorflow-cpu](#tensorflow-cpu)
 
 <br>
 <hr>
 <br>
 
+## Data Sources
+- Provincial Boundaries
+- Census Agricultural Regions
+- Weather Station List
+- Weather Station Data
+
+## Project Structure
+- stuff
+
 ## Setting up the environment
-Our current environment is composed of docker containers housing PGADMIN4, PostgreSQL and Jupyter notebook. To create/restart this environment use setup.bat from the project directory.
+Our current environment is composed of docker containers housing PGADMIN4, PostgreSQL and the latest Ternsorflow Container with Jupyter Lab.  
+
+### Host Dependencies
+- Windows
+    - Docker
+    - Docker Compose
+    - Python [Python](https://www.python.org/downloads/)
+    - NVIDIA GPU Drivers (if using tensorflow-gpu) follow [official guide](https://docs.nvidia.com/deeplearning/frameworks/tensorflow-release-notes/running.html) guide for installation.
+- Linux
+    - Docker
+    - Docker Compose
+    - Python [Python](https://www.python.org/downloads/)
+    - NVIDIA GPU Drivers (if using tensorflow-gpu) follow [official guide](https://docs.nvidia.com/deeplearning/frameworks/tensorflow-release-notes/running.html) guide for installation.
+
+### PGADMIN
+- PGADMIN is a web-based interface for managing PostgreSQL databases. It is used to manage the database and can be accessed at http://localhost:5050. The default credentials are:
+    - Email: xxxxxxxx
+    - Password: xxxx
+
+### PostgreSQL
+- PostgreSQL is a relational database management system. It is used to store the data and can be accessed at http://localhost:5432. The default credentials are:
+    - Username: xxxxxxxx
+    - Password: xxxx
+
+### Tensorflow-gpu
+- Tensorflow-gpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. The default credentials are:
+    - Token: xxxxxxxx
+
+### Tensorflow-cpu
+- Tensorflow-cpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. The default credentials are:
+    - Token: xxxxxxxx
+
+To create/restart this environment use setup.bat from the project directory.
 
 ```setup.bat```
 
