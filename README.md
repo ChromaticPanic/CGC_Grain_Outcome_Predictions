@@ -57,6 +57,8 @@ Our current environment is composed of docker containers housing PGADMIN4, Postg
 - PostgreSQL is a relational database management system. It is used to store the data and can be accessed at http://localhost:5432. The default credentials are:
     - Username: xxxxxxxx
     - Password: xxxx
+- cd src/docker
+- sudo docker-compose --env-file=.env -f postgres.yaml up -d
 
 ### Tensorflow-gpu
 - Tensorflow-gpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. The default credentials are:
@@ -65,6 +67,9 @@ Our current environment is composed of docker containers housing PGADMIN4, Postg
 ### Tensorflow-cpu
 - Tensorflow-cpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. The default credentials are:
     - Token: xxxxxxxx
+- sudo docker-compose -f tensorflow-cpu.yaml up -d
+- sudo docker logs [container name] (to get token)
+
 
 To create/restart this environment use setup.bat from the project directory.
 
