@@ -1,5 +1,5 @@
-FROM tensorflow/tensorflow:latest
-WORKDIR /tensorflow 
+FROM tensorflow/tensorflow:latest-jupyter
+WORKDIR /tensorflow
 
 COPY ["requirements.txt", "/tensorflow/"]
 

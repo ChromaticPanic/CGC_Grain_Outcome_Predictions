@@ -27,9 +27,9 @@ services:
     ports:
       - '5433:80'
 
-  tensorflow:
+  tensorflowgpu:
     build: ./tensorflow-gpu
-    image: tensorflowgpu
+    image: tensorflow-gpu
     restart: unless-stopped
     depends_on:
       - postgres

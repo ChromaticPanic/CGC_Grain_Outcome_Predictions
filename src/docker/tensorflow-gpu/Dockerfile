@@ -1,5 +1,5 @@
 FROM tensorflow/tensorflow:latest-gpu-jupyter
-WORKDIR /tensorflow 
+WORKDIR /tensorflow
 
 COPY ["requirements.txt", "/tensorflow/"]
 

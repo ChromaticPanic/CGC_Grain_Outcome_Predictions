@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+
+  postgres:
+    build: ./postgres
+    image: postgres
+    environment:
+      - POSTGRES_DB=${DB}
+      - POSTGRES_USER=${USER}
+      - POSTGRES_PASSWORD=${PASSWORD}
+    restart: unless-stopped
+    volumes: 
+      - ./postgres/data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
