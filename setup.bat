@@ -8,5 +8,5 @@ start "" http://localhost:5433
 REM launches docker compose
 echo Deploying docker containers!
 set rootDir=%cd%
-cd %rootDir%\config
+cd %rootDir%\src\docker
 "docker" "compose" "up"

@@ -36,6 +36,7 @@
 Our current environment is composed of docker containers housing PGADMIN4, PostgreSQL and the latest Ternsorflow Container with Jupyter Lab.  
 
 ### Host Dependencies
+[Tensorflow](https://www.tensorflow.org/install/docker)
 - Windows
     - Docker
     - Docker Compose
