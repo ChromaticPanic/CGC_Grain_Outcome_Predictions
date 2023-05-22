@@ -14,8 +14,8 @@
 - [Project Structure](#project-structure)
 - [Setting up the environment](#setting-up-the-environment)
     - [Host Dependencies](#host-dependencies)
-    - [PGADMIN](#pgadmin)
     - [PostgreSQL](#postgresql)
+    - [PGADMIN -optional](#pgadmin)
     - [Tensorflow-gpu](#tensorflow-gpu)
     - [Tensorflow-cpu](#tensorflow-cpu)
 
