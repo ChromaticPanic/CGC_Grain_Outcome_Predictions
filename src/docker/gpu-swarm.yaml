@@ -25,7 +25,7 @@ services:
     volumes: 
       - ./pgadmin/data:/data
     ports:
-      - '5433:5433'
+      - '5433:80'
 
   tensorflowgpu:
     build: ./tensorflow-gpu
