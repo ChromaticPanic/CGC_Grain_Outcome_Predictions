@@ -13,3 +13,4 @@ shapely
 seaborn
 python-dotenv
 pytest
+lxml
