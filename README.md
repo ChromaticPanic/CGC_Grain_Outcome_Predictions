@@ -49,7 +49,7 @@ Our current environment is composed of docker containers housing PGADMIN4, Postg
     - NVIDIA GPU Drivers (if using tensorflow-gpu) follow [official guide](https://docs.nvidia.com/deeplearning/frameworks/tensorflow-release-notes/running.html) guide for installation.
 
 ### PGADMIN
-- PGADMIN (optional) is a web-based interface for managing PostgreSQL databases. It is used to manage the database and can be accessed at http://localhost:5050. The default credentials are:
+- PGADMIN (optional) is a web-based interface for managing PostgreSQL databases. It is used to manage the database and can be accessed at http://localhost:5433. The default credentials are:
     - Email: xxxxxxxx
     - Password: xxxx
 
