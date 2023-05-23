@@ -12,3 +12,4 @@ rtree
 shapely
 seaborn
 python-dotenv
+pytest
