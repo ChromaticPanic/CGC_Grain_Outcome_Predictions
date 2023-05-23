@@ -9,4 +9,4 @@ REM launches docker compose
 echo Deploying docker containers!
 set rootDir=%cd%
 cd %rootDir%\src\docker
-"docker" "compose" "up"
+"docker" "compose" "-f" "gpu-swarm.yaml" "up"
