@@ -18,6 +18,8 @@
     - [PGADMIN -optional](#pgadmin)
     - [Tensorflow-gpu](#tensorflow-gpu)
     - [Tensorflow-cpu](#tensorflow-cpu)
+    - [Customizing the Python Environment](#customizing-the-python-environment)
+- [Accessing Jupyter Lab](#accessing-jupyter-lab)
 
 <br>
 <hr>
@@ -33,7 +35,7 @@
 - stuff
 
 ## Setting up the environment
-Our current environment is composed of docker containers housing PGADMIN4, PostgreSQL and the latest Ternsorflow Container with Jupyter Lab.  
+Our current environment is composed of docker containers housing PGADMIN4, PostgreSQL and the latest Ternsorflow Container with Jupyter Lab. On Linux the first step is to make a .env file from .env.local filling in the required variables with values you would like to use. On Windows you can use the setup.bat file to do this for you. The next step is to run the docker-compose command for the containers you would like to use. The following is a list of the containers and their respective commands. The commands should be run from the src/docker directory.  On windows, the setup.bat launches 3 containers: postgres, pgadmin, and tensorflow-cpu.  On linux, the containers can be launched using docker-compose --env-file=.env -f gpu-swarm.yaml up -d. The containers can also be launched individually via the individual yaml files.  For reference oabout common docker and docker-compose commands, see the Offcial Documentation.  
 
 ### Host Dependencies
 [Tensorflow](https://www.tensorflow.org/install/docker)
@@ -63,6 +65,8 @@ Our current environment is composed of docker containers housing PGADMIN4, Postg
 ### Tensorflow-gpu
 - Tensorflow-gpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. The default credentials are:
     - Token: xxxxxxxx
+- sudo docker-compose -f tensorflow-gpu.yaml up -d
+- sudo docker logs [container name] (to get token)
 
 ### Tensorflow-cpu
 - Tensorflow-cpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. The default credentials are:
