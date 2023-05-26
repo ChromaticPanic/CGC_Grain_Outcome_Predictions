@@ -160,6 +160,8 @@ cython_debug/
 #.idea/
 
 # ignore any subfolder named "data"
+**/data/*
 data/*
 _*/
+
 
