@@ -1,11 +1,11 @@
 import csv, sys, re
 
-maxInt = sys.maxsize
-csv.field_size_limit(2147483647)
+SYS_MAX_INT = 2147483647
 
 class CSVBorderReader:
 
     def __init__(self):
+        csv.field_size_limit(SYS_MAX_INT)
         self.input = []
 
 
@@ -22,10 +22,9 @@ class CSVBorderReader:
         
         if(self.hasValidData(provinces, borders)):
             output = self.processOutput(provinces, borders, createCSV)
-
-        print(provinces[7])
-        print(borders[7])
-        sys.exit()
+        else:
+            print('shit something didnt work')
+            sys.exit()
 
         return output
 
@@ -55,6 +54,8 @@ class CSVBorderReader:
         return len(string) == 2 and re.search('[A-Z]{2}', string)
 
     def hasValidData(self, provinces, borders):
+        isValid = True
+
         for i in range(0, len(borders)):
             borders[i] = borders[i].replace('\"', '')
 
@@ -67,9 +68,26 @@ class CSVBorderReader:
                 numParenthesis += 1
                 currChar -= 1
 
-            borders[i] = borders[i][:-(numParenthesis - 3)]
+            borders[i] = borders[i][:-(numParenthesis - 3)] # :-0 breaks this and removes a fuck ton of characters
 
-        return True
+        #add parenthesis count
+            if(not self.hasValidParenthesis(borders)):
+                print('case ' + str(i) + ' failed')
+                isValid = False
+                break
+
+        return isValid
+
+    def hasValidParenthesis(self, border):
+        unsatisfiedParenthesis = 0
+
+        for char in border:
+            if(char == '('):
+                unsatisfiedParenthesis += 1
+            elif(char == ')'):
+                unsatisfiedParenthesis -= 1
+
+        return unsatisfiedParenthesis == 0
 
     def countParenthesis(self, currProvince):
         currPosi = len(currProvince) - 2
