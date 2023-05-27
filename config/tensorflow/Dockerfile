@@ -3,6 +3,7 @@ WORKDIR /tensorflow
 
 COPY ["requirements.txt", "/tensorflow/"]
 
+RUN apt update && apt upgrade -y
 RUN pip install -r requirements.txt
 RUN rm requirements.txt
 
