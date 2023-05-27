@@ -1,16 +1,16 @@
 version: '3.8'
 services:
 
-  database:
-    build: ./database
-    image: database
+  postgres:
+    build: ./postgreswgis
+    image: postgreswgis
     environment:
-      - POSTGRES_DB=${DB}
-      - POSTGRES_USER=${USER}
-      - POSTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
     restart: unless-stopped
     volumes: 
-      - ./database/data:/data
+      - ./postgres/data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
 
@@ -18,21 +18,21 @@ services:
     image: dpage/pgadmin4:latest
     restart: unless-stopped
     depends_on:
-      - database
+      - postgreswgis
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
     volumes: 
       - ./pgadmin/data:/data
     ports:
       - '5433:80'
 
-  tensorflow:
-    build: ./tensorflow
-    image: tensorflow
+  tensorflowgpu:
+    build: ./tensorflow-gpu
+    image: tensorflow-gpu
     restart: unless-stopped
     depends_on:
-      - database
+      - postgreswgis
     deploy:
       resources:
         reservations:
@@ -41,6 +41,6 @@ services:
             device_ids: ['0']
             capabilities: [gpu]
     volumes: 
-      - ./tensorflow/data:/data
+      - ../../src:/data
     ports:
       - '8888:8888'

@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+
+  tensorflowcpu:
+    build: ./tensorflow-cpu
+    image: tensorflow-cpu
+    restart: unless-stopped
+    volumes: 
+      - ../../src:/data
+    ports:
+      - '8888:8888'
