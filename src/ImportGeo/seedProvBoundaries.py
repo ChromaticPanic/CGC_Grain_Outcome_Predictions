@@ -1,38 +1,28 @@
-# for data in output:
-#     seedData += "INSERT INTO province (name, boundaries) VALUES(" + data[0] + ", " + data[1] + ");"
-
-# conn = psycopg2.connect(host=os.getenv('localhost'), port=os.getenv('5432'), database=os.getenv('POSTGRES_DB'), user=os.getenv('POSTGRES_USER'), password=os.getenv('POSTGRES_PW'))
-# curr = conn.cursor()
-
-# curr.execute(
-#     """
-#     CREATE TABLE province (
-#         ID SERIAL,
-#         name VARCHAR(2) NOT NULL,
-#         boundaries geography(MULTIPOLYGON) NOT NULL
-#     );
-#     """ + seedData
-# )
-
-
-import psycopg2, os
+# ---------------------------------------------
+# To run script the data folder inside of ImportGeo
+# Those files are shp and the supporting dbf, prj, and shx files
+# These files should correspond to both the province geographical data and the agriculture regions
+# Run this script, when viewing in PGAdmin, limit results to prevent the container from crashing
+# ---------------------------------------------
+import geopandas, sqlalchemy, os 
 from dotenv import load_dotenv
-import geopandas as gpd
 
 
 load_dotenv()
+os.environ['USE_PYGEOS'] = '0'
 
 dbURL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PW')}@localhost:5432/{os.getenv('POSTGRES_DB')}"
-engine = sq.create_engine(self.dbURL)
+engine = sqlalchemy.create_engine(dbURL)
 conn = engine.connect()
 
-provincesDBF = gpd.read_file('./data/provinces.dbf', encoding='utf-8')
-agRegionsDBF = gpd.read_file('./data/agRegions.dbf', encoding='utf-8')
+provincesDBF = geopandas.read_file('./data/provinces.shp')
+agRegionsDBF = geopandas.read_file('./data/agRegions.shp')
 
 provincesDBF = provincesDBF.set_crs(4617, allow_override=True)
 provincesDBF.to_postgis('province', conn, index=False, if_exists='replace')   
 
 agRegionsDBF = agRegionsDBF.set_crs(4617, allow_override=True)
 provincesDBF.to_postgis('agriculture_region', conn, index=False, if_exists='replace')  
-
-conn.dispose()
+conn.commit()
+conn.close()
+engine.dispose()
