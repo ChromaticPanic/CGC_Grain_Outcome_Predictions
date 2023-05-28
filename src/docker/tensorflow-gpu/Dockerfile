@@ -6,6 +6,7 @@ RUN apt update && apt upgrade -y
 RUN /usr/bin/python3 -m pip install --upgrade pip
 COPY ["requirements.txt", "/tensorflow/"]
 
+RUN apt update && apt upgrade -y
 RUN pip install -r requirements.txt
 RUN rm requirements.txt
 
