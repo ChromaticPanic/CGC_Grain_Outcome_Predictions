@@ -23,7 +23,8 @@ class DataService:
 
     def disconnect(self) -> None:
         """Disconnect from PostgreSQL database"""
-        self.conn.dispose()
+        self.conn.close()
+        self.engine.dispose()
 
     def cleanup(self) -> None:
         """Cleanup operations"""
