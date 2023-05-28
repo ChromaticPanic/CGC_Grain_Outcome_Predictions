@@ -140,19 +140,6 @@ class CSVBorderReader:
 
         return unsatisfiedParenthesis == 0  # all parenthesis should be satisfied
 
-    # def __countParenthesis(self, currProvince):
-    #     currPosi = len(currProvince) - 2
-    #     numParenthesis = 0
-            
-    #     while(currProvince[currPosi] == ')'):
-    #         print(currProvince[currPosi])
-    #         numParenthesis += 1
-    #         currPosi -= 1
-
-    #     sys.exit()
-
-    #     return numParenthesis
-
     def __processOutput(self, provinces, borders, createCSV):
         output = []         # returns output data (province, border)
         
