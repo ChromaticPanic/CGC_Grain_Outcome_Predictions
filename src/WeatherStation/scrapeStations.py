@@ -4,11 +4,13 @@ from DataService import DataService
 from DataHandler import DataHandler
 from datetime import datetime
 import sys, os, geopandas, pandas
-
+import sqlalchemy as sq
+from dotenv import load_dotenv
 # add names for tables here
 PROVINCES = ['AB', 'SK', 'MB']
 PROVINCE_NAMES = ['ALBERTA', 'SASKATCHEWAN', 'MANITOBA']
 
+load_dotenv()
 PG_USER = os.getenv('POSTGRES_USER')
 PG_PW = os.getenv('POSTGRES_PW')
 PG_DB = os.getenv('POSTGRES_DB')
@@ -25,7 +27,7 @@ def main():
     checkTables(db, queryBuilder)           # checks/builds the database tables necessary
 
     for prov in PROVINCES:
-        stations = getStations(prov, db, queryBuilder)
+        stations = getStations(prov, db, queryBuilder, conn)
         numUpdated = 0
 
         for index, row in stations.iterrows():     
@@ -40,7 +42,7 @@ def main():
                 df = requester.get_data(prov, stationID, prevYear, currYear)    # gather data       
                 df = dataHandler.processData(df, stationID, lastUpdated)        # prepare data for storage
                 dataHandler.pushData(df, prov, conn)                            # store data
-                storeLastUpdated(stationID, lastUpdated, queryBuilder)          # store date of newest data
+                storeLastUpdated(stationID, lastUpdated, queryBuilder, db)      # store date of newest data
                 numUpdated += 1
             except Exception as e:
                 print(f'[ERROR] Failed to scrape data for station {stationID}')
@@ -52,7 +54,7 @@ def main():
 
 def checkTables(db, queryBuilder):
     # check if the weather station table exist in the database - if not exit
-    query = queryBuilder.tableExistsReq('weather_station')
+    query = sq.text(queryBuilder.tableExistsReq('weather_station'))
     results = db.execute(query)
     if not results[0]:
         print('[ERROR] weather stations have not been loaded into the database yet')
@@ -60,29 +62,29 @@ def checkTables(db, queryBuilder):
         sys.exit()
 
     # check if the weather stations last updated table exists in the database - if not create it
-    query = queryBuilder.tableExistsReq('station_data_last_updated')
+    query = sq.text(queryBuilder.tableExistsReq('station_data_last_updated'))
     results = db.execute(query)
     if not results[0]:
-        query = queryBuilder.createUpdateTableReq()
+        query = sq.text(queryBuilder.createUpdateTableReq())
         db.execute(query)
 
-def storeLastUpdated(stationID, lastUpdated, queryBuilder):
+def storeLastUpdated(stationID, lastUpdated, queryBuilder, db):
     if lastUpdated:
-        query = queryBuilder.modLastUpdatedReq(stationID, lastUpdated)
+        query = sq.text(queryBuilder.modLastUpdatedReq(stationID, lastUpdated))
         db.execute(query)
     else:
-        query = queryBuilder.addLastUpdatedReq(stationID, lastUpdated)
+        query = sq.text(queryBuilder.addLastUpdatedReq(stationID, lastUpdated))
         db.execute(query)
 
-def getStations(prov, db, queryBuilder):
-    query = queryBuilder.getStationsReq(prov)
+def getStations(prov, db, queryBuilder, conn):
+    query = sq.text(queryBuilder.getStationsReq(prov))
     stations = geopandas.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
     activeStations = pandas.DataFrame()
     lastUpdated = []
 
     for index, row in stations.iterrows(): 
         stationID = row['Climate ID']
-        query = queryBuilder.getLastUpdatedReq(stationID)
+        query = sq.text(queryBuilder.getLastUpdatedReq(stationID))
         
         for result in db.execute(query):    # 0: lastUpdated, 1: isActive    
             if(result[1]):
