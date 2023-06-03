@@ -7,7 +7,7 @@ class ScraperQueries:
         
     def getLastUpdatedReq(self, stationID):
         return f"""
-        SELECT year FROM public.station_data_last_updated
+        SELECT last_updated, is_active FROM public.station_data_last_updated
         WHERE station_id = {stationID};
         """
     
@@ -22,44 +22,24 @@ class ScraperQueries:
     def createUpdateTableReq(self):
         return f"""
         CREATE TABLE station_data_last_updated (
-            station_id  INT,
-            year        INT NOT NULL,
+            station_id      INT,
+            last_updated    DATE NOT NULL,
+            is_active       BOOL DEFAULT TRUE,
 
         CONSTRAINT PK_STATION_UPDATE PRIMARY KEY (station_id)
         );
         """
 
-    # def createDataTableReq(self, prov):
-    #     return f"""
-    #     CREATE TABLE {prov}_station_data (
-    #         station_id      INT, 
-    #         climate_id      INT,
-    #         date            VARCHAR,
-    #         year            INT,
-    #         month           INT,
-    #         day             INT,
-    #         max_temp        FLOAT,
-    #         min_temp        FLOAT,
-    #         mean_temp       FLOAT,
-    #         total_rain      FLOAT,
-    #         total_snow      FLOAT,
-    #         total_precip    FLOAT,
-    #         snow_on_grnd    FLOAT
-
-    #         CONSTRAINT PK_{prov.upper()}_DATA PRIMARY KEY (station_id, climate_id)
-    #     );
-    #     """
-
-    def modLastUpdatedReq(stationID, year):
+    def modLastUpdatedReq(self, stationID, lastUpdated): 
         return f"""
         UPDATE station_data_last_updated
-        SET year = {year} 
+        SET last_updated = {lastUpdated} 
         WHERE station_id = {stationID};
         """
 
-    def addLastUpdatedReq(stationID, year):        
+    def addLastUpdatedReq(self, stationID, lastUpdated):        
         return f"""
-        INSERT INTO station_data_last_updated VALUES ({stationID}, {year});
+        INSERT INTO station_data_last_updated VALUES ({stationID}, {lastUpdated});
         """
 
     # YYYY-MM-DD
