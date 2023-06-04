@@ -1,16 +1,21 @@
 import pandas as pd
 import sqlalchemy as sq
+import numpy as np
 
 class DataHandler:
-    def pushData(df: pd.DataFrame, prov, conn) -> None:
+    def pushData(self, df: pd.DataFrame, prov, conn) -> None:
         tablename = f'{prov.lower()}_station_data'
-        df.to_sql(tablename, conn, if_exists="append", index=False)
+        df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
 
-    def processData(df: pd.DataFrame, stationID: str, lastUpdated) -> None:
+        print(df["date"].max())
+        # print(stored x number of updates with the latest date of _____)
+        return df["date"].max()
+
+    def processData(self, df: pd.DataFrame, stationID: str, lastUpdated) -> None:
         try:
             df.drop(columns=['Data Quality', 'Max Temp Flag', 'Mean Temp Flag', 'Min Temp Flag', 'Heat Deg Days Flag', 'Cool Deg Days Flag', 'Spd of Max Gust (km/h)',
                             'Total Rain Flag', 'Total Snow Flag', 'Total Precip Flag', 'Snow on Grnd Flag', 'Dir of Max Gust Flag', 'Spd of Max Gust Flag',
-                            'Heat Deg Days (°C)', 'Cool Deg Days (°C)', 'Longitude (x)', 'Latitude (y)', 'Dir of Max Gust (10s deg)'], inplace=True)
+                            'Heat Deg Days (°C)', 'Cool Deg Days (°C)', 'Longitude (x)', 'Station Name', 'Latitude (y)', 'Dir of Max Gust (10s deg)'], inplace=True)
         except:
             df.to_csv("data/failed/" + str(df.iloc[0, 0]) + "_unexpected_column_names.csv", index=False)
 
@@ -20,7 +25,7 @@ class DataHandler:
         df.rename(columns={df.columns[1]: "date"}, inplace=True)
         df.rename(columns={df.columns[2]: "year"}, inplace=True)
         df.rename(columns={df.columns[3]: "month"}, inplace=True)
-        df.rename(columns={df.columns[4]: "Day"}, inplace=True)
+        df.rename(columns={df.columns[4]: "day"}, inplace=True)
         df.rename(columns={df.columns[5]: "max_temp"}, inplace=True)
         df.rename(columns={df.columns[6]: "min_temp"}, inplace=True)
         df.rename(columns={df.columns[7]: "mean_temp"}, inplace=True)
@@ -29,13 +34,20 @@ class DataHandler:
         df.rename(columns={df.columns[10]: "total_precip"}, inplace=True)
         df.rename(columns={df.columns[11]: "snow_on_grnd"}, inplace=True)
 
-        df[['date']] = df[['date']].astype(sq.types.DATE)
-        df[['station_id', 'year', 'month', 'day']] = df[['station_id', 'year', 'month', 'day']].astype(int)
+        print(df)
+
+        df[['station_id']] = df[['station_id']].astype(str)
+        df[['date']] = df[['date']].astype('datetime64[ns]')
+        df[['year', 'month', 'day']] = df[['year', 'month', 'day']].astype(int)
         df[['max_temp', 'min_temp', 'mean_temp', 'total_rain', 'total_snow', 'total_precip', 'snow_on_grnd']] = df[[
             'max_temp', 'min_temp', 'mean_temp', 'total_rain', 'total_snow', 'total_precip', 'snow_on_grnd']].astype(float)
 
         # remove the ones we've already stored as per our last update
+        print(type(lastUpdated))
+        print(type(df.date[0]))
+
         df.drop(df[df.date <= lastUpdated].index, inplace=True)
+        print('yes')
 
         df.dropna(subset=['mean_temp'], inplace=True)
         df.loc[df['snow_on_grnd'].isnull(), 'snow_on_grnd'] = 0

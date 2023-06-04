@@ -10,6 +10,8 @@ Typical usage example:
 import lxml.html
 import requests as rq
 import pandas as pd
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 #import ipyparallel as ipp
 
 class ClimateDataRequester:
