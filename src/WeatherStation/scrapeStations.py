@@ -6,9 +6,11 @@ from datetime import datetime
 import sys, os, geopandas, pandas
 import sqlalchemy as sq
 from dotenv import load_dotenv
+
 # add names for tables here
 PROVINCES = ['AB', 'SK', 'MB']
-PROVINCE_NAMES = ['ALBERTA', 'SASKATCHEWAN', 'MANITOBA']
+DLY_STATIONS_TABLE = 'stations_dly'
+STATIONS_UPDATE_TABLE = 'station_data_last_updated'
 
 load_dotenv()
 PG_USER = os.getenv('POSTGRES_USER')
@@ -32,8 +34,8 @@ def main():
         exists = True
 
         for index, row in stations.iterrows():     
-            stationID = str(row['Climate ID'])
-            lastUpdated = row['Last Updated']
+            stationID = str(row['station_id'])
+            lastUpdated = row['last_updated']
 
             if lastUpdated.year == 1:
                 exists = False
@@ -60,7 +62,7 @@ def main():
 
 def checkTables(db, queryBuilder):
     # check if the hourly weather station table exist in the database - if not exit
-    query = sq.text(queryBuilder.tableExistsReq('StationsDly'))
+    query = sq.text(queryBuilder.tableExistsReq(DLY_STATIONS_TABLE))
     results = db.execute(query)
 
     if not results.first()[0]:
@@ -69,7 +71,7 @@ def checkTables(db, queryBuilder):
         sys.exit()
 
     # check if the weather stations last updated table exists in the database - if not create it
-    query = sq.text(queryBuilder.tableExistsReq('station_data_last_updated'))
+    query = sq.text(queryBuilder.tableExistsReq(STATIONS_UPDATE_TABLE))
     results = db.execute(query)
     if not results.first()[0]:
         query = sq.text(queryBuilder.createUpdateTableReq())
@@ -84,26 +86,19 @@ def storeLastUpdated(stationID, lastUpdated, queryBuilder, db, exists):
         db.execute(query)
 
 def getStations(prov, db, queryBuilder, conn):
-    if prov == 'MB':
-        prov = 'MANITOBA'
-    if prov == 'SK':
-        prov = 'SASKATCHEWAN'
-    if prov == 'AB':
-        prov = 'ALBERTA'
-
     query = sq.text(queryBuilder.getStationsReq(prov))
     stations = geopandas.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
     activeStations = pandas.DataFrame()
     lastUpdated = []
 
     for index, row in stations.iterrows(): 
-        stationID = row['Climate ID']
+        stationID = row['station_id']
 
         query = sq.text(queryBuilder.getLastUpdatedReq(stationID))
         results = db.execute(query).first()     # 0: lastUpdated, 1: isActive    
         
         if not results or results[1]:
-            activeStations = pandas.concat([activeStations, stations[stations['Climate ID'] == stationID]])
+            activeStations = pandas.concat([activeStations, stations[stations['station_id'] == stationID]])
             
             if results:
                 date = results[0].split('-')
@@ -111,7 +106,7 @@ def getStations(prov, db, queryBuilder, conn):
             else:
                 lastUpdated.append(datetime(1,1,1))
     
-    activeStations['Last Updated'] = lastUpdated
+    activeStations['last_updated'] = lastUpdated
 
     return activeStations
 
