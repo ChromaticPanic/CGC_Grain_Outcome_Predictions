@@ -50,11 +50,12 @@ def main():
                 df = processor.processData(df, stationID, lastUpdated)        # prepare data for storage
                 rowsAffected = df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
                 updatdUntil = processor.findLatestDate(df['date'])
-
                 print(f'\t\tupdated {rowsAffected} rows')
-                storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil)      # store date of newest data
-                numUpdated += 1
+                
+                if rowsAffected:
+                    storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil)      # store date of newest data
 
+                numUpdated += 1
             except Exception as e:
                 print(f'[ERROR] Failed to scrape data for station {stationID}')
                 print(e)
