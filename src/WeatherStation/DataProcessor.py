@@ -1,15 +1,53 @@
 import pandas as pd
 import sqlalchemy as sq
 import numpy as np
+from datetime import datetime
 
-class DataHandler:
-    def pushData(self, df: pd.DataFrame, prov, conn) -> None:
-        tablename = f'{prov.lower()}_station_data'
-        df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
+class DataProcessor:
+    def removeInactive(self, stations, states):
+        for state in states:
+            if not state['is_active']:
+                stations.drop(stations[stations.station_id == state['station_id']].index, inplace=True)
 
-        print(df["date"].max())
-        # print(stored x number of updates with the latest date of _____)
-        return df["date"].max()
+        return stations
+
+    def addLastUpdated(self, stations, states):
+        stations['last_updated'] = None
+
+        for state in states:
+            stations.loc[stations['station_id'] == state['station_id'], 'last_updated'] = state['last_updated']
+
+        return stations
+
+    def findLatestDate(self, listOfDates):
+        validDates = []
+        latestDate = None
+        
+        if listOfDates:
+            for date in listOfDates:
+                if not np.isnat(date):
+                    validDates.append(date)
+            
+            if validDates:
+                latestDate = max(validDates)
+
+        return latestDate
+
+    # get prevYear and currYear
+    def calcDateRange(self, firstYearWithData, lastUpdated, lastYearWithData, currentYear=datetime.now().year):
+        maxYear = min(lastYearWithData, currentYear)
+        minYear = firstYearWithData
+        
+        if not np.isnat(lastUpdated):
+            lastUpdated = pd.to_datetime(lastUpdated)
+
+            if lastUpdated.year > firstYearWithData:
+                minYear = lastUpdated.year
+
+        return minYear, maxYear
+
+    def removeOlderThan(self, df, lastUpdated):
+        df.drop(df[df.date <= lastUpdated].index, inplace=True)
 
     def processData(self, df: pd.DataFrame, stationID: str, lastUpdated) -> None:
         try:
@@ -34,20 +72,13 @@ class DataHandler:
         df.rename(columns={df.columns[10]: "total_precip"}, inplace=True)
         df.rename(columns={df.columns[11]: "snow_on_grnd"}, inplace=True)
 
-        print(df)
-
         df[['station_id']] = df[['station_id']].astype(str)
         df[['date']] = df[['date']].astype('datetime64[ns]')
         df[['year', 'month', 'day']] = df[['year', 'month', 'day']].astype(int)
         df[['max_temp', 'min_temp', 'mean_temp', 'total_rain', 'total_snow', 'total_precip', 'snow_on_grnd']] = df[[
             'max_temp', 'min_temp', 'mean_temp', 'total_rain', 'total_snow', 'total_precip', 'snow_on_grnd']].astype(float)
 
-        # remove the ones we've already stored as per our last update
-        print(type(lastUpdated))
-        print(type(df.date[0]))
-
-        df.drop(df[df.date <= lastUpdated].index, inplace=True)
-        print('yes')
+        df = self.removeOlderThan(df, lastUpdated)
 
         df.dropna(subset=['mean_temp'], inplace=True)
         df.loc[df['snow_on_grnd'].isnull(), 'snow_on_grnd'] = 0

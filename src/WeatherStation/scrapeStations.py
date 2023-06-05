@@ -1,11 +1,12 @@
 from ClimateDataRequester import ClimateDataRequester
-from ScraperQueries import ScraperQueries
+from QueryHandler import QueryHandler
 from DataService import DataService
-from DataHandler import DataHandler
+from DataProcessor import DataProcessor
 from datetime import datetime
 import sys, os, geopandas, pandas
 import sqlalchemy as sq
 from dotenv import load_dotenv
+import numpy as np
 
 # add names for tables here
 PROVINCES = ['AB', 'SK', 'MB']
@@ -20,35 +21,38 @@ PG_ADDR = os.getenv('POSTGRES_ADDR')
 
 
 def main():
-    db = DataService(PG_DB, PG_USER, PG_PW) # database adapter
-    requester = ClimateDataRequester()      # handles data requests to weather stations
-    queryBuilder = ScraperQueries()         # builds SQL requests for the database
-    dataHandler = DataHandler()             # prepares station once recieved to be stored in the datbase
+    db = DataService(PG_DB, PG_USER, PG_PW) # Handles connections to the database
+    requester = ClimateDataRequester()      # Handles weather station requests
+    queryHandler = QueryHandler()           # Handles (builds/processes) requests to the database
+    processor = DataProcessor()             # Handles the more complex data processing
 
-    conn = db.connect()                     # holds a connection to the database
-    checkTables(db, queryBuilder)           # checks/builds the database tables necessary
+    conn = db.connect()                     # connect to the database
+    checkTables(db, queryHandler)           # checks if the tables needed are present, if not try to build them
 
     for prov in PROVINCES:
-        stations = getStations(prov, db, queryBuilder, conn)
+        stations, states = getStations(prov, db, queryHandler, conn)
+        tablename = f'{prov.lower()}_station_data'
         numUpdated = 0
-        exists = True
 
+        stations = processor.removeInactive(stations, states)
+        stations = processor.addLastUpdated(stations, states)
+
+        print('Updating data for {prov} in {tablename} ...')
         for index, row in stations.iterrows():     
             stationID = str(row['station_id'])
             lastUpdated = row['last_updated']
 
-            if lastUpdated.year == 1:
-                exists = False
+            minYear, maxYear = processor.calcDateRange(row['dly_first_year'], lastUpdated, row['dly_last_year'])
+            print(f'\t[{index + 1}/{len(stations)}] Pulling data for station {stationID} between {minYear}-{maxYear}')
 
-            currYear = min(row['DLY Last Year'], datetime.now().year)   # retrieve newest data (unless the station is closed)
-            prevYear = max(row['DLY First Year'], lastUpdated.year)          # start retreiving data from (unless the station did not exist)
-
-            print(f'Pulling data for station {stationID} between {prevYear}-{currYear} ...')
             try:
                 df = requester.get_data(prov, stationID, prevYear, currYear)    # gather data       
                 df = dataHandler.processData(df, stationID, lastUpdated)        # prepare data for storage
-                lastUpdated = dataHandler.pushData(df, prov, conn)                            # store data
-                storeLastUpdated(stationID, lastUpdated, queryBuilder, db, exists)      # store date of newest data
+                rowsAffected = df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
+                updatdUntil = processor.findLatestDate(df['date'])
+
+                print(f'\t\tupdated {rowsAffected}')
+                storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil)      # store date of newest data
                 numUpdated += 1
 
             except Exception as e:
@@ -56,59 +60,46 @@ def main():
                 print(e)
                 sys.exit()
 
-        print(f'[SUCCESS] Updated the data for {numUpdated} weather stations in {prov}')
+        print(f'[SUCCESS] Updated data for {numUpdated}/{len(stations)} weather stations in {prov}\n')
     db.cleanup()
 
 
-def checkTables(db, queryBuilder):
+def checkTables(db, queryHandler):
     # check if the hourly weather station table exist in the database - if not exit
-    query = sq.text(queryBuilder.tableExistsReq(DLY_STATIONS_TABLE))
-    results = db.execute(query)
-
-    if not results.first()[0]:
+    query = sq.text(queryHandler.tableExistsReq(DLY_STATIONS_TABLE))
+    tableExists = queryHandler.readTableExists(db.execute(query))
+    if not tableExists:
         print('[ERROR] weather stations have not been loaded into the database yet')
         db.cleanup()
         sys.exit()
 
     # check if the weather stations last updated table exists in the database - if not create it
-    query = sq.text(queryBuilder.tableExistsReq(STATIONS_UPDATE_TABLE))
-    results = db.execute(query)
-    if not results.first()[0]:
-        query = sq.text(queryBuilder.createUpdateTableReq())
+    query = sq.text(queryHandler.tableExistsReq(STATIONS_UPDATE_TABLE))
+    tableExists = queryHandler.readTableExists(db.execute(query))
+    if not tableExists:
+        query = sq.text(queryHandler.createUpdateTableReq())
         db.execute(query)
 
-def storeLastUpdated(stationID, lastUpdated, queryBuilder, db, exists):
-    if exists:
-        query = sq.text(queryBuilder.modLastUpdatedReq(stationID, lastUpdated))
+def storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil):
+    if np.isnat(lastUpdated):
+        query = sq.text(queryHandler.addLastUpdatedReq(stationID, updatdUntil))
         db.execute(query)
     else:
-        query = sq.text(queryBuilder.addLastUpdatedReq(stationID, lastUpdated))
+        query = sq.text(queryHandler.modLastUpdatedReq(stationID, updatdUntil))
         db.execute(query)
 
-def getStations(prov, db, queryBuilder, conn):
-    query = sq.text(queryBuilder.getStationsReq(prov))
+def getStations(prov, db, queryHandler, conn):
+    query = sq.text(queryHandler.getStationsReq(prov))
     stations = geopandas.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
-    activeStations = pandas.DataFrame()
-    lastUpdated = []
+    states = []
 
-    for index, row in stations.iterrows(): 
-        stationID = row['station_id']
+    for index, row in stations.iterrows():  
+        query = sq.text(queryHandler.getLastUpdatedReq(stationID))
+        lastUpdated, isActive = results = queryHandler.readGetLastUpdated(db.execute(query).first())
+        lastUpdated = np.datetime64(lastUpdated)
+        states.append({'station_id': row['station_id'], 'last_updated': lastUpdated, 'is_active': isActive})
 
-        query = sq.text(queryBuilder.getLastUpdatedReq(stationID))
-        results = db.execute(query).first()     # 0: lastUpdated, 1: isActive    
-        
-        if not results or results[1]:
-            activeStations = pandas.concat([activeStations, stations[stations['station_id'] == stationID]])
-            
-            if results:
-                date = results[0].split('-')
-                lastUpdated.append(datetime(date[0], date[1], date[2]))
-            else:
-                lastUpdated.append(datetime(1,1,1))
-    
-    activeStations['last_updated'] = lastUpdated
-
-    return activeStations
+    return stations, states
 
 
 if __name__ == "__main__":

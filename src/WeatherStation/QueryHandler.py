@@ -1,16 +1,20 @@
-class ScraperQueries:
+class QueryHandler:
     def getStationsReq(self, prov):
         return f"""
         SELECT * FROM public.\"StationsDly\"
         WHERE \"Province\" = \'{prov}\' AND \"DLY First Year\" IS NOT NULL;
         """
-        
+
     def getLastUpdatedReq(self, stationID):
         return f"""
         SELECT last_updated, is_active FROM public.station_data_last_updated
         WHERE station_id = \'{stationID}\';
         """
     
+    def readGetLastUpdated(self, results):
+        results = results.first()
+        return results[0], results[1]
+
     def tableExistsReq(self, tablename):
         return f"""
         SELECT EXISTS (
@@ -18,6 +22,9 @@ class ScraperQueries:
             WHERE schemaname = \'public\' AND tablename  = \'{tablename}\'
         );
         """
+
+    def readTableExists(self, results):
+        return results.first()[0]
 
     def createUpdateTableReq(self):
         return f"""
@@ -44,5 +51,3 @@ class ScraperQueries:
         INSERT INTO station_data_last_updated VALUES (\'{stationID}\', \'{lastUpdated}\');
         COMMIT;
         """
-
-    # YYYY-MM-DD
