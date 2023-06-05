@@ -2,8 +2,8 @@ version: '3.8'
 services:
 
   tensorflowcpu:
-    build: ./tensorflow-cpu
-    image: tensorflow-cpu
+    build: ./tensorflow-gpu
+    image: tensorflow-gpu
     restart: unless-stopped
     volumes: 
       - ../../:/data
