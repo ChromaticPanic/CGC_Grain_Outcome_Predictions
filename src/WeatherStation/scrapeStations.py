@@ -46,7 +46,7 @@ def main():
             print(f'\t[{index + 1}/{len(stations)}] Pulling data for station {stationID} between {int(minYear)}-{int(maxYear)}')
 
             try:
-                df = requester.get_data(prov, stationID, 2022, 2022)    # gather data       
+                df = requester.get_data(prov, stationID, minYear, maxYear)    # gather data       
                 df = processor.processData(df, stationID, lastUpdated)        # prepare data for storage
                 rowsAffected = df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
                 updatdUntil = processor.findLatestDate(df['date'])
