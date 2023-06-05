@@ -48,11 +48,11 @@ def main():
             try:
                 df = requester.get_data(prov, stationID, minYear, maxYear)    # gather data       
                 df = processor.processData(df, stationID, lastUpdated)        # prepare data for storage
-                rowsAffected = df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
-                updatdUntil = processor.findLatestDate(df['date'])
-                print(f'\t\tupdated {rowsAffected} rows')
+                rowsUpdated = df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
+                print(f'\t\tupdated {rowsUpdated} rows')
                 
-                if rowsAffected:
+                if rowsUpdated:
+                    updatdUntil = processor.findLatestDate(df['date'])
                     storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil)      # store date of newest data
 
                 numUpdated += 1
