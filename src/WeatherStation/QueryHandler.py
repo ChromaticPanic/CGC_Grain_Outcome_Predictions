@@ -1,8 +1,8 @@
 class QueryHandler:
     def getStationsReq(self, prov):
         return f"""
-        SELECT * FROM public.\"StationsDly\"
-        WHERE \"Province\" = \'{prov}\' AND \"DLY First Year\" IS NOT NULL;
+        SELECT * FROM public.stations_dly
+        WHERE province = \'{prov}\' AND dly_first_year IS NOT NULL;
         """
 
     def getLastUpdatedReq(self, stationID):
@@ -13,7 +13,14 @@ class QueryHandler:
     
     def readGetLastUpdated(self, results):
         results = results.first()
-        return results[0], results[1]
+        lastUpdated = None
+        isActive = None
+
+        if results:
+            lastUpdated = results[0]
+            isActive = results[1]
+
+        return lastUpdated, isActive
 
     def tableExistsReq(self, tablename):
         return f"""

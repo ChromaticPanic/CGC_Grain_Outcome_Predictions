@@ -23,9 +23,9 @@ class DataProcessor:
         validDates = []
         latestDate = None
         
-        if listOfDates:
+        if len(listOfDates) > 0:
             for date in listOfDates:
-                if not np.isnat(date):
+                if not np.isnat(np.datetime64(date)):
                     validDates.append(date)
             
             if validDates:
@@ -38,7 +38,7 @@ class DataProcessor:
         maxYear = min(lastYearWithData, currentYear)
         minYear = firstYearWithData
         
-        if not np.isnat(lastUpdated):
+        if not np.isnat(np.datetime64(lastUpdated)):
             lastUpdated = pd.to_datetime(lastUpdated)
 
             if lastUpdated.year > firstYearWithData:
@@ -47,7 +47,8 @@ class DataProcessor:
         return minYear, maxYear
 
     def removeOlderThan(self, df, lastUpdated):
-        df.drop(df[df.date <= lastUpdated].index, inplace=True)
+        if lastUpdated:
+            df.drop(df[df.date <= lastUpdated].index, inplace=True)
 
     def processData(self, df: pd.DataFrame, stationID: str, lastUpdated) -> None:
         try:
@@ -78,7 +79,7 @@ class DataProcessor:
         df[['max_temp', 'min_temp', 'mean_temp', 'total_rain', 'total_snow', 'total_precip', 'snow_on_grnd']] = df[[
             'max_temp', 'min_temp', 'mean_temp', 'total_rain', 'total_snow', 'total_precip', 'snow_on_grnd']].astype(float)
 
-        df = self.removeOlderThan(df, lastUpdated)
+        self.removeOlderThan(df, lastUpdated)
 
         df.dropna(subset=['mean_temp'], inplace=True)
         df.loc[df['snow_on_grnd'].isnull(), 'snow_on_grnd'] = 0

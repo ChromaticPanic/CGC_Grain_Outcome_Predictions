@@ -37,21 +37,21 @@ def main():
         stations = processor.removeInactive(stations, states)
         stations = processor.addLastUpdated(stations, states)
 
-        print('Updating data for {prov} in {tablename} ...')
+        print(f'Updating data for {prov} in {tablename} ...')
         for index, row in stations.iterrows():     
             stationID = str(row['station_id'])
             lastUpdated = row['last_updated']
 
             minYear, maxYear = processor.calcDateRange(row['dly_first_year'], lastUpdated, row['dly_last_year'])
-            print(f'\t[{index + 1}/{len(stations)}] Pulling data for station {stationID} between {minYear}-{maxYear}')
+            print(f'\t[{index + 1}/{len(stations)}] Pulling data for station {stationID} between {int(minYear)}-{int(maxYear)}')
 
             try:
-                df = requester.get_data(prov, stationID, prevYear, currYear)    # gather data       
-                df = dataHandler.processData(df, stationID, lastUpdated)        # prepare data for storage
+                df = requester.get_data(prov, stationID, 2022, 2022)    # gather data       
+                df = processor.processData(df, stationID, lastUpdated)        # prepare data for storage
                 rowsAffected = df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
                 updatdUntil = processor.findLatestDate(df['date'])
 
-                print(f'\t\tupdated {rowsAffected}')
+                print(f'\t\tupdated {rowsAffected} rows')
                 storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil)      # store date of newest data
                 numUpdated += 1
 
@@ -94,10 +94,12 @@ def getStations(prov, db, queryHandler, conn):
     states = []
 
     for index, row in stations.iterrows():  
-        query = sq.text(queryHandler.getLastUpdatedReq(stationID))
-        lastUpdated, isActive = results = queryHandler.readGetLastUpdated(db.execute(query).first())
-        lastUpdated = np.datetime64(lastUpdated)
-        states.append({'station_id': row['station_id'], 'last_updated': lastUpdated, 'is_active': isActive})
+        query = sq.text(queryHandler.getLastUpdatedReq(row['station_id']))
+        lastUpdated, isActive = queryHandler.readGetLastUpdated(db.execute(query))
+
+        if lastUpdated:
+            lastUpdated = np.datetime64(lastUpdated)
+            states.append({'station_id': row['station_id'], 'last_updated': lastUpdated, 'is_active': isActive})
 
     return stations, states
 
