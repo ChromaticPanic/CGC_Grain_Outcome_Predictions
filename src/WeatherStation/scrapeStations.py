@@ -81,7 +81,7 @@ def checkTables(db, queryHandler):
         db.execute(query)
 
 def storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil):
-    if np.isnat(lastUpdated):
+    if np.isnat(np.datetime64(lastUpdated)):
         query = sq.text(queryHandler.addLastUpdatedReq(stationID, updatdUntil))
         db.execute(query)
     else:
