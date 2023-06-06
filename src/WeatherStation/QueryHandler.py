@@ -1,17 +1,19 @@
+import sqlalchemy, numpy
+
 class QueryHandler:
-    def getStationsReq(self, prov):
+    def getStationsReq(self, prov: str) -> str:
         return f"""
         SELECT * FROM public.stations_dly
         WHERE province = \'{prov}\' AND dly_first_year IS NOT NULL;
         """
 
-    def getLastUpdatedReq(self, stationID):
+    def getLastUpdatedReq(self, stationID: str) -> str:
         return f"""
         SELECT last_updated, is_active FROM public.station_data_last_updated
         WHERE station_id = \'{stationID}\';
         """
     
-    def readGetLastUpdated(self, results):
+    def readGetLastUpdated(self, results: sqlalchemy.engine.cursor.CursorResult) -> (str, bool):
         results = results.first()
         lastUpdated = None
         isActive = None
@@ -22,7 +24,7 @@ class QueryHandler:
 
         return lastUpdated, isActive
 
-    def tableExistsReq(self, tablename):
+    def tableExistsReq(self, tablename: str):
         return f"""
         SELECT EXISTS (
             SELECT FROM pg_tables
@@ -30,10 +32,10 @@ class QueryHandler:
         );
         """
 
-    def readTableExists(self, results):
+    def readTableExists(self, results: sqlalchemy.engine.cursor.CursorResult):
         return results.first()[0]
 
-    def createUpdateTableReq(self):
+    def createUpdateTableReq(self) -> str:
         return f"""
         CREATE TABLE station_data_last_updated (
             station_id      VARCHAR,
@@ -45,7 +47,7 @@ class QueryHandler:
         COMMIT;
         """
 
-    def modLastUpdatedReq(self, stationID, lastUpdated): 
+    def modLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str: 
         return f"""
         UPDATE station_data_last_updated
         SET last_updated = \'{lastUpdated}\' 
@@ -53,7 +55,7 @@ class QueryHandler:
         COMMIT;
         """
 
-    def addLastUpdatedReq(self, stationID, lastUpdated):        
+    def addLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str:        
         return f"""
         INSERT INTO station_data_last_updated VALUES (\'{stationID}\', \'{lastUpdated}\');
         COMMIT;
