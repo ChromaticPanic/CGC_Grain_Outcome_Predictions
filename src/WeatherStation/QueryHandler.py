@@ -1,6 +1,15 @@
-import sqlalchemy, numpy
+# ----------------------------------------------------
+# QueryHandler.py
+#
+# Purpose: handles (builds/processes) requests to a database
+# ----------------------------------------------------
+import os
 
-class QueryHandler:
+sys.path.append('../')
+from Querier import Querier
+
+
+class QueryHandler(Querier):
     def getStationsReq(self, prov: str) -> str:
         return f"""
         SELECT * FROM public.stations_dly
@@ -24,25 +33,14 @@ class QueryHandler:
 
         return lastUpdated, isActive
 
-    def tableExistsReq(self, tablename: str):
-        return f"""
-        SELECT EXISTS (
-            SELECT FROM pg_tables
-            WHERE schemaname = \'public\' AND tablename  = \'{tablename}\'
-        );
-        """
-
-    def readTableExists(self, results: sqlalchemy.engine.cursor.CursorResult):
-        return results.first()[0]
-
-    def createUpdateTableReq(self) -> str:
+    def createUpdateTableReq(self):
         return f"""
         CREATE TABLE station_data_last_updated (
             station_id      VARCHAR,
             last_updated    DATE NOT NULL,
             is_active       BOOL DEFAULT TRUE,
 
-        CONSTRAINT PK_STATION_UPDATE PRIMARY KEY (station_id)
+            CONSTRAINT PK_STATION_UPDATE PRIMARY KEY(station_id)
         );
         COMMIT;
         """
