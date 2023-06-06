@@ -20,10 +20,11 @@ PG_USER = os.getenv('POSTGRES_USER')
 PG_PW = os.getenv('POSTGRES_PW')
 PG_DB = os.getenv('POSTGRES_DB')
 PG_ADDR = os.getenv('POSTGRES_ADDR')
+PG_PORT = os.getenv('POSTGRES_PORT')
 
 
 def main():
-    db = DataService(PG_DB, PG_USER, PG_PW) # Handles connections to the database
+    db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW) # Handles connections to the database
     requester = ClimateDataRequester()      # Handles weather station requests
     queryHandler = QueryHandler()           # Handles (builds/processes) requests to the database
     processor = DataProcessor()             # Handles the more complex data processing

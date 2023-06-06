@@ -17,10 +17,11 @@ PG_USER = os.getenv('POSTGRES_USER')
 PG_PW = os.getenv('POSTGRES_PW')
 PG_DB = os.getenv('POSTGRES_DB')
 PG_ADDR = os.getenv('POSTGRES_ADDR')
+PG_PORT = os.getenv('POSTGRES_PORT')
 
 def main():
     ergotSamples = pandas.read_csv(f'./data/{FILENAME}.csv')
-    db = DataService(PG_DB, PG_USER, PG_PW) # Handles connections to the database
+    db = DataService(PG_DB, PG_ADDR, PG>PORT, PG_USER, PG_PW) # Handles connections to the database
     conn = db.connect()                     # connect to the database
     
     queryHandler = QueryHandler()
