@@ -10,25 +10,29 @@ Typical usage example:
 import lxml.html
 import requests as rq
 import pandas as pd
+import urllib3
+
 #import ipyparallel as ipp
 
 class ClimateDataRequester:
     def __init__(self) -> None:
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
         self.apiBaseURL = "https://dd.weather.gc.ca/climate/observations/"
         self.defaultPath = "daily/csv/"
         self.headers = {
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate',
-        'Host': 'dd.weather.gc.ca',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Sec-Fetch-User': '?1',
-        'Upgrade-Insecure-Requests': '1',
-        'Referer': 'https://dd.weather.gc.ca/',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0'
-    }
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate',
+            'Host': 'dd.weather.gc.ca',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Sec-Fetch-User': '?1',
+            'Upgrade-Insecure-Requests': '1',
+            'Referer': 'https://dd.weather.gc.ca/',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:96.0) Gecko/20100101 Firefox/96.0'
+        }
+
 
     def get_hourly_data(self, stationID: str, startYear: int = 2022, endYear: int = 2022) -> pd.DataFrame:
         df = pd.DataFrame()
