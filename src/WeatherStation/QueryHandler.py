@@ -1,4 +1,10 @@
-class QueryHandler:
+import os
+
+sys.path.append('../')
+from Querier import Querier
+
+
+class QueryHandler(Querier):
     def getStationsReq(self, prov):
         return f"""
         SELECT * FROM public.stations_dly
@@ -22,17 +28,6 @@ class QueryHandler:
 
         return lastUpdated, isActive
 
-    def tableExistsReq(self, tablename):
-        return f"""
-        SELECT EXISTS (
-            SELECT FROM pg_tables
-            WHERE schemaname = \'public\' AND tablename  = \'{tablename}\'
-        );
-        """
-
-    def readTableExists(self, results):
-        return results.first()[0]
-
     def createUpdateTableReq(self):
         return f"""
         CREATE TABLE station_data_last_updated (
@@ -40,7 +35,7 @@ class QueryHandler:
             last_updated    DATE NOT NULL,
             is_active       BOOL DEFAULT TRUE,
 
-        CONSTRAINT PK_STATION_UPDATE PRIMARY KEY (station_id)
+            CONSTRAINT PK_STATION_UPDATE PRIMARY KEY(station_id)
         );
         COMMIT;
         """

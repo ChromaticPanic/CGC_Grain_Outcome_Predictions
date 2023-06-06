@@ -1,12 +1,14 @@
 from ClimateDataRequester import ClimateDataRequester
 from QueryHandler import QueryHandler
-from DataService import DataService
 from DataProcessor import DataProcessor
 from datetime import datetime
 import sys, os, geopandas, pandas
 import sqlalchemy as sq
 from dotenv import load_dotenv
 import numpy as np
+
+sys.path.append('../')
+from DataService import DataService
 
 # add names for tables here
 PROVINCES = ['AB', 'SK', 'MB']
@@ -38,7 +40,7 @@ def main():
         stations = processor.addLastUpdated(stations, states)
 
         print(f'Updating data for {prov} in {tablename} ...')
-        for index, row in stations.iterrows():     
+        for index, row in stations.iterrows():      # should include what are the attributes and that this is dataframe
             stationID = str(row['station_id'])
             lastUpdated = row['last_updated']
 
