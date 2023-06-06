@@ -1,3 +1,8 @@
+# ----------------------------------------------------
+# QueryHandler.py
+#
+# Purpose: handles (builds/processes) requests to a database
+# ----------------------------------------------------
 import os
 
 sys.path.append('../')
@@ -5,7 +10,7 @@ from Querier import Querier
 
 
 class QueryHandler(Querier):
-    def createErgotSampleTableReq():
+    def createErgotSampleTableReq() -> str:
         return f"""
         CREATE TABLE ergot_sample (
             sample_id       SERIAL,

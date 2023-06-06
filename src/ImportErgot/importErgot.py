@@ -1,5 +1,12 @@
-# eventually the goal is to create data folders. You then drop the files you want to read the data from
-# after reading the data these files then get moved else where
+# ----------------------------------------------------
+# ImportErgot.py
+#
+# Purpose: to validate then store ergot data samples into a database 
+#
+# Remarks: 
+# - Eventually the goal is to create data folders. You then drop the files you want to read the data from
+#   after reading the data these files then get moved else where
+# ----------------------------------------------------
 from QueryHandler import QueryHandler
 from dotenv import load_dotenv
 import sys, math, pandas

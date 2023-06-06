@@ -1,3 +1,8 @@
+# ----------------------------------------------------
+# QueryHandler.py
+#
+# Purpose: handles (builds/processes) requests to a database
+# ----------------------------------------------------
 import os
 
 sys.path.append('../')
