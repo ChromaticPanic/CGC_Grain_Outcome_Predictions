@@ -3,19 +3,19 @@
 #
 # Purpose: handles (builds/processes) requests to a database
 # ----------------------------------------------------
-import os
+import sys
 
 sys.path.append('../')
 from Querier import Querier
 
 
 class QueryHandler(Querier):
-    def createErgotSampleTableReq() -> str:
+    def createErgotSampleTableReq(self) -> str:
         return f"""
         CREATE TABLE ergot_sample (
             sample_id       SERIAL,
-            year            INT
-            province        VARCHAR
+            year            INT,
+            province        VARCHAR,
             crop_district   INT,
             incidence       BOOL,
             severity        FLOAT,

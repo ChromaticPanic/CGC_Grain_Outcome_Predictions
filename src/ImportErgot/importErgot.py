@@ -9,27 +9,27 @@
 # ----------------------------------------------------
 from QueryHandler import QueryHandler
 from dotenv import load_dotenv
-import sys, math, pandas
+import os, sys, math, pandas, sqlalchemy
 
 sys.path.append('../')
 from DataService import DataService
 
 
-FILENAME = 'ergot1995-2022' # the name of the file you want to read
+FILENAME = 'newErgot' # the name of the file you want to read
 TABLENAME = 'ergot_sample'  # the name of the table where the data should be stored
 EXPECTED_COLS = ['Year', 'ProvinceAbbr', 'CropDistrictCode', 'Incidence', 'Severity']   # the expected csv column names
 RENAMED_COLS = ['year', 'province', 'crop_district', 'incidence', 'severity']           # the desired database column names
 
 load_dotenv()
-PG_USER = os.getenv('POSTGRES_USER')
-PG_PW = os.getenv('POSTGRES_PW')
 PG_DB = os.getenv('POSTGRES_DB')
 PG_ADDR = os.getenv('POSTGRES_ADDR')
-PG_PORT = os.getenv('POSTGRES_PORT')
+PG_PORT = int(os.getenv('POSTGRES_PORT'))
+PG_USER = os.getenv('POSTGRES_USER')
+PG_PW = os.getenv('POSTGRES_PW')
 
 def main():
     ergotSamples = pandas.read_csv(f'./data/{FILENAME}.csv')    # Holds the ergot data to import
-    db = DataService(PG_DB, PG_ADDR, PG>PORT, PG_USER, PG_PW)   # Handles connections to the database
+    db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)   # Handles connections to the database
     conn = db.connect()                                         # Connect to the database
     
     queryHandler = QueryHandler()   # Handles (builds/processes) requests to the database
@@ -42,9 +42,17 @@ def main():
     for index, sample in ergotSamples.iterrows(): 
         validYear = not None and sample[EXPECTED_COLS[0]] > 0
         validProv = not None and len(sample[EXPECTED_COLS[1]]) == 2
-        validCode = not None and sample[EXPECTED_COLS[2]] > 0
+        validCode = sample[EXPECTED_COLS[2]] > 0
         validIncidence = not None and (sample[EXPECTED_COLS[3]] == 0 or sample[EXPECTED_COLS[3]] == 1)
-        validSeverity = math.isnan(sample[EXPECTED_COLS[4]]) or (sample[EXPECTED_COLS[4]] >= 0 and sample[EXPECTED_COLS[4]] <= 100)
+        validSeverity = sample[EXPECTED_COLS[4]] >= 0 and sample[EXPECTED_COLS[4]] <= 100
+
+        # Both CropDistrictCode and Severity can be Null, but if thats the case they need to be manually adjusted
+        if math.isnan(sample[EXPECTED_COLS[2]]):     
+            sample[EXPECTED_COLS[2]] = None
+            validCode = True
+        if math.isnan(sample[EXPECTED_COLS[4]]):
+            sample[EXPECTED_COLS[4]] = None
+            validSeverity = True
 
         # If data fails to meet requirements, save for later 
         if not validYear or not validProv or not validCode or not validIncidence or not validSeverity:
@@ -66,20 +74,22 @@ def main():
     ergotSamples[['province']] = ergotSamples[['province']].astype(str)
     ergotSamples[['severity']] = ergotSamples[['severity']].astype(float)
     ergotSamples[['incidence']] = ergotSamples[['incidence']].astype(bool)
-    ergotSamples[['year', 'crop_district']] = ergotSamples[['year', 'crop_district']].astype(int)  
+    ergotSamples[['year']] = ergotSamples[['year']].astype(int)  
  
-    # Stores the resulting data
-    rowsAffected = ergotSamples.to_sql(TABLENAME, conn, schema='public', if_exists="append", index=False)
+    # Stores the resulting data (not using return value due to its inaccuracy)
+    ergotSamples.to_sql(TABLENAME, conn, schema='public', if_exists="append", index=False)
 
-    print(f'[SUCCESS] added {rowsAffected}/{len(ergotSamples)} ergot data samples from {FILENAME}.csv')
-    print(f'{len(ergotSamples) - rowsAffected} samples were ommited due to data constraints, they are as follows')
-    for sample in ommitedData:
-        print(f'\t{sample["index"]}: {sample["sample"]}')
+    print(f'[SUCCESS] added {len(ergotSamples) - len(ommitedData)}/{len(ergotSamples)} ergot data samples from {FILENAME}.csv')
+    if len(ommitedData) > 0:
+        print(f'{len(ommitedData)} samples were ommited due to data constraints, they are as follows:')
+
+        for sample in ommitedData:
+            print(f'\t{sample["index"]}: {sample["sample"]}')
 
     db.cleanup()
 
 
-def checkAttributes(data: pandas.Dataframe, expectedCols: []):
+def checkAttributes(data: pandas.DataFrame, expectedCols: list):
     for col in expectedCols:        # For each of the expected columns
         if not col in data.keys():  # check if its in the dataframe
             print(f'[ERROR] ergot sample file is missing the expected attribute: {col}')
@@ -87,14 +97,14 @@ def checkAttributes(data: pandas.Dataframe, expectedCols: []):
 
 def checkTable(db: DataService, queryHandler: QueryHandler):
     # Checks if the table needed to run the pipeline has been created, if not creates it
-    query = sq.text(queryHandler.tableExistsReq(TABLENAME))         # Create the command needed to check if the table exists
+    query = sqlalchemy.text(queryHandler.tableExistsReq(TABLENAME))         # Create the command needed to check if the table exists
     tableExists = queryHandler.readTableExists(db.execute(query))
 
     if not tableExists:
-        query = sq.text(queryHandler.createErgotSampleTableReq())   # Create the command needed to create the table
+        query = sqlalchemy.text(queryHandler.createErgotSampleTableReq())   # Create the command needed to create the table
         db.execute(query)
 
-def dropExtraAttributes(data: pandas.Dataframe, requiredCol: []):
+def dropExtraAttributes(data: pandas.DataFrame, requiredCol: list):
     attributesToDrop = []                   # Stores the extra attributes we wish to drop
 
     for attr in data.keys():                # For each attribute in the dataframe

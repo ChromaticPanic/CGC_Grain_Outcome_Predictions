@@ -3,7 +3,7 @@
 #
 # Purpose: handles (builds/processes) requests to a database
 # ----------------------------------------------------
-import os
+import sys, numpy, typing, sqlalchemy
 
 sys.path.append('../')
 from Querier import Querier
@@ -22,7 +22,7 @@ class QueryHandler(Querier):
         WHERE station_id = \'{stationID}\';
         """
     
-    def readGetLastUpdated(self, results: sqlalchemy.engine.cursor.CursorResult) -> (str, bool):
+    def readGetLastUpdated(self, results: sqlalchemy.engine.cursor.CursorResult) -> typing.Tuple[str, bool]:
         results = results.first()
         lastUpdated = None
         isActive = None

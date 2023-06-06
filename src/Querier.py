@@ -5,6 +5,7 @@
 # ----------------------------------------------------
 import sqlalchemy
 
+
 class Querier:
     def tableExistsReq(self, tablename: str) -> str:
         return f"""
