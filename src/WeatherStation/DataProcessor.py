@@ -1,17 +1,15 @@
-import pandas as pd
-import sqlalchemy as sq
-import numpy as np
 from datetime import datetime
+import pandas, numpy
 
 class DataProcessor:
-    def removeInactive(self, stations, states):
+    def removeInactive(self, stations: pandas.DataFrame, states: [{str, numpy.datetime64, bool}]) -> pandas.DataFrame:
         for state in states:
             if not state['is_active']:
                 stations.drop(stations[stations.station_id == state['station_id']].index, inplace=True)
 
         return stations
 
-    def addLastUpdated(self, stations, states):
+    def addLastUpdated(self, stations: str, states: [{str, numpy.datetime64, bool}]) -> pandas.DataFrame:
         stations['last_updated'] = None
 
         for state in states:
@@ -19,13 +17,13 @@ class DataProcessor:
 
         return stations
 
-    def findLatestDate(self, listOfDates):
+    def findLatestDate(self, listOfDates: []) -> numpy.datetime64:
         validDates = []
         latestDate = None
         
         if len(listOfDates) > 0:
             for date in listOfDates:
-                if not np.isnat(np.datetime64(date)):
+                if not numpy.isnat(numpy.datetime64(date)):
                     validDates.append(date)
             
             if validDates:
@@ -34,23 +32,23 @@ class DataProcessor:
         return latestDate
 
     # get prevYear and currYear
-    def calcDateRange(self, firstYearWithData, lastUpdated, lastYearWithData, currentYear=datetime.now().year):
+    def calcDateRange(self, firstYearWithData: int, lastUpdated: numpy.datetime64, lastYearWithData: int, currentYear: int=datetime.now().year) -> (int, int):
         maxYear = min(lastYearWithData, currentYear)
         minYear = firstYearWithData
         
-        if not np.isnat(np.datetime64(lastUpdated)):
-            lastUpdated = pd.to_datetime(lastUpdated)
+        if not numpy.isnat(numpy.datetime64(lastUpdated)):
+            lastUpdated = pandas.to_datetime(lastUpdated)
 
             if lastUpdated.year > firstYearWithData:
                 minYear = lastUpdated.year
 
         return minYear, maxYear
 
-    def removeOlderThan(self, df, lastUpdated):
+    def removeOlderThan(self, df: pandas.DataFrame, lastUpdated: numpy.datetime64):
         if lastUpdated:
             df.drop(df[df.date <= lastUpdated].index, inplace=True)
 
-    def processData(self, df: pd.DataFrame, stationID: str, lastUpdated) -> None:
+    def processData(self, df: pandas.DataFrame, stationID: str, lastUpdated: numpy.datetime64) -> pandas.DataFrame:
         try:
             df.drop(columns=['Data Quality', 'Max Temp Flag', 'Mean Temp Flag', 'Min Temp Flag', 'Heat Deg Days Flag', 'Cool Deg Days Flag', 'Spd of Max Gust (km/h)',
                             'Total Rain Flag', 'Total Snow Flag', 'Total Precip Flag', 'Snow on Grnd Flag', 'Dir of Max Gust Flag', 'Spd of Max Gust Flag',
@@ -87,7 +85,7 @@ class DataProcessor:
         df.loc[df['total_snow'].isnull(), 'total_snow'] = 0
         df.loc[df['total_precip'].isnull(), 'total_precip'] = 0
         
-        df['max_temp'] = np.where(df['max_temp'].isnull(), df['mean_temp'], df['max_temp'])
-        df['min_temp'] = np.where(df['min_temp'].isnull(), df['mean_temp'], df['min_temp'])
+        df['max_temp'] = numpy.where(df['max_temp'].isnull(), df['mean_temp'], df['max_temp'])
+        df['min_temp'] = numpy.where(df['min_temp'].isnull(), df['mean_temp'], df['min_temp'])
 
         return df

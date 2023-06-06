@@ -1,9 +1,11 @@
 from ClimateDataRequester import ClimateDataRequester
 from QueryHandler import QueryHandler
-from DataService import DataService
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
-import sys, os, geopandas, sqlalchemy, numpy
+import sys, os, geopandas, sqlalchemy, numpy, pandas
+
+sys.path.append('../')
+from DataService import DataService
 
 
 # add names for tables here
@@ -16,10 +18,11 @@ PG_USER = os.getenv('POSTGRES_USER')
 PG_PW = os.getenv('POSTGRES_PW')
 PG_DB = os.getenv('POSTGRES_DB')
 PG_ADDR = os.getenv('POSTGRES_ADDR')
+PG_PORT = os.getenv('POSTGRES_PORT')
 
 
 def main():
-    db = DataService(PG_DB, PG_USER, PG_PW) # Handles connections to the database
+    db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW) # Handles connections to the database
     requester = ClimateDataRequester()      # Handles weather station requests
     queryHandler = QueryHandler()           # Handles (builds/processes) requests to the database
     processor = DataProcessor()             # Handles the more complex data processing
@@ -36,7 +39,7 @@ def main():
         stations = processor.addLastUpdated(stations, states)
 
         print(f'Updating data for {prov} in {tablename} ...')
-        for index, row in stations.iterrows():     
+        for index, row in stations.iterrows():      # should include what are the attributes and that this is dataframe
             stationID = str(row['station_id'])
             lastUpdated = row['last_updated']
 
@@ -62,7 +65,7 @@ def main():
     db.cleanup()
 
 
-def checkTables(db, queryHandler):
+def checkTables(db: DataService, queryHandler: QueryHandler):
     # check if the hourly weather station table exist in the database - if not exit
     query = sqlalchemy.text(queryHandler.tableExistsReq(DLY_STATIONS_TABLE))
     tableExists = queryHandler.readTableExists(db.execute(query))
@@ -78,7 +81,7 @@ def checkTables(db, queryHandler):
         query = sqlalchemy.text(queryHandler.createUpdateTableReq())
         db.execute(query)
 
-def storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil):
+def storeLastUpdated(stationID: str, lastUpdated: numpy.datetime64, queryHandler: QueryHandler, db: DataService, updatdUntil: numpy.datetime64):
     if numpy.isnat(numpy.datetime64(lastUpdated)):
         query = sqlalchemy.text(queryHandler.addLastUpdatedReq(stationID, updatdUntil))
         db.execute(query)
@@ -86,7 +89,7 @@ def storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil):
         query = sqlalchemy.text(queryHandler.modLastUpdatedReq(stationID, updatdUntil))
         db.execute(query)
 
-def getStations(prov, db, queryHandler, conn):
+def getStations(prov: str, db: DataService, queryHandler: QueryHandler, conn: sqlalchemy.engine.Connection) -> (pandas.DataFrame, [{str, numpy.datetime64, bool}]):
     query = sqlalchemy.text(queryHandler.getStationsReq(prov))
     stations = geopandas.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
     states = []
