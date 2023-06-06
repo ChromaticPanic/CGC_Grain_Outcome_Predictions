@@ -51,13 +51,14 @@ def main():
             try:
                 df = requester.get_data(prov, stationID, minYear, maxYear)    # gather data       
                 df = processor.processData(df, stationID, lastUpdated)        # prepare data for storage
-                rowsAffected = df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
-                updatdUntil = processor.findLatestDate(df['date'])
+                rowsUpdated = df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)
+                print(f'\t\tupdated {rowsUpdated} rows')
+                
+                if rowsUpdated:
+                    updatdUntil = processor.findLatestDate(df['date'])
+                    storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil)      # store date of newest data
 
-                print(f'\t\tupdated {rowsAffected} rows')
-                storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil)      # store date of newest data
                 numUpdated += 1
-
             except Exception as e:
                 print(f'[ERROR] Failed to scrape data for station {stationID}')
                 print(e)
@@ -67,7 +68,7 @@ def main():
     db.cleanup()
 
 
-def checkTables(db, queryHandler):
+def checkTables(db: DataService, queryHandler: QueryHandler):
     # check if the hourly weather station table exist in the database - if not exit
     query = sq.text(queryHandler.tableExistsReq(DLY_STATIONS_TABLE))
     tableExists = queryHandler.readTableExists(db.execute(query))
@@ -83,7 +84,7 @@ def checkTables(db, queryHandler):
         query = sq.text(queryHandler.createUpdateTableReq())
         db.execute(query)
 
-def storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil):
+def storeLastUpdated(stationID: str, lastUpdated: np.datetime64, queryHandler: QueryHandler, db: DataService, updatdUntil: np.datetime64):
     if np.isnat(np.datetime64(lastUpdated)):
         query = sq.text(queryHandler.addLastUpdatedReq(stationID, updatdUntil))
         db.execute(query)
@@ -91,7 +92,7 @@ def storeLastUpdated(stationID, lastUpdated, queryHandler, db, updatdUntil):
         query = sq.text(queryHandler.modLastUpdatedReq(stationID, updatdUntil))
         db.execute(query)
 
-def getStations(prov, db, queryHandler, conn):
+def getStations(prov: str, db: DataService, queryHandler: QueryHandler, conn: sq.engine.Connection) -> (pandas.DataFrame, [{str, numpy.datetime64, bool}]):
     query = sq.text(queryHandler.getStationsReq(prov))
     stations = geopandas.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
     states = []

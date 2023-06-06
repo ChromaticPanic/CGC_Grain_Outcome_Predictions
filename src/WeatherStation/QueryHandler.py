@@ -10,19 +10,19 @@ from Querier import Querier
 
 
 class QueryHandler(Querier):
-    def getStationsReq(self, prov):
+    def getStationsReq(self, prov: str) -> str:
         return f"""
         SELECT * FROM public.stations_dly
         WHERE province = \'{prov}\' AND dly_first_year IS NOT NULL;
         """
 
-    def getLastUpdatedReq(self, stationID):
+    def getLastUpdatedReq(self, stationID: str) -> str:
         return f"""
         SELECT last_updated, is_active FROM public.station_data_last_updated
         WHERE station_id = \'{stationID}\';
         """
     
-    def readGetLastUpdated(self, results):
+    def readGetLastUpdated(self, results: sqlalchemy.engine.cursor.CursorResult) -> (str, bool):
         results = results.first()
         lastUpdated = None
         isActive = None
@@ -45,7 +45,7 @@ class QueryHandler(Querier):
         COMMIT;
         """
 
-    def modLastUpdatedReq(self, stationID, lastUpdated): 
+    def modLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str: 
         return f"""
         UPDATE station_data_last_updated
         SET last_updated = \'{lastUpdated}\' 
@@ -53,7 +53,7 @@ class QueryHandler(Querier):
         COMMIT;
         """
 
-    def addLastUpdatedReq(self, stationID, lastUpdated):        
+    def addLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str:        
         return f"""
         INSERT INTO station_data_last_updated VALUES (\'{stationID}\', \'{lastUpdated}\');
         COMMIT;
