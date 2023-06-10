@@ -36,7 +36,7 @@ class ClimateDataRequester:
 
     def get_hourly_data(self, stationID: str, startYear: int = 2022, endYear: int = 2022) -> pd.DataFrame:
         df = pd.DataFrame()
-        baseUrl = 'https://api.weather.gc.ca/collections/climate-hourly/items?datetime=1995-01-01%2000:00:00/2022-10-01%2000:00:00&CLIMATE_IDENTIFIER=' 
+        baseUrl = 'https://api.weather.gc.ca/collections/climate-hourly/items?datetime=1995-01-01%2000:00:00/2022-12-31%2000:00:00&CLIMATE_IDENTIFIER=' 
         midUrl = '&sortby=PROVINCE_CODE,CLIMATE_IDENTIFIER,LOCAL_DATE&f=csv&limit=10000&startindex='
         index = 0
         offset = 10000
