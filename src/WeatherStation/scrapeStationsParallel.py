@@ -70,7 +70,6 @@ def worker(row: pd.Series, tablename, prov):
 def main():
 
     db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)   # Handles connections to the database
-    requester = ClimateDataRequester()                          # Handles weather station requests
     queryHandler = QueryHandler()                               # Handles (builds/processes) requests to the database
     processor = DataProcessor()                                 # Handles the more complex data processing
     conn = db.connect()                     # Connect to the database
@@ -79,7 +78,7 @@ def main():
     for prov in PROVINCES:
         stations, states = getStations(prov, db, queryHandler, conn)            # Pulls stations from the datbase. Expected attributes are: station_name, province
         tablename = f'{prov.lower()}_station_data'  # Current province data table   # latitude, longitude, elevation, station_id, wmo_identifier, tc_identifier, 
-        numUpdated = 0                              # Number of records updated     # first_year, last_year, hly_first_year, hly_last_year, dly_first_year, dly_last_year,  
+                                                                                    # first_year, last_year, hly_first_year, hly_last_year, dly_first_year, dly_last_year,  
                                                                                     # mly_first_year, mly_last_year, geometry, cr_num, last_updated (gets added in line 38)
 
         stations = processor.removeInactive(stations, states)   # Removes inactive stations (as per the datbase)
