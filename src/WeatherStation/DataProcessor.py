@@ -94,7 +94,7 @@ class DataProcessor:
 
         return df
     
-    def dataProcessHourly(df: pd.DataFrame) -> None:
+    def dataProcessHourly(self, df: pandas.DataFrame, lastUpdated: numpy.datetime64) -> pandas.DataFrame:
         NULLFLAG = -9999
         try:
             # discard	discard	discard	keep	discard	discard	keep	keep	keep	keep	keep	keep	discard	keep	discard	discard	discard	keep	discard	keep	discard	keep	discard	discard	discard	keep	discard	keep	discard	keep	discard	
@@ -108,7 +108,7 @@ class DataProcessor:
         expList = ['CLIMATE_IDENTIFIER', 'PROVINCE_CODE', 'LOCAL_YEAR', 'LOCAL_MONTH', 'LOCAL_DAY', 'LOCAL_HOUR', 'TEMP', 'DEW_POINT_TEMP', 'PRECIP_AMOUNT', 'RELATIVE_HUMIDITY', 'STATION_PRESSURE', 'WINDCHILL', 'WIND_DIRECTION', 'WIND_SPEED']
         currList = list(df.columns.values)
         
-        if validateColumnNames(currList, expList):
+        if self.validateColumnNames(currList, expList):
             df.rename(columns={df.columns[0]: "ClimateID"}, inplace=True)
             df.rename(columns={df.columns[1]: "ProvinceCode"}, inplace=True)
             df.rename(columns={df.columns[2]: "Year"}, inplace=True)
@@ -139,6 +139,7 @@ class DataProcessor:
             df[['Temp', 'DewPointTemp', 'PrecipAmount', 'RelativeHumidity', 'StationPressure', 'WindChill', 'WindDirection', 'WindSpeed']] = df[['Temp', 
                         'DewPointTemp', 'PrecipAmount', 'RelativeHumidity', 'StationPressure', 'WindChill', 'WindDirection', 'WindSpeed']].astype(float)
 
+            self.removeOlderThan(df, lastUpdated)
             # we try a db push, but if it fails, we place the data in a csv file
             # try:
             push_data(df, "WeatherDataHourlyTwentyYear")
@@ -150,3 +151,9 @@ class DataProcessor:
         else:
             df.to_csv("Failed/" + str(df.iloc[0, 0]) +
                     "_error_column_names.csv", index=False)
+            
+    def validateColumnNames(self, curr: list, exp: list) -> bool:
+        for name in curr:
+            if name not in exp:
+                return False
+        return True
