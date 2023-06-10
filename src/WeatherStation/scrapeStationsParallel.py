@@ -11,6 +11,7 @@ import os, sys, typing, sqlalchemy
 import numpy as np
 import pandas as pd
 import geopandas as gpd
+import multiprocessing as mp
 
 sys.path.append('../')
 from DataService import DataService
