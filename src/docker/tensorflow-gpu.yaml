@@ -1,7 +1,7 @@
 version: '3.8'
 services:
 
-  tensorflowcpu:
+  tensorflowgpu:
     build: ./tensorflow-gpu
     image: tensorflow-gpu
     restart: unless-stopped
