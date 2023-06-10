@@ -28,8 +28,27 @@
 ## Data Sources
 - Provincial Boundaries
 - Census Agricultural Regions
-- Weather Station List
+https://open.canada.ca/data/en/dataset/a3cc4d0a-34f8-4664-bb54-863427fb2243
+https://ftp.maps.canada.ca/pub/statcan_statcan/Agriculture_Agriculture/agricultural-ecumene-2006_ecoumene-agricole-2006/Agec2006RefGuide_EN.pdf
+https://www150.statcan.gc.ca/n1/pub/92-174-x/92-174-x2007000-eng.htm
+https://www150.statcan.gc.ca/pub/92-174-g/92-174-g2007000-eng.pdf
+
+mkdir src/WeatherStation/data/
+cd src/WeatherStation/data/
+wget https://www150.statcan.gc.ca/n1/pub/92-174-x/2007000/carboundary/gcar000b07a_e.zip
+
+
+- Weather
+https://climate.weather.gc.ca/index_e.html
+
+
 - Weather Station Data
+https://dd.weather.gc.ca/climate/observations/climate_station_list.csv
+
+https://dd.weather.gc.ca/climate/observations/daily/
+https://dd.weather.gc.ca/climate/observations/hourly/
+
+
 
 ## Project Structure
 - stuff
