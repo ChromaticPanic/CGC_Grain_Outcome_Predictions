@@ -93,3 +93,60 @@ class DataProcessor:
         df['min_temp'] = numpy.where(df['min_temp'].isnull(), df['mean_temp'], df['min_temp'])
 
         return df
+    
+    def dataProcessHourly(df: pd.DataFrame) -> None:
+        NULLFLAG = -9999
+        try:
+            # discard	discard	discard	keep	discard	discard	keep	keep	keep	keep	keep	keep	discard	keep	discard	discard	discard	keep	discard	keep	discard	keep	discard	discard	discard	keep	discard	keep	discard	keep	discard	
+            # x	y	STATION_NAME	CLIMATE_IDENTIFIER	ID	LOCAL_DATE	PROVINCE_CODE	LOCAL_YEAR	LOCAL_MONTH	LOCAL_DAY	LOCAL_HOUR	TEMP	TEMP_FLAG	DEW_POINT_TEMP	DEW_POINT_TEMP_FLAG	HUMIDEX	HUMIDEX_FLAG	PRECIP_AMOUNT	PRECIP_AMOUNT_FLAG	RELATIVE_HUMIDITY	RELATIVE_HUMIDITY_FLAG	STATION_PRESSURE	STATION_PRESSURE_FLAG	VISIBILITY	VISIBILITY_FLAG	WINDCHILL	WINDCHILL_FLAG	WIND_DIRECTION	WIND_DIRECTION_FLAG	WIND_SPEED	WIND_SPEED_FLAG	
+
+            df.drop(columns=['x', 'y', 'STATION_NAME', 'ID', 'LOCAL_DATE', 'TEMP_FLAG', 'DEW_POINT_TEMP_FLAG', 'HUMIDEX', 'HUMIDEX_FLAG', 'PRECIP_AMOUNT_FLAG', 'RELATIVE_HUMIDITY_FLAG', 'STATION_PRESSURE_FLAG', 'VISIBILITY', 'VISIBILITY_FLAG', 'WINDCHILL_FLAG', 'WIND_DIRECTION_FLAG', 'WIND_SPEED_FLAG'], inplace=True)
+        except:
+            df.to_csv("Failed/" + str(df.iloc[0, 0]) +
+                    "_unexpected_column_names.csv", index=False)
+
+        expList = ['CLIMATE_IDENTIFIER', 'PROVINCE_CODE', 'LOCAL_YEAR', 'LOCAL_MONTH', 'LOCAL_DAY', 'LOCAL_HOUR', 'TEMP', 'DEW_POINT_TEMP', 'PRECIP_AMOUNT', 'RELATIVE_HUMIDITY', 'STATION_PRESSURE', 'WINDCHILL', 'WIND_DIRECTION', 'WIND_SPEED']
+        currList = list(df.columns.values)
+        
+        if validateColumnNames(currList, expList):
+            df.rename(columns={df.columns[0]: "ClimateID"}, inplace=True)
+            df.rename(columns={df.columns[1]: "ProvinceCode"}, inplace=True)
+            df.rename(columns={df.columns[2]: "Year"}, inplace=True)
+            df.rename(columns={df.columns[3]: "Month"}, inplace=True)
+            df.rename(columns={df.columns[4]: "Day"}, inplace=True)
+            df.rename(columns={df.columns[5]: "Hour"}, inplace=True)
+            df.rename(columns={df.columns[6]: "Temp"}, inplace=True)
+            df.rename(columns={df.columns[7]: "DewPointTemp"}, inplace=True)
+            df.rename(columns={df.columns[8]: "PrecipAmount"}, inplace=True)
+            df.rename(columns={df.columns[9]: "RelativeHumidity"}, inplace=True)
+            df.rename(columns={df.columns[10]: "StationPressure"}, inplace=True)
+            df.rename(columns={df.columns[11]: "WindChill"}, inplace=True)
+            df.rename(columns={df.columns[12]: "WindDirection"}, inplace=True)
+            df.rename(columns={df.columns[13]: "WindSpeed"}, inplace=True)
+
+            # df.dropna(subset=['Temp'], inplace=True)
+            df.loc[df['Temp'].isnull(), 'Temp'] = NULLFLAG
+            df.loc[df['DewPointTemp'].isnull(), 'DewPointTemp'] = NULLFLAG
+            df.loc[df['PrecipAmount'].isnull(), 'PrecipAmount'] = NULLFLAG
+            df.loc[df['RelativeHumidity'].isnull(), 'RelativeHumidity'] = NULLFLAG
+            df.loc[df['StationPressure'].isnull(), 'StationPressure'] = NULLFLAG
+            df.loc[df['WindChill'].isnull(), 'WindChill'] = NULLFLAG
+            df.loc[df['WindDirection'].isnull(), 'WindDirection'] = NULLFLAG
+            df.loc[df['WindSpeed'].isnull(), 'WindSpeed'] = NULLFLAG
+
+            df[['ClimateID', 'ProvinceCode']] = df[['ClimateID', 'ProvinceCode']].astype(str)
+            df[['Year', 'Month', 'Day', 'Hour']] = df[['Year', 'Month', 'Day', 'Hour']].astype(int)
+            df[['Temp', 'DewPointTemp', 'PrecipAmount', 'RelativeHumidity', 'StationPressure', 'WindChill', 'WindDirection', 'WindSpeed']] = df[['Temp', 
+                        'DewPointTemp', 'PrecipAmount', 'RelativeHumidity', 'StationPressure', 'WindChill', 'WindDirection', 'WindSpeed']].astype(float)
+
+            # we try a db push, but if it fails, we place the data in a csv file
+            # try:
+            push_data(df, "WeatherDataHourlyTwentyYear")
+            # db_con.execute(
+            #     "UPDATE public.\"TenYrStationsHourly\" SET \"dataAvailable\" = True WHERE \"ClimateID\" like CAST(\'{}\' AS TEXT);".format(stationID))
+            # except:
+            #     df.to_csv("Failed/" + str(df.iloc[0, 0]) +
+            #             "_data_failed_dbpush.csv", index=False)
+        else:
+            df.to_csv("Failed/" + str(df.iloc[0, 0]) +
+                    "_error_column_names.csv", index=False)
