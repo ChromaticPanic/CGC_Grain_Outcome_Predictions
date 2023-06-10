@@ -113,3 +113,9 @@ Additional steps are as follows:
 - Jupyter notebooks:
     1. refresh its respective webpage and enter the token given from either the docker container terminal or CLI terminal. Alternatively, there will be a link you can press in both of these spots.
 <br>
+
+### Git-repo setup in linux
+- Create a folder in the data folder using 'sudo mkdir maith'. Example: data/maith.
+- Generate a personal access token for your git account (it's under Developer's settings).
+- Run git clone 'https://<username>:<tokens>@github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions.git' inside your personal folder.
+    - **Note**: the username can be found in your email settings under the 'Keep my email addresses private'. Choose the one for performing web-based Git operations.
