@@ -43,10 +43,14 @@ https://climate.weather.gc.ca/index_e.html
 
 
 - Weather Station Data
-https://dd.weather.gc.ca/climate/observations/climate_station_list.csv
+wget https://dd.weather.gc.ca/climate/observations/climate_station_list.csv
 
 https://dd.weather.gc.ca/climate/observations/daily/
 https://dd.weather.gc.ca/climate/observations/hourly/
+
+- Satellite Land Moisture
+
+
 
 
 
