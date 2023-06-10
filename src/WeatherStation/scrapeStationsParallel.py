@@ -74,7 +74,6 @@ def main():
     queryHandler = QueryHandler()                               # Handles (builds/processes) requests to the database
     processor = DataProcessor()                                 # Handles the more complex data processing
     conn = db.connect()                     # Connect to the database
-    pool = mp.Pool(6)
     checkTables(db, queryHandler)           # Checks if the tables needed are present, if not try to build them
 
     for prov in PROVINCES:
@@ -88,9 +87,11 @@ def main():
 
         print(f'Updating data for {prov} in {tablename} ...')
         
+        pool = mp.Pool(6)
         pool.map(worker, stations.iterrows(), [tablename]*len(stations), [prov]*len(stations))
-        
-        print(f'[SUCCESS] Updated data for {numUpdated}/{len(stations)} weather stations in {prov}\n')
+        pool.close()
+        pool.join()
+
     db.cleanup()
 
 
