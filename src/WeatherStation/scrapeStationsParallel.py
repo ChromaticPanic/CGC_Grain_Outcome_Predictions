@@ -29,13 +29,52 @@ PG_ADDR = os.getenv('POSTGRES_ADDR')
 PG_PORT = os.getenv('POSTGRES_PORT')
 
 
-def main():
+def worker(row: pd.Series, tablename, prov):
+    import numpy as np
+    import pandas as pd
+    import geopandas as gpd
+    load_dotenv()
+    PG_USER = os.getenv('POSTGRES_USER')
+    PG_PW = os.getenv('POSTGRES_PW')
+    PG_DB = os.getenv('POSTGRES_DB')
+    PG_ADDR = os.getenv('POSTGRES_ADDR')
+    PG_PORT = os.getenv('POSTGRES_PORT')
+
     db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)   # Handles connections to the database
     requester = ClimateDataRequester()                          # Handles weather station requests
     queryHandler = QueryHandler()                               # Handles (builds/processes) requests to the database
     processor = DataProcessor()                                 # Handles the more complex data processing
 
     conn = db.connect()                     # Connect to the database
+    stationID = str(row['station_id'])
+
+    minYear, maxYear = processor.calcDateRange(row['dly_first_year'], row['last_updated'], row['dly_last_year'])
+
+    try:
+        df = requester.get_data(prov, stationID, minYear, maxYear)      # Collect data from the weather stations for [minYear, maxYear]      
+        df = processor.processData(df, row['last_updated'])             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
+        df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
+        numRows = len(df.index)                                                         # Check how many rows were in the dataframe we just pushed
+
+        if numRows:
+            updatdUntil = processor.findLatestDate(df['date'])                                  # Check what the date was for the newest data point
+            storeLastUpdated(stationID, row['last_updated'], queryHandler, db, updatdUntil)     # Store date of newest data (as per line 55)
+
+    except Exception as e:
+        print(f'[ERROR] Failed to scrape data for station {stationID}')
+        print(e)
+
+    db.cleanup()
+    
+
+def main():
+
+    db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)   # Handles connections to the database
+    requester = ClimateDataRequester()                          # Handles weather station requests
+    queryHandler = QueryHandler()                               # Handles (builds/processes) requests to the database
+    processor = DataProcessor()                                 # Handles the more complex data processing
+    conn = db.connect()                     # Connect to the database
+    pool = mp.Pool(6)
     checkTables(db, queryHandler)           # Checks if the tables needed are present, if not try to build them
 
     for prov in PROVINCES:
@@ -48,28 +87,9 @@ def main():
         stations = processor.addLastUpdated(stations, states)   # Adds last_updated attribute to the weather stations
 
         print(f'Updating data for {prov} in {tablename} ...')
-        for index, row in stations.iterrows():
-            stationID = str(row['station_id'])
-
-            minYear, maxYear = processor.calcDateRange(row['dly_first_year'], row['last_updated'], row['dly_last_year'])
-            print(f'\t[{index + 1}/{len(stations)}] Pulling data for station {stationID} between {int(minYear)}-{int(maxYear)}')
-
-            try:
-                df = requester.get_data(prov, stationID, minYear, maxYear)      # Collect data from the weather stations for [minYear, maxYear]      
-                df = processor.processData(df, row['last_updated'])             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
-                df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
-                numRows = len(df.index)                                                         # Check how many rows were in the dataframe we just pushed
-
-                print(f'\t\tupdated {numRows} rows')
-                if numRows:
-                    updatdUntil = processor.findLatestDate(df['date'])                                  # Check what the date was for the newest data point
-                    storeLastUpdated(stationID, row['last_updated'], queryHandler, db, updatdUntil)     # Store date of newest data (as per line 55)
-
-                numUpdated += 1
-            except Exception as e:
-                print(f'[ERROR] Failed to scrape data for station {stationID}')
-                print(e)
-
+        
+        pool.map(worker, stations.iterrows(), [tablename]*len(stations), [prov]*len(stations))
+        
         print(f'[SUCCESS] Updated data for {numUpdated}/{len(stations)} weather stations in {prov}\n')
     db.cleanup()
 
