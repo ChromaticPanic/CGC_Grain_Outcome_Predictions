@@ -7,7 +7,7 @@ from Querier import Querier
 
 class QueryHandler(Querier):
     def createCopernicusTableReq(self):
-        return """
+        return"""
         CREATE TABLE copernicus_satelite_data (
             id                              SERIAL,
             lon                             FLOAT,
@@ -17,8 +17,8 @@ class QueryHandler(Querier):
             day                             INT,
             hour                            INT,
             region                          VARCHAR,
-            2m_dewpoint_temperature         FLOAT,
-            2m_temperature                  FLOAT,
+            dewpoint_temperature            FLOAT,
+            temperature                     FLOAT,
             evaporation_from_bare_soil      FLOAT,
             skin_reservoir_content          FLOAT,
             skin_temperature                FLOAT,
