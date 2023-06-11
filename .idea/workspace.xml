@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1238f89b-1526-4e84-ad15-5d12977ebea8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +66,7 @@
       <workItem from="1686254911189" duration="2612000" />
       <workItem from="1686438433570" duration="2949000" />
       <workItem from="1686441424915" duration="1709000" />
+      <workItem from="1686505196813" duration="4571000" />
     </task>
     <servers />
   </component>
