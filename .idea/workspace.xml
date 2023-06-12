@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1238f89b-1526-4e84-ad15-5d12977ebea8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/MoistureSatelliteTest/manitoba test masking.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/shape files/Manitobas/lpr_000b16a_e.dbf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/shape files/Manitobas/lpr_000b16a_e.prj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/shape files/Manitobas/lpr_000b16a_e.shp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/shape files/Manitobas/lpr_000b16a_e.shx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/manitoba test masking.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/sm_data_demo7.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/sm_data_demo7_Alberta.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,7 +98,7 @@
       <workItem from="1686537566075" duration="817000" />
       <workItem from="1686538448168" duration="6719000" />
       <workItem from="1686589886127" duration="485000" />
-      <workItem from="1686590420405" duration="3355000" />
+      <workItem from="1686590420405" duration="5706000" />
     </task>
     <servers />
   </component>
