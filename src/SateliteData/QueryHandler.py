@@ -7,11 +7,12 @@ from Querier import Querier
 
 class QueryHandler(Querier):
     def createCopernicusTableReq(self):
-        return"""
+        return f"""
         CREATE TABLE copernicus_satelite_data (
             id                              SERIAL,
             lon                             FLOAT,
             lat                             FLOAT,
+            datetime                        DATE,
             year                            INT,
             month                           INT,
             day                             INT,
