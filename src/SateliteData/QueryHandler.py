@@ -1,13 +1,15 @@
 import sys
+from typing import Union
 import sqlalchemy as sq
+import numpy as np
 
 sys.path.append('../')
 from Querier import Querier
 
 
 class QueryHandler(Querier):
-    def createCopernicusTableReq(self):
-        return f"""
+    def createCopernicusTableReq(self) -> str:
+        return """
         CREATE TABLE copernicus_satelite_data (
             id                              SERIAL,
             lon                             FLOAT,
@@ -40,7 +42,7 @@ class QueryHandler(Querier):
         COMMIT;
         """
 
-    def createRowExistsInDBReq(self, lon, lat, datetime):
+    def createRowExistsInDBReq(self, lon: float, lat: float, datetime: np.datetime64) -> str:
         return f"""
         SELECT EXISTS (
             SELECT FROM public.copernicus_satelite_data
@@ -51,14 +53,14 @@ class QueryHandler(Querier):
     def readRowExistsInDB(self, results: sq.engine.cursor.CursorResult) -> bool:
         return results.first()[0]
 
-    def createInsertRowReq(self, lon, lat, datetime, year, month, day, hour, region, attr, value):
+    def createInsertRowReq(self, lon: float, lat: float, datetime: np.datetime64, year: str, month: str, day: str, hour: str, region: str, attr: str, value: Union[float, str]) -> str:
         return f"""
         INSERT INTO public.copernicus_satelite_data (lon, lat, datetime, year, month, day, hour, region, {attr})
-        VALUES ({lon}, {lat}, \'{datetime}\', {int(year)}, {int(month)}, {int(day)}, {hour}, \'{region}\', {value});
+        VALUES ({lon}, {lat}, \'{datetime}\', {year}, {month}, {day}, {hour}, \'{region}\', {value});
         COMMIT;
         """
 
-    def createUpdateRowReq(self, lon, lat, datetime, attr, value):
+    def createUpdateRowReq(self, lon: float, lat: float, datetime: np.datetime64, attr: str, value: Union[float, str]) -> str:
         return f"""
         UPDATE public.copernicus_satelite_data
         SET {attr} = {value}
