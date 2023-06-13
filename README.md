@@ -4,10 +4,14 @@
 <br>
 
 <h4>Ergot is a plant disease that infects the developing grains of cereals and grasses. When ergot bodies instead of kernels emerge during kernel formation, ergot symptoms become visible. To find a strategy to prevent it sooner, it is crucial to identify the factors that encourage it to grow in grain. Our project aims to build a tool that supports this research and provides tools for data analysis for the Canadian Grain Commission.<h4>
+
+
+<br>
+<br>
+<div align="right">
+<img src='res/a0bb2d9c-8258-4242-9253-efcdd9c15260.png' width="500"/>
 </div>
-<br>
-<br>
-<br>
+</div>
 
 ## Overview
 - [Setting up the environment](#setting-up-the-environment)
@@ -23,7 +27,7 @@
         - [Commands](#commands)
         - [Accessing the system with VSCode]()
 - [Data Sources](#data-sources)
-- [Data Attributes](#data-attributes)
+- [Database Tables](#data-attributes)
     - [2006 Census Agricultural Regions](#2006-census-agricultural-regions)
     - [Weather Stations](#weather-stations)
     - [Daily Weather Station Data](#daily-weather-station-data)
@@ -160,13 +164,17 @@ These can later be verified by running
 <br>
 
 ## Data Sources
-- [2006 Census Agricultural Regions](https://www150.statcan.gc.ca/n1/pub/92-174-x/2007000/carboundary/gcar000b07a_e.zip)
-- [Weather Stations](https://dd.weather.gc.ca/climate/observations/climate_station_list.csv)
-- [Daily Weather Station Data](https://dd.weather.gc.ca/climate/observations/daily/)
-- [Hourly Weather Station Data](https://dd.weather.gc.ca/climate/observations/hourly/)
-- [ERA5-Land Satelite Data](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview)
-- [Harvest Canada Ergot Data](https://www.grainscanada.gc.ca/en/grain-quality/harvest-sample/)
-- [Soil Moisture Data](https://www.esa.int/Applications/Observing_the_Earth/Space_for_our_climate/Nearly_four_decades_of_soil_moisture_data_now_available)
+
+### Manual retrieval required
+- [2006 Census Agricultural Regions](https://www150.statcan.gc.ca/n1/pub/92-174-x/2007000/carboundary/gcar000b07a_e.zip): digital boundaries for Canada's agriculture regions 
+- [Weather Stations](https://dd.weather.gc.ca/climate/observations/climate_station_list.csv): list of weather stations that collect weather data spread throughout Canada
+- [Harvest Canada Ergot Data](https://www.grainscanada.gc.ca/en/grain-quality/harvest-sample/): grain samples tested for Ergot
+
+### Automated retrieval
+- [Hourly Weather Station Data](https://dd.weather.gc.ca/climate/observations/hourly/): weather data (hourly) collected by Canadian weather stations
+- [Daily Weather Station Data](https://dd.weather.gc.ca/climate/observations/daily/): weather data (daily) collected by Canadian weather stations
+- [ERA5-Land Satelite Data](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview): satelite weather data 
+- [Soil Moisture Data](https://www.esa.int/Applications/Observing_the_Earth/Space_for_our_climate/Nearly_four_decades_of_soil_moisture_data_now_available): satelite moisture data
 
 <br>
 <hr>
