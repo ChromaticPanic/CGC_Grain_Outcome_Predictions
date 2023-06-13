@@ -1,6 +1,5 @@
-import os, sys, cdsapi, typing, zipfile, calendar, multiprocessing
+import os, sys, cdsapi, zipfile, calendar, multiprocessing
 from QueryHandler import QueryHandler
-from shapely.geometry import Point
 from dotenv import load_dotenv
 import sqlalchemy as sq 
 import geopandas as gpd
