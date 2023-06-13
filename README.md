@@ -186,7 +186,7 @@ These can later be verified by running
 ### census_ag_regions
 |car_uid|car_name|pr_uid|ag_uid|geometry|cr_num|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Region identifer  | Region name  | Province identifier  | | Region boundaries  | Crop region number (often used as the reference)
+| region identifer  | region name  | province identifier  | | region boundaries  | crop region number (often used as the reference)
 
 
 <br>
@@ -194,7 +194,7 @@ These can later be verified by running
 ### stations_hly / stations_dly
 |station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | 
-||Province Abbreviation|EPSG:3347|EPSG:3347||Unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||Crop region number
+||province abbreviation|EPSG:3347|EPSG:3347||unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||crop region number
 
 <br>
 
@@ -212,7 +212,7 @@ These can later be verified by running
 <br>
 
 ### copernicus_satelite_data
-|lon|lat|datetime| dewpoint_temperature (float) | temperature (float) | evaporation_from_bare_soil (float) | skin_reservoir_content (float) | skin_temperature (float) | snowmelt (float) | soil_temperature_level_1 (float) | soil_temperature_level_2 (float) | soil_temperature_level_3 (float) | soil_temperature_level_4 (float) | surface_net_solar_radiation (float) | surface_pressure (float) | volumetric_soil_water_layer_1 (float) | volumetric_soil_water_layer_2 (float) | volumetric_soil_water_layer_3 (float) | volumetric_soil_water_layer_4 (float) |
+|lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |
 |EPSG:3347|EPSG:3347||2m_dewpoint_temperature*|2m_temperature*
 
@@ -223,10 +223,9 @@ Please note that all attributes are listed one to one minus the two corrected ab
 
 ### ergot_sample
 
-
 |sample_id|year|province|crop_district|incidence|severity|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Sample identifier  |   | Province abbreviation  | numeric value from region name | if ergot was detected | percentage of severity detected|
+| Sample identifier  |   | Province abbreviation  | crop region number | truth value for the presence of ergot | percentage of severity detected|
 
 <br>
 <hr>
