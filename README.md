@@ -225,7 +225,7 @@ Please note that all attributes are listed one to one minus the two corrected ab
 
 |sample_id|year|province|crop_district|incidence|severity|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Sample identifier  |   | Province abbreviation  | crop region number | truth value for the presence of ergot | percentage of severity detected|
+| sample identifier  |   | province abbreviation  | crop region number | truth value for the presence of ergot | percentage of severity detected|
 
 <br>
 <hr>
