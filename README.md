@@ -25,16 +25,17 @@
     - [Using Aviary Labs](#using-aviary-labs)
         - [Setting up credentials](#setting-up-credentials)
         - [Commands](#commands)
-        - [Accessing the system with VSCode]()
+        - [Accessing the system with VSCode](#accessing-the-system-with-vscode)
 - [Data Sources](#data-sources)
 - [Database Tables](#database-tables)
-    - [2006 Census Agricultural Regions](#2006-census-agricultural-regions)
-    - [Weather Stations](#weather-stations)
-    - [Daily Weather Station Data](#daily-weather-station-data)
-    - [Hourly Weather Station Data](#hourly-weather-station-data)
-    - [ERA5-Land Satelite Data](#era5-land-satelite-data)
-    - [Harvest Canada Ergot Data](#harvest-canada-ergot-data)
-    - [Soil Moisture Data](#soil-moisture-data)
+    - [census_ag_regions](#census_ag_regions)
+    - [stations_hly](#stations_hly)
+    - [stations_dly](#stations_dly)
+    - [mb_staion_data](#mb_staion_data)
+    - [ab_station_data](#ab_station_data)
+    - [sk_station_data](#sk_station_data)
+    - [copernicus_satelite_data](#copernicus_satelite_data)
+    - [ergot_sample](#ergot_sample)
 - [Useful links](#useful-links)
 
 <br>
@@ -191,17 +192,22 @@ These can later be verified by running
 
 <br>
 
-### stations_hly / stations_dly
+### stations_hly
+### stations_dly
 |station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | 
 ||province abbreviation|EPSG:3347|EPSG:3347||unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||crop region number
 
 <br>
 
-### mb_staion_data / ab_station_data / sk_station_data
+### mb_staion_data 
+### ab_station_data
+### sk_station_data
 |station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
 |-|-|-|-|-|-|-|-|-|-|-|-|
 
+<br>
+<br>
 <br>
 
 ### soil_moisture
@@ -209,6 +215,7 @@ These can later be verified by running
 |-|-|-|-|-|
 |||EPSG:3347|EPSG:3347|<2cm thickness in %|
 
+<br>
 <br>
 
 ### copernicus_satelite_data
@@ -219,6 +226,7 @@ These can later be verified by running
 All data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  
 Please note that all attributes are listed one to one minus the two corrected above (due to SQL restrictions)
 
+<br>
 <br>
 
 ### ergot_sample
