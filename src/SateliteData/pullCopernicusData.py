@@ -1,4 +1,5 @@
 import os, sys, time, cdsapi, random, zipfile, calendar, multiprocessing
+from QueryHandler import QueryHandler
 from dotenv import load_dotenv
 import sqlalchemy as sq 
 import geopandas as gpd
@@ -18,7 +19,7 @@ PG_USER = os.getenv('POSTGRES_USER')
 PG_PW = os.getenv('POSTGRES_PW')
 
 NUM_WORKERS = 12                    # The number of workers we want to employ (maximum is 16 as per the number of cores)
-REQ_DELAY = 120                     # the base delay required to bypass pulling limits
+REQ_DELAY = 60                      # 1 minute - the base delay required to bypass pulling limits
 MIN_DELAY = 60                      # 1 minute - once added to the required delay, creates a minimum delay of 5 minutes to bypass pulling limits
 MAX_DELAY = 180                     # 3 minutes - once added to the required delay, creates a maximum delay of 5 minutes to bypass pulling limits
 TABLE = 'copernicus_satelite_data'
@@ -50,6 +51,7 @@ def main():
     count = 1                                                       # An incrementer used to create unique file names
 
     conn = db.connect()             # Connect to the database
+    createTable(db)
     agRegions = loadGeometry(conn)  # Load the agriculture region geometries from the database
     db.cleanup()                    # Disconnect from the database (workers maintain their own connections)
 
@@ -79,6 +81,17 @@ def loadGeometry(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
 
     return agRegions
 
+def createTable(db: DataService):
+    queryHandler = QueryHandler()
+
+    # check if the copernicus table exists, if it doesnt create it
+    query = sq.text(queryHandler.tableExistsReq('copernicus_satelite_data'))
+    tableExists = queryHandler.readTableExists(db.execute(query))
+
+    if not tableExists:
+        query = sq.text(queryHandler.createCopernicusTableReq())
+        db.execute(query)
+
 def addDateAttrs(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     for index in range(len(df.index)):
         date = pd.Timestamp(np.datetime64(df.at[index, 'datetime']))
@@ -92,24 +105,25 @@ def addDateAttrs(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
 def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     df = gpd.GeoDataFrame(df, crs="EPSG:4326", geometry=gpd.points_from_xy(df.lon, df.lat)) # Creates geometry from df using lon and lat as cords to create points (points being geometry)
     df = df.to_crs(crs='EPSG:3347')                                                         # Changes the points projection to match the agriculture regions of EPSG:3347
-    df = gpd.sjoin(df, agRegions, how='left', predicate='within')                           # Join the two dataframes based on which points fit within what agriculture regions
+    df = gpd.sjoin(df, agRegions, how='inner', predicate='within')                          # Join the two dataframes based on which points fit within what agriculture regions
 
     df.drop(columns=['geometry', 'index_right'], inplace=True)
+    df[['cr_num']] = df[['cr_num']].astype(int)
 
     return df
 
 
 def unzipFile(file: str):
-    with zipfile.ZipFile(file, 'r') as zip_ref:     # Opens the zip file
+    with zipfile.ZipFile(f'./{file}.netcdf.zip', 'r') as zip_ref:   # Opens the zip file
         zipinfos = zip_ref.infolist()                               # Collects the information of each file contained within
 
-        for zipinfo in zipinfos:            # For each file in the zip file (we only expect one)
-            zipinfo.filename = file         # Changes the unzipped files name (once its unzipped of course)
-            zip_ref.extract(zipinfo)        # Unzips the file
+        for zipinfo in zipinfos:                # For each file in the zip file (we only expect one)
+            zipinfo.filename = f'{file}.nc'     # Changes the unzipped files name (once its unzipped of course)
+            zip_ref.extract(zipinfo)            # Unzips the file
             break
 
 def readNetCDF(file: str) -> pd.DataFrame:
-    dataset = xr.open_dataset(file)             # Loads the dataset from the netcdf file
+    dataset = xr.open_dataset(f'./{file}.nc')   # Loads the dataset from the netcdf file
     df = dataset.to_dataframe().reset_index()   # Converts the contents into a dataframe and corrects indexes 
 
     dataset.close()
@@ -180,12 +194,15 @@ def pullSateliteData(agRegions: gpd.GeoDataFrame, delay: int, year: str, month :
             f'{outputFile}.netcdf.zip'
         )
 
-        unzipFile(f'./{outputFile}.netcdf.zip') # Unzips the file, renames it to outputFile and then deletes the source .zip file
+        unzipFile(outputFile) # Unzips the file, renames it to outputFile and then deletes the source .zip file
         
-        df = readNetCDF(f'./{outputFile}.nc')   # Converts the netcdf content into a dataframe
-        df = formatDF(df)                       # Formats the data frame to process null values, add additional attributes and rename columns 
-        df = addRegions(df, agRegions)          # Links data to their crop district number (stored in cr_num)
-        df = addDateAttrs(df)                   # Breaks down the date attributes into its components and saves them for storage
+        df = readNetCDF(outputFile)     # Converts the netcdf content into a dataframe
+        df = formatDF(df)               # Formats the data frame to process null values, add additional attributes and rename columns 
+        
+        print(f'Starting to match regions for data in {year}/{month}')
+        df = addRegions(df, agRegions)  # Links data to their crop district number (stored in cr_num)
+        print(f'Finished matching regions for data in {year}/{month}')
+        df = addDateAttrs(df)          # Breaks down the date attributes into its components and saves them for storage
         
         df.to_sql(TABLE, conn, schema='public', if_exists='append', index=False)
     except Exception as e:
@@ -194,10 +211,6 @@ def pullSateliteData(agRegions: gpd.GeoDataFrame, delay: int, year: str, month :
     # Clean up the environment after the transaction
     try:
         os.remove(f'{outputFile}.nc')
-    except Exception as e:
-        print(e)
-
-    try:
         os.remove(f'{outputFile}.netcdf.zip')
     except Exception as e:
         print(e)
