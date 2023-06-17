@@ -17,3 +17,5 @@ lxml
 black
 mypy
 geoalchemy2
+cdsapi
+xarray

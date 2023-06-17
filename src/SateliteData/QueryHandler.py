@@ -1,22 +1,22 @@
 import sys
-import sqlalchemy as sq
 
 sys.path.append('../')
 from Querier import Querier
 
 
 class QueryHandler(Querier):
-    def createCopernicusTableReq(self):
-        return"""
+    def createCopernicusTableReq(self) -> str:
+        return """
         CREATE TABLE copernicus_satelite_data (
             id                              SERIAL,
             lon                             FLOAT,
             lat                             FLOAT,
+            datetime                        DATE,
             year                            INT,
             month                           INT,
             day                             INT,
             hour                            INT,
-            region                          VARCHAR,
+            cr_num                          INT,
             dewpoint_temperature            FLOAT,
             temperature                     FLOAT,
             evaporation_from_bare_soil      FLOAT,
@@ -33,34 +33,10 @@ class QueryHandler(Querier):
             volumetric_soil_water_layer_2   FLOAT,
             volumetric_soil_water_layer_3   FLOAT,
             volumetric_soil_water_layer_4   FLOAT,
+            leaf_area_index_high_vegetation FLOAT,
+            leaf_area_index_low_vegetation  FLOAT,
             
             CONSTRAINT PK_COPERNICUS PRIMARY KEY(id)
         );
-        COMMIT;
-        """
-
-    def createRowExistsInDBReq(self, lon, lat, datetime):
-        return f"""
-        SELECT EXISTS (
-            SELECT FROM public.copernicus_satelite_data
-            WHERE lon = {lon} AND lat = {lat} AND datetime = \'{datetime}\'
-        );
-        """
-        
-    def readRowExistsInDB(self, results: sq.engine.cursor.CursorResult) -> bool:
-        return results.first()[0]
-
-    def createInsertRowReq(self, lon, lat, datetime, year, month, day, hour, region, attr, value):
-        return f"""
-        INSERT INTO public.copernicus_satelite_data (lon, lat, datetime, year, month, day, hour, region, {attr})
-        VALUES ({lon}, {lat}, \'{datetime}\', {int(year)}, {int(month)}, {int(day)}, {hour}, \'{region}\', {value});
-        COMMIT;
-        """
-
-    def createUpdateRowReq(self, lon, lat, datetime, attr, value):
-        return f"""
-        UPDATE public.copernicus_satelite_data
-        SET {attr} = {value}
-        WHERE lon = {lon} AND lat = {lat} AND datetime = \'{datetime}\';
         COMMIT;
         """
