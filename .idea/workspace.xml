@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1238f89b-1526-4e84-ad15-5d12977ebea8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/MoistureSatelliteTest/DataService.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Binary_Classification.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Binary_Classification.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Intro_to_Neural_Nets.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Intro_to_Neural_Nets.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Linear_Regression_with_Synthetic_Data.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Linear_Regression_with_Synthetic_Data.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Linear_Regression_with_a_Real_Dataset.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Linear_Regression_with_a_Real_Dataset.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Multi_class_classification_with_MNIST.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Multi_class_classification_with_MNIST.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Representation_with_a_Feature_Cross.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Representation_with_a_Feature_Cross.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Validation_and_Test_Sets.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/Validation_and_Test_Sets.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/intro_to_modeling.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Colab Examples/intro_to_modeling.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/Model_Regression.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/Model_Regression.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/analysis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/deriveDaily.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/deriveDaily.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WeatherStation/Files/regions.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherStation/Files/regions.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +38,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
-    "last_opened_file_path": "C:/jay projects/personal/quant",
+    "last_opened_file_path": "C:/jay projects/school/COMP 4560/CGC_Grain_Outcome_Predictions",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -89,6 +76,12 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -116,6 +109,8 @@
       <workItem from="1687040968830" duration="2425000" />
       <workItem from="1687043470780" duration="417000" />
       <workItem from="1687069708047" duration="155000" />
+      <workItem from="1687123543324" duration="2941000" />
+      <workItem from="1687127033684" duration="2527000" />
     </task>
     <servers />
   </component>
