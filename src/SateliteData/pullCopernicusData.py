@@ -47,11 +47,12 @@ AREA = [61, -125, 48, -88]
 
 def main():
     db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)       # Handles connections to the database
+    queryHandler = QueryHandler()
     jobArgs = []                                                    # Holds tuples of arguments for pooled workers
     count = 1                                                       # An incrementer used to create unique file names
 
     conn = db.connect()             # Connect to the database
-    createTable(db)
+    queryHandler.createCopernicusTableReq(db)
     agRegions = loadGeometry(conn)  # Load the agriculture region geometries from the database
     db.cleanup()                    # Disconnect from the database (workers maintain their own connections)
 
@@ -81,33 +82,28 @@ def loadGeometry(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
 
     return agRegions
 
-def createTable(db: DataService):
-    queryHandler = QueryHandler()
-
-    # check if the copernicus table exists, if it doesnt create it
-    query = sq.text(queryHandler.tableExistsReq('copernicus_satelite_data'))
-    tableExists = queryHandler.readTableExists(db.execute(query))
-
-    if not tableExists:
-        query = sq.text(queryHandler.createCopernicusTableReq())
-        db.execute(query)
-
 def addDateAttrs(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
-    for index in range(len(df.index)):
-        date = pd.Timestamp(np.datetime64(df.at[index, 'datetime']))
-        df.at[index,'year'] = date.year
-        df.at[index,'month'] = date.month
-        df.at[index,'day'] = date.day
-        df.at[index,'hour'] = date.hour
+    try:
+        for index in range(len(df.index)):
+            date = pd.Timestamp(np.datetime64(df.at[index, 'datetime']))
+            df.at[index,'year'] = date.year
+            df.at[index,'month'] = date.month
+            df.at[index,'day'] = date.day
+            df.at[index,'hour'] = date.hour
+        
+        df[['year', 'month', 'day', 'hour']] = df[['year', 'month', 'day', 'hour']].astype(int)
+    except Exception as e:
+        print(f'[ERROR] {e}')
 
     return df
 
 def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     df = gpd.GeoDataFrame(df, crs="EPSG:4326", geometry=gpd.points_from_xy(df.lon, df.lat)) # Creates geometry from df using lon and lat as cords to create points (points being geometry)
     df = df.to_crs(crs='EPSG:3347')                                                         # Changes the points projection to match the agriculture regions of EPSG:3347
-    df = gpd.sjoin(df, agRegions, how='inner', predicate='within')                          # Join the two dataframes based on which points fit within what agriculture regions
+    df = gpd.sjoin(df, agRegions, how='left', predicate='within')                           # Join the two dataframes based on which points fit within what agriculture regions
 
     df.drop(columns=['geometry', 'index_right'], inplace=True)
+    df = df[df['cr_num'].notna()]                               # Take rows that are valid numbers
     df[['cr_num']] = df[['cr_num']].astype(int)
 
     return df
@@ -167,12 +163,11 @@ def formatDF(df: pd.DataFrame) -> pd.DataFrame:
         'soil_temperature_level_2', 'soil_temperature_level_3', 'soil_temperature_level_4', 'surface_net_solar_radiation', 'surface_pressure', 'volumetric_soil_water_layer_1',
         'volumetric_soil_water_layer_2', 'volumetric_soil_water_layer_3', 'volumetric_soil_water_layer_4', 'leaf_area_index_high_vegetation', 'leaf_area_index_low_vegetation']].astype(float)
 
-    df = df.replace(np.nan, None)
-
     return df
 
 def pullSateliteData(agRegions: gpd.GeoDataFrame, delay: int, year: str, month : str, days: list, outputFile: str):
     db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)
+    queryHandler = QueryHandler()
     time.sleep(delay)
 
     print(f'Starting to pull data for {year}/{month}')
@@ -201,19 +196,24 @@ def pullSateliteData(agRegions: gpd.GeoDataFrame, delay: int, year: str, month :
         
         print(f'Starting to match regions for data in {year}/{month}')
         df = addRegions(df, agRegions)  # Links data to their crop district number (stored in cr_num)
-        print(f'Finished matching regions for data in {year}/{month}')
-        df = addDateAttrs(df)          # Breaks down the date attributes into its components and saves them for storage
+        df = df.reset_index()
+        print(f'Finished matching {len(df.index)} regions for the data in {year}/{month}')
         
-        df.to_sql(TABLE, conn, schema='public', if_exists='append', index=False)
+        df = addDateAttrs(df)          # Breaks down the date attributes into its components and saves them for storage
+        print(f'Added date attributes for {year}/{month}')
+
+        print(f'Adding data from {year}/{month} to the Database')
+        df.drop(columns=['index'], inplace=True)
+        df.to_sql(TABLE, conn, schema='public', if_exists="append", index=False)
     except Exception as e:
-        print(e)
+        print(f'[ERROR] {e}')
 
     # Clean up the environment after the transaction
     try:
         os.remove(f'{outputFile}.nc')
         os.remove(f'{outputFile}.netcdf.zip')
     except Exception as e:
-        print(e)
+        print(f'[ERROR] {e}')
         
     db.cleanup()       
     print(f'[SUCCESS] data was pulled for {year}/{month}')
