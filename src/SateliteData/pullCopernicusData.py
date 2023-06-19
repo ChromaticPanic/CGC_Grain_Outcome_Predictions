@@ -40,7 +40,10 @@ ATTRS = [                                                           # the attrib
     'volumetric_soil_water_layer_3', 'volumetric_soil_water_layer_4', 'leaf_area_index_high_vegetation', 'leaf_area_index_low_vegetation'
 ]
 
-HOURS = ['04:00', '15:00']  # pulls what is typically considered to be the coldest and warmest hours of the day
+HOURS = [
+    '00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', 
+    '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00',
+]
 
 AREA = [61, -125, 48, -88]
 
@@ -167,7 +170,6 @@ def formatDF(df: pd.DataFrame) -> pd.DataFrame:
 
 def pullSateliteData(agRegions: gpd.GeoDataFrame, delay: int, year: str, month : str, days: list, outputFile: str):
     db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)
-    queryHandler = QueryHandler()
     time.sleep(delay)
 
     print(f'Starting to pull data for {year}/{month}')
