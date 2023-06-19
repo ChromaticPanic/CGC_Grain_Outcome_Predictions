@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1238f89b-1526-4e84-ad15-5d12977ebea8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoistureSatelliteTest/testMasking2.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +37,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
-    "last_opened_file_path": "C:/jay projects/school/COMP 4560/CGC_Grain_Outcome_Predictions",
+    "last_opened_file_path": "C:/jay projects/personal/quant",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -111,6 +110,7 @@
       <workItem from="1687069708047" duration="155000" />
       <workItem from="1687123543324" duration="2941000" />
       <workItem from="1687127033684" duration="4255000" />
+      <workItem from="1687194460671" duration="613000" />
     </task>
     <servers />
   </component>
