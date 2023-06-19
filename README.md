@@ -117,8 +117,8 @@ Our current environment uses docker compose to launch containers housing [PGADMI
 - woodswallow-01
 - woodswallow-02
 - woodswallow-03
-- woodswallow-04
-- guan
+- woodswallow-04 (**holds main database**)
+- guan (**holds test database**)
 
 <br>
 
@@ -205,6 +205,7 @@ These can later be verified by running
 ### sk_station_data
 |station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
 |-|-|-|-|-|-|-|-|-|-|-|-|
+||||||°C|°C|°C|mm|cm|mm|cm|
 
 <br>
 <br>
@@ -219,9 +220,10 @@ These can later be verified by running
 <br>
 
 ### copernicus_satelite_data
-|lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |
+|lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|
 |EPSG:3347|EPSG:3347||2m_dewpoint_temperature*|2m_temperature*
+
 
 All data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  
 Please note that all attributes are listed one to one minus the two corrected above (due to SQL restrictions)
@@ -240,8 +242,10 @@ Please note that all attributes are listed one to one minus the two corrected ab
 <br>
 
 ## Useful links:
-- [Historical weather trends in canada](https://climate.weather.gc.ca/index_e.html)
+- [Historical Weather Trends in Canada](https://climate.weather.gc.ca/index_e.html)
 - [Agricultural Ecumene Boundary File - 2006](https://open.canada.ca/data/en/dataset/a3cc4d0a-34f8-4664-bb54-863427fb2243)
 - [2006 Agricultural Ecumene Census Division Boundary Reference Guide](https://ftp.maps.canada.ca/pub/statcan_statcan/Agriculture_Agriculture/agricultural-ecumene-2006_ecoumene-agricole-2006/Agec2006RefGuide_EN.pdf)
 - [Census Agricultural Regions Boundary Files of the 2006 Census of Agriculture](https://www150.statcan.gc.ca/n1/pub/92-174-x/92-174-x2007000-eng.htm)
 - [Census Agricultural Regions 2006 Census of Agriculture Reference Guide](https://www150.statcan.gc.ca/pub/92-174-g/92-174-g2007000-eng.pdf)
+- [Canadian Soil Landing Page](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/index.html)
+- [Canadian Soil Entity Relationship Map](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/model.html)
