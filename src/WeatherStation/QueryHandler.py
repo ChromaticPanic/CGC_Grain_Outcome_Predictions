@@ -10,10 +10,10 @@ from Querier import Querier
 
 
 class QueryHandler(Querier):
-    def getStationsReq(self, prov: str) -> str:
+    def getStationsReq(self, prov: str, stationType: str) -> str:
         return f"""
-        SELECT * FROM public.stations_dly
-        WHERE province = \'{prov}\' AND dly_first_year IS NOT NULL;
+        SELECT * FROM public.stations_{stationType}
+        WHERE province = \'{prov}\' AND {stationType}_first_year IS NOT NULL;
         """
 
     def getLastUpdatedReq(self, stationID: str) -> str:
