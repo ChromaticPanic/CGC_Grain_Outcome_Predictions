@@ -95,65 +95,31 @@ class DataProcessor:
         return df
     
     def dataProcessHourly(self, df: pandas.DataFrame, lastUpdated: numpy.datetime64) -> pandas.DataFrame:
-        NULLFLAG = -9999
-        try:
-            # discard	discard	discard	keep	discard	discard	keep	keep	keep	keep	keep	keep	discard	keep	discard	discard	discard	keep	discard	keep	discard	keep	discard	discard	discard	keep	discard	keep	discard	keep	discard	
-            # x	y	STATION_NAME	CLIMATE_IDENTIFIER	ID	LOCAL_DATE	PROVINCE_CODE	LOCAL_YEAR	LOCAL_MONTH	LOCAL_DAY	LOCAL_HOUR	TEMP	TEMP_FLAG	DEW_POINT_TEMP	DEW_POINT_TEMP_FLAG	HUMIDEX	HUMIDEX_FLAG	PRECIP_AMOUNT	PRECIP_AMOUNT_FLAG	RELATIVE_HUMIDITY	RELATIVE_HUMIDITY_FLAG	STATION_PRESSURE	STATION_PRESSURE_FLAG	VISIBILITY	VISIBILITY_FLAG	WINDCHILL	WINDCHILL_FLAG	WIND_DIRECTION	WIND_DIRECTION_FLAG	WIND_SPEED	WIND_SPEED_FLAG	
+        df.drop(columns=['Longitude (x)', 'Latitude (y)', 'Station Name', 'Temp Flag', 'Temp Flag', 'Dew Point Temp Flag', 'Rel Hum Flag', 'Precip. Amount Flag',
+                        'Wind Dir (10s deg)','Wind Dir Flag','Wind Spd (km/h)','Wind Spd Flag', 'Visibility Flag', 'Stn Press Flag', 'Hmdx Flag', 'Wind Chill Flag'], inplace=True)
 
-            df.drop(columns=['x', 'y', 'STATION_NAME', 'ID', 'LOCAL_DATE', 'TEMP_FLAG', 'DEW_POINT_TEMP_FLAG', 'HUMIDEX', 'HUMIDEX_FLAG', 'PRECIP_AMOUNT_FLAG', 'RELATIVE_HUMIDITY_FLAG', 'STATION_PRESSURE_FLAG', 'VISIBILITY', 'VISIBILITY_FLAG', 'WINDCHILL_FLAG', 'WIND_DIRECTION_FLAG', 'WIND_SPEED_FLAG'], inplace=True)
-        except:
-            df.to_csv("Failed/" + str(df.iloc[0, 0]) +
-                    "_unexpected_column_names.csv", index=False)
+        df.rename(columns={df.columns[0]: "station_id"}, inplace=True)
+        df.rename(columns={df.columns[1]: "datetime"}, inplace=True)
+        df.rename(columns={df.columns[2]: "year"}, inplace=True)
+        df.rename(columns={df.columns[3]: "month"}, inplace=True)
+        df.rename(columns={df.columns[4]: "day"}, inplace=True)
+        df.rename(columns={df.columns[5]: "time"}, inplace=True)
+        df.rename(columns={df.columns[6]: "dew_point_temp"}, inplace=True)
+        df.rename(columns={df.columns[7]: "rel_humid"}, inplace=True)
+        df.rename(columns={df.columns[8]: "precip_amount"}, inplace=True)
+        df.rename(columns={df.columns[9]: "visibility"}, inplace=True)
+        df.rename(columns={df.columns[10]: "stn_press"}, inplace=True)
+        df.rename(columns={df.columns[11]: "hmdx"}, inplace=True)
+        df.rename(columns={df.columns[12]: "wind_chill"}, inplace=True)
+        df.rename(columns={df.columns[13]: "weather"}, inplace=True)
 
-        expList = ['CLIMATE_IDENTIFIER', 'PROVINCE_CODE', 'LOCAL_YEAR', 'LOCAL_MONTH', 'LOCAL_DAY', 'LOCAL_HOUR', 'TEMP', 'DEW_POINT_TEMP', 'PRECIP_AMOUNT', 'RELATIVE_HUMIDITY', 'STATION_PRESSURE', 'WINDCHILL', 'WIND_DIRECTION', 'WIND_SPEED']
-        currList = list(df.columns.values)
+        df[['station_id', 'weather']] = df[['station_id', 'weather']].astype(str)
+        df[['datetime', 'time']] = df[['datetime', 'time']].astype('datetime64[ns]')
+        df[['year', 'month', 'day', 'hour']] = df[['year', 'month', 'day', 'hour']].astype(int)
+        df[['dew_point_temp', 'rel_humid', 'precip_amount', 'visibility', 'stn_press', 'hmdx', 'wind_chill']] = df[['dew_point_temp', 
+            'rel_humid', 'precip_amount', 'visibility', 'stn_press', 'hmdx', 'wind_chill']].astype(float)
         
-        if self.validateColumnNames(currList, expList):
-            df.rename(columns={df.columns[0]: "ClimateID"}, inplace=True)
-            df.rename(columns={df.columns[1]: "ProvinceCode"}, inplace=True)
-            df.rename(columns={df.columns[2]: "Year"}, inplace=True)
-            df.rename(columns={df.columns[3]: "Month"}, inplace=True)
-            df.rename(columns={df.columns[4]: "Day"}, inplace=True)
-            df.rename(columns={df.columns[5]: "Hour"}, inplace=True)
-            df.rename(columns={df.columns[6]: "Temp"}, inplace=True)
-            df.rename(columns={df.columns[7]: "DewPointTemp"}, inplace=True)
-            df.rename(columns={df.columns[8]: "PrecipAmount"}, inplace=True)
-            df.rename(columns={df.columns[9]: "RelativeHumidity"}, inplace=True)
-            df.rename(columns={df.columns[10]: "StationPressure"}, inplace=True)
-            df.rename(columns={df.columns[11]: "WindChill"}, inplace=True)
-            df.rename(columns={df.columns[12]: "WindDirection"}, inplace=True)
-            df.rename(columns={df.columns[13]: "WindSpeed"}, inplace=True)
-
-            # df.dropna(subset=['Temp'], inplace=True)
-            df.loc[df['Temp'].isnull(), 'Temp'] = NULLFLAG
-            df.loc[df['DewPointTemp'].isnull(), 'DewPointTemp'] = NULLFLAG
-            df.loc[df['PrecipAmount'].isnull(), 'PrecipAmount'] = NULLFLAG
-            df.loc[df['RelativeHumidity'].isnull(), 'RelativeHumidity'] = NULLFLAG
-            df.loc[df['StationPressure'].isnull(), 'StationPressure'] = NULLFLAG
-            df.loc[df['WindChill'].isnull(), 'WindChill'] = NULLFLAG
-            df.loc[df['WindDirection'].isnull(), 'WindDirection'] = NULLFLAG
-            df.loc[df['WindSpeed'].isnull(), 'WindSpeed'] = NULLFLAG
-
-            df[['ClimateID', 'ProvinceCode']] = df[['ClimateID', 'ProvinceCode']].astype(str)
-            df[['Year', 'Month', 'Day', 'Hour']] = df[['Year', 'Month', 'Day', 'Hour']].astype(int)
-            df[['Temp', 'DewPointTemp', 'PrecipAmount', 'RelativeHumidity', 'StationPressure', 'WindChill', 'WindDirection', 'WindSpeed']] = df[['Temp', 
-                        'DewPointTemp', 'PrecipAmount', 'RelativeHumidity', 'StationPressure', 'WindChill', 'WindDirection', 'WindSpeed']].astype(float)
-
-            self.removeOlderThan(df, lastUpdated)
-            # we try a db push, but if it fails, we place the data in a csv file
-            # try:
-            push_data(df, "WeatherDataHourlyTwentyYear")
-            # db_con.execute(
-            #     "UPDATE public.\"TenYrStationsHourly\" SET \"dataAvailable\" = True WHERE \"ClimateID\" like CAST(\'{}\' AS TEXT);".format(stationID))
-            # except:
-            #     df.to_csv("Failed/" + str(df.iloc[0, 0]) +
-            #             "_data_failed_dbpush.csv", index=False)
-        else:
-            df.to_csv("Failed/" + str(df.iloc[0, 0]) +
-                    "_error_column_names.csv", index=False)
-            
-    def validateColumnNames(self, curr: list, exp: list) -> bool:
-        for name in curr:
-            if name not in exp:
-                return False
-        return True
+        self.removeOlderThan(df, lastUpdated)
+        
+        df['max_temp'] = numpy.where(df['max_temp'].isnull(), df['mean_temp'], df['max_temp'])
+        df['min_temp'] = numpy.where(df['min_temp'].isnull(), df['mean_temp'], df['min_temp'])

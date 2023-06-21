@@ -1,8 +1,3 @@
-# ----------------------------------------------------
-# ImportErgot.py
-#
-# Purpose: Pulls Weather station database and stores it in a database
-# ----------------------------------------------------
 from ClimateDataRequester import ClimateDataRequester
 from QueryHandler import QueryHandler
 from DataProcessor import DataProcessor
@@ -16,6 +11,7 @@ sys.path.append('../')
 from DataService import DataService
 
 
+DLY_FLAG = 'dly'
 PROVINCES = ['AB', 'SK', 'MB']                      # The abbreviations of the provinces we would like to pull data from
 DLY_STATIONS_TABLE = 'stations_dly'                 # Where we collect our stations from (needed to scrape data successfully)
 STATIONS_UPDATE_TABLE = 'station_data_last_updated' # The Table where we store when a station was last updated
@@ -98,7 +94,7 @@ def storeLastUpdated(stationID: str, lastUpdated: np.datetime64, queryHandler: Q
         db.execute(query)
 
 def getStations(prov: str, db: DataService, queryHandler: QueryHandler, conn: sqlalchemy.engine.Connection) -> typing.Tuple[pd.DataFrame, list]:
-    query = sqlalchemy.text(queryHandler.getStationsReq(prov))
+    query = sqlalchemy.text(queryHandler.getStationsReq(prov, DLY_FLAG))
     stations = gpd.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
     states = []
 
