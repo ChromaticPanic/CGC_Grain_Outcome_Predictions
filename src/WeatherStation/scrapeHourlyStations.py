@@ -41,6 +41,12 @@ def main():
         tablename = f'{prov.lower()}_hly_station_data'  
         numUpdated = 0
 
+        query = sqlalchemy.text(queryHandler.tableExistsReq(tablename))
+        tableExists = queryHandler.readTableExists(db.execute(query))
+        if not tableExists:
+            query = sqlalchemy.text(queryHandler.createHrlyProvStationTableReq(tablename))
+            db.execute(query)
+
         print(f'Updating data for {prov} in {tablename} ...')
         for index, row in stations.iterrows():
             startYear = int(row["hly_first_year"])
