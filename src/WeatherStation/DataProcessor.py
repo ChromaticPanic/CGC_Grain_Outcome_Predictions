@@ -98,7 +98,6 @@ class DataProcessor:
         df.drop(columns=['x', 'y', 'ID', 'STATION_NAME', 'PROVINCE_CODE', 'TEMP_FLAG', 'DEW_POINT_TEMP_FLAG', 'RELATIVE_HUMIDITY_FLAG', 'PRECIP_AMOUNT_FLAG',
                         'WIND_DIRECTION', 'WIND_DIRECTION_FLAG', 'WIND_SPEED', 'WIND_SPEED_FLAG', 'VISIBILITY_FLAG', 'STATION_PRESSURE_FLAG', 'HUMIDEX_FLAG', 'WINDCHILL', 'WINDCHILL_FLAG'], inplace=True)
 
-        # https://api.weather.gc.ca/openapi?f=html#/
         df.rename(columns={df.columns[0]: "station_id"}, inplace=True)
         df.rename(columns={df.columns[1]: "datetime"}, inplace=True)
         df.rename(columns={df.columns[2]: "year"}, inplace=True)
