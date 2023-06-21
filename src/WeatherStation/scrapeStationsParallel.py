@@ -15,6 +15,8 @@ NUM_WORKERS = 12
 PROVINCES = ['AB', 'SK', 'MB']                      # The abbreviations of the provinces we would like to pull data from
 HLY_STATIONS_TABLE = 'stations_hly'                 # Where we collect our stations from (needed to scrape data successfully)
 
+LOG_FILE = 'scrape_stations_parallel.log'
+
 load_dotenv()
 PG_USER = os.getenv('POSTGRES_USER')
 PG_PW = os.getenv('POSTGRES_PW')
@@ -46,15 +48,15 @@ def main():
         for index, row in stations.iterrows():
             jobArgs.append(tuple((index, row, len(stations), tablename)))
 
-        print(f'Updating data for {prov} in {tablename} ...')
+        updateLog(LOG_FILE, f'Updating data for {prov} in {tablename} ...')
         pool = multiprocessing.Pool(NUM_WORKERS)    # Defines the number of workers
         pool.starmap(pullHourlyData, jobArgs)     # Creates the queue of jobs - pullSateliteData is the function and jobArgs holds the arguments
         pool.close()                                # Once these jobs are finished close the multiple processes pool
 
-        print(f'[SUCCESS] Finished updated data for weather stations in {prov}\n')
+        updateLog(LOG_FILE, f'[SUCCESS] Finished updated data for weather stations in {prov}\n')
 
 
-def pullHourlyData(index, row, numStations, tablename):
+def pullHourlyData(index: int, row: gpd.GeoSeries, numStations: int, tablename: str) -> None:
     db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)   # Handles connections to the database
     requester = ClimateDataRequester()                          # Handles weather station requests
     processor = DataProcessor()                                 # Handles the more complex data processing
@@ -64,27 +66,27 @@ def pullHourlyData(index, row, numStations, tablename):
     endYear = int(row["hly_last_year"])
     stationID = str(row['station_id'])
 
-    print(f'\t[{index + 1}/{numStations}] Pulling data for station {stationID} between {startYear}-{endYear}')
+    updateLog(LOG_FILE, f'\t[{index + 1}/{numStations}] Pulling data for station {stationID} between {startYear}-{endYear}')
 
     try:
         df = requester.get_hourly_data(stationID, startYear, endYear)      # Collect data from the weather stations for [minYear, maxYear]      
         df = processor.dataProcessHourly(df)             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
         df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
         numRows = len(df.index)                                                         # Check how many rows were in the dataframe we just pushed
+        updateLog(LOG_FILE, f'\t\tupdated {numRows} rows')
 
-        print(f'\t\tupdated {numRows} rows')
     except Exception as e:
-        print(f'[ERROR] Failed to scrape data for station {stationID}')
-        print(e)
+        updateLog(LOG_FILE, f'\t\t[ERROR] Failed to scrape data for station {stationID}')
+        updateLog(LOG_FILE, f'\t\t{e}')
 
     db.cleanup()
 
-def checkTables(db: DataService, queryHandler: QueryHandler):
+def checkTables(db: DataService, queryHandler: QueryHandler) -> None:
     # check if the daily weather station table exists in the database - if not exit
     query = sqlalchemy.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
     tableExists = queryHandler.readTableExists(db.execute(query))
     if not tableExists:
-        print('[ERROR] weather stations have not been loaded into the database yet')
+        updateLog(LOG_FILE, '[ERROR] weather stations have not been loaded into the database yet')
         db.cleanup()
         sys.exit()
 
@@ -94,6 +96,12 @@ def getStations(prov: str, queryHandler: QueryHandler, conn: sqlalchemy.engine.C
 
     return stations
 
+def updateLog( fileName: str, message: str ) -> None:
+    if fileName is not None:
+        with open(fileName, 'a') as log:
+            log.write(message + '\n')
+    else:
+        print(message)
 
 if __name__ == "__main__":
     main()
