@@ -1,8 +1,3 @@
-# ----------------------------------------------------
-# ImportErgot.py
-#
-# Purpose: Pulls Weather station database and stores it in a database
-# ----------------------------------------------------
 from ClimateDataRequester import ClimateDataRequester
 from QueryHandler import QueryHandler
 from DataProcessor import DataProcessor
