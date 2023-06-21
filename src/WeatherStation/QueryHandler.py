@@ -34,22 +34,33 @@ class QueryHandler(Querier):
         return lastUpdated, isActive
 
     def createHrlyProvStationTableReq(self, tablename: str) -> str:
+        # transformed.columns = ['station_id', 'year', 'month', 'day', 'min_temp', 'max_temp', 'mean_temp', 'min_dew_point_temp', 'max_dew_point_temp', 'mean_dew_point_temp', 'min_humidex', 'max_humidex', 'mean_humidex', 'total_precip', 'min_rel_humid', 'max_rel_humid', 'mean_rel_humid', 'min_stn_press', 'max_stn_press', 'mean_stn_press', 'min_visibility', 'max_visibility', 'mean_visibility']
         return f"""
         CREATE TABLE {tablename} (
             id              SERIAL,
             station_id      VARCHAR,
-            datetime        DATE,
             year            INT,
             month           INT,
             day             INT,
-            hour            INT,
-            temp            FLOAT,
-            dew_point_temp  FLOAT,
-            humidex         FLOAT,
-            precip_amount   FLOAT,
-            rel_humid       FLOAT,
-            stn_press       FLOAT,
-            visibility      FLOAT,
+            min_temp        FLOAT,
+            max_temp        FLOAT,
+            mean_temp       FLOAT,
+            min_dew_point_temp FLOAT,
+            max_dew_point_temp FLOAT,
+            mean_dew_point_temp FLOAT,
+            min_humidex     FLOAT,
+            max_humidex     FLOAT,
+            mean_humidex    FLOAT,
+            total_precip    FLOAT,
+            min_rel_humid   FLOAT,
+            max_rel_humid   FLOAT,
+            mean_rel_humid  FLOAT,
+            min_stn_press   FLOAT,
+            max_stn_press   FLOAT,
+            mean_stn_press  FLOAT,
+            min_visibility  FLOAT,
+            max_visibility  FLOAT,
+            mean_visibility FLOAT,
 
             CONSTRAINT PK_{tablename.upper()} PRIMARY KEY(id)
         );
