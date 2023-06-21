@@ -17,7 +17,7 @@ NUM_WORKERS = 12
 PROVINCES = ['AB', 'SK', 'MB']                      # The abbreviations of the provinces we would like to pull data from
 HLY_STATIONS_TABLE = 'stations_hly'                 # Where we collect our stations from (needed to scrape data successfully)
 
-LOG_FILE = 'scrape_stations_parallel.log'
+LOG_FILE = 'data/scrape_stations_parallel.log'
 
 load_dotenv()
 PG_USER = os.getenv('POSTGRES_USER')
@@ -76,6 +76,7 @@ def pullHourlyData(index: int, row: gpd.GeoSeries, numStations: int, tablename: 
             # df = requester.get_hourly_data(stationID, startYear, endYear)      # Collect data from the weather stations for [minYear, maxYear]      
             df = requester.get_hourly_data(stationID, startYear + i, startYear + i)      # Collect data from the weather stations 1 year at a time
             df = processor.dataProcessHourly(df)             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
+            df = processor.tranformHourlyToDaily(df)         # Transform hourly data to daily data
             df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
             numRows = len(df.index)                                                   # Check how many rows were in the dataframe we just pushed
             updateLog(LOG_FILE, f'\t\tupdated {numRows} rows')
@@ -105,6 +106,7 @@ def updateLog( fileName: str, message: str ) -> None:
     if fileName is not None:
         with open(fileName, 'a') as log:
             log.write(message + '\n')
+            log.close()
     else:
         print(message)
 

@@ -128,12 +128,14 @@ class DataProcessor:
         
         return df
     
-    def tranformHourlyToDaily(df: pd.DataFrame) -> pd.DataFrame:
+    def tranformHourlyToDaily(self, df: pd.DataFrame) -> pd.DataFrame:
         #get min max mean for each day
         transformed = df.groupby(['station_id', 'year', 'month', 'day']).agg({'temp': ['min', 'max', 'mean'], 'dew_point_temp': ['min', 'max', 'mean'], 'humidex': ['min', 'max', 'mean'], 'precip_amount': ['sum'], 'rel_humid': ['min', 'max', 'mean'], 'stn_press': ['min', 'max', 'mean'], 'visibility': ['min', 'max', 'mean']}).reset_index()
+        # print(transformed.columns)
 
         #rename columns
         transformed.columns = ['station_id', 'year', 'month', 'day', 'min_temp', 'max_temp', 'mean_temp', 'min_dew_point_temp', 'max_dew_point_temp', 'mean_dew_point_temp', 'min_humidex', 'max_humidex', 'mean_humidex', 'total_precip', 'min_rel_humid', 'max_rel_humid', 'mean_rel_humid', 'min_stn_press', 'max_stn_press', 'mean_stn_press', 'min_visibility', 'max_visibility', 'mean_visibility']
+        # print(transformed.columns)
 
         # astype float
         transformed[['min_temp', 'max_temp', 'mean_temp', 'min_dew_point_temp', 'max_dew_point_temp', 'mean_dew_point_temp', 'min_humidex', 'max_humidex', 'mean_humidex', 'total_precip', 'min_rel_humid', 'max_rel_humid', 'mean_rel_humid', 'min_stn_press', 'max_stn_press', 'mean_stn_press', 'min_visibility', 'max_visibility', 'mean_visibility']] = transformed[['min_temp', 'max_temp', 'mean_temp', 'min_dew_point_temp', 'max_dew_point_temp', 'mean_dew_point_temp', 'min_humidex', 'max_humidex', 'mean_humidex', 'total_precip', 'min_rel_humid', 'max_rel_humid', 'mean_rel_humid', 'min_stn_press', 'max_stn_press', 'mean_stn_press', 'min_visibility', 'max_visibility', 'mean_visibility']].astype(float)
