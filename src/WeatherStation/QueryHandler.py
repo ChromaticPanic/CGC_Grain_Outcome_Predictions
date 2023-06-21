@@ -33,6 +33,43 @@ class QueryHandler(Querier):
 
         return lastUpdated, isActive
 
+    def createHrlyProvStationTableReq(self, tablename):
+        return f"""
+        CREATE TABLE {tablename} (
+            id              SERIAL,
+            station_id      VARCHAR,
+            datetime        DATE,
+            year            INT,
+            month           INT,
+            day             INT,
+            hour            INT,
+            temp            FLOAT,
+            dew_point_temp  FLOAT,
+            humidex         FLOAT,
+            precip_amount   FLOAT,
+            rel_humid       FLOAT,
+            stn_press       FLOAT,
+            visibility      FLOAT,
+
+            CONSTRAINT PK_{tablename.upper()} PRIMARY KEY(id)
+        );
+        COMMIT;
+        """
+
+        df.rename(columns={df.columns[0]: "station_id"}, inplace=True)
+        df.rename(columns={df.columns[1]: "datetime"}, inplace=True)
+        df.rename(columns={df.columns[2]: "year"}, inplace=True)
+        df.rename(columns={df.columns[3]: "month"}, inplace=True)
+        df.rename(columns={df.columns[4]: "day"}, inplace=True)
+        df.rename(columns={df.columns[5]: "hour"}, inplace=True)
+        df.rename(columns={df.columns[6]: "temp"}, inplace=True)
+        df.rename(columns={df.columns[7]: "dew_point_temp"}, inplace=True)
+        df.rename(columns={df.columns[8]: "humidex"}, inplace=True)
+        df.rename(columns={df.columns[9]: "precip_amount"}, inplace=True)
+        df.rename(columns={df.columns[10]: "rel_humid"}, inplace=True)
+        df.rename(columns={df.columns[11]: "stn_press"}, inplace=True)
+        df.rename(columns={df.columns[12]: "visibility"}, inplace=True)
+
     def createUpdateTableReq(self):
         return f"""
         CREATE TABLE station_data_last_updated (
