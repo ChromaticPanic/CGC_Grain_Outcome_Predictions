@@ -94,32 +94,36 @@ class DataProcessor:
 
         return df
     
-    def dataProcessHourly(self, df: pandas.DataFrame, lastUpdated: numpy.datetime64) -> pandas.DataFrame:
-        df.drop(columns=['Longitude (x)', 'Latitude (y)', 'Station Name', 'Temp Flag', 'Temp Flag', 'Dew Point Temp Flag', 'Rel Hum Flag', 'Precip. Amount Flag',
-                        'Wind Dir (10s deg)','Wind Dir Flag','Wind Spd (km/h)','Wind Spd Flag', 'Visibility Flag', 'Stn Press Flag', 'Hmdx Flag', 'Wind Chill Flag'], inplace=True)
+    def dataProcessHourly(self, df: pandas.DataFrame) -> pandas.DataFrame:
+        df.drop(columns=['x', 'y', 'ID', 'STATION_NAME', 'PROVINCE_CODE', 'TEMP_FLAG', 'DEW_POINT_TEMP_FLAG', 'RELATIVE_HUMIDITY_FLAG', 'PRECIP_AMOUNT_FLAG',
+                        'WIND_DIRECTION', 'WIND_DIRECTION_FLAG', 'WIND_SPEED', 'WIND_SPEED_FLAG', 'VISIBILITY_FLAG', 'STATION_PRESSURE_FLAG', 'HUMIDEX_FLAG', 'WINDCHILL', 'WINDCHILL_FLAG'], inplace=True)
 
+        # https://api.weather.gc.ca/openapi?f=html#/
         df.rename(columns={df.columns[0]: "station_id"}, inplace=True)
         df.rename(columns={df.columns[1]: "datetime"}, inplace=True)
         df.rename(columns={df.columns[2]: "year"}, inplace=True)
         df.rename(columns={df.columns[3]: "month"}, inplace=True)
         df.rename(columns={df.columns[4]: "day"}, inplace=True)
-        df.rename(columns={df.columns[5]: "time"}, inplace=True)
-        df.rename(columns={df.columns[6]: "dew_point_temp"}, inplace=True)
-        df.rename(columns={df.columns[7]: "rel_humid"}, inplace=True)
-        df.rename(columns={df.columns[8]: "precip_amount"}, inplace=True)
-        df.rename(columns={df.columns[9]: "visibility"}, inplace=True)
-        df.rename(columns={df.columns[10]: "stn_press"}, inplace=True)
-        df.rename(columns={df.columns[11]: "hmdx"}, inplace=True)
-        df.rename(columns={df.columns[12]: "wind_chill"}, inplace=True)
-        df.rename(columns={df.columns[13]: "weather"}, inplace=True)
+        df.rename(columns={df.columns[5]: "hour"}, inplace=True)
+        df.rename(columns={df.columns[6]: "temp"}, inplace=True)
+        df.rename(columns={df.columns[7]: "dew_point_temp"}, inplace=True)
+        df.rename(columns={df.columns[8]: "humidex"}, inplace=True)
+        df.rename(columns={df.columns[9]: "precip_amount"}, inplace=True)
+        df.rename(columns={df.columns[10]: "rel_humid"}, inplace=True)
+        df.rename(columns={df.columns[11]: "stn_press"}, inplace=True)
+        df.rename(columns={df.columns[12]: "visibility"}, inplace=True)
 
-        df[['station_id', 'weather']] = df[['station_id', 'weather']].astype(str)
-        df[['datetime', 'time']] = df[['datetime', 'time']].astype('datetime64[ns]')
+        df.loc[df['dew_point_temp'].isnull(), 'dew_point_temp'] = 0
+        df.loc[df['rel_humid'].isnull(), 'rel_humid'] = 0
+        df.loc[df['precip_amount'].isnull(), 'precip_amount'] = 0
+        df.loc[df['visibility'].isnull(), 'visibility'] = 0
+        df.loc[df['stn_press'].isnull(), 'stn_press'] = 0
+        df.loc[df['humidex'].isnull(), 'humidex'] = 0
+
+        df[['station_id']] = df[['station_id']].astype(str)
+        df[['datetime']] = df[['datetime']].astype('datetime64[ns]')
         df[['year', 'month', 'day', 'hour']] = df[['year', 'month', 'day', 'hour']].astype(int)
-        df[['dew_point_temp', 'rel_humid', 'precip_amount', 'visibility', 'stn_press', 'hmdx', 'wind_chill']] = df[['dew_point_temp', 
-            'rel_humid', 'precip_amount', 'visibility', 'stn_press', 'hmdx', 'wind_chill']].astype(float)
+        df[['dew_point_temp', 'rel_humid', 'precip_amount', 'visibility', 'stn_press', 'humidex']] = df[['dew_point_temp', 
+            'rel_humid', 'precip_amount', 'visibility', 'stn_press', 'humidex']].astype(float)
         
-        self.removeOlderThan(df, lastUpdated)
-        
-        df['max_temp'] = numpy.where(df['max_temp'].isnull(), df['mean_temp'], df['max_temp'])
-        df['min_temp'] = numpy.where(df['min_temp'].isnull(), df['mean_temp'], df['min_temp'])
+        return df

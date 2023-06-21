@@ -37,22 +37,21 @@ def main():
     checkTables(db, queryHandler)           # Checks if the tables needed are present, if not try to build them
 
     for prov in PROVINCES:
-        stations, states = getStations(prov, db, queryHandler, conn)         
+        stations = getStations(prov, db, queryHandler, conn)         
         tablename = f'{prov.lower()}_hly_station_data'  
         numUpdated = 0
 
-        stations = processor.removeInactive(stations, states)   # Removes inactive stations (as per the datbase)
-        stations = processor.addLastUpdated(stations, states)   # Adds last_updated attribute to the weather stations
-
         print(f'Updating data for {prov} in {tablename} ...')
         for index, row in stations.iterrows():
+            startYear = int(row["hly_first_year"])
+            endYear = int(row["hly_last_year"])
             stationID = str(row['station_id'])
 
-            print(f'\t[{index + 1}/{len(stations)}] Pulling data for station {stationID} between {row["hly_first_year"]}-{row["hly_last_year"]}')
+            print(f'\t[{index + 1}/{len(stations)}] Pulling data for station {stationID} between {startYear}-{endYear}')
 
             try:
-                df = requester.get_hourly_data(stationID, row['hly_first_year'], row['hly_last_year'])      # Collect data from the weather stations for [minYear, maxYear]      
-                df = processor.processData(df, row['last_updated'])             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
+                df = requester.get_hourly_data(stationID, startYear, endYear)      # Collect data from the weather stations for [minYear, maxYear]      
+                df = processor.dataProcessHourly(df)             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
                 df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
                 numRows = len(df.index)                                                         # Check how many rows were in the dataframe we just pushed
 

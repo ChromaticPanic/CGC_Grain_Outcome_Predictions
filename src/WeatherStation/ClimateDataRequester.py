@@ -11,6 +11,7 @@ import lxml.html
 import requests as rq
 import pandas as pd
 import urllib3
+import sys
 
 #import ipyparallel as ipp
 
@@ -34,23 +35,23 @@ class ClimateDataRequester:
         }
 
 
-    def get_hourly_data(self, stationID: str, startYear: int = 2022, endYear: int = 2022) -> pd.DataFrame:
+    def get_hourly_data(self, stationID: str, startYear: int = 1995, endYear: int = 2022) -> pd.DataFrame:
         df = pd.DataFrame()
-        baseUrl = 'https://api.weather.gc.ca/collections/climate-hourly/items?datetime=1995-01-01%2000:00:00/2022-12-31%2000:00:00&CLIMATE_IDENTIFIER=' 
+        baseUrl = f'https://api.weather.gc.ca/collections/climate-hourly/items?datetime={startYear}-01-01%2000:00:00/{endYear}-12-31%2000:00:00&CLIMATE_IDENTIFIER=' 
         midUrl = '&sortby=PROVINCE_CODE,CLIMATE_IDENTIFIER,LOCAL_DATE&f=csv&limit=10000&startindex='
-        index = 0
         offset = 10000
 
         try:
             currIndex = 0
-            for i in range(200):
-                dfCurr = pd.read_csv(baseUrl + id + midUrl + str(currIndex))
-                df.append(dfCurr)
+            newData = pd.read_csv(baseUrl + stationID + midUrl + str(currIndex))
+            while len(newData.index) > 0:
+                df = pd.concat([df, newData])
                 currIndex += offset
-                print("Completed " + id + " " + str(currIndex))
+                
+                newData = pd.read_csv(baseUrl + stationID + midUrl + str(currIndex))
+        except Exception:
+            5 + 5
 
-        except:
-            print("Station: {} last offset below: {}".format(id, currIndex))
         return df
 
     def get_data(self, province: str, stationID: str, startYear: int = 2022, endYear: int = 2022) -> pd.DataFrame:
