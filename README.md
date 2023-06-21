@@ -249,3 +249,4 @@ Please note that all attributes are listed one to one minus the two corrected ab
 - [Census Agricultural Regions 2006 Census of Agriculture Reference Guide](https://www150.statcan.gc.ca/pub/92-174-g/92-174-g2007000-eng.pdf)
 - [Canadian Soil Landing Page](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/index.html)
 - [Canadian Soil Entity Relationship Map](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/model.html)
+- [OAS Weather Station API Documentation](https://api.weather.gc.ca/openapi?f=html#/)

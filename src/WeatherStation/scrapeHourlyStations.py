@@ -32,7 +32,7 @@ def main():
     checkTables(db, queryHandler)           # Checks if the tables needed are present, if not try to build them
 
     for prov in PROVINCES:
-        stations = getStations(prov, db, queryHandler, conn)         
+        stations = getStations(prov, queryHandler, conn)         
         tablename = f'{prov.lower()}_hly_station_data'  
         numUpdated = 0
 
@@ -75,7 +75,7 @@ def checkTables(db: DataService, queryHandler: QueryHandler):
         db.cleanup()
         sys.exit()
 
-def getStations(prov: str, db: DataService, queryHandler: QueryHandler, conn: sqlalchemy.engine.Connection) -> typing.Tuple[pd.DataFrame, list]:
+def getStations(prov: str, queryHandler: QueryHandler, conn: sqlalchemy.engine.Connection) -> gpd.GeoDataFrame:
     query = sqlalchemy.text(queryHandler.getStationsReq(prov, 'hly'))
     stations = gpd.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
 

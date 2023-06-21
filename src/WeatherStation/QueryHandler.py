@@ -33,7 +33,7 @@ class QueryHandler(Querier):
 
         return lastUpdated, isActive
 
-    def createHrlyProvStationTableReq(self, tablename):
+    def createHrlyProvStationTableReq(self, tablename: str) -> str:
         return f"""
         CREATE TABLE {tablename} (
             id              SERIAL,
