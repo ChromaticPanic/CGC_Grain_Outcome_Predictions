@@ -4,18 +4,19 @@
 # Purpose: handles the more complex data processing and manipulations for ScrapeStations.py 
 # ----------------------------------------------------
 from datetime import datetime
-import numpy, pandas, typing
-
+import numpy as np
+import pandas as pd
+import typing
 
 class DataProcessor:
-    def removeInactive(self, stations: pandas.DataFrame, states: list({str, numpy.datetime64, bool})) -> pandas.DataFrame:
+    def removeInactive(self, stations: pd.DataFrame, states: list({str, np.datetime64, bool})) -> pd.DataFrame:
         for state in states:
             if not state['is_active']:
                 stations.drop(stations[stations.station_id == state['station_id']].index, inplace=True)
 
         return stations
 
-    def addLastUpdated(self, stations: str, states: list({str, numpy.datetime64, bool})) -> pandas.DataFrame:
+    def addLastUpdated(self, stations: str, states: list({str, np.datetime64, bool})) -> pd.DataFrame:
         stations['last_updated'] = None
 
         for state in states:
@@ -23,13 +24,13 @@ class DataProcessor:
 
         return stations
 
-    def findLatestDate(self, listOfDates: list) -> numpy.datetime64:
+    def findLatestDate(self, listOfDates: list) -> np.datetime64:
         validDates = []     # Holds the list of valid dates
         latestDate = None   # Holds the latest date, defaults to None if no valid dates are given
         
         if len(listOfDates) > 0:
             for date in listOfDates:
-                if not numpy.isnat(numpy.datetime64(date)): # Numpy evaluates each date (casting is necessairy even if casted previously) 
+                if not np.isnat(np.datetime64(date)): # Numpy evaluates each date (casting is necessairy even if casted previously) 
                     validDates.append(date)
             
             if validDates:
@@ -37,23 +38,23 @@ class DataProcessor:
 
         return latestDate
 
-    def calcDateRange(self, firstYearWithData: int, lastUpdated: numpy.datetime64, lastYearWithData: int, currentYear: int=datetime.now().year) -> typing.Tuple[int, int]:
+    def calcDateRange(self, firstYearWithData: int, lastUpdated: np.datetime64, lastYearWithData: int, currentYear: int=datetime.now().year) -> typing.Tuple[int, int]:
         maxYear = min(lastYearWithData, currentYear)    # Pull to the current year or whatever year the data goes up until (if either are None throws error)
         minYear = firstYearWithData                     # Whenever the station started collecting data
         
-        if not numpy.isnat(numpy.datetime64(lastUpdated)):  # Confirms the pulled year is a valid datetime (numpy)
-            lastUpdated = pandas.to_datetime(lastUpdated)
+        if not np.isnat(np.datetime64(lastUpdated)):  # Confirms the pulled year is a valid datetime (numpy)
+            lastUpdated = pd.to_datetime(lastUpdated)
 
             if lastUpdated.year > firstYearWithData:
                 minYear = lastUpdated.year
 
         return minYear, maxYear
 
-    def removeOlderThan(self, df: pandas.DataFrame, lastUpdated: numpy.datetime64):
+    def removeOlderThan(self, df: pd.DataFrame, lastUpdated: np.datetime64):
         if lastUpdated:
             df.drop(df[df.date <= lastUpdated].index, inplace=True) # Drops old/duplicate data (as per the date of the previous update - lastUpdated)
 
-    def processData(self, df: pandas.DataFrame, lastUpdated: numpy.datetime64) -> pandas.DataFrame:
+    def processData(self, df: pd.DataFrame, lastUpdated: np.datetime64) -> pd.DataFrame:
         try:
             df.drop(columns=['Data Quality', 'Max Temp Flag', 'Mean Temp Flag', 'Min Temp Flag', 'Heat Deg Days Flag', 'Cool Deg Days Flag', 'Spd of Max Gust (km/h)',
                             'Total Rain Flag', 'Total Snow Flag', 'Total Precip Flag', 'Snow on Grnd Flag', 'Dir of Max Gust Flag', 'Spd of Max Gust Flag',
@@ -89,12 +90,12 @@ class DataProcessor:
         df.loc[df['total_snow'].isnull(), 'total_snow'] = 0
         df.loc[df['total_precip'].isnull(), 'total_precip'] = 0
         
-        df['max_temp'] = numpy.where(df['max_temp'].isnull(), df['mean_temp'], df['max_temp'])
-        df['min_temp'] = numpy.where(df['min_temp'].isnull(), df['mean_temp'], df['min_temp'])
+        df['max_temp'] = np.where(df['max_temp'].isnull(), df['mean_temp'], df['max_temp'])
+        df['min_temp'] = np.where(df['min_temp'].isnull(), df['mean_temp'], df['min_temp'])
 
         return df
     
-    def dataProcessHourly(self, df: pandas.DataFrame) -> pandas.DataFrame:
+    def dataProcessHourly(self, df: pd.DataFrame) -> pd.DataFrame:
         df.drop(columns=['x', 'y', 'ID', 'STATION_NAME', 'PROVINCE_CODE', 'TEMP_FLAG', 'DEW_POINT_TEMP_FLAG', 'RELATIVE_HUMIDITY_FLAG', 'PRECIP_AMOUNT_FLAG',
                         'WIND_DIRECTION', 'WIND_DIRECTION_FLAG', 'WIND_SPEED', 'WIND_SPEED_FLAG', 'VISIBILITY_FLAG', 'STATION_PRESSURE_FLAG', 'HUMIDEX_FLAG', 'WINDCHILL', 'WINDCHILL_FLAG'], inplace=True)
 
@@ -126,3 +127,16 @@ class DataProcessor:
             'rel_humid', 'precip_amount', 'visibility', 'stn_press', 'humidex']].astype(float)
         
         return df
+    
+    def tranformHourlyToDaily(df: pd.DataFrame) -> pd.DataFrame:
+        #get min max mean for each day
+        transformed = df.groupby(['station_id', 'year', 'month', 'day']).agg({'temp': ['min', 'max', 'mean'], 'dew_point_temp': ['min', 'max', 'mean'], 'humidex': ['min', 'max', 'mean'], 'precip_amount': ['sum'], 'rel_humid': ['min', 'max', 'mean'], 'stn_press': ['min', 'max', 'mean'], 'visibility': ['min', 'max', 'mean']}).reset_index()
+
+        #rename columns
+        transformed.columns = ['station_id', 'year', 'month', 'day', 'min_temp', 'max_temp', 'mean_temp', 'min_dew_point_temp', 'max_dew_point_temp', 'mean_dew_point_temp', 'min_humidex', 'max_humidex', 'mean_humidex', 'total_precip', 'min_rel_humid', 'max_rel_humid', 'mean_rel_humid', 'min_stn_press', 'max_stn_press', 'mean_stn_press', 'min_visibility', 'max_visibility', 'mean_visibility']
+
+        # astype float
+        transformed[['min_temp', 'max_temp', 'mean_temp', 'min_dew_point_temp', 'max_dew_point_temp', 'mean_dew_point_temp', 'min_humidex', 'max_humidex', 'mean_humidex', 'total_precip', 'min_rel_humid', 'max_rel_humid', 'mean_rel_humid', 'min_stn_press', 'max_stn_press', 'mean_stn_press', 'min_visibility', 'max_visibility', 'mean_visibility']] = transformed[['min_temp', 'max_temp', 'mean_temp', 'min_dew_point_temp', 'max_dew_point_temp', 'mean_dew_point_temp', 'min_humidex', 'max_humidex', 'mean_humidex', 'total_precip', 'min_rel_humid', 'max_rel_humid', 'mean_rel_humid', 'min_stn_press', 'max_stn_press', 'mean_stn_press', 'min_visibility', 'max_visibility', 'mean_visibility']].astype(float)
+
+        return transformed
+    

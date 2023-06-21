@@ -2,6 +2,7 @@ FROM tensorflow/tensorflow:latest-jupyter
 WORKDIR /tensorflow
 
 RUN apt update && apt upgrade -y
+RUN apt install -y screen
 
 RUN /usr/bin/python3 -m pip install --upgrade pip
 COPY ["requirements.txt", "/tensorflow/"]
