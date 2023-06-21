@@ -9,8 +9,8 @@ import sys
 sys.path.append("../")
 from DataService import DataService
 
-# change the path to main image folder
-main_folder_path = r"C:\jay projects\school\COMP 4560\images"
+# path of the directory where data files are located
+MAIN_FOLDER_PATH = r"C:\jay projects\school\COMP 4560\images"
 
 TABLE = 'soil_moisture'
 
@@ -31,10 +31,10 @@ queryHandler.createSoilMoistureTableReq(db)
 query = sq.text('select cr_num, geometry FROM public.census_ag_regions')
 agRegions = gpd.GeoDataFrame.from_postgis(query, conn, crs='EPSG:3347', geom_col='geometry')
 
-folder_names = os.listdir(main_folder_path)
+folder_names = os.listdir(MAIN_FOLDER_PATH)
 
 for folder_name in folder_names:
-    folder_path = os.path.join(main_folder_path, folder_name)
+    folder_path = os.path.join(MAIN_FOLDER_PATH, folder_name)
 
     # Get a list of all files in the folder
     file_list = os.listdir(folder_path)
@@ -72,6 +72,7 @@ for folder_name in folder_names:
 
         df.drop(columns=['index'], inplace=True)
 
+        # pushing it to database
         df.to_sql(TABLE, conn, schema='public', if_exists="append", index=False)
 
 
