@@ -2,10 +2,12 @@ from ClimateDataRequester import ClimateDataRequester
 from QueryHandler import QueryHandler
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
-import os, sys, typing, sqlalchemy, multiprocessing 
+import os, sys, typing
+import sqlalchemy as sqa
 import numpy as np
 import pandas as pd
 import geopandas as gpd
+import multiprocessing as mp
 
 sys.path.append('../')
 from DataService import DataService
@@ -36,10 +38,10 @@ def main():
         stations = getStations(prov, queryHandler, conn)         
         tablename = f'{prov.lower()}_hly_station_data'  
 
-        query = sqlalchemy.text(queryHandler.tableExistsReq(tablename))
+        query = sqa.text(queryHandler.tableExistsReq(tablename))
         tableExists = queryHandler.readTableExists(db.execute(query))
         if not tableExists:
-            query = sqlalchemy.text(queryHandler.createHrlyProvStationTableReq(tablename))
+            query = sqa.text(queryHandler.createHrlyProvStationTableReq(tablename))
             db.execute(query)
 
         db.cleanup()
@@ -49,7 +51,7 @@ def main():
             jobArgs.append(tuple((index, row, len(stations), tablename)))
 
         updateLog(LOG_FILE, f'Updating data for {prov} in {tablename} ...')
-        pool = multiprocessing.Pool(NUM_WORKERS)    # Defines the number of workers
+        pool = mp.Pool(NUM_WORKERS)    # Defines the number of workers
         pool.starmap(pullHourlyData, jobArgs)     # Creates the queue of jobs - pullSateliteData is the function and jobArgs holds the arguments
         pool.close()                                # Once these jobs are finished close the multiple processes pool
 
@@ -69,11 +71,14 @@ def pullHourlyData(index: int, row: gpd.GeoSeries, numStations: int, tablename: 
     updateLog(LOG_FILE, f'\t[{index + 1}/{numStations}] Pulling data for station {stationID} between {startYear}-{endYear}')
 
     try:
-        df = requester.get_hourly_data(stationID, startYear, endYear)      # Collect data from the weather stations for [minYear, maxYear]      
-        df = processor.dataProcessHourly(df)             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
-        df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
-        numRows = len(df.index)                                                         # Check how many rows were in the dataframe we just pushed
-        updateLog(LOG_FILE, f'\t\tupdated {numRows} rows')
+        span = endYear - startYear
+        for i in range(0, span, 1):
+            # df = requester.get_hourly_data(stationID, startYear, endYear)      # Collect data from the weather stations for [minYear, maxYear]      
+            df = requester.get_hourly_data(stationID, startYear + i, startYear + i)      # Collect data from the weather stations 1 year at a time
+            df = processor.dataProcessHourly(df)             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
+            df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
+            numRows = len(df.index)                                                   # Check how many rows were in the dataframe we just pushed
+            updateLog(LOG_FILE, f'\t\tupdated {numRows} rows')
 
     except Exception as e:
         updateLog(LOG_FILE, f'\t\t[ERROR] Failed to scrape data for station {stationID}')
@@ -83,15 +88,15 @@ def pullHourlyData(index: int, row: gpd.GeoSeries, numStations: int, tablename: 
 
 def checkTables(db: DataService, queryHandler: QueryHandler) -> None:
     # check if the daily weather station table exists in the database - if not exit
-    query = sqlalchemy.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
+    query = sqa.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
     tableExists = queryHandler.readTableExists(db.execute(query))
     if not tableExists:
         updateLog(LOG_FILE, '[ERROR] weather stations have not been loaded into the database yet')
         db.cleanup()
         sys.exit()
 
-def getStations(prov: str, queryHandler: QueryHandler, conn: sqlalchemy.engine.Connection) -> gpd.GeoDataFrame:
-    query = sqlalchemy.text(queryHandler.getStationsReq(prov, 'hly'))
+def getStations(prov: str, queryHandler: QueryHandler, conn: sqa.engine.Connection) -> gpd.GeoDataFrame:
+    query = sqa.text(queryHandler.getStationsReq(prov, 'hly'))
     stations = gpd.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
 
     return stations

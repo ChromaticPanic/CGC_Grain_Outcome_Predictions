@@ -2,7 +2,8 @@ from ClimateDataRequester import ClimateDataRequester
 from QueryHandler import QueryHandler
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
-import os, sys, typing, sqlalchemy 
+import os, sys, typing
+import sqlalchemy as sqa 
 import numpy as np
 import pandas as pd
 import geopandas as gpd
@@ -36,10 +37,10 @@ def main():
         tablename = f'{prov.lower()}_hly_station_data'  
         numUpdated = 0
 
-        query = sqlalchemy.text(queryHandler.tableExistsReq(tablename))
+        query = sqa.text(queryHandler.tableExistsReq(tablename))
         tableExists = queryHandler.readTableExists(db.execute(query))
         if not tableExists:
-            query = sqlalchemy.text(queryHandler.createHrlyProvStationTableReq(tablename))
+            query = sqa.text(queryHandler.createHrlyProvStationTableReq(tablename))
             db.execute(query)
 
         print(f'Updating data for {prov} in {tablename} ...')
@@ -51,12 +52,15 @@ def main():
             print(f'\t[{index + 1}/{len(stations)}] Pulling data for station {stationID} between {startYear}-{endYear}')
 
             try:
-                df = requester.get_hourly_data(stationID, startYear, endYear)      # Collect data from the weather stations for [minYear, maxYear]      
-                df = processor.dataProcessHourly(df)             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
-                df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
-                numRows = len(df.index)                                                         # Check how many rows were in the dataframe we just pushed
+                span = endYear - startYear
+                for i in range(0, span, 1):
+                    # df = requester.get_hourly_data(stationID, startYear, endYear)      # Collect data from the weather stations for [minYear, maxYear]      
+                    df = requester.get_hourly_data(stationID, startYear + i, startYear + i)      # Collect data from the weather stations 1 year at a time
+                    df = processor.dataProcessHourly(df)             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
+                    df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
+                    numRows = len(df.index)                                                         # Check how many rows were in the dataframe we just pushed
 
-                print(f'\t\tupdated {numRows} rows')
+                    print(f'\t\tupdated {numRows} rows')
                 numUpdated += 1
             except Exception as e:
                 print(f'[ERROR] Failed to scrape data for station {stationID}')
@@ -65,18 +69,17 @@ def main():
         print(f'[SUCCESS] Updated data for {numUpdated}/{len(stations)} weather stations in {prov}\n')
     db.cleanup()
 
-
 def checkTables(db: DataService, queryHandler: QueryHandler):
     # check if the daily weather station table exists in the database - if not exit
-    query = sqlalchemy.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
+    query = sqa.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
     tableExists = queryHandler.readTableExists(db.execute(query))
     if not tableExists:
         print('[ERROR] weather stations have not been loaded into the database yet')
         db.cleanup()
         sys.exit()
 
-def getStations(prov: str, queryHandler: QueryHandler, conn: sqlalchemy.engine.Connection) -> gpd.GeoDataFrame:
-    query = sqlalchemy.text(queryHandler.getStationsReq(prov, 'hly'))
+def getStations(prov: str, queryHandler: QueryHandler, conn: sqa.engine.Connection) -> gpd.GeoDataFrame:
+    query = sqa.text(queryHandler.getStationsReq(prov, 'hly'))
     stations = gpd.GeoDataFrame.from_postgis(query, conn, geom_col='geometry')
 
     return stations
