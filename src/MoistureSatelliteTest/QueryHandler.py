@@ -1,7 +1,7 @@
 import sys
 import sqlalchemy as sq
 
-sys.path.append('../')
+sys.path.append("../")
 # from Querier import Querier
 from Querier import Querier
 from DataService import DataService
@@ -9,11 +9,12 @@ from DataService import DataService
 
 class QueryHandler(Querier):
     def createSoilMoistureTableReq(self, db: DataService):
-        query = sq.text(super().tableExistsReq('soil_moisture'))
+        query = sq.text(super().tableExistsReq("soil_moisture"))
         tableExists = super().readTableExists(db.execute(query))
 
         if not tableExists:
-            query = sq.text("""
+            query = sq.text(
+                """
                 CREATE TABLE soil_moisture (
                     id              SERIAL,
                     lon             FLOAT,
