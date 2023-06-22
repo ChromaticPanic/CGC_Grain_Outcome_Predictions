@@ -1,0 +1,179 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "63a20d9d-2dc6-4186-8120-daddd99d9567",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# import ee\n",
+    "# from DataService import DataService\n",
+    "# from shapely.ops import cascaded_union\n",
+    "# import shapely\n",
+    "# import sqlalchemy\n",
+    "# import geopandas as gpd\n",
+    "# import geemap\n",
+    "# from rasterio.plot import show_hist\n",
+    "# import rasterio\n",
+    "# from matplotlib import pyplot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "274ce33c-db9a-42dd-b2c7-3f63de357cd0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# ee.Authenticate()\n",
+    "# ee.Initialize()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9077b579-f5ba-4627-9426-6bdda3efe6e3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# DATASET = \"ECMWF/ERA5_LAND/HOURLY\"\n",
+    "# FIRST_DATE = \"2022-05-22\"  # 1995-01-01                          # string\n",
+    "# LAST_DATE = \"2022-05-23\"\n",
+    "# BANDS = []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fa972386-eacb-4f1f-b02f-1ae189b8c31f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# # connect to the database\n",
+    "# db = DataService()\n",
+    "# conn = db.connect()\n",
+    "# query = sqlalchemy.text(\"select geometry FROM public.census_ag_regions\")\n",
+    "\n",
+    "\n",
+    "# df = gpd.read_postgis(query, conn, geom_col=\"geometry\")\n",
+    "# ag_regions = df.unary_union\n",
+    "\n",
+    "# gdf = gpd.GeoDataFrame(index=[0], crs=\"epsg:4326\", geometry=[ag_regions])\n",
+    "# gdf.set_crs(\"EPSG:4326\", allow_override=True)\n",
+    "\n",
+    "# # print(df)\n",
+    "# # s = gpd.GeoSeries(polygons)\n",
+    "# # gdf = gpd.GeoDataFrame(df)\n",
+    "# #\n",
+    "# # geo_json = gdf.to_json()\n",
+    "# # print(geo_json)\n",
+    "# # featureCollection = ee.FeatureCollection(json.loads(geo_json))\n",
+    "# # print(featureCollection)\n",
+    "# # union =\n",
+    "\n",
+    "# # plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6d9eb895-0564-4983-829f-361293be7a6f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# rasterImg = ee.ImageCollection(DATASET)\n",
+    "\n",
+    "# #\n",
+    "# skinTemp = (\n",
+    "#     rasterImg.select(\"skin_temperature\")\n",
+    "#     .filterDate(FIRST_DATE, LAST_DATE)\n",
+    "#     .filterBounds(ag_regions)\n",
+    "# )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "51a2befd-5d10-4dd8-a105-ae3d069b8cbc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# first = skinTemp.first()\n",
+    "# link = first.getDownloadURL({\"crs\": \"EPSG:4326\", \"fileFormat\": \"GeoTIFF\"})\n",
+    "\n",
+    "# print(link)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c3a6c642-f0bb-45df-aaba-4ed3640decb8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# # 20220522T00.skin_temperature.tif\n",
+    "\n",
+    "\n",
+    "# src = rasterio.open(\"data/20220522T00.skin_temperature.tif\")\n",
+    "# pyplot.imshow(src.read(1), cmap=\"pink\")\n",
+    "\n",
+    "# pyplot.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "da0a6d64-3d82-4eed-8c7f-ee602b66fff8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# show_hist(\n",
+    "#     src,\n",
+    "#     bins=50,\n",
+    "#     lw=0.0,\n",
+    "#     stacked=False,\n",
+    "#     alpha=0.3,\n",
+    "#     histtype=\"stepfilled\",\n",
+    "#     title=\"Histogram\",\n",
+    "# )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "dd14a45e-6cb8-41b0-8b54-b4ef7c1ce792",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# geemap.js_snippet_to_py()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.6"
+  },
+  "vscode": {
+   "interpreter": {
+    "hash": "fa12c0197ba262d3978e6f6673cf27e2255540123d2a48a6d08e62ef766e322e"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

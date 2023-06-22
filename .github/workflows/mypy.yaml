@@ -21,7 +21,9 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install mypy
+          pip install -U nbqa
       - name: mypy
         run: |
           mypy --install-types
-          mypy src/
+          mypy src/**/*.py
+          nbqa mypy src/**/*.ipynb
