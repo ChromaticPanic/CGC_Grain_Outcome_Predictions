@@ -16,6 +16,7 @@ pytest
 lxml
 black
 black[jupyter]
+jupyter-black
 mypy
 geoalchemy2
 cdsapi
