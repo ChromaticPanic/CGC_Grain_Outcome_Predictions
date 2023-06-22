@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 
 sys.path.append("../")
-from Shared.DataService import DataService # type: ignore
+from Shared.DataService import DataService  # type: ignore
 
 
 load_dotenv()
