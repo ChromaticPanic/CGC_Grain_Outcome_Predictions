@@ -2,8 +2,8 @@ import sys
 import sqlalchemy as sq
 
 sys.path.append("../")
-from GenericQueryBuilder import GenericQueryBuilder
-from DataService import DataService
+from Shared.GenericQueryBuilder import GenericQueryBuilder
+from Shared.DataService import DataService
 
 
 class CopernicusQueryBuilder(GenericQueryBuilder):

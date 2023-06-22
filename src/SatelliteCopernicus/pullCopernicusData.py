@@ -1,5 +1,5 @@
 import os, sys, time, cdsapi, random, zipfile, calendar, multiprocessing
-from SatelliteCopernicus.CopernicusQueryBuilder import CopernicusQueryBuilder
+from CopernicusQueryBuilder import CopernicusQueryBuilder
 from dotenv import load_dotenv
 import sqlalchemy as sq
 import geopandas as gpd
@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService
 
 
 load_dotenv()

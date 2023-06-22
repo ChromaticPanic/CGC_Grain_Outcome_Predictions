@@ -7,12 +7,12 @@
 # - Eventually the goal is to create data folders. You then drop the files you want to read the data from
 #   after reading the data these files then get moved else where
 # ----------------------------------------------------
-from ImportErgot.ErgotQueryBuilder import ErgotQueryBuilder
+from ErgotQueryBuilder import ErgotQueryBuilder
 from dotenv import load_dotenv
 import os, sys, math, pandas, sqlalchemy
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService
 
 
 FILENAME = "newErgot"  # the name of the file you want to read

@@ -1,6 +1,6 @@
 from time import sleep
 from ClimateDataRequester import ClimateDataRequester
-from WeatherStation.WeatherQueryBuilder import WeatherQueryBuilder
+from WeatherQueryBuilder import WeatherQueryBuilder
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
 import os, sys, typing
@@ -11,7 +11,7 @@ import geopandas as gpd
 import multiprocessing as mp
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService
 
 
 NUM_WORKERS = 12

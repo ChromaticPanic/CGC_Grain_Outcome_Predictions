@@ -1,5 +1,5 @@
 from ClimateDataRequester import ClimateDataRequester
-from WeatherStation.WeatherQueryBuilder import WeatherQueryBuilder
+from WeatherQueryBuilder import WeatherQueryBuilder
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
 import os, sys, typing
@@ -9,7 +9,7 @@ import pandas as pd
 import geopandas as gpd
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService
 
 
 PROVINCES = [

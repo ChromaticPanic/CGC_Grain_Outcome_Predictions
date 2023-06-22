@@ -6,7 +6,7 @@
 import sys, numpy, typing, sqlalchemy
 
 sys.path.append("../")
-from GenericQueryBuilder import GenericQueryBuilder
+from Shared.GenericQueryBuilder import GenericQueryBuilder
 
 
 class WeatherQueryBuilder(GenericQueryBuilder):
