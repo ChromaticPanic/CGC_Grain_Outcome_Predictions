@@ -6,7 +6,7 @@
 import sqlalchemy
 
 
-class Querier:
+class GenericQueryBuilder:
     def tableExistsReq(self, tablename: str) -> str:
         return f"""
         SELECT EXISTS (

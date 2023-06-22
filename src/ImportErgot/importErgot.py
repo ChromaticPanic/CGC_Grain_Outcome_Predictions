@@ -7,7 +7,7 @@
 # - Eventually the goal is to create data folders. You then drop the files you want to read the data from
 #   after reading the data these files then get moved else where
 # ----------------------------------------------------
-from QueryHandler import QueryHandler
+from ImportErgot.ErgotQueryBuilder import ErgotQueryBuilder
 from dotenv import load_dotenv
 import os, sys, math, pandas, sqlalchemy
 
@@ -49,7 +49,7 @@ def main():
     )  # Handles connections to the database
     conn = db.connect()  # Connect to the database
 
-    queryHandler = QueryHandler()  # Handles (builds/processes) requests to the database
+    queryHandler = ErgotQueryBuilder()  # Handles (builds/processes) requests to the database
     ommitedData = []  # Holds data that failed to meet constraint (and was thus ommited)
 
     checkAttributes(ergotSamples, EXPECTED_COLS)
@@ -139,7 +139,7 @@ def checkAttributes(data: pandas.DataFrame, expectedCols: list):
             sys.exit()
 
 
-def checkTable(db: DataService, queryHandler: QueryHandler):
+def checkTable(db: DataService, queryHandler: ErgotQueryBuilder):
     # Checks if the table needed to run the pipeline has been created, if not creates it
     query = sqlalchemy.text(
         queryHandler.tableExistsReq(TABLENAME)

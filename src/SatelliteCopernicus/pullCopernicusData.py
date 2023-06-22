@@ -1,5 +1,5 @@
 import os, sys, time, cdsapi, random, zipfile, calendar, multiprocessing
-from QueryHandler import QueryHandler
+from SatelliteCopernicus.CopernicusQueryBuilder import CopernicusQueryBuilder
 from dotenv import load_dotenv
 import sqlalchemy as sq
 import geopandas as gpd
@@ -92,7 +92,7 @@ def main():
     db = DataService(
         PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
     )  # Handles connections to the database
-    queryHandler = QueryHandler()
+    queryHandler = CopernicusQueryBuilder()
     jobArgs = []  # Holds tuples of arguments for pooled workers
     count = 1  # An incrementer used to create unique file names
 

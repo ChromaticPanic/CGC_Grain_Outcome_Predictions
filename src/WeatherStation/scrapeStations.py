@@ -1,5 +1,5 @@
 from ClimateDataRequester import ClimateDataRequester
-from QueryHandler import QueryHandler
+from WeatherStation.WeatherQueryBuilder import WeatherQueryBuilder
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
 import os, sys, typing, sqlalchemy
@@ -33,7 +33,7 @@ def main():
         PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
     )  # Handles connections to the database
     requester = ClimateDataRequester()  # Handles weather station requests
-    queryHandler = QueryHandler()  # Handles (builds/processes) requests to the database
+    queryHandler = WeatherQueryBuilder()  # Handles (builds/processes) requests to the database
     processor = DataProcessor()  # Handles the more complex data processing
 
     conn = db.connect()  # Connect to the database
@@ -101,7 +101,7 @@ def main():
     db.cleanup()
 
 
-def checkTables(db: DataService, queryHandler: QueryHandler):
+def checkTables(db: DataService, queryHandler: WeatherQueryBuilder):
     # check if the daily weather station table exists in the database - if not exit
     query = sqlalchemy.text(queryHandler.tableExistsReq(DLY_STATIONS_TABLE))
     tableExists = queryHandler.readTableExists(db.execute(query))
@@ -121,7 +121,7 @@ def checkTables(db: DataService, queryHandler: QueryHandler):
 def storeLastUpdated(
     stationID: str,
     lastUpdated: np.datetime64,
-    queryHandler: QueryHandler,
+    queryHandler: WeatherQueryBuilder,
     db: DataService,
     updatdUntil: np.datetime64,
 ):
@@ -142,7 +142,7 @@ def storeLastUpdated(
 def getStations(
     prov: str,
     db: DataService,
-    queryHandler: QueryHandler,
+    queryHandler: WeatherQueryBuilder,
     conn: sqlalchemy.engine.Connection,
 ) -> typing.Tuple[pd.DataFrame, list]:
     query = sqlalchemy.text(queryHandler.getStationsReq(prov, DLY_FLAG))

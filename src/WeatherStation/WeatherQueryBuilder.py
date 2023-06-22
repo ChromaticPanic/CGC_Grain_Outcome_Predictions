@@ -6,10 +6,10 @@
 import sys, numpy, typing, sqlalchemy
 
 sys.path.append("../")
-from Querier import Querier
+from GenericQueryBuilder import GenericQueryBuilder
 
 
-class QueryHandler(Querier):
+class WeatherQueryBuilder(GenericQueryBuilder):
     def getStationsReq(self, prov: str, stationType: str) -> str:
         return f"""
         SELECT * FROM public.stations_{stationType}

@@ -1,5 +1,5 @@
 from ClimateDataRequester import ClimateDataRequester
-from QueryHandler import QueryHandler
+from WeatherStation.WeatherQueryBuilder import WeatherQueryBuilder
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
 import os, sys, typing
@@ -32,7 +32,7 @@ def main():
         PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
     )  # Handles connections to the database
     requester = ClimateDataRequester()  # Handles weather station requests
-    queryHandler = QueryHandler()  # Handles (builds/processes) requests to the database
+    queryHandler = WeatherQueryBuilder()  # Handles (builds/processes) requests to the database
     processor = DataProcessor()  # Handles the more complex data processing
 
     conn = db.connect()  # Connect to the database
@@ -97,7 +97,7 @@ def main():
     db.cleanup()
 
 
-def checkTables(db: DataService, queryHandler: QueryHandler):
+def checkTables(db: DataService, queryHandler: WeatherQueryBuilder):
     # check if the daily weather station table exists in the database - if not exit
     query = sqa.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
     tableExists = queryHandler.readTableExists(db.execute(query))
@@ -108,7 +108,7 @@ def checkTables(db: DataService, queryHandler: QueryHandler):
 
 
 def getStations(
-    prov: str, queryHandler: QueryHandler, conn: sqa.engine.Connection
+    prov: str, queryHandler: WeatherQueryBuilder, conn: sqa.engine.Connection
 ) -> gpd.GeoDataFrame:
     query = sqa.text(queryHandler.getStationsReq(prov, "hly"))
     stations = gpd.GeoDataFrame.from_postgis(query, conn, geom_col="geometry")

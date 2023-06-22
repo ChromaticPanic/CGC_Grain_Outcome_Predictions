@@ -2,11 +2,11 @@ import sys
 import sqlalchemy as sq
 
 sys.path.append("../")
-from Querier import Querier
+from GenericQueryBuilder import GenericQueryBuilder
 from DataService import DataService
 
 
-class QueryHandler(Querier):
+class CopernicusQueryBuilder(GenericQueryBuilder):
     def createCopernicusTableReq(self, db: DataService):
         query = sq.text(super().tableExistsReq("copernicus_satelite_data"))
         tableExists = super().readTableExists(db.execute(query))
