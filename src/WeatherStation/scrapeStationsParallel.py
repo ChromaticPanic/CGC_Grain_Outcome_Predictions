@@ -54,8 +54,6 @@ def main():
             query = sqa.text(queryHandler.createHrlyProvStationTableReq(tablename))
             db.execute(query)
 
-        db.cleanup()
-
         jobArgs = []
         for index, row in stations.iterrows():
             jobArgs.append(tuple((index, row, len(stations), tablename)))
@@ -71,6 +69,8 @@ def main():
             LOG_FILE,
             f"[SUCCESS] Finished updated data for weather stations in {prov}\n",
         )
+
+    db.cleanup()
 
 
 def pullHourlyData(
