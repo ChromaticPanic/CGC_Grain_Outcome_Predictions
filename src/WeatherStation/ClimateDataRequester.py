@@ -11,6 +11,7 @@ import lxml.html
 import requests as rq
 import pandas as pd
 import urllib3
+import typing
 import sys
 
 # import ipyparallel as ipp
@@ -76,6 +77,7 @@ class ClimateDataRequester:
         df = pd.concat(dfList)
         return df
 
+    @typing.no_type_check
     def get_url_list(self, province: str, stationID: str = "") -> list:
         resp = rq.get(
             self.apiBaseURL + self.defaultPath + province + "/",
@@ -87,10 +89,9 @@ class ClimateDataRequester:
             tree = lxml.html.fromstring(resp.text)
             for link in tree.xpath("//a/@href"):
                 if link.endswith(".csv"):
-                    if stationID:
-                        if link.find(stationID) > -1:
-                            result.append(link)
-                    else:
+                    if not stationID:
+                        result.append(link)
+                    elif link.find(stationID) > -1:
                         result.append(link)
 
         return result

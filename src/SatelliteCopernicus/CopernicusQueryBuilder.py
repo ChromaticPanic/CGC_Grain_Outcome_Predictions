@@ -9,7 +9,7 @@ from Shared.DataService import DataService
 class CopernicusQueryBuilder(GenericQueryBuilder):
     def createCopernicusTableReq(self, db: DataService):
         query = sq.text(super().tableExistsReq("copernicus_satelite_data"))
-        tableExists = super().readTableExists(db.execute(query))
+        tableExists = super().readTableExists(db.execute(query))  # type: ignore
 
         if not tableExists:
             query = sq.text(

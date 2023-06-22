@@ -6,7 +6,7 @@ import os, sys, typing
 import sqlalchemy as sqa
 import numpy as np
 import pandas as pd
-import geopandas as gpd
+import geopandas as gpd  # type: ignore
 
 sys.path.append("../")
 from Shared.DataService import DataService
@@ -102,7 +102,7 @@ def main():
 def checkTables(db: DataService, queryHandler: WeatherQueryBuilder):
     # check if the daily weather station table exists in the database - if not exit
     query = sqa.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
     if not tableExists:
         print("[ERROR] weather stations have not been loaded into the database yet")
         db.cleanup()

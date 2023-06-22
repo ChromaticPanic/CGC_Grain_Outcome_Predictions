@@ -4,7 +4,9 @@
 # These files should correspond to both the province geographical data and the agriculture regions
 # Run this script, when viewing in PGAdmin, limit results to prevent the container from crashing
 # ---------------------------------------------
-import geopandas, sqlalchemy, os
+import geopandas  # type: ignore
+import sqlalchemy
+import os
 from dotenv import load_dotenv
 
 

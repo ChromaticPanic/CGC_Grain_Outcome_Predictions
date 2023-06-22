@@ -19,12 +19,12 @@ class DataService:
         user: str = "postgres",
         pw: str = "password",
     ) -> None:
-        self.dbURL = f"postgresql://{user}:{pw}@{addr}:{port}/{db}"
-        self.engine = sq.create_engine(self.dbURL)
-        self.conn = None
+        self.dbURL: str = f"postgresql://{user}:{pw}@{addr}:{port}/{db}"
+        self.engine: sq.Engine = sq.create_engine(self.dbURL)
+        self.conn: sq.Connection = self.connect()
         atexit.register(self.cleanup)
 
-    def connect(self) -> object:
+    def connect(self) -> sq.Connection:
         """Connect to PostgreSQL database"""
         self.conn = self.engine.connect()
         return self.conn

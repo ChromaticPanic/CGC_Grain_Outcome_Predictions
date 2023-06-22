@@ -25,15 +25,10 @@ class WeatherQueryBuilder(GenericQueryBuilder):
     def readGetLastUpdated(
         self, results: sqlalchemy.engine.cursor.CursorResult
     ) -> typing.Tuple[str, bool]:
-        results = results.first()
-        lastUpdated = None
-        isActive = None
-
-        if results:
-            lastUpdated = results[0]
-            isActive = results[1]
-
-        return lastUpdated, isActive
+        row = results.first()
+        if row:
+            return row[0], row[1]
+        return "", False
 
     def createHrlyProvStationTableReq(self, tablename: str) -> str:
         # transformed.columns = ['station_id', 'year', 'month', 'day', 'min_temp', 'max_temp', 'mean_temp', 'min_dew_point_temp', 'max_dew_point_temp', 'mean_dew_point_temp', 'min_humidex', 'max_humidex', 'mean_humidex', 'total_precip', 'min_rel_humid', 'max_rel_humid', 'mean_rel_humid', 'min_stn_press', 'max_stn_press', 'mean_stn_press', 'min_visibility', 'max_visibility', 'mean_visibility']

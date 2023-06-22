@@ -10,6 +10,7 @@ import typing
 
 
 class DataProcessor:
+    @typing.no_type_check  # need to define a data class for this
     def removeInactive(
         self, stations: pd.DataFrame, states: list({str, np.datetime64, bool})
     ) -> pd.DataFrame:
@@ -22,6 +23,7 @@ class DataProcessor:
 
         return stations
 
+    @typing.no_type_check  # need to define a data class for this
     def addLastUpdated(
         self, stations: str, states: list({str, np.datetime64, bool})
     ) -> pd.DataFrame:
@@ -50,7 +52,7 @@ class DataProcessor:
             if validDates:
                 latestDate = max(validDates)
 
-        return latestDate
+        return np.datetime64(latestDate)
 
     def calcDateRange(
         self,
@@ -67,10 +69,10 @@ class DataProcessor:
         if not np.isnat(
             np.datetime64(lastUpdated)
         ):  # Confirms the pulled year is a valid datetime (numpy)
-            lastUpdated = pd.to_datetime(lastUpdated)
+            lastUpdatedDate = pd.to_datetime(lastUpdated)
 
-            if lastUpdated.year > firstYearWithData:
-                minYear = lastUpdated.year
+            if lastUpdatedDate.year > firstYearWithData:
+                minYear = lastUpdatedDate.year
 
         return minYear, maxYear
 
@@ -264,7 +266,7 @@ class DataProcessor:
         # print(transformed.columns)
 
         # rename columns
-        transformed.columns = [
+        transformed.columns = [  # type: ignore
             "station_id",
             "year",
             "month",

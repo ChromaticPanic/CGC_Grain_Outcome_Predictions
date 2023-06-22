@@ -7,7 +7,7 @@ import os, sys, typing
 import sqlalchemy as sqa
 import numpy as np
 import pandas as pd
-import geopandas as gpd
+import geopandas as gpd  # type: ignore
 import multiprocessing as mp
 
 sys.path.append("../")
@@ -78,8 +78,17 @@ def main():
 def pullHourlyData(
     index: int, row: gpd.GeoSeries, numStations: int, tablename: str
 ) -> None:
+    if (
+        PG_DB is None
+        or PG_ADDR is None
+        or PG_PORT is None
+        or PG_USER is None
+        or PG_PW is None
+    ):
+        updateLog(LOG_FILE, "Missing database credentials")
+        return
     db = DataService(
-        PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
+        PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW
     )  # Handles connections to the database
     requester = ClimateDataRequester()  # Handles weather station requests
     processor = DataProcessor()  # Handles the more complex data processing
@@ -132,7 +141,7 @@ def pullHourlyData(
 def checkTables(db: DataService, queryHandler: WeatherQueryBuilder) -> None:
     # check if the daily weather station table exists in the database - if not exit
     query = sqa.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
     if not tableExists:
         updateLog(
             LOG_FILE,

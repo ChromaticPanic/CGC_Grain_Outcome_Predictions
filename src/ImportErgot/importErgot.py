@@ -35,7 +35,7 @@ RENAMED_COLS = [
 load_dotenv()
 PG_DB = os.getenv("POSTGRES_DB")
 PG_ADDR = os.getenv("POSTGRES_ADDR")
-PG_PORT = int(os.getenv("POSTGRES_PORT"))
+PG_PORT = os.getenv("POSTGRES_PORT")
 PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 
@@ -44,8 +44,19 @@ def main():
     ergotSamples = pandas.read_csv(
         f"./data/{FILENAME}.csv"
     )  # Holds the ergot data to import
+    if (
+        PG_DB is None
+        or PG_ADDR is None
+        or PG_PORT is None
+        or PG_USER is None
+        or PG_PW is None
+    ):
+        raise ValueError(
+            "One of the following environment variables is not set: POSTGRES_DB, POSTGRES_ADDR, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PW"
+        )
+
     db = DataService(
-        PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
+        PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW
     )  # Handles connections to the database
     conn = db.connect()  # Connect to the database
 
@@ -146,7 +157,7 @@ def checkTable(db: DataService, queryHandler: ErgotQueryBuilder):
     query = sqlalchemy.text(
         queryHandler.tableExistsReq(TABLENAME)
     )  # Create the command needed to check if the table exists
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
 
     if not tableExists:
         query = sqlalchemy.text(

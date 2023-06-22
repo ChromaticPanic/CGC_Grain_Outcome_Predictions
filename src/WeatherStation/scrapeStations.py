@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os, sys, typing, sqlalchemy
 import numpy as np
 import pandas as pd
-import geopandas as gpd
+import geopandas as gpd  # type: ignore
 
 sys.path.append("../")
 from Shared.DataService import DataService
@@ -106,7 +106,7 @@ def main():
 def checkTables(db: DataService, queryHandler: WeatherQueryBuilder):
     # check if the daily weather station table exists in the database - if not exit
     query = sqlalchemy.text(queryHandler.tableExistsReq(DLY_STATIONS_TABLE))
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
     if not tableExists:
         print("[ERROR] weather stations have not been loaded into the database yet")
         db.cleanup()
@@ -114,7 +114,7 @@ def checkTables(db: DataService, queryHandler: WeatherQueryBuilder):
 
     # check if the weather stations last updated table exists in the database - if not create it
     query = sqlalchemy.text(queryHandler.tableExistsReq(STATIONS_UPDATE_TABLE))
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
     if not tableExists:
         query = sqlalchemy.text(queryHandler.createUpdateTableReq())
         db.execute(query)
@@ -154,10 +154,10 @@ def getStations(
     # For each station check if its active and whether or not its been pulled from before (table: station_data_last_updated)
     for index, row in stations.iterrows():
         query = sqlalchemy.text(queryHandler.getLastUpdatedReq(row["station_id"]))
-        lastUpdated, isActive = queryHandler.readGetLastUpdated(db.execute(query))
+        lastUpdated, isActive = queryHandler.readGetLastUpdated(db.execute(query))  # type: ignore
 
         if lastUpdated:
-            lastUpdated = np.datetime64(lastUpdated)
+            lastUpdated = str(np.datetime64(lastUpdated))
             states.append(
                 {
                     "station_id": row["station_id"],
