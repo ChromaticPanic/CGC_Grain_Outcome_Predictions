@@ -36,21 +36,23 @@ class DataProcessor:
 
         return stations
 
-    def findLatestDate(self, listOfDates: list) -> np.datetime64:
+    def findLatestDate(self, listOfDates: list) -> np.datetime64 | None:
         validDates = []  # Holds the list of valid dates
         latestDate = (
             None  # Holds the latest date, defaults to None if no valid dates are given
         )
 
-        if len(listOfDates) > 0:
-            for date in listOfDates:
-                if not np.isnat(
-                    np.datetime64(date)
-                ):  # Numpy evaluates each date (casting is necessairy even if casted previously)
-                    validDates.append(date)
+        if len(listOfDates) < 1:
+            return None
 
-            if validDates:
-                latestDate = max(validDates)
+        for date in listOfDates:
+            if not np.isnat(
+                np.datetime64(date)
+            ):  # Numpy evaluates each date (casting is necessairy even if casted previously)
+                validDates.append(date)
+
+        if validDates:
+            latestDate = max(validDates)
 
         return np.datetime64(latestDate)
 
