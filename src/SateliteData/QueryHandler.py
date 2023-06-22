@@ -1,18 +1,19 @@
 import sys
 import sqlalchemy as sq
 
-sys.path.append('../')
+sys.path.append("../")
 from Querier import Querier
 from DataService import DataService
 
 
 class QueryHandler(Querier):
     def createCopernicusTableReq(self, db: DataService):
-        query = sq.text(super().tableExistsReq('copernicus_satelite_data'))
+        query = sq.text(super().tableExistsReq("copernicus_satelite_data"))
         tableExists = super().readTableExists(db.execute(query))
 
         if not tableExists:
-            query = sq.text("""
+            query = sq.text(
+                """
                 CREATE TABLE copernicus_satelite_data (
                     id                              SERIAL,
                     lon                             FLOAT,

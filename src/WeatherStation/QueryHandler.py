@@ -5,7 +5,7 @@
 # ----------------------------------------------------
 import sys, numpy, typing, sqlalchemy
 
-sys.path.append('../')
+sys.path.append("../")
 from Querier import Querier
 
 
@@ -21,8 +21,10 @@ class QueryHandler(Querier):
         SELECT last_updated, is_active FROM public.station_data_last_updated
         WHERE station_id = \'{stationID}\';
         """
-    
-    def readGetLastUpdated(self, results: sqlalchemy.engine.cursor.CursorResult) -> typing.Tuple[str, bool]:
+
+    def readGetLastUpdated(
+        self, results: sqlalchemy.engine.cursor.CursorResult
+    ) -> typing.Tuple[str, bool]:
         results = results.first()
         lastUpdated = None
         isActive = None
@@ -79,7 +81,7 @@ class QueryHandler(Querier):
         COMMIT;
         """
 
-    def modLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str: 
+    def modLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str:
         return f"""
         UPDATE station_data_last_updated
         SET last_updated = \'{lastUpdated}\' 
@@ -87,7 +89,7 @@ class QueryHandler(Querier):
         COMMIT;
         """
 
-    def addLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str:        
+    def addLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str:
         return f"""
         INSERT INTO station_data_last_updated VALUES (\'{stationID}\', \'{lastUpdated}\');
         COMMIT;

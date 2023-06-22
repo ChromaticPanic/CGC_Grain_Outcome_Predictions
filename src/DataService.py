@@ -9,8 +9,16 @@ Typical usage example:
 import atexit
 import sqlalchemy as sq
 
+
 class DataService:
-    def __init__(self, db: str = "postgres", addr: str = "localhost", port: int = 5432, user: str = "postgres", pw: str = "password") -> None:
+    def __init__(
+        self,
+        db: str = "postgres",
+        addr: str = "localhost",
+        port: int = 5432,
+        user: str = "postgres",
+        pw: str = "password",
+    ) -> None:
         self.dbURL = f"postgresql://{user}:{pw}@{addr}:{port}/{db}"
         self.engine = sq.create_engine(self.dbURL)
         self.conn = None
