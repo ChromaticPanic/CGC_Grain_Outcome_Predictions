@@ -24,6 +24,6 @@ jobs:
           pip install -U nbqa
       - name: mypy
         run: |
-          python3 -m pip install src/docker/tensorflow-cpu/requirements.txt
+          python3 -m pip install -r src/docker/tensorflow-cpu/requirements.txt
           mypy src/**/*.py
           nbqa mypy src/**/*.ipynb
