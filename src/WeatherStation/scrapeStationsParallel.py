@@ -37,7 +37,9 @@ def main():
     db = DataService(
         PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
     )  # Handles connections to the database
-    queryHandler = WeatherQueryBuilder()  # Handles (builds/processes) requests to the database
+    queryHandler = (
+        WeatherQueryBuilder()
+    )  # Handles (builds/processes) requests to the database
 
     conn = db.connect()  # Connect to the database
     checkTables(

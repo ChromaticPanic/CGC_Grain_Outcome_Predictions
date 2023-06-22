@@ -49,7 +49,9 @@ def main():
     )  # Handles connections to the database
     conn = db.connect()  # Connect to the database
 
-    queryHandler = ErgotQueryBuilder()  # Handles (builds/processes) requests to the database
+    queryHandler = (
+        ErgotQueryBuilder()
+    )  # Handles (builds/processes) requests to the database
     ommitedData = []  # Holds data that failed to meet constraint (and was thus ommited)
 
     checkAttributes(ergotSamples, EXPECTED_COLS)
