@@ -53,6 +53,8 @@ class DataProcessor:
 
         if validDates:
             latestDate = max(validDates)
+        else:
+            return None
 
         return np.datetime64(latestDate)
 
