@@ -2,6 +2,7 @@ import sys
 import sqlalchemy as sq
 
 sys.path.append("../")
+sys.path.append("../Shared")
 from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
 from Shared.DataService import DataService  # type: ignore
 
