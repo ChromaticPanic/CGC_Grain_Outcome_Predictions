@@ -7,12 +7,12 @@
 # - Eventually the goal is to create data folders. You then drop the files you want to read the data from
 #   after reading the data these files then get moved else where
 # ----------------------------------------------------
-from QueryHandler import QueryHandler
+from ErgotQueryBuilder import ErgotQueryBuilder
 from dotenv import load_dotenv
 import os, sys, math, pandas, sqlalchemy
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService
 
 
 FILENAME = "newErgot"  # the name of the file you want to read
@@ -35,7 +35,7 @@ RENAMED_COLS = [
 load_dotenv()
 PG_DB = os.getenv("POSTGRES_DB")
 PG_ADDR = os.getenv("POSTGRES_ADDR")
-PG_PORT = int(os.getenv("POSTGRES_PORT"))
+PG_PORT = os.getenv("POSTGRES_PORT")
 PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 
@@ -44,12 +44,25 @@ def main():
     ergotSamples = pandas.read_csv(
         f"./data/{FILENAME}.csv"
     )  # Holds the ergot data to import
+    if (
+        PG_DB is None
+        or PG_ADDR is None
+        or PG_PORT is None
+        or PG_USER is None
+        or PG_PW is None
+    ):
+        raise ValueError(
+            "One of the following environment variables is not set: POSTGRES_DB, POSTGRES_ADDR, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PW"
+        )
+
     db = DataService(
-        PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
+        PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW
     )  # Handles connections to the database
     conn = db.connect()  # Connect to the database
 
-    queryHandler = QueryHandler()  # Handles (builds/processes) requests to the database
+    queryHandler = (
+        ErgotQueryBuilder()
+    )  # Handles (builds/processes) requests to the database
     ommitedData = []  # Holds data that failed to meet constraint (and was thus ommited)
 
     checkAttributes(ergotSamples, EXPECTED_COLS)
@@ -139,12 +152,12 @@ def checkAttributes(data: pandas.DataFrame, expectedCols: list):
             sys.exit()
 
 
-def checkTable(db: DataService, queryHandler: QueryHandler):
+def checkTable(db: DataService, queryHandler: ErgotQueryBuilder):
     # Checks if the table needed to run the pipeline has been created, if not creates it
     query = sqlalchemy.text(
         queryHandler.tableExistsReq(TABLENAME)
     )  # Create the command needed to check if the table exists
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
 
     if not tableExists:
         query = sqlalchemy.text(

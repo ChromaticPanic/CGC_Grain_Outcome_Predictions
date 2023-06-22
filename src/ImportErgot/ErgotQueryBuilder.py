@@ -6,10 +6,10 @@
 import sys
 
 sys.path.append("../")
-from Querier import Querier
+from Shared.GenericQueryBuilder import GenericQueryBuilder
 
 
-class QueryHandler(Querier):
+class ErgotQueryBuilder(GenericQueryBuilder):
     def createErgotSampleTableReq(self) -> str:
         return f"""
         CREATE TABLE ergot_sample (

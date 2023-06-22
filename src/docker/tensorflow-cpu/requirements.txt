@@ -21,3 +21,4 @@ mypy
 geoalchemy2
 cdsapi
 xarray
+nbqa

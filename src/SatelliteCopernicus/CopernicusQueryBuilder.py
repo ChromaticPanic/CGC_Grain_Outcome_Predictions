@@ -2,14 +2,15 @@ import sys
 import sqlalchemy as sq
 
 sys.path.append("../")
-from Querier import Querier
-from DataService import DataService
+sys.path.append("../Shared")
+from GenericQueryBuilder import GenericQueryBuilder  # type: ignore
+from DataService import DataService  # type: ignore
 
 
-class QueryHandler(Querier):
+class CopernicusQueryBuilder(GenericQueryBuilder):
     def createCopernicusTableReq(self, db: DataService):
         query = sq.text(super().tableExistsReq("copernicus_satelite_data"))
-        tableExists = super().readTableExists(db.execute(query))
+        tableExists = super().readTableExists(db.execute(query))  # type: ignore
 
         if not tableExists:
             query = sq.text(

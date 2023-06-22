@@ -1,14 +1,15 @@
-import os, sys, time, cdsapi, random, zipfile, calendar, multiprocessing
-from QueryHandler import QueryHandler
+import os, sys, time, random, zipfile, calendar, multiprocessing
+import cdsapi  # type: ignore
+from CopernicusQueryBuilder import CopernicusQueryBuilder
 from dotenv import load_dotenv
 import sqlalchemy as sq
-import geopandas as gpd
-import xarray as xr
+import geopandas as gpd  # type: ignore
+import xarray as xr  # type: ignore
 import pandas as pd
 import numpy as np
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService  # type: ignore
 
 
 load_dotenv()
@@ -92,7 +93,7 @@ def main():
     db = DataService(
         PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
     )  # Handles connections to the database
-    queryHandler = QueryHandler()
+    queryHandler = CopernicusQueryBuilder()
     jobArgs = []  # Holds tuples of arguments for pooled workers
     count = 1  # An incrementer used to create unique file names
 
@@ -156,15 +157,16 @@ def addDateAttrs(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
 
 
 def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
+    # Creates geometry from df using lon and lat as cords to create points (points being geometry)
     df = gpd.GeoDataFrame(
         df, crs="EPSG:4326", geometry=gpd.points_from_xy(df.lon, df.lat)
-    )  # Creates geometry from df using lon and lat as cords to create points (points being geometry)
-    df = df.to_crs(
-        crs="EPSG:3347"
-    )  # Changes the points projection to match the agriculture regions of EPSG:3347
-    df = gpd.sjoin(
-        df, agRegions, how="left", predicate="within"
-    )  # Join the two dataframes based on which points fit within what agriculture regions
+    )
+
+    # Changes the points projection to match the agriculture regions of EPSG:3347
+    df.to_crs(crs="EPSG:3347", inplace=True)  # type: ignore
+
+    # Join the two dataframes based on which points fit within what agriculture regions
+    df = gpd.sjoin(df, agRegions, how="left", predicate="within")
 
     df.drop(columns=["geometry", "index_right"], inplace=True)
     df = df[df["cr_num"].notna()]  # Take rows that are valid numbers
@@ -288,7 +290,16 @@ def pullSateliteData(
     days: list,
     outputFile: str,
 ):
-    db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)
+    if (
+        PG_DB is None
+        or PG_ADDR is None
+        or PG_PORT is None
+        or PG_USER is None
+        or PG_PW is None
+    ):
+        raise ValueError("Environment variables not set")
+
+    db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
     time.sleep(delay)
 
     print(f"Starting to pull data for {year}/{month}")

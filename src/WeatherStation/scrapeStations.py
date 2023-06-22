@@ -1,14 +1,14 @@
 from ClimateDataRequester import ClimateDataRequester
-from QueryHandler import QueryHandler
+from WeatherQueryBuilder import WeatherQueryBuilder
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
 import os, sys, typing, sqlalchemy
 import numpy as np
 import pandas as pd
-import geopandas as gpd
+import geopandas as gpd  # type: ignore
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService
 
 
 DLY_FLAG = "dly"
@@ -33,7 +33,9 @@ def main():
         PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
     )  # Handles connections to the database
     requester = ClimateDataRequester()  # Handles weather station requests
-    queryHandler = QueryHandler()  # Handles (builds/processes) requests to the database
+    queryHandler = (
+        WeatherQueryBuilder()
+    )  # Handles (builds/processes) requests to the database
     processor = DataProcessor()  # Handles the more complex data processing
 
     conn = db.connect()  # Connect to the database
@@ -101,10 +103,10 @@ def main():
     db.cleanup()
 
 
-def checkTables(db: DataService, queryHandler: QueryHandler):
+def checkTables(db: DataService, queryHandler: WeatherQueryBuilder):
     # check if the daily weather station table exists in the database - if not exit
     query = sqlalchemy.text(queryHandler.tableExistsReq(DLY_STATIONS_TABLE))
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
     if not tableExists:
         print("[ERROR] weather stations have not been loaded into the database yet")
         db.cleanup()
@@ -112,7 +114,7 @@ def checkTables(db: DataService, queryHandler: QueryHandler):
 
     # check if the weather stations last updated table exists in the database - if not create it
     query = sqlalchemy.text(queryHandler.tableExistsReq(STATIONS_UPDATE_TABLE))
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
     if not tableExists:
         query = sqlalchemy.text(queryHandler.createUpdateTableReq())
         db.execute(query)
@@ -121,7 +123,7 @@ def checkTables(db: DataService, queryHandler: QueryHandler):
 def storeLastUpdated(
     stationID: str,
     lastUpdated: np.datetime64,
-    queryHandler: QueryHandler,
+    queryHandler: WeatherQueryBuilder,
     db: DataService,
     updatdUntil: np.datetime64,
 ):
@@ -142,7 +144,7 @@ def storeLastUpdated(
 def getStations(
     prov: str,
     db: DataService,
-    queryHandler: QueryHandler,
+    queryHandler: WeatherQueryBuilder,
     conn: sqlalchemy.engine.Connection,
 ) -> typing.Tuple[pd.DataFrame, list]:
     query = sqlalchemy.text(queryHandler.getStationsReq(prov, DLY_FLAG))
@@ -152,10 +154,10 @@ def getStations(
     # For each station check if its active and whether or not its been pulled from before (table: station_data_last_updated)
     for index, row in stations.iterrows():
         query = sqlalchemy.text(queryHandler.getLastUpdatedReq(row["station_id"]))
-        lastUpdated, isActive = queryHandler.readGetLastUpdated(db.execute(query))
+        lastUpdated, isActive = queryHandler.readGetLastUpdated(db.execute(query))  # type: ignore
 
         if lastUpdated:
-            lastUpdated = np.datetime64(lastUpdated)
+            lastUpdated = str(np.datetime64(lastUpdated))
             states.append(
                 {
                     "station_id": row["station_id"],

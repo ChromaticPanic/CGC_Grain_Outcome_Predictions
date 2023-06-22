@@ -1,17 +1,17 @@
 from time import sleep
 from ClimateDataRequester import ClimateDataRequester
-from QueryHandler import QueryHandler
+from WeatherQueryBuilder import WeatherQueryBuilder
 from DataProcessor import DataProcessor
 from dotenv import load_dotenv
 import os, sys, typing
 import sqlalchemy as sqa
 import numpy as np
 import pandas as pd
-import geopandas as gpd
+import geopandas as gpd  # type: ignore
 import multiprocessing as mp
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService
 
 
 NUM_WORKERS = 12
@@ -37,7 +37,9 @@ def main():
     db = DataService(
         PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
     )  # Handles connections to the database
-    queryHandler = QueryHandler()  # Handles (builds/processes) requests to the database
+    queryHandler = (
+        WeatherQueryBuilder()
+    )  # Handles (builds/processes) requests to the database
 
     conn = db.connect()  # Connect to the database
     checkTables(
@@ -76,8 +78,17 @@ def main():
 def pullHourlyData(
     index: int, row: gpd.GeoSeries, numStations: int, tablename: str
 ) -> None:
+    if (
+        PG_DB is None
+        or PG_ADDR is None
+        or PG_PORT is None
+        or PG_USER is None
+        or PG_PW is None
+    ):
+        updateLog(LOG_FILE, "Missing database credentials")
+        return
     db = DataService(
-        PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
+        PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW
     )  # Handles connections to the database
     requester = ClimateDataRequester()  # Handles weather station requests
     processor = DataProcessor()  # Handles the more complex data processing
@@ -127,10 +138,10 @@ def pullHourlyData(
     db.cleanup()
 
 
-def checkTables(db: DataService, queryHandler: QueryHandler) -> None:
+def checkTables(db: DataService, queryHandler: WeatherQueryBuilder) -> None:
     # check if the daily weather station table exists in the database - if not exit
     query = sqa.text(queryHandler.tableExistsReq(HLY_STATIONS_TABLE))
-    tableExists = queryHandler.readTableExists(db.execute(query))
+    tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
     if not tableExists:
         updateLog(
             LOG_FILE,
@@ -141,7 +152,7 @@ def checkTables(db: DataService, queryHandler: QueryHandler) -> None:
 
 
 def getStations(
-    prov: str, queryHandler: QueryHandler, conn: sqa.engine.Connection
+    prov: str, queryHandler: WeatherQueryBuilder, conn: sqa.engine.Connection
 ) -> gpd.GeoDataFrame:
     query = sqa.text(queryHandler.getStationsReq(prov, "hly"))
     stations = gpd.GeoDataFrame.from_postgis(query, conn, geom_col="geometry")

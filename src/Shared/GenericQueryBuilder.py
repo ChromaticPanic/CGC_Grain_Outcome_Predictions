@@ -6,7 +6,7 @@
 import sqlalchemy
 
 
-class Querier:
+class GenericQueryBuilder:
     def tableExistsReq(self, tablename: str) -> str:
         return f"""
         SELECT EXISTS (
@@ -16,4 +16,7 @@ class Querier:
         """
 
     def readTableExists(self, results: sqlalchemy.engine.cursor.CursorResult) -> bool:
-        return results.first()[0]
+        row = results.first()
+        if row is None:
+            return False
+        return row[0]
