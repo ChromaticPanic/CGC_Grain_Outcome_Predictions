@@ -259,6 +259,7 @@ def test_find_latest_date_with_invalid_entries():
 def test_find_latest_date_all_invalid():
     listOfDates = [np.datetime64(None), np.datetime64(None), np.datetime64("NaT")]
     result = processor.findLatestDate(listOfDates)
+    latestDate = result
     if result:
         latestDate = pd.to_datetime(result)
 
