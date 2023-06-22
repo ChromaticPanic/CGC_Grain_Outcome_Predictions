@@ -10,7 +10,7 @@ sys.path.append("../")
 from DataService import DataService
 
 # path to soil moister data
-MAIN_FOLDER_PATH = "data/"
+MAIN_FOLDER_PATH = "/data/common/Images/"
 
 TABLE = 'soil_moisture'
 
@@ -34,6 +34,7 @@ agRegions = gpd.GeoDataFrame.from_postgis(query, conn, crs='EPSG:3347', geom_col
 folder_names = os.listdir(MAIN_FOLDER_PATH)
 
 for folder_name in folder_names:
+    print(folder_name + ' started')
     folder_path = os.path.join(MAIN_FOLDER_PATH, folder_name)
 
     # Get a list of all files in the folder
@@ -53,7 +54,7 @@ for folder_name in folder_names:
 
         dataset.close()
 
-        df.drop(columns=['flag', 'freqbandID', 'dnflag', 'mode', 'sensor', 't0'], inplace=True)
+        df.drop(columns=['flag', 'freqbandID', 'dnflag', 'mode', 'sensor', 't0', 'sm_uncertainty'], inplace=True)
         df.rename(columns={df.columns[0]: "date"}, inplace=True)
         df.rename(columns={df.columns[3]: "soil_moisture"}, inplace=True)
         df = df[df['soil_moisture'].notna()]
@@ -73,3 +74,4 @@ for folder_name in folder_names:
         df.drop(columns=['index'], inplace=True)
 
         df.to_sql(TABLE, conn, schema='public', if_exists="append", index=False)
+    print(folder_name + ' end')    
