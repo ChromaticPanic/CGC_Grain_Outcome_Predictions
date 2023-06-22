@@ -1,3 +1,4 @@
+from time import sleep
 from ClimateDataRequester import ClimateDataRequester
 from QueryHandler import QueryHandler
 from DataProcessor import DataProcessor
@@ -75,13 +76,14 @@ def pullHourlyData(index: int, row: gpd.GeoSeries, numStations: int, tablename: 
     span = endYear - startYear
     for i in range(0, span, 1):
         try:
-            # df = requester.get_hourly_data(stationID, startYear, endYear)      # Collect data from the weather stations for [minYear, maxYear]      
+            # df = requester.get_hourly_data(stationID, startYear, endYear)                 # Collect data from the weather stations for [minYear, maxYear]
+            sleep(np.random.randint(5, 20))      
             currYear = startYear + i
-            df = requester.get_hourly_data(stationID, currYear, currYear)      # Collect data from the weather stations 1 year at a time
-            df = processor.dataProcessHourly(df)             # Prepare data for storage (manipulates dataframe, averages values and removes old data)
-            df = processor.tranformHourlyToDaily(df)         # Transform hourly data to daily data
+            df = requester.get_hourly_data(stationID, currYear, currYear)                   # Collect data from the weather stations 1 year at a time
+            df = processor.dataProcessHourly(df)                                            # Prepare data for storage (manipulates dataframe, averages values and removes old data)
+            df = processor.tranformHourlyToDaily(df)                                        # Transform hourly data to daily data
             df.to_sql(tablename, conn, schema='public', if_exists="append", index=False)    # Store data (not using return value due to its inaccuracy)
-            numRows = len(df.index)                                                   # Check how many rows were in the dataframe we just pushed
+            numRows = len(df.index)                                                         # Check how many rows were in the dataframe we just pushed
             updateLog(LOG_FILE, f'station {stationID} year {currYear} updated {numRows} rows')
 
         except Exception as e:
