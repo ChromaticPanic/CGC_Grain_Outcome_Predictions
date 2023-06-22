@@ -7,7 +7,7 @@ on:
   push:
     branches:
     - main
-    
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -19,3 +19,5 @@ jobs:
         src: "./src"
         jupyter: true
         version: "23.10"
+      run: |
+        black --diff --check $(git ls-files '*.py')
