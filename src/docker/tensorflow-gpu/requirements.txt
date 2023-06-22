@@ -15,6 +15,7 @@ python-dotenv
 pytest
 lxml
 black
+black[jupyter]
 mypy
 geoalchemy2
 cdsapi
