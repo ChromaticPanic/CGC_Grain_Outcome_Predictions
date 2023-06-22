@@ -1,0 +1,26 @@
+name: Lint - MyPy
+
+on:
+  pull_request:
+    branches:
+    - main
+  push:
+    branches:
+    - main
+
+jobs:
+  lint-static-types:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: Install Dependencies
+        run: |
+          pip install mypy
+      - name: mypy
+        run: |
+          mypy src/
