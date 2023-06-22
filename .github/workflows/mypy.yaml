@@ -24,6 +24,5 @@ jobs:
           pip install -U nbqa
       - name: mypy
         run: |
-          mypy --install-types
           mypy src/**/*.py
           nbqa mypy src/**/*.ipynb
