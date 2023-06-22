@@ -36,7 +36,7 @@ class DataProcessor:
 
         return stations
 
-    def findLatestDate(self, listOfDates: list) -> np.datetime64 | None:
+    def findLatestDate(self, listOfDates: list) -> typing.Optional[np.datetime64]:
         validDates = []  # Holds the list of valid dates
         latestDate = (
             None  # Holds the latest date, defaults to None if no valid dates are given
