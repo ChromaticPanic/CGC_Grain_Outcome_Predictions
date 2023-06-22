@@ -25,5 +25,8 @@ jobs:
       - name: mypy
         run: |
           python3 -m pip install -r src/docker/tensorflow-cpu/requirements.txt
+          python3 -m pip install pandas-stubs
+          python3 -m pip install lxml-stubs
+          python3 -m pip install types-requests
           mypy src/**/*.py
           nbqa mypy src/**/*.ipynb
