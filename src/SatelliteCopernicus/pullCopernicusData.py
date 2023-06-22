@@ -298,7 +298,7 @@ def pullSateliteData(
         or PG_PW is None
     ):
         raise ValueError("Environment variables not set")
-        
+
     db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
     time.sleep(delay)
 
