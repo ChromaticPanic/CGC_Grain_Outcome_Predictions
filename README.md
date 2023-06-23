@@ -36,6 +36,7 @@
     - [sk_station_data](#sk_station_data)
     - [copernicus_satelite_data](#copernicus_satelite_data)
     - [ergot_sample](#ergot_sample)
+    - [labeled_soil](#labeled_soil)
     - [soil_geometry](#soil_geometry)
     - [soil_components](#soil_components)
     - [soil_data](#soil_data)
@@ -244,13 +245,24 @@ Please note that all attributes are listed one to one minus the two corrected ab
 <br>
 <br>
 
+### labeled_soil
+|id|poly_id|soil_ids|cr_num|car_uid|
+|-|-|-|-|-|
+|unique identifier||list of all soil ids in the region|crop region|crop region district|
+
+<br>
+
+<img src='.github/img/mappedSoils.png' width="600"/>
+<br>
+<br>
+<br>
+
 ### soil_geometry
 |area|perimeter|poly_id|geometry|
 |-|-|-|-|
 |||unique identifier|EPSG:3347|
 
 All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
-<img src='.github/img/mappedSoils.png' width="600"/>
 
 <br>
 <br>
