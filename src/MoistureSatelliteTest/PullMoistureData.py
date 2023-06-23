@@ -28,7 +28,7 @@ conn = db.connect()
 
 queryHandler.createSoilMoistureTableReq(db)
 
-query = sq.text('select cr_num, geometry FROM public.census_ag_regions')
+query = sq.text('select cr_num, car_uid, geometry FROM public.census_ag_regions')
 agRegions = gpd.GeoDataFrame.from_postgis(query, conn, crs='EPSG:3347', geom_col='geometry')
 
 folder_names = os.listdir(MAIN_FOLDER_PATH)
