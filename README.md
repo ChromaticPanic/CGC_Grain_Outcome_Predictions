@@ -36,6 +36,10 @@
     - [sk_station_data](#sk_station_data)
     - [copernicus_satelite_data](#copernicus_satelite_data)
     - [ergot_sample](#ergot_sample)
+    - [soil_geometry](#soil_geometry)
+    - [soil_components](#soil_components)
+    - [soil_data](#soil_data)
+    - [soil_surronding_land](#soil_surronding_land)
 - [Useful links](#useful-links)
 
 <br>
@@ -238,10 +242,44 @@ Please note that all attributes are listed one to one minus the two corrected ab
 | sample identifier  |   | province abbreviation  | crop region number | truth value for the presence of ergot | percentage of severity detected|
 
 <br>
-<hr>
 <br>
 
+### soil_geometry
+|area|perimeter|poly_id|geometry|
+|-|-|-|-|
+|||unique identifier|EPSG:3347|
+
+All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
 <img src='.github/img/mappedSoils.png' width="600"/>
+
+<br>
+<br>
+
+### soil_components
+|poly_id|cmp|percent|slope|stone|surface_area|province|soil_code|modifier|profile|soil_id|coarse_frag_1|coarse_frag_2|coarse_frag_3|depth|water_holding_cap|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|coresponding polygon|component identifer (increments)|polygon percentage occupying component||||abbreviation||defines soil characteristics||
+
+All data descriptions can be found [here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (ratings)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/crt/index.html). 
+
+<br>
+<br>
+
+### soil_data
+|id|province|code|modifier|name|kind|water_table|root_restrict|restr_type|drainage|parent_material_texture_1|parent_material_texture_2|parent_material_texture_3|parent_material_chemical_1|parent_material_chemical_2|parent_material_chemical_3|mode_of_depo_1|mode_of_depo_2|mode_of_depo_3|layer_no|u_depth|l_depth|hzn_lit|hzn_mas|hzn_suf|hzn_mod|percnt_coarse_frag|sand_texture|percnt_v_fine_sand|total_sand|total_silt|total_clay|percnt_carbon|calcium_ph|proj_ph|percnt_base_sat|cec|ksat|water_reten_0|water_reten_10|water_reten_33|water_reten_1500|bulk_density|elec_cond|calc_equiv|decomp_class|percnt_wood|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+
+All data descriptions can be found [here (names)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/snt/index.html) and [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html). 
+
+<br>
+<br>
+
+### soil_surronding_land
+|poly_id|land_area|water_area|fresh_area|ocean_area|total_area|
+|-|-|-|-|-|-|
+|unique identifier|in hectares|in hectares|in hectares|in hectares|in hectares|
+
+All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html). 
 
 <br>
 <hr>
