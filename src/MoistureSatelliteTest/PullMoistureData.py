@@ -7,7 +7,7 @@ import sqlalchemy as sq
 import sys
 
 sys.path.append("../")
-from DataService import DataService
+from Shared.DataService import DataService
 
 # path to soil moister data
 MAIN_FOLDER_PATH = "/data/common/Images/"
