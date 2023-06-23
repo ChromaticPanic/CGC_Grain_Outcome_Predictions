@@ -255,7 +255,6 @@ Please note that all attributes are listed one to one minus the two corrected ab
 <img src='.github/img/mappedSoils.png' width="600"/>
 <br>
 <br>
-<br>
 
 ### soil_geometry
 |area|perimeter|poly_id|geometry|
