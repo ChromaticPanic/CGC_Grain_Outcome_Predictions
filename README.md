@@ -36,7 +36,6 @@
     - [sk_station_data](#sk_station_data)
     - [copernicus_satelite_data](#copernicus_satelite_data)
     - [ergot_sample](#ergot_sample)
-- [Images](#images)
 - [Useful links](#useful-links)
 
 <br>
@@ -242,8 +241,6 @@ Please note that all attributes are listed one to one minus the two corrected ab
 <hr>
 <br>
 
-## Images:
-### Soil distribution
 <img src='.github/img/mappedSoils.png' width="600"/>
 
 <br>
