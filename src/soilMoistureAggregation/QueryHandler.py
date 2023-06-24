@@ -11,7 +11,7 @@ from Shared.DataService import DataService  # type: ignore
 class QueryHandler(GenericQueryBuilder):
     def createAggSoilMoistureTableReq(self, db: DataService):
         query = sq.text(super().tableExistsReq("agg_soil_moisture"))
-        tableExists = super().readTableExists(db.execute(query))
+        tableExists: bool = super().readTableExists(db.execute(query))
 
         if not tableExists:
             query = sq.text(
