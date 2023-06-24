@@ -3,11 +3,12 @@ import sqlalchemy as sq
 
 sys.path.append("../")
 # from Querier import Querier
-from querier import Querier  # type: ignore
+# from querier import Querier  # type: ignore?
+from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
 from Shared.DataService import DataService  # type: ignore
 
 
-class QueryHandler(Querier):
+class QueryHandler(GenericQueryBuilder):
     def createAggSoilMoistureTableReq(self, db: DataService):
         query = sq.text(super().tableExistsReq("agg_soil_moisture"))
         tableExists = super().readTableExists(db.execute(query))
