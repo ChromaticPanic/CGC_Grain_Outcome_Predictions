@@ -30,13 +30,25 @@ query = sq.text("select * FROM public.soil_moisture")
 sm_df = pd.read_sql(query, conn)
 
 # calculating mean by grouping date, cr_num, car_uid
-sm_df = sm_df.groupby(["date", "cr_num", "car_uid"]).mean().reset_index()
+sm_df = (
+    sm_df.groupby(["date", "cr_num", "car_uid"])
+    .agg({"soil_moisture": ["min", "max", "mean"]})
+    .reset_index()
+)
 
-# drop id, lat, lon columns from df
-sm_df.drop(columns=["id", "lat", "lon"], inplace=True)
+# rename columns
+sm_df.columns = [  # type: ignore
+    "date",
+    "cr_num",
+    "district",
+    "soil_moisture_min",
+    "soil_moisture_max",
+    "soil_moisture_mean",
+]
 
-# rename car_uid to district
-sm_df.rename(columns={"car_uid": "district"}, inplace=True)
+sm_df[["soil_moisture_min", "soil_moisture_max", "soil_moisture_mean"]] = sm_df[
+    ["soil_moisture_min", "soil_moisture_max", "soil_moisture_mean"]
+].astype(float)
 
 print(sm_df)
 

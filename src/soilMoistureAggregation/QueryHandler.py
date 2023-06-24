@@ -2,8 +2,7 @@ import sys
 import sqlalchemy as sq
 
 sys.path.append("../")
-# # from Querier import Querier
-# from querier import Querier
+# from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
 from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
 from Shared.DataService import DataService  # type: ignore
 
@@ -21,9 +20,9 @@ class QueryHandler(GenericQueryBuilder):
                     date                    DATE,
                     cr_num                  INT,
                     district                INT,
-                    soil_moisture_mean      FLOAT,
+                    soil_moisture_min      FLOAT,
                     soil_moisture_max       FLOAT,
-                    soil_moisture_min       FLOAT,
+                    soil_moisture_mean       FLOAT,
                     CONSTRAINT PK_AGG_SOIL_MOISTURE PRIMARY KEY(id)
                 );
                 COMMIT;
