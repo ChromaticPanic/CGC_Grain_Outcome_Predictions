@@ -2,8 +2,9 @@ import sys
 import sqlalchemy as sq
 
 sys.path.append("../")
-from Querier import Querier
-from DataService import DataService
+# from Querier import Querier
+from querier import Querier  # type: ignore
+from Shared.DataService import DataService  # type: ignore
 
 
 class QueryHandler(Querier):

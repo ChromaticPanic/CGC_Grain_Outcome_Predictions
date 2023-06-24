@@ -1,13 +1,13 @@
 import os
 import xarray as xr
-import geopandas as gpd
+import geopandas as gpd  # type: ignore
 
 from QueryHandler import QueryHandler
 from dotenv import load_dotenv
 import sqlalchemy as sq
 import sys
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt  # type: ignore
 
 sys.path.append("../")
 from Shared.DataService import DataService
