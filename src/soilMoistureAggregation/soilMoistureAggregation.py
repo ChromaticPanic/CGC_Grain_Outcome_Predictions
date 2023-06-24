@@ -10,7 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt  # type: ignore
 
 sys.path.append("../")
-from Shared.DataService import DataService
+from Shared.DataService import DataService  # type: ignore
 
 
 TABLE = "agg_soil_moisture"
