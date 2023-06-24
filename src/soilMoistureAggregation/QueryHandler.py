@@ -5,6 +5,7 @@ sys.path.append("../")
 from Shared.GenericQueryBuilder import GenericQueryBuilder
 from Shared.DataService import DataService
 
+
 class QueryHandler(GenericQueryBuilder):
     def createAggSoilMoistureTableReq(self, db: DataService):
         query = sq.text(super().tableExistsReq("agg_soil_moisture"))
