@@ -23,7 +23,7 @@ PG_ADDR = os.getenv("POSTGRES_ADDR", "")
 PG_PORT = os.getenv("POSTGRES_PORT", 5432)
 
 # connicting to database
-db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)
+db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
 conn = db.connect()
 
 query = sq.text("select * FROM public.soil_moisture")
