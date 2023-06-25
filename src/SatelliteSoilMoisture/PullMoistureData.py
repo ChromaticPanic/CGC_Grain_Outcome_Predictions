@@ -8,7 +8,7 @@ import sys
 sys.path.append("../")
 sys.path.append("../Shared/")
 
-from SoilMoistureQueryHandler import SoilMoistureQueryHandler
+from SoilMoistureQueryHandler import SoilMoistureQueryHandler # type: ignore
 from Shared.DataService import DataService  # type: ignore
 
 # path to soil moister data
