@@ -19,7 +19,7 @@ PG_USER = os.getenv("POSTGRES_USER", "")
 PG_PW = os.getenv("POSTGRES_PW", "")
 PG_DB = os.getenv("POSTGRES_DB", "")
 PG_ADDR = os.getenv("POSTGRES_ADDR", "")
-PG_PORT = os.getenv("POSTGRES_PORT", "")
+PG_PORT = os.getenv("POSTGRES_PORT", 5432)
 
 queryHandler = QueryHandler()
 
