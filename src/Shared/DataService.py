@@ -8,7 +8,8 @@ Typical usage example:
 """
 import atexit
 import sqlalchemy as sq
-from _typeshed import Incomplete
+
+# from _typeshed import Incomplete
 
 
 class DataService:
