@@ -4,11 +4,9 @@ import os
 
 sys.path.append("../")
 sys.path.append("../Shared/")
-# os.chdir("../")
-# from Querier import Querier
-# from GenericQueryBuilder import GenericQueryBuilder  # type: ignore
-from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
-from Shared.DataService import DataService  # type: ignore
+
+from GenericQueryBuilder import GenericQueryBuilder  # type: ignore
+from DataService import DataService  # type: ignore
 
 
 class SoilMoistureQueryHandler(GenericQueryBuilder):
