@@ -11,7 +11,6 @@ from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
 from Shared.DataService import DataService  # type: ignore
 
 
-
 class SoilMoistureQueryHandler(GenericQueryBuilder):
     def createSoilMoistureTableReq(self, db: DataService):
         query = sq.text(super().tableExistsReq("soil_moisture"))
