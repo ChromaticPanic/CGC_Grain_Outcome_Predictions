@@ -3,14 +3,14 @@ import sqlalchemy as sq
 
 sys.path.append("../")
 # from Querier import Querier
-from Querier import Querier
-from DataService import DataService
+from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
+from Shared.DataService import DataService  # type: ignore
 
 
-class QueryHandler(Querier):
+class QueryHandler(GenericQueryBuilder):
     def createSoilMoistureTableReq(self, db: DataService):
         query = sq.text(super().tableExistsReq("soil_moisture"))
-        tableExists = super().readTableExists(db.execute(query))
+        tableExists = super().readTableExists(db.execute(query))  # type: ignore
 
         if not tableExists:
             query = sq.text(

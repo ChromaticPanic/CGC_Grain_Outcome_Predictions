@@ -1,6 +1,6 @@
 import os
 import xarray as xr
-import geopandas as gpd
+import geopandas as gpd  # type: ignore
 from QueryHandler import QueryHandler
 from dotenv import load_dotenv
 import sqlalchemy as sq
@@ -15,15 +15,15 @@ MAIN_FOLDER_PATH = "/data/common/Images/"
 TABLE = "soil_moisture"
 
 load_dotenv()
-PG_USER = os.getenv("POSTGRES_USER")
-PG_PW = os.getenv("POSTGRES_PW")
-PG_DB = os.getenv("POSTGRES_DB")
-PG_ADDR = os.getenv("POSTGRES_ADDR")
-PG_PORT = os.getenv("POSTGRES_PORT")
+PG_USER = os.getenv("POSTGRES_USER", "")
+PG_PW = os.getenv("POSTGRES_PW", "")
+PG_DB = os.getenv("POSTGRES_DB", "")
+PG_ADDR = os.getenv("POSTGRES_ADDR", "")
+PG_PORT = os.getenv("POSTGRES_PORT", "")
 
 queryHandler = QueryHandler()
 
-db = DataService(PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW)
+db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
 conn = db.connect()
 
 queryHandler.createSoilMoistureTableReq(db)
@@ -44,8 +44,6 @@ for folder_name in folder_names:
 
     # Filter the file list to include only NetCDF files
     nc_file_list = [filename for filename in file_list if filename.endswith(".nc")]
-
-    points_in_region = []
 
     for nc_file in nc_file_list:
         # Construct the full file path
@@ -77,9 +75,11 @@ for folder_name in folder_names:
         df = gpd.GeoDataFrame(
             df, crs="EPSG:4326", geometry=gpd.points_from_xy(df.lon, df.lat)
         )  # Creates geometry from df using lon and lat as cords to create points (points being geometry)
-        df = df.to_crs(
+
+        df = df.to_crs(  # type: ignore
             crs="EPSG:3347"
         )  # Changes the points projection to match the agriculture regions of EPSG:3347
+
         df = gpd.sjoin(
             df, agRegions, how="left", predicate="within"
         )  # Join the two dataframes based on which points fit within what agriculture regions
