@@ -81,11 +81,7 @@ def main():
         )
 
         # Both CropDistrictCode and Severity can be Null, but if thats the case they need to be manually adjusted
-        if math.isnan(sample[EXPECTED_COLS[2]]):
-            sample[EXPECTED_COLS[2]] = None
-            validCode = True
         if math.isnan(sample[EXPECTED_COLS[4]]):
-            sample[EXPECTED_COLS[4]] = None
             validSeverity = True
 
         # If data fails to meet requirements, save for later
@@ -119,12 +115,13 @@ def main():
     ergotSamples.rename(
         columns={ergotSamples.columns[4]: RENAMED_COLS[4]}, inplace=True
     )
+    ergotSamples.loc[ergotSamples["severity"].isna(), "severity"] = 0
 
     # Sets the according data type for each attribute
     ergotSamples[["province"]] = ergotSamples[["province"]].astype(str)
     ergotSamples[["severity"]] = ergotSamples[["severity"]].astype(float)
     ergotSamples[["incidence"]] = ergotSamples[["incidence"]].astype(bool)
-    ergotSamples[["year"]] = ergotSamples[["year"]].astype(int)
+    ergotSamples[["year", "crop_district"]] = ergotSamples[["year", "crop_district"]].astype(int)
 
     # Stores the resulting data (not using return value due to its inaccuracy)
     ergotSamples.to_sql(
