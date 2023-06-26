@@ -16,20 +16,35 @@ MAIN_FOLDER_PATH = "/data/common/Images/"
 
 TABLE = "soil_moisture"
 
+# loading environment variables
 load_dotenv()
-PG_USER = os.getenv("POSTGRES_USER", "")
-PG_PW = os.getenv("POSTGRES_PW", "")
-PG_DB = os.getenv("POSTGRES_DB", "")
-PG_ADDR = os.getenv("POSTGRES_ADDR", "")
-PG_PORT = os.getenv("POSTGRES_PORT", 5432)
+PG_USER = os.getenv("POSTGRES_USER")
+PG_PW = os.getenv("POSTGRES_PW")
+PG_DB = os.getenv("POSTGRES_DB")
+PG_ADDR = os.getenv("POSTGRES_ADDR")
+PG_PORT = os.getenv("POSTGRES_PORT")
+
+if (
+    PG_DB is None
+    or PG_ADDR is None
+    or PG_PORT is None
+    or PG_USER is None
+    or PG_PW is None
+):
+    # updateLog(LOG_FILE, "Missing database credentials")
+    raise ValueError("Environment variables not set")
+
 
 queryHandler = SoilMoistureQueryHandler()
 
+# connect to database
 db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
 conn = db.connect()
 
+# create table if it doesn't exist
 queryHandler.createSoilMoistureTableReq(db)
 
+# query to pull ag_region from database
 query = sq.text("select cr_num, car_uid, geometry FROM public.census_ag_regions")
 agRegions = gpd.GeoDataFrame.from_postgis(
     query, conn, crs="EPSG:3347", geom_col="geometry"
@@ -70,8 +85,8 @@ for folder_name in folder_names:
             ],
             inplace=True,
         )
-        df.rename(columns={df.columns[0]: "date"}, inplace=True)
-        df.rename(columns={df.columns[3]: "soil_moisture"}, inplace=True)
+        df.rename(columns={"time": "date"}, inplace=True)
+        df.rename(columns={"sm": "soil_moisture"}, inplace=True)
         df = df[df["soil_moisture"].notna()]
 
         df = gpd.GeoDataFrame(
