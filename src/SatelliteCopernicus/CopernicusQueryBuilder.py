@@ -25,6 +25,7 @@ class CopernicusQueryBuilder(GenericQueryBuilder):
                     day                             INT,
                     hour                            INT,
                     cr_num                          INT,
+                    car_uid                         INT,
                     dewpoint_temperature            FLOAT,
                     temperature                     FLOAT,
                     evaporation_from_bare_soil      FLOAT,
