@@ -7,12 +7,12 @@
 # - Eventually the goal is to create data folders. You then drop the files you want to read the data from
 #   after reading the data these files then get moved else where
 # ----------------------------------------------------
-from ErgotQueryBuilder import ErgotQueryBuilder
+from ErgotQueryBuilder import ErgotQueryBuilder  # type: ignore
 from dotenv import load_dotenv
-import os, sys, math, pandas, sqlalchemy
+import os, sys, math, pandas, sqlalchemy  # type: ignore
 
 sys.path.append("../")
-from Shared.DataService import DataService
+from Shared.DataService import DataService  # type: ignore
 
 
 FILENAME = "newErgot"  # the name of the file you want to read
@@ -121,7 +121,9 @@ def main():
     ergotSamples[["province"]] = ergotSamples[["province"]].astype(str)
     ergotSamples[["severity"]] = ergotSamples[["severity"]].astype(float)
     ergotSamples[["incidence"]] = ergotSamples[["incidence"]].astype(bool)
-    ergotSamples[["year", "crop_district"]] = ergotSamples[["year", "crop_district"]].astype(int)
+    ergotSamples[["year", "crop_district"]] = ergotSamples[
+        ["year", "crop_district"]
+    ].astype(int)
 
     # Stores the resulting data (not using return value due to its inaccuracy)
     ergotSamples.to_sql(
