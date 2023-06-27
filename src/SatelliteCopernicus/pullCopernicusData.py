@@ -1,29 +1,45 @@
-import os, sys, time, random, zipfile, calendar, multiprocessing
+# %%
+import os
+import sys
+import time
+import random
+import zipfile
+import calendar
+import multiprocessing as mp
 import cdsapi  # type: ignore
-from CopernicusQueryBuilder import CopernicusQueryBuilder
 from dotenv import load_dotenv
 import sqlalchemy as sq
 import geopandas as gpd  # type: ignore
 import xarray as xr  # type: ignore
 import pandas as pd
 import numpy as np
+import black
+import jupyter_black as bl  # type: ignore
+from datetime import datetime
+from CopernicusQueryBuilder import CopernicusQueryBuilder
 
 sys.path.append("../")
-from Shared.DataService import DataService  # type: ignore
+from Shared.DataService import DataService 
 
+# %%
 
-load_dotenv()
+LOG_FILE = "data/scrape_copernicus_parallel.log"
+ERROR_FILE = "data/scrape_copernicus_parallel.err"
+
+bl.load()
+load_dotenv("../docker/.env")
 PG_DB = os.getenv("POSTGRES_DB")
 PG_ADDR = os.getenv("POSTGRES_ADDR")
 PG_PORT = os.getenv("POSTGRES_PORT")
 PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 
-NUM_WORKERS = 12  # The number of workers we want to employ (maximum is 16 as per the number of cores)
+# %%
+NUM_WORKERS = 1  # The number of workers we want to employ (maximum is 16 as per the number of cores)
 REQ_DELAY = 60  # 1 minute - the base delay required to bypass pulling limits
 MIN_DELAY = 60  # 1 minute - once added to the required delay, creates a minimum delay of 5 minutes to bypass pulling limits
 MAX_DELAY = 180  # 3 minutes - once added to the required delay, creates a maximum delay of 5 minutes to bypass pulling limits
-TABLE = "copernicus_satelite_data"
+TABLE = "copernicus_satellite_data"
 
 MIN_MONTH = 1
 MAX_MONTH = 12
@@ -89,45 +105,16 @@ HOURS = [
 AREA = [61, -125, 48, -88]
 
 
-def main():
-    db = DataService(
-        PG_DB, PG_ADDR, PG_PORT, PG_USER, PG_PW
-    )  # Handles connections to the database
-    queryHandler = CopernicusQueryBuilder()
-    jobArgs = []  # Holds tuples of arguments for pooled workers
-    count = 1  # An incrementer used to create unique file names
-
-    conn = db.connect()  # Connect to the database
-    queryHandler.createCopernicusTableReq(db)
-    agRegions = loadGeometry(
-        conn
-    )  # Load the agriculture region geometries from the database
-    db.cleanup()  # Disconnect from the database (workers maintain their own connections)
-
-    # Creates the list of arguments (stored as tuples) used in the multiple processes for pullSateliteData(agRegions, year, month, days, outputFile)
-    for year in years:
-        for month in months:
-            numDays = calendar.monthrange(int(year), int(month))[
-                1
-            ]  # Calculates the number of days - stored in index 1 of a tuple
-            delay = (count % NUM_WORKERS != 0) * (
-                REQ_DELAY * (count % NUM_WORKERS) + random.randint(MIN_DELAY, MAX_DELAY)
-            )  # calculates a random delay (asc for groups of 12)
-
-            days = [str(day) for day in range(1, numDays + 1)]
-            outputFile = f"copernicus{count}"
-            count += 1
-
-            jobArgs.append(tuple((agRegions, delay, year, month, days, outputFile)))
-
-    # Handles the multiple processes
-    pool = multiprocessing.Pool(NUM_WORKERS)  # Defines the number of workers
-    pool.starmap(
-        pullSateliteData, jobArgs
-    )  # Creates the queue of jobs - pullSateliteData is the function and jobArgs holds the arguments
-    pool.close()  # Once these jobs are finished close the multiple processes pool
+# %%
+def updateLog(fileName: str, message: str) -> None:
+    if fileName is not None:
+        with open(fileName, "a") as log:
+            log.write(message + "\n")
+            log.close()
+    print(message)
 
 
+# %%
 # loads the agriculture regions from the datbase (projection is EPSG:3347)
 def loadGeometry(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
     query = sq.text("select cr_num, geometry FROM public.census_ag_regions")
@@ -138,6 +125,7 @@ def loadGeometry(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
     return agRegions
 
 
+# %%
 def addDateAttrs(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     try:
         for index in range(len(df.index)):
@@ -156,6 +144,7 @@ def addDateAttrs(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     return df
 
 
+# %%
 def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     # Creates geometry from df using lon and lat as cords to create points (points being geometry)
     df = gpd.GeoDataFrame(
@@ -175,11 +164,11 @@ def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> gpd.GeoDataFram
     return df
 
 
+# %%
 def unzipFile(file: str):
     with zipfile.ZipFile(f"./{file}.netcdf.zip", "r") as zip_ref:  # Opens the zip file
-        zipinfos = (
-            zip_ref.infolist()
-        )  # Collects the information of each file contained within
+        # Collects the information of each file contained within
+        zipinfos = zip_ref.infolist()
 
         for zipinfo in zipinfos:  # For each file in the zip file (we only expect one)
             zipinfo.filename = f"{file}.nc"  # Changes the unzipped files name (once its unzipped of course)
@@ -187,17 +176,18 @@ def unzipFile(file: str):
             break
 
 
+# %%
 def readNetCDF(file: str) -> pd.DataFrame:
     dataset = xr.open_dataset(f"./{file}.nc")  # Loads the dataset from the netcdf file
-    df = (
-        dataset.to_dataframe().reset_index()
-    )  # Converts the contents into a dataframe and corrects indexes
+    # Converts the contents into a dataframe and corrects indexes
+    df = dataset.to_dataframe().reset_index()
 
     dataset.close()
 
     return df
 
 
+# %%
 def formatDF(df: pd.DataFrame) -> pd.DataFrame:
     # Adds the remaining attributes we want to store which will be gathered during data preprocessing
     df["year"] = None
@@ -282,7 +272,8 @@ def formatDF(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def pullSateliteData(
+# %%
+def pullSatelliteData(
     agRegions: gpd.GeoDataFrame,
     delay: int,
     year: str,
@@ -297,12 +288,14 @@ def pullSateliteData(
         or PG_USER is None
         or PG_PW is None
     ):
+        updateLog(ERROR_FILE, "Environment variables not set")
         raise ValueError("Environment variables not set")
 
     db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
     time.sleep(delay)
 
-    print(f"Starting to pull data for {year}/{month}")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    updateLog(LOG_FILE, f"{timestamp}Starting to pull data for {year}/{month}")
     conn = db.connect()
     c = cdsapi.Client()
 
@@ -321,45 +314,93 @@ def pullSateliteData(
             f"{outputFile}.netcdf.zip",
         )
 
-        unzipFile(
-            outputFile
-        )  # Unzips the file, renames it to outputFile and then deletes the source .zip file
+        # Unzips the file, renames it to outputFile and then deletes the source .zip file
+        unzipFile(outputFile)
 
         df = readNetCDF(outputFile)  # Converts the netcdf content into a dataframe
-        df = formatDF(
-            df
-        )  # Formats the data frame to process null values, add additional attributes and rename columns
+        # Formats the data frame to process null values, add additional attributes and rename columns
 
-        print(f"Starting to match regions for data in {year}/{month}")
-        df = addRegions(
-            df, agRegions
-        )  # Links data to their crop district number (stored in cr_num)
+        df = formatDF(df)
+
+        updateLog(LOG_FILE, f"Starting to match regions for data in {year}/{month}")
+        # Links data to their crop district number (stored in cr_num)
+        df = addRegions(df, agRegions)
         df = df.reset_index()
-        print(
-            f"Finished matching {len(df.index)} regions for the data in {year}/{month}"
+        updateLog(
+            LOG_FILE,
+            f"Finished matching {len(df.index)} regions for data in {year}/{month}",
         )
 
-        df = addDateAttrs(
-            df
-        )  # Breaks down the date attributes into its components and saves them for storage
-        print(f"Added date attributes for {year}/{month}")
+        # Breaks down the date attributes into its components and saves them for storage
+        df = addDateAttrs(df)
+        updateLog(LOG_FILE, f"Added date attributes for {year}/{month}")
 
-        print(f"Adding data from {year}/{month} to the Database")
+        updateLog(LOG_FILE, f"Adding data from {year}/{month} to the Database")
         df.drop(columns=["index"], inplace=True)
         df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)
     except Exception as e:
-        print(f"[ERROR] {e}")
+        updateLog(ERROR_FILE, f"Error pulling data for {year}/{month} : {e}")
 
     # Clean up the environment after the transaction
     try:
         os.remove(f"{outputFile}.nc")
         os.remove(f"{outputFile}.netcdf.zip")
     except Exception as e:
-        print(f"[ERROR] {e}")
+        updateLog(ERROR_FILE, f"Error cleaning up {year}/{month} : {e}")
 
     db.cleanup()
-    print(f"[SUCCESS] data was pulled for {year}/{month}")
+    updateLog(LOG_FILE, f"Finished adding data from {year}/{month} to the Database")
 
 
+# %%
+def main():
+    if (
+        PG_DB is None
+        or PG_ADDR is None
+        or PG_PORT is None
+        or PG_USER is None
+        or PG_PW is None
+    ):
+        raise ValueError("Environment variables not set")
+
+    # Handles connections to the database
+    db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
+    queryHandler = CopernicusQueryBuilder()
+    jobArgs = []  # Holds tuples of arguments for pooled workers
+    count = 1  # An incrementer used to create unique file names
+
+    conn = db.connect()  # Connect to the database
+    queryHandler.createCopernicusTableReq(db)
+
+    # Load the agriculture region geometries from the database
+    agRegions = loadGeometry(conn)
+    db.cleanup()  # Disconnect from the database (workers maintain their own connections)
+
+    # Creates the list of arguments (stored as tuples) used in the multiple processes for pullSateliteData(agRegions, year, month, days, outputFile)
+    for year in years:
+        for month in months:
+            # Calculates the number of days - stored in index 1 of a tuple
+            numDays = calendar.monthrange(int(year), int(month))[1]
+
+            # calculates a random delay (asc for groups of 12)
+            delay = (count % NUM_WORKERS != 0) * (
+                REQ_DELAY * (count % NUM_WORKERS) + random.randint(MIN_DELAY, MAX_DELAY)
+            )
+
+            days = [str(day) for day in range(1, numDays + 1)]
+            outputFile = f"copernicus{count}"
+            count += 1
+
+            jobArgs.append(tuple((agRegions, delay, year, month, days, outputFile)))
+
+    # Handles the multiple processes
+    pool = mp.Pool(NUM_WORKERS)  # Defines the number of workers
+
+    # Creates the queue of jobs - pullSateliteData is the function and jobArgs holds the arguments
+    pool.starmap(pullSatelliteData, jobArgs)
+    pool.close()  # Once these jobs are finished close the multiple processes pool
+
+
+# %%
 if __name__ == "__main__":
     main()
