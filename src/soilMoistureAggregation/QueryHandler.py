@@ -20,12 +20,14 @@ class QueryHandler(GenericQueryBuilder):
                 """
                 CREATE TABLE agg_soil_moisture (
                     id                      SERIAL,
-                    date                    DATE,
+                    year                    INT,
+                    month                   INT,
+                    day                     INT,
                     cr_num                  INT,
                     district                INT,
-                    soil_moisture_min      FLOAT,
+                    soil_moisture_min       FLOAT,
                     soil_moisture_max       FLOAT,
-                    soil_moisture_mean       FLOAT,
+                    soil_moisture_mean      FLOAT,
                     CONSTRAINT PK_AGG_SOIL_MOISTURE PRIMARY KEY(id)
                 );
                 COMMIT;
