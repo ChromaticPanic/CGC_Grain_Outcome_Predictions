@@ -19,7 +19,7 @@ from datetime import datetime
 from CopernicusQueryBuilder import CopernicusQueryBuilder
 
 sys.path.append("../")
-from Shared.DataService import DataService 
+from Shared.DataService import DataService
 
 # %%
 
