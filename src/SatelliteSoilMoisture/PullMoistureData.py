@@ -44,9 +44,7 @@ def main():
 
     queryHandler.createSoilMoistureTableReq(db)
 
-    query = sq.text(
-        "select cr_num, car_uid, geometry FROM public.census_ag_regions"
-    )
+    query = sq.text("select cr_num, car_uid, geometry FROM public.census_ag_regions")
     agRegions = get_agriculture_regions(conn)
 
     try:
@@ -61,9 +59,7 @@ def main():
 
     for folder_name in folder_names:
         print("started : " + folder_name)
-        updateLog(
-            LOG_FILE, f"Started Updating data for {folder_name} in {TABLE} ..."
-        )
+        updateLog(LOG_FILE, f"Started Updating data for {folder_name} in {TABLE} ...")
         folder_path = os.path.join(MAIN_FOLDER_PATH, folder_name)
 
         nc_file_list = get_nc_file_list(folder_path)
@@ -81,25 +77,19 @@ def main():
             )
             updateLog(ERROR_FILE, f"\t\t{e}")
 
-        updateLog(
-            LOG_FILE, f"Ended Updating data for {folder_name} in {TABLE} ..."
-        )
+        updateLog(LOG_FILE, f"Ended Updating data for {folder_name} in {TABLE} ...")
 
 
 def get_nc_file_list(folder_path):
     # Get a list of all files in the folder
     file_list = os.listdir(folder_path)
     # Filter the file list to include only NetCDF files
-    nc_file_list = [
-        filename for filename in file_list if filename.endswith(".nc")
-    ]
+    nc_file_list = [filename for filename in file_list if filename.endswith(".nc")]
     return nc_file_list
 
 
 def get_agriculture_regions(conn):
-    query = sq.text(
-        "select cr_num, car_uid, geometry FROM public.census_ag_regions"
-    )
+    query = sq.text("select cr_num, car_uid, geometry FROM public.census_ag_regions")
     agRegions = gpd.GeoDataFrame.from_postgis(
         query, conn, crs="EPSG:3347", geom_col="geometry"
     )
