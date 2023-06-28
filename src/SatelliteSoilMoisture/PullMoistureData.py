@@ -140,7 +140,7 @@ def process_netcdf_file(netcdf_file_path, conn, agRegions):
 
     df.drop(columns=["index"], inplace=True)
 
-    # df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)
+    df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)
 
 
 def updateLog(fileName: str, message: str) -> None:
