@@ -327,12 +327,7 @@ def pullSatelliteData(
                 LOG_FILE, f"Adding rows {len(df.index)} data from {year}/{month}/{currDay} to the Database\n"
             )
             df.drop(columns=["index"], inplace=True)
-            print(df.columns)
-            # print first row of df
-            print(df.iloc[0])
-            # print types
-            print(df.dtypes)
-            df.to_sql("public." + TABLE, conn, if_exists="append", index=False)
+            df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)
         except Exception as e:
             updateLog(
                 ERROR_FILE, f"Error pulling data for {year}/{month}/{currDay} : {e}\n"
