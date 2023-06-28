@@ -163,5 +163,6 @@ cython_debug/
 **/data/*
 data/*
 _*/
+.vscode/*
 
 .vscode/*

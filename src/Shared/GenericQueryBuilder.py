@@ -16,7 +16,4 @@ class GenericQueryBuilder:
         """
 
     def readTableExists(self, results: sqlalchemy.engine.cursor.CursorResult) -> bool:
-        row = results.first()
-        if row is None:
-            return False
-        return row[0]
+        return results.first() is not None

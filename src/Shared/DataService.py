@@ -12,8 +12,8 @@ import sqlalchemy as sq
 
 class DataService:
     dbURL: str
-    engine: sq.Engine
-    conn: sq.Connection
+    engine: sq.engine.base.Engine
+    conn: sq.engine.base.Connection
 
     def __init__(
         self,
@@ -24,11 +24,11 @@ class DataService:
         pw: str = "password",
     ) -> None:
         self.dbURL: str = f"postgresql://{user}:{pw}@{addr}:{port}/{db}"
-        self.engine: sq.Engine = sq.create_engine(self.dbURL)
-        self.conn: sq.Connection = self.connect()
+        self.engine: sq.engine.base.Engine = sq.create_engine(self.dbURL)
+        self.conn: sq.engine.base.Connection = self.connect()
         atexit.register(self.cleanup)
 
-    def connect(self) -> sq.Connection:
+    def connect(self) -> sq.engine.base.Connection:
         """Connect to PostgreSQL database"""
         self.conn = self.engine.connect()
         return self.conn
