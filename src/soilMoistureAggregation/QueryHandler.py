@@ -4,10 +4,10 @@ import sqlalchemy as sq
 sys.path.append("../")
 sys.path.append("../Shared/")
 # from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
-from GenericQueryBuilder import GenericQueryBuilder  # type: ignore
+from GenericQueryBuilder import GenericQueryBuilder 
 
 # from Shared.DataService import DataService  # type: ignore
-from DataService import DataService  # type: ignore
+from DataService import DataService
 
 
 class QueryHandler(GenericQueryBuilder):

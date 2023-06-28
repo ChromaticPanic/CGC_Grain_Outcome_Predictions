@@ -8,8 +8,8 @@ import sys
 sys.path.append("../")
 sys.path.append("../Shared/")
 
-from SoilMoistureQueryHandler import SoilMoistureQueryHandler  # type: ignore
-from Shared.DataService import DataService  # type: ignore
+from SoilMoistureQueryHandler import SoilMoistureQueryHandler
+from Shared.DataService import DataService
 
 # path to soil moister data
 MAIN_FOLDER_PATH = "/data/common/Images/"
