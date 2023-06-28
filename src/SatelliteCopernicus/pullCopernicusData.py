@@ -8,6 +8,7 @@ import calendar
 import multiprocessing as mp
 import cdsapi  # type: ignore
 from dotenv import load_dotenv
+from pandas import Index
 import sqlalchemy as sq
 import geopandas as gpd  # type: ignore
 import xarray as xr  # type: ignore
@@ -18,7 +19,10 @@ import jupyter_black as bl  # type: ignore
 from datetime import datetime
 from CopernicusQueryBuilder import CopernicusQueryBuilder
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
 sys.path.append("../")
 from Shared.DataService import DataService
 
@@ -35,11 +39,11 @@ PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 
 # %%
-NUM_WORKERS = 4  # The number of workers we want to employ (maximum is 16 as per the number of cores)
+NUM_WORKERS = 6  # The number of workers we want to employ (maximum is 16 as per the number of cores)
 REQ_DELAY = 60  # 1 minute - the base delay required to bypass pulling limits
 MIN_DELAY = 60  # 1 minute - once added to the required delay, creates a minimum delay of 5 minutes to bypass pulling limits
 MAX_DELAY = 180  # 3 minutes - once added to the required delay, creates a maximum delay of 5 minutes to bypass pulling limits
-TABLE = "copernicus_satellite_data"
+TABLE = "agg_day_copernicus_satellite_data"
 
 MIN_MONTH = 1
 MAX_MONTH = 12
@@ -134,11 +138,9 @@ def addDateAttrs(df: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
             df.at[index, "year"] = date.year
             df.at[index, "month"] = date.month
             df.at[index, "day"] = date.day
-            df.at[index, "hour"] = date.hour
 
-        df[["year", "month", "day", "hour"]] = df[
-            ["year", "month", "day", "hour"]
-        ].astype(int)
+        df[["year", "month", "day"]] = df[["year", "month", "day"]].astype(int)
+        df.drop(columns=["datetime"], inplace=True)
     except Exception as e:
         updateLog(ERROR_FILE, f"Error adding date attributes {e}\n")
 
@@ -158,7 +160,7 @@ def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> gpd.GeoDataFram
     # Join the two dataframes based on which points fit within what agriculture regions
     df = gpd.sjoin(df, agRegions, how="left", predicate="within")
 
-    df.drop(columns=["geometry", "index_right"], inplace=True)
+    df.drop(columns=["geometry", "index_right", "lat", "lon"], inplace=True)
     df = df[df["cr_num"].notna()]  # Take rows that are valid numbers
     df[["cr_num"]] = df[["cr_num"]].astype(int)
     df[["car_uid"]] = df[["car_uid"]].astype(int)
@@ -196,7 +198,6 @@ def formatDF(df: pd.DataFrame) -> pd.DataFrame:
         df["year"] = None
         df["month"] = None
         df["day"] = None
-        df["hour"] = None
 
         # Renames the dataframes columns so it can be matched when its posted to the database
         df.rename(columns={"longitude": "lon"}, inplace=True)
@@ -257,6 +258,108 @@ def formatDF(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # %%
+def generateDailyAggregate(df: pd.DataFrame) -> pd.DataFrame:
+    try:
+        aggregate = (
+            df.groupby(["year", "month", "day", "cr_num", "car_uid"])
+            .agg(
+                {
+                    "dewpoint_temperature": ["min", "max", "mean"],
+                    "temperature": ["min", "max", "mean"],
+                    "evaporation_from_bare_soil": ["min", "max", "mean"],
+                    "skin_reservoir_content": ["min", "max", "mean"],
+                    "skin_temperature": ["min", "max", "mean"],
+                    "snowmelt": ["min", "max", "mean"],
+                    "soil_temperature_level_1": ["min", "max", "mean"],
+                    "soil_temperature_level_2": ["min", "max", "mean"],
+                    "soil_temperature_level_3": ["min", "max", "mean"],
+                    "soil_temperature_level_4": ["min", "max", "mean"],
+                    "surface_net_solar_radiation": ["min", "max", "mean"],
+                    "surface_pressure": ["min", "max", "mean"],
+                    "volumetric_soil_water_layer_1": ["min", "max", "mean"],
+                    "volumetric_soil_water_layer_2": ["min", "max", "mean"],
+                    "volumetric_soil_water_layer_3": ["min", "max", "mean"],
+                    "volumetric_soil_water_layer_4": ["min", "max", "mean"],
+                    "leaf_area_index_high_vegetation": ["min", "max", "mean"],
+                    "leaf_area_index_low_vegetation": ["min", "max", "mean"],
+                }
+            )
+            .reset_index()
+        )
+
+        columns = [
+            "min_dewpoint_temperature",
+            "max_dewpoint_temperature",
+            "mean_dewpoint_temperature",
+            "min_temperature",
+            "max_temperature",
+            "mean_temperature",
+            "min_evaporation_from_bare_soil",
+            "max_evaporation_from_bare_soil",
+            "mean_evaporation_from_bare_soil",
+            "min_skin_reservoir_content",
+            "max_skin_reservoir_content",
+            "mean_skin_reservoir_content",
+            "min_skin_temperature",
+            "max_skin_temperature",
+            "mean_skin_temperature",
+            "min_snowmelt",
+            "max_snowmelt",
+            "mean_snowmelt",
+            "min_soil_temperature_level_1",
+            "max_soil_temperature_level_1",
+            "mean_soil_temperature_level_1",
+            "min_soil_temperature_level_2",
+            "max_soil_temperature_level_2",
+            "mean_soil_temperature_level_2",
+            "min_soil_temperature_level_3",
+            "max_soil_temperature_level_3",
+            "mean_soil_temperature_level_3",
+            "min_soil_temperature_level_4",
+            "max_soil_temperature_level_4",
+            "mean_soil_temperature_level_4",
+            "min_surface_net_solar_radiation",
+            "max_surface_net_solar_radiation",
+            "mean_surface_net_solar_radiation",
+            "min_surface_pressure",
+            "max_surface_pressure",
+            "mean_surface_pressure",
+            "min_volumetric_soil_water_layer_1",
+            "max_volumetric_soil_water_layer_1",
+            "mean_volumetric_soil_water_layer_1",
+            "min_volumetric_soil_water_layer_2",
+            "max_volumetric_soil_water_layer_2",
+            "mean_volumetric_soil_water_layer_2",
+            "min_volumetric_soil_water_layer_3",
+            "max_volumetric_soil_water_layer_3",
+            "mean_volumetric_soil_water_layer_3",
+            "min_volumetric_soil_water_layer_4",
+            "max_volumetric_soil_water_layer_4",
+            "mean_volumetric_soil_water_layer_4",
+            "min_leaf_area_index_high_vegetation",
+            "max_leaf_area_index_high_vegetation",
+            "mean_leaf_area_index_high_vegetation",
+            "min_leaf_area_index_low_vegetation",
+            "max_leaf_area_index_low_vegetation",
+            "mean_leaf_area_index_low_vegetation",
+        ]
+        all_columns = [
+            "year",
+            "month",
+            "day",
+            "cr_num",
+            "car_uid",
+        ]
+        all_columns.extend(columns)
+        aggregate.columns = Index(all_columns)
+        aggregate[columns] = aggregate[columns].astype(float)
+    except Exception as e:
+        updateLog(ERROR_FILE, f"Error generating daily aggregate {e}\n")
+
+    return aggregate
+
+
+# %%
 def pullSatelliteData(
     agRegions: gpd.GeoDataFrame,
     delay: int,
@@ -265,7 +368,10 @@ def pullSatelliteData(
     days: list,
     outputFile: str,
 ):
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    try:
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    except:
+        pass
     if (
         PG_DB is None
         or PG_ADDR is None
@@ -324,11 +430,13 @@ def pullSatelliteData(
             df = addDateAttrs(df)
             updateLog(LOG_FILE, f"Added date attributes for {year}/{month}/{currDay}\n")
 
+            df = generateDailyAggregate(df)
+
             updateLog(
                 LOG_FILE,
                 f"Adding rows {len(df.index)} data from {year}/{month}/{currDay} to the Database\n",
             )
-            df.drop(columns=["index"], inplace=True)
+            # df.drop(columns=["index"], inplace=True)
             df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)
         except Exception as e:
             updateLog(
@@ -361,7 +469,6 @@ def main():
     db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
     queryHandler = CopernicusQueryBuilder()
     jobArgs = []  # Holds tuples of arguments for pooled workers
-    count = 1  # Used to calculate the delay for each worker
 
     conn = db.connect()  # Connect to the database
     queryHandler.createCopernicusTableReq(db)
@@ -377,10 +484,7 @@ def main():
             numDays = calendar.monthrange(int(year), int(month))[1]
 
             # calculates a random delay (asc for groups of 12)
-            delay = (count % NUM_WORKERS != 0) * (
-                REQ_DELAY * (count % NUM_WORKERS) + random.randint(MIN_DELAY, MAX_DELAY)
-            )
-            count += 1
+            delay = random.randint(MIN_DELAY, MAX_DELAY)
 
             days = [str(day) for day in range(1, numDays + 1)]
             outputFile = f"data/copernicus_{year}_{month}"
