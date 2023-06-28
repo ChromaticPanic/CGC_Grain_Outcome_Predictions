@@ -392,7 +392,10 @@ def pullSatelliteData(
         currFile = f"{outputFile}_{currDay}"
         try:
             starttime = datetime.now().strftime("%Y%m%d%H%M%S")
-            updateLog(LOG_FILE, f"{starttime} Starting to pull data for {year}/{month}/{currDay}\n")
+            updateLog(
+                LOG_FILE,
+                f"{starttime} Starting to pull data for {year}/{month}/{currDay}\n",
+            )
             c.retrieve(
                 "reanalysis-era5-land",
                 {
