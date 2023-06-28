@@ -6,8 +6,6 @@ import sqlalchemy as sq
 import sys
 
 sys.path.append("../")
-sys.path.append("../Shared/")
-
 from SoilMoistureQueryHandler import SoilMoistureQueryHandler
 from Shared.DataService import DataService
 

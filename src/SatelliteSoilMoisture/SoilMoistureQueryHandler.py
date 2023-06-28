@@ -3,10 +3,8 @@ import sqlalchemy as sq
 import os
 
 sys.path.append("../")
-sys.path.append("../Shared/")
-
-from GenericQueryBuilder import GenericQueryBuilder 
-from DataService import DataService 
+from Shared.GenericQueryBuilder import GenericQueryBuilder
+from Shared.DataService import DataService
 
 
 class SoilMoistureQueryHandler(GenericQueryBuilder):
