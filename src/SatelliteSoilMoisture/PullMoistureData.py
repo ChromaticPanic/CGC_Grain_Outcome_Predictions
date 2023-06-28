@@ -87,14 +87,6 @@ def get_agriculture_regions(conn):
     query = sq.text("select cr_num, car_uid, geometry FROM public.census_ag_regions")
     agRegions = gpd.GeoDataFrame.from_postgis(query, conn, crs="EPSG:3347", geom_col="geometry")
     return agRegions
-    
-def updateLog(fileName: str, message: str) -> None:
-    try:
-        if fileName is not None:
-            with open(fileName, "a") as log:
-                log.write(message + "\n")
-    except FileExistsError as e:
-        print(message)
 
 def process_netcdf_file(netcdf_file_path, conn, agRegions):
     dataset = xr.open_dataset(netcdf_file_path)
@@ -137,7 +129,6 @@ def process_netcdf_file(netcdf_file_path, conn, agRegions):
     df.drop(columns=["index"], inplace=True)
 
         # df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)
-    print(folder_name + " end")
     
 def updateLog(fileName: str, message: str) -> None:
     try:
