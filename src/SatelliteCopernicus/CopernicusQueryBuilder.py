@@ -9,13 +9,13 @@ from DataService import DataService  # type: ignore
 
 class CopernicusQueryBuilder(GenericQueryBuilder):
     def createCopernicusTableReq(self, db: DataService):
-        query = sq.text(super().tableExistsReq("copernicus_satelite_data"))
+        query = sq.text(super().tableExistsReq("copernicus_satellite_data"))
         tableExists = super().readTableExists(db.execute(query))  # type: ignore
 
         if not tableExists:
             query = sq.text(
                 """
-                CREATE TABLE copernicus_satelite_data (
+                CREATE TABLE copernicus_satellite_data (
                     id                              SERIAL,
                     lon                             FLOAT,
                     lat                             FLOAT,
@@ -54,13 +54,13 @@ class CopernicusQueryBuilder(GenericQueryBuilder):
             db.execute(query)
 
     def createCopernicusAggTableReq(self, db: DataService):
-        query = sq.text(super().tableExistsReq("copernicus_satelite_data"))
+        query = sq.text(super().tableExistsReq("copernicus_satellite_data_agg"))
         tableExists = super().readTableExists(db.execute(query))  # type: ignore
 
         if not tableExists:
             query = sq.text(
                 """
-                CREATE TABLE copernicus_satelite_data (
+                CREATE TABLE copernicus_satellite_data_agg (
                     id                              SERIAL,
                     lon                             FLOAT,
                     lat                             FLOAT,
