@@ -39,7 +39,7 @@ PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 
 # %%
-NUM_WORKERS = 6  # The number of workers we want to employ (maximum is 16 as per the number of cores)
+NUM_WORKERS = 10  # The number of workers we want to employ (maximum is 16 as per the number of cores)
 REQ_DELAY = 60  # 1 minute - the base delay required to bypass pulling limits
 MIN_DELAY = 60  # 1 minute - once added to the required delay, creates a minimum delay of 5 minutes to bypass pulling limits
 MAX_DELAY = 180  # 3 minutes - once added to the required delay, creates a maximum delay of 5 minutes to bypass pulling limits
@@ -385,13 +385,14 @@ def pullSatelliteData(
     db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
     time.sleep(delay)
 
-    updateLog(LOG_FILE, f"Starting to pull data for {year}/{month}\n")
     conn = db.connect()
     c = cdsapi.Client()
 
     for currDay in days:
         currFile = f"{outputFile}_{currDay}"
         try:
+            starttime = datetime.now().strftime("%Y%m%d%H%M%S")
+            updateLog(LOG_FILE, f"{starttime} Starting to pull data for {year}/{month}/{currDay}\n")
             c.retrieve(
                 "reanalysis-era5-land",
                 {
@@ -438,6 +439,10 @@ def pullSatelliteData(
             )
             # df.drop(columns=["index"], inplace=True)
             df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)
+            updateLog(
+                LOG_FILE,
+                f"{starttime} Finished data pull from {year}/{month}/{currDay}\n",
+            )
         except Exception as e:
             updateLog(
                 ERROR_FILE, f"Error pulling data for {year}/{month}/{currDay} : {e}\n"
@@ -451,7 +456,7 @@ def pullSatelliteData(
             updateLog(ERROR_FILE, f"Error cleaning up {year}/{month}/{currDay} : {e}\n")
 
     db.cleanup()
-    updateLog(LOG_FILE, f"Finished adding data from {year}/{month} to the Database\n")
+    updateLog(LOG_FILE, f"Finished adding {year}/{month} to the Database\n")
 
 
 # %%
