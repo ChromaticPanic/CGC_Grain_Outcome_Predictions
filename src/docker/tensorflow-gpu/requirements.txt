@@ -5,7 +5,7 @@ pandas
 numpy
 geopandas
 psycopg2-binary
-sqlalchemy
+sqlalchemy<2.0.0
 scikit-learn
 pygeos
 rtree
