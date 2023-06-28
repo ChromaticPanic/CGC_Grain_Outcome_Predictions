@@ -56,7 +56,7 @@ def main():
         return
 
     for folder_name in folder_names:
-        print("started : " + fol)
+        print("started : " + folder_name)
         updateLog(LOG_FILE, f"Started Updating data for {folder_name} in {TABLE} ...")
         folder_path = os.path.join(MAIN_FOLDER_PATH, folder_name)
 
@@ -136,7 +136,16 @@ def process_netcdf_file(netcdf_file_path, conn, agRegions):
 
     df.drop(columns=["index"], inplace=True)
 
-    # df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)       
+        # df.to_sql(TABLE, conn, schema="public", if_exists="append", index=False)
+    print(folder_name + " end")
+    
+def updateLog(fileName: str, message: str) -> None:
+    try:
+        if fileName is not None:
+            with open(fileName, "a") as log:
+                log.write(message + "\n")
+    except Exception as e:
+        print(message)
 
 if __name__ == "__main__":
     main()
