@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 import os, sys, math, pandas, sqlalchemy  # type: ignore
 
 sys.path.append("../")
-from Shared.DataService import DataService  # type: ignore
+from Shared.DataService import DataService
 
 
 FILENAME = "newErgot"  # the name of the file you want to read

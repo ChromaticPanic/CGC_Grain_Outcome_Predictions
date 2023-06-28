@@ -6,7 +6,7 @@
 import sys
 
 sys.path.append("../")
-from Shared.GenericQueryBuilder import GenericQueryBuilder  # type: ignore
+from Shared.GenericQueryBuilder import GenericQueryBuilder
 
 
 class ErgotQueryBuilder(GenericQueryBuilder):
