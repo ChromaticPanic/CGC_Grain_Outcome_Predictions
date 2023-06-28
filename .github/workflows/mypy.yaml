@@ -28,6 +28,7 @@ jobs:
           python3 -m pip install pandas-stubs
           python3 -m pip install lxml-stubs
           python3 -m pip install types-requests
+          python3 -m pip install sqlalchemy-stubs
           cd src/
           mypy **/*.py
           nbqa mypy **/*.ipynb
