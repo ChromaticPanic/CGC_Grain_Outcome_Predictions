@@ -9,7 +9,7 @@
 <br>
 <br>
 <div align="right">
-<img src='.github/img/a0bb2d9c-8258-4242-9253-efcdd9c15260.png' width="500"/>
+<img src='.github/img/districtsAndLabels.png' width="500"/>
 </div>
 </div>
 
@@ -203,6 +203,7 @@ These can later be verified by running
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | 
 ||province abbreviation|EPSG:3347|EPSG:3347||unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||crop region number
 
+<img src='.github/img/allStations.png' width="600"/>
 <br>
 
 ### mb_staion_data 
