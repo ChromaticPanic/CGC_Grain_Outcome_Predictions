@@ -190,7 +190,7 @@ These can later be verified by running
 ![Database schema](.github/img/ab_station_data.png)
 
 ### census_ag_regions
-|car_uid|car_name|pr_uid|ag_uid|geometry|cr_num|
+|district|car_name|pr_uid|ag_uid|geometry|cr_num|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | region identifer  | region name  | province identifier  | | region boundaries  | crop region number (often used as the reference)
 
@@ -199,8 +199,8 @@ These can later be verified by running
 
 ### stations_hly
 ### stations_dly
-|station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | 
+|station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|district|
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -|
 ||province abbreviation|EPSG:3347|EPSG:3347||unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||crop region number
 
 <img src='.github/img/allStations.png' width="600"/>
@@ -247,7 +247,7 @@ Please note that all attributes are listed one to one minus the two corrected ab
 <br>
 
 ### labeled_soil
-|id|poly_id|soil_ids|cr_num|car_uid|
+|id|poly_id|soil_ids|cr_num|district|
 |-|-|-|-|-|
 |unique identifier||list of all soil ids in the region|crop region|crop region district|
 
