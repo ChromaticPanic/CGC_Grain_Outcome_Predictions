@@ -7,9 +7,11 @@
 # - Eventually the goal is to create data folders. You then drop the files you want to read the data from
 #   after reading the data these files then get moved else where
 # ----------------------------------------------------
-from ErgotQueryBuilder import ErgotQueryBuilder  # type: ignore
+from ErgotQueryBuilder import ErgotQueryBuilder
 from dotenv import load_dotenv
-import os, sys, math, pandas, sqlalchemy  # type: ignore
+import os, sys, math
+import sqlalchemy as sq
+import pandas as pd  # type: ignore
 
 sys.path.append("../")
 from Shared.DataService import DataService
@@ -17,20 +19,24 @@ from Shared.DataService import DataService
 
 FILENAME = "newErgot"  # the name of the file you want to read
 TABLENAME = "ergot_sample"  # the name of the table where the data should be stored
+
+# the expected csv column names
 EXPECTED_COLS = [
     "Year",
     "ProvinceAbbr",
     "CropDistrictCode",
     "Incidence",
     "Severity",
-]  # the expected csv column names
+]
+
+# the desired database column names
 RENAMED_COLS = [
     "year",
     "province",
     "crop_district",
     "incidence",
     "severity",
-]  # the desired database column names
+]
 
 load_dotenv()
 PG_DB = os.getenv("POSTGRES_DB")
@@ -41,9 +47,9 @@ PG_PW = os.getenv("POSTGRES_PW")
 
 
 def main():
-    ergotSamples = pandas.read_csv(
-        f"./data/{FILENAME}.csv"
-    )  # Holds the ergot data to import
+    # Holds the ergot data to import
+    ergotSamples = pd.read_csv(f"./data/{FILENAME}.csv")
+
     if (
         PG_DB is None
         or PG_ADDR is None
@@ -55,14 +61,12 @@ def main():
             "One of the following environment variables is not set: POSTGRES_DB, POSTGRES_ADDR, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PW"
         )
 
-    db = DataService(
-        PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW
-    )  # Handles connections to the database
+    # Handles connections to the database
+    db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
     conn = db.connect()  # Connect to the database
 
-    queryHandler = (
-        ErgotQueryBuilder()
-    )  # Handles (builds/processes) requests to the database
+    # Handles (builds/processes) requests to the database
+    queryHandler = ErgotQueryBuilder()
     ommitedData = []  # Holds data that failed to meet constraint (and was thus ommited)
 
     checkAttributes(ergotSamples, EXPECTED_COLS)
@@ -144,7 +148,7 @@ def main():
     db.cleanup()
 
 
-def checkAttributes(data: pandas.DataFrame, expectedCols: list):
+def checkAttributes(data: pd.DataFrame, expectedCols: list):
     for col in expectedCols:  # For each of the expected columns
         if not col in data.keys():  # check if its in the dataframe
             print(f"[ERROR] ergot sample file is missing the expected attribute: {col}")
@@ -153,19 +157,18 @@ def checkAttributes(data: pandas.DataFrame, expectedCols: list):
 
 def checkTable(db: DataService, queryHandler: ErgotQueryBuilder):
     # Checks if the table needed to run the pipeline has been created, if not creates it
-    query = sqlalchemy.text(
-        queryHandler.tableExistsReq(TABLENAME)
-    )  # Create the command needed to check if the table exists
+
+    # Create the command needed to check if the table exists
+    query = sq.text(queryHandler.tableExistsReq(TABLENAME))
     tableExists = queryHandler.readTableExists(db.execute(query))  # type: ignore
 
     if not tableExists:
-        query = sqlalchemy.text(
-            queryHandler.createErgotSampleTableReq()
-        )  # Create the command needed to create the table
+        # Create the command needed to create the table
+        query = sq.text(queryHandler.createErgotSampleTableReq())
         db.execute(query)
 
 
-def dropExtraAttributes(data: pandas.DataFrame, requiredCol: list):
+def dropExtraAttributes(data: pd.DataFrame, requiredCol: list):
     attributesToDrop = []  # Stores the extra attributes we wish to drop
 
     for attr in data.keys():  # For each attribute in the dataframe
