@@ -42,7 +42,7 @@ def main():
 
     queryHandler.createSoilMoistureTableReq(db)
 
-    query = sq.text("select cr_num, car_uid, geometry FROM public.census_ag_regions")
+    query = sq.text("select cr_num, district, geometry FROM public.census_ag_regions")
     agRegions = get_agriculture_regions(conn)
 
     try:
@@ -87,7 +87,7 @@ def get_nc_file_list(folder_path):
 
 
 def get_agriculture_regions(conn):
-    query = sq.text("select cr_num, car_uid, geometry FROM public.census_ag_regions")
+    query = sq.text("select cr_num, district, geometry FROM public.census_ag_regions")
     agRegions = gpd.GeoDataFrame.from_postgis(
         query, conn, crs="EPSG:3347", geom_col="geometry"
     )

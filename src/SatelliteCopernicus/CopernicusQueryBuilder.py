@@ -21,7 +21,7 @@ class CopernicusQueryBuilder(GenericQueryBuilder):
                     month                           INT,
                     day                             INT,
                     cr_num                          INT,
-                    car_uid                         INT,
+                    district                        INT,
                     
                     min_dewpoint_temperature             FLOAT,
                     min_temperature                      FLOAT,
@@ -104,7 +104,7 @@ class CopernicusQueryBuilder(GenericQueryBuilder):
                     month                           INT,
                     day                             INT,
                     cr_num                          INT,
-                    car_uid                         INT,
+                    district                        INT,
                     dewpoint_temperature_min             FLOAT,
                     temperature_min                      FLOAT,
                     evaporation_from_bare_soil_min       FLOAT,
