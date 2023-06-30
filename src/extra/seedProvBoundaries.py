@@ -25,6 +25,6 @@ provincesDBF.to_postgis("province", conn, index=False, if_exists="replace")
 
 agRegionsDBF = agRegionsDBF.set_crs(4617, allow_override=True)
 provincesDBF.to_postgis("agriculture_region", conn, index=False, if_exists="replace")
-conn.commit()
+
 conn.close()
 engine.dispose()
