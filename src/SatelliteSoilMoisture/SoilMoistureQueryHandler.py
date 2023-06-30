@@ -21,7 +21,7 @@ class SoilMoistureQueryHandler(GenericQueryBuilder):
                     lat             FLOAT,
                     date            DATE,
                     cr_num          INT,
-                    car_uid         INT,
+                    district        INT,
                     soil_moisture   FLOAT,
                     CONSTRAINT PK_SOIL_MOISTURE PRIMARY KEY(id)
                 );

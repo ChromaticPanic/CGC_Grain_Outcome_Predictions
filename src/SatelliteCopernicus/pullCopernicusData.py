@@ -122,7 +122,7 @@ def updateLog(fileName: str, message: str) -> None:
 # %%
 # loads the agriculture regions from the datbase (projection is EPSG:3347)
 def loadGeometry(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
-    query = sq.text("select cr_num, car_uid, geometry FROM public.census_ag_regions")
+    query = sq.text("select cr_num, district, geometry FROM public.census_ag_regions")
     agRegions = gpd.GeoDataFrame.from_postgis(
         query, conn, crs="EPSG:3347", geom_col="geometry"
     )
@@ -163,7 +163,7 @@ def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> gpd.GeoDataFram
     df.drop(columns=["geometry", "index_right", "lat", "lon"], inplace=True)
     df = df[df["cr_num"].notna()]  # Take rows that are valid numbers
     df[["cr_num"]] = df[["cr_num"]].astype(int)
-    df[["car_uid"]] = df[["car_uid"]].astype(int)
+    df[["district"]] = df[["district"]].astype(int)
 
     return df
 
@@ -261,7 +261,7 @@ def formatDF(df: pd.DataFrame) -> pd.DataFrame:
 def generateDailyAggregate(df: pd.DataFrame) -> pd.DataFrame:
     try:
         aggregate = (
-            df.groupby(["year", "month", "day", "cr_num", "car_uid"])
+            df.groupby(["year", "month", "day", "cr_num", "district"])
             .agg(
                 {
                     "dewpoint_temperature": ["min", "max", "mean"],
@@ -348,7 +348,7 @@ def generateDailyAggregate(df: pd.DataFrame) -> pd.DataFrame:
             "month",
             "day",
             "cr_num",
-            "car_uid",
+            "district",
         ]
         all_columns.extend(columns)
         aggregate.columns = Index(all_columns)
