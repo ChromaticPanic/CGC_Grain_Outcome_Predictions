@@ -51,12 +51,10 @@ MAX_MONTH = 12
 MIN_YEAR = 1995
 MAX_YEAR = 2023
 
-years = [
-    str(year) for year in range(MIN_YEAR, MAX_YEAR + 1)
-]  # the year range we want to pull data from
-months = [
-    str(month) for month in range(MIN_MONTH, MAX_MONTH + 1)
-]  # the month range we want to pull data from
+# the year range we want to pull data from
+years = [str(year) for year in range(MIN_YEAR, MAX_YEAR + 1)]
+# the month range we want to pull data from
+months = [str(month) for month in range(MIN_MONTH, MAX_MONTH + 1)]
 
 ATTRS = [  # the attributes we want to pull data for
     "2m_dewpoint_temperature",
