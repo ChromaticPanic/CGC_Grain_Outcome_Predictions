@@ -22,6 +22,7 @@
         - [PGAdmin](#pgadmin)
         - [PostgreSQL](#postgresql)
         - [Tensorflow](#tensorflow)
+        - [pgsync](#pgsync)
     - [Using Aviary Labs](#using-aviary-labs)
         - [Setting up credentials](#setting-up-credentials)
         - [Commands](#commands)
@@ -105,7 +106,11 @@ Our current environment uses docker compose to launch containers housing [PGADMI
 #### Tensorflow
 - Tensorflow-gpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. 
 
-- Tensorflow-cpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. 
+#### pgsync
+- pgsync is used to synchroniza postgres databases
+- ```sudo apt-get install ruby-dev libpq-dev build-essential```
+- ```docker pull ankane/pgsync```
+- ```alias pgsync="docker run -ti ankane/pgsync"```
 
 **NOTE: Jupyter Labs requires a token for entry. This token can be located in the following ways:**
 - (*windows*) printed in the terminal used to run setup.bat 
