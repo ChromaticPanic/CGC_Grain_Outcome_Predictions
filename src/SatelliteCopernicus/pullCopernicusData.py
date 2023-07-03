@@ -8,7 +8,6 @@ import calendar
 import multiprocessing as mp
 import cdsapi  # type: ignore
 from dotenv import load_dotenv
-from pandas import Index
 import sqlalchemy as sq
 import geopandas as gpd  # type: ignore
 import xarray as xr  # type: ignore
@@ -16,6 +15,7 @@ import pandas as pd
 import numpy as np
 import black
 import jupyter_black as bl  # type: ignore
+from pandas import Index
 from datetime import datetime
 from CopernicusQueryBuilder import CopernicusQueryBuilder
 
@@ -27,8 +27,8 @@ sys.path.append("../")
 from Shared.DataService import DataService
 
 # %%
-LOG_FILE = "data/scrape_copernicus_parallel.log"
-ERROR_FILE = "data/scrape_copernicus_parallel.err"
+LOG_FILE = "data/scrape_copernicus_parallel_20230703.log"
+ERROR_FILE = "data/scrape_copernicus_parallel_20230703.err"
 
 bl.load()
 load_dotenv("../docker/.env")
@@ -39,9 +39,9 @@ PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 
 # %%
-NUM_WORKERS = 10  # The number of workers we want to employ (maximum is 16 as per the number of cores)
+NUM_WORKERS = 6  # The number of workers we want to employ (maximum is 16 as per the number of cores)
 REQ_DELAY = 60  # 1 minute - the base delay required to bypass pulling limits
-MIN_DELAY = 60  # 1 minute - once added to the required delay, creates a minimum delay of 5 minutes to bypass pulling limits
+MIN_DELAY = 20  # 1 minute - once added to the required delay, creates a minimum delay of 5 minutes to bypass pulling limits
 MAX_DELAY = 180  # 3 minutes - once added to the required delay, creates a maximum delay of 5 minutes to bypass pulling limits
 TABLE = "agg_day_copernicus_satellite_data"
 
@@ -51,12 +51,10 @@ MAX_MONTH = 12
 MIN_YEAR = 1995
 MAX_YEAR = 2023
 
-years = [
-    str(year) for year in range(MIN_YEAR, MAX_YEAR + 1)
-]  # the year range we want to pull data from
-months = [
-    str(month) for month in range(MIN_MONTH, MAX_MONTH + 1)
-]  # the month range we want to pull data from
+# the year range we want to pull data from
+years = [str(year) for year in range(MIN_YEAR, MAX_YEAR + 1)]
+# the month range we want to pull data from
+months = [str(month) for month in range(MIN_MONTH, MAX_MONTH + 1)]
 
 ATTRS = [  # the attributes we want to pull data for
     "2m_dewpoint_temperature",
@@ -128,6 +126,17 @@ def loadGeometry(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
     )
 
     return agRegions
+
+
+# %%
+def getCompleteDates(conn: sq.engine.Connection) -> pd.DataFrame:
+    """year month day"""
+    query = sq.text(
+        "select distinct year, month, day from agg_day_copernicus_satellite_data"
+    )
+    dates = pd.read_sql(query, conn)
+
+    return dates
 
 
 # %%
@@ -258,6 +267,8 @@ def formatDF(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # %%
+
+
 def generateDailyAggregate(df: pd.DataFrame) -> pd.DataFrame:
     try:
         aggregate = (
@@ -483,6 +494,8 @@ def main():
 
     # Load the agriculture region geometries from the database
     agRegions = loadGeometry(conn)
+
+    completedDf = getCompleteDates(conn)
     db.cleanup()  # Disconnect from the database (workers maintain their own connections)
 
     # Creates the list of arguments (stored as tuples) used in the multiple processes for pullSateliteData(agRegions, year, month, days, outputFile)
@@ -497,7 +510,21 @@ def main():
             days = [str(day) for day in range(1, numDays + 1)]
             outputFile = f"data/copernicus_{year}_{month}"
 
-            jobArgs.append(tuple((agRegions, delay, year, month, days, outputFile)))
+            # removes the days that have already been completed
+            completedDaysDf = completedDf.loc[
+                (completedDf["year"] == int(year))
+                & (completedDf["month"] == int(month))
+            ]
+            completedDays = completedDaysDf["day"].tolist()
+            incompleteDays = []
+            for day in days:
+                if int(day) not in completedDays:
+                    incompleteDays.append(day)
+
+            if len(incompleteDays) > 0:
+                jobArgs.append(
+                    tuple((agRegions, delay, year, month, incompleteDays, outputFile))
+                )
 
     # Handles the multiple processes
     pool = mp.Pool(NUM_WORKERS)  # Defines the number of workers
