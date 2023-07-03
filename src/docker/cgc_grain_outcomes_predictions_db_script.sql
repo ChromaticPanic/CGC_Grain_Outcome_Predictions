@@ -28,10 +28,6 @@ create table ab_hly_station_data
     mean_visibility     double precision
 );
 
-alter table ab_hly_station_data
-    owner to postgres;
-
-
 create table ab_station_data
 (
     station_id   text,
@@ -47,9 +43,6 @@ create table ab_station_data
     total_precip double precision,
     snow_on_grnd double precision
 );
-
-alter table ab_station_data
-    owner to postgres;
 
 create table agg_day_copernicus_satellite_data
 (
@@ -114,9 +107,6 @@ create table agg_day_copernicus_satellite_data
     mean_leaf_area_index_low_vegetation  double precision
 );
 
-alter table agg_day_copernicus_satellite_data
-    owner to postgres;
-
 create table agg_ergot_samples
 (
     sample_id            bigint,
@@ -138,9 +128,6 @@ create table agg_ergot_samples
     severity_prev3       double precision,
     severity_in_neighbor double precision
 );
-
-alter table agg_ergot_samples
-    owner to postgres;
 
 create table agg_soil_data
 (
@@ -248,9 +235,6 @@ create table agg_soil_data
     "sand_texture_VF"               boolean
 );
 
-alter table agg_soil_data
-    owner to postgres;
-
 create table agg_soil_moisture
 (
     index              bigint,
@@ -264,13 +248,8 @@ create table agg_soil_moisture
     soil_moisture_mean double precision
 );
 
-alter table agg_soil_moisture
-    owner to postgres;
-
 create index ix_public_agg_soil_moisture_index
     on agg_soil_moisture (index);
-
-
 
 create table census_ag_regions
 (
@@ -282,9 +261,6 @@ create table census_ag_regions
     color    text,
     cr_num   bigint
 );
-
-alter table census_ag_regions
-    owner to postgres;
 
 create index idx_census_ag_regions_geometry
     on census_ag_regions using gist (geometry);
@@ -301,9 +277,6 @@ create table ergot_sample
     severity      double precision
 );
 
-alter table ergot_sample
-    owner to postgres;
-
 create table labeled_soil
 (
     id       bigint,
@@ -312,9 +285,6 @@ create table labeled_soil
     cr_num   double precision,
     district integer
 );
-
-alter table labeled_soil
-    owner to postgres;
 
 create table mb_hly_station_data
 (
@@ -346,9 +316,6 @@ create table mb_hly_station_data
     mean_visibility     double precision
 );
 
-alter table mb_hly_station_data
-    owner to postgres;
-
 create table mb_station_data
 (
     station_id   text,
@@ -364,9 +331,6 @@ create table mb_station_data
     total_precip double precision,
     snow_on_grnd double precision
 );
-
-alter table mb_station_data
-    owner to postgres;
 
 create table sk_hly_station_data
 (
@@ -398,9 +362,6 @@ create table sk_hly_station_data
     mean_visibility     double precision
 );
 
-alter table sk_hly_station_data
-    owner to postgres;
-
 create table sk_station_data
 (
     station_id   text,
@@ -416,9 +377,6 @@ create table sk_station_data
     total_precip double precision,
     snow_on_grnd double precision
 );
-
-alter table sk_station_data
-    owner to postgres;
 
 create table soil_components
 (
@@ -438,9 +396,6 @@ create table soil_components
     depth             text,
     water_holding_cap text
 );
-
-alter table soil_components
-    owner to postgres;
 
 create table soil_data
 (
@@ -493,9 +448,6 @@ create table soil_data
     percnt_wood                bigint
 );
 
-alter table soil_data
-    owner to postgres;
-
 create table soil_geometry
 (
     area      double precision,
@@ -503,9 +455,6 @@ create table soil_geometry
     poly_id   bigint,
     geometry  geometry(Polygon, 3347)
 );
-
-alter table soil_geometry
-    owner to postgres;
 
 create index idx_soil_geometry_geometry
     on soil_geometry using gist (geometry);
@@ -523,9 +472,6 @@ create table soil_moisture
     soil_moisture double precision
 );
 
-alter table soil_moisture
-    owner to "user";
-
 create table soil_surronding_land
 (
     poly_id    bigint,
@@ -536,9 +482,6 @@ create table soil_surronding_land
     total_area bigint
 );
 
-alter table soil_surronding_land
-    owner to postgres;
-
 create table station_data_last_updated
 (
     station_id   varchar not null
@@ -547,9 +490,6 @@ create table station_data_last_updated
     last_updated date    not null,
     is_active    boolean default true
 );
-
-alter table station_data_last_updated
-    owner to postgres;
 
 create table stations_dly
 (
@@ -574,9 +514,6 @@ create table stations_dly
     cr_num         double precision,
     scraped        boolean
 );
-
-alter table stations_dly
-    owner to postgres;
 
 create index idx_stations_dly_geometry
     on stations_dly using gist (geometry);
@@ -605,9 +542,69 @@ create table stations_hly
     scraped        boolean
 );
 
-alter table stations_hly
-    owner to postgres;
-
 create index idx_stations_hly_geometry
     on stations_hly using gist (geometry);
+
+alter table ab_hly_station_data
+    owner to postgres;
+
+alter table ab_station_data
+    owner to postgres;
+
+alter table agg_day_copernicus_satellite_data
+    owner to postgres;
+
+alter table agg_ergot_samples
+    owner to postgres;
+
+alter table agg_soil_data
+    owner to postgres;
+
+alter table agg_soil_moisture
+    owner to postgres;
+
+alter table census_ag_regions
+    owner to postgres;
+
+alter table ergot_sample
+    owner to postgres;
+
+alter table labeled_soil
+    owner to postgres;
+
+alter table mb_hly_station_data
+    owner to postgres;
+
+alter table mb_station_data
+    owner to postgres;
+
+alter table sk_hly_station_data
+    owner to postgres;
+
+alter table sk_station_data
+    owner to postgres;
+
+alter table soil_components
+    owner to postgres;
+
+alter table soil_data
+    owner to postgres;
+
+alter table soil_geometry
+    owner to postgres;
+
+alter table soil_moisture
+    owner to postgres;
+
+alter table soil_surronding_land
+    owner to postgres;
+
+alter table station_data_last_updated
+    owner to postgres;
+
+alter table stations_dly
+    owner to postgres;
+
+alter table stations_hly
+    owner to postgres;
 
