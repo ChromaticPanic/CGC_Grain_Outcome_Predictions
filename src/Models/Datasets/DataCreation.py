@@ -4,9 +4,10 @@ from sqlalchemy import Connection  # type: ignore
 import pandas as pd  # type: ignore
 import os, sys
 
+import typing
 from typing import Any, Optional
 
-sys.path.append("../")
+sys.path.append("../../")
 from Shared.DataService import DataService
 
 LOG_FILE = "/data/pull_moisture.log"
@@ -52,7 +53,7 @@ def getErgotData(conn: Connection) -> pd.DataFrame:
     return ergot_df
 
 
-def getWeatherData_v1(months: Optional[list[Any]]) -> pd.DataFrame:
+def getWeatherData_v1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
     This function is called with 1 parameters  months.
         months: list of months for which the weather data is required.
@@ -97,7 +98,9 @@ def getWeatherData_v1(months: Optional[list[Any]]) -> pd.DataFrame:
     return new_weather_df
 
 
-def getSoilMoistureData(conn: Connection, months: Optional[list[Any]]) -> pd.DataFrame:
+def getSoilMoistureData(
+    conn: Connection, months: Optional[typing.List[Any]]
+) -> pd.DataFrame:
     """
     This function is called with 2 parameters conn and months.
         conn: connection to the database
@@ -120,7 +123,7 @@ def getSoilData(conn: Connection) -> pd.DataFrame:
     return soil_df
 
 
-def getDatasetV1() -> pd.DataFrame:
+def getDatasetV1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
     v1: contains only has_ergot as an output from ergot table and all the weather attributes as input from weather table
     This dataset is used for the following stated problem:
@@ -135,13 +138,13 @@ def getDatasetV1() -> pd.DataFrame:
     ergot_df = ergot_df[["year", "district", "has_ergot"]]
 
     # get weather data
-    weather_df = getWeatherData_v1(None)
+    weather_df = getWeatherData_v1(months)
     conn.close()
     dataset_v1 = weather_df.merge(ergot_df, on=["year", "district"])
     return dataset_v1
 
 
-def getDatasetV2() -> pd.DataFrame:
+def getDatasetV2(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
     v_2: contains ergot, weather, soil_moisture, soil data
     Same problem statement as v1
@@ -159,7 +162,7 @@ def getDatasetV2() -> pd.DataFrame:
     ergot_df = ergot_df[["year", "district", "has_ergot"]]
 
     # Get soil moisture data
-    soil_moisture_df = getSoilMoistureData(conn, None).drop(
+    soil_moisture_df = getSoilMoistureData(conn, months).drop(
         columns=[
             "index",
             "cr_num",
@@ -180,7 +183,7 @@ def getDatasetV2() -> pd.DataFrame:
     df = df.merge(soil_df, on=["district"], how="left")
 
     # Get weather data
-    weather_df = getWeatherData_v1(None)
+    weather_df = getWeatherData_v1(months)
     df = df.merge(weather_df, on=["year", "district"])
 
     return df
