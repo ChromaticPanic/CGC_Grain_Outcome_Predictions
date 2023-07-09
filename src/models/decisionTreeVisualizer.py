@@ -72,10 +72,10 @@ class DecisionTreeVisualizer:
                 feature_names=data.columns.tolist(),
                 class_names=class_names_as_string,
                 rounded=True,
-                filled=True
+                filled=True,
             )
 
-            check_call(['dot','-Tpng','tree.dot','-o', f'{savePath}/{saveName}.png'])
-            os.remove('tree.dot')
+            check_call(["dot", "-Tpng", "tree.dot", "-o", f"{savePath}/{saveName}.png"])
+            os.remove("tree.dot")
         except Exception as e:
-            print(f'[ERROR]: {e}')
+            print(f"[ERROR]: {e}")
