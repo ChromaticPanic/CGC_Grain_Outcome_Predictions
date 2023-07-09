@@ -23,7 +23,7 @@ def updateLog(fileName: str, message: str) -> None:
     except Exception as e:
         print(message)
 
-def connect_db():
+def connect_db() -> sq.Connection:
     if (
         PG_DB is None
         or PG_ADDR is None
@@ -41,7 +41,7 @@ def connect_db():
     return conn
 
 
-def getErgotData(conn) -> pd.DataFrame:
+def getErgotData(conn: sq.Connection) -> pd.DataFrame:
     query = sq.text("select * FROM public.agg_ergot_samples")
     ergot_df = pd.read_sql(query, conn)
     return ergot_df
@@ -65,13 +65,25 @@ def getWeatherData_v1() -> pd.DataFrame:
 
     return new_weather_df
 
+def getSoilMoistureData(conn: sq.Connection) -> pd.DataFrame:
+    query = sq.text("select * FROM public.agg_soil_moisture")
+    soil_moisture_df = pd.read_sql(query, conn)
+    return soil_moisture_df
+
+def getSoilData(conn: sq.Connection) -> pd.DataFrame:
+    query = sq.text("select * FROM public.agg_soil_data") 
+    soil_df = pd.read_sql(query, conn)
+    return soil_df
+
 
 def getDatasetV1() -> pd.DataFrame:
-    # v1: contains only has_ergot as an output from ergot table
-    #     and all the weather attributes as input from weather table
-    # Note: we currently take the mean of all months for each attribute -> need to test on specific months because ergot won't grow in winter  
-    # This dataset is used for the following stated problem:
-        # Given a district and its weather attributes -> predict if the district is gonna have ergot or not.
+    '''
+    v1: contains only has_ergot as an output from ergot table and all the weather attributes as input from weather table
+    This dataset is used for the following stated problem:
+        Given a district and its weather attributes -> predict if the district is gonna have ergot or not.
+    To-do: we currently take the mean of all months for each attribute -> 
+        need to test on specific months because ergot won't grow in winter  
+    '''
     conn = connect_db()
     ergot_df = getErgotData(conn)
     # drop district 4730 because it has no weather data
@@ -80,7 +92,37 @@ def getDatasetV1() -> pd.DataFrame:
 
     # get weather data
     weather_df = getWeatherData_v1()
-    #conn.close()
+    conn.close()
     dataset_v1 = weather_df.merge(ergot_df, on=["year", "district"])
     return dataset_v1
 
+
+def getDatasetV2() -> pd.DataFrame():
+    '''
+    v_2: contains ergot, weather, soil_moisture, soil data
+    Same problem statement as v1
+    To-do: Need to get the weather data|soil_moisture for only the month with the appearance of ergot (ergot wont grow in winter)
+    '''
+    conn = connect_db()
+
+    # Get ergot data
+    ergot_df = getErgotData(conn)
+    # drop district 4730 because it has no weather data and year = 2022 since soil moisture data is only until 2021.
+    ergot_df.drop(ergot_df[(ergot_df.year == 2022) | (ergot_df.district == 4730)].index, inplace=True)
+    ergot_df = ergot_df[['year', 'district', 'has_ergot']]
+
+    # Get soil moisture data
+    soil_moisture_df = getSoilMoistureData(conn).drop(columns=["index", 'cr_num', 'soil_moisture_min', 'soil_moisture_max', 'month', 'day'])
+    soil_moisture_df = soil_moisture_df.groupby(['year', 'district']).mean().reset_index()
+
+    df = ergot_df.merge(soil_moisture_df, on=["year", "district"])
+
+    # Get soil data
+    soil_df = getSoilData(conn)
+    df = df.merge(soil_df, on=['district'], how='left')
+
+    # Get weather data
+    weather_df = getWeatherData_v1()
+    df = df.merge(weather_df, on=["year", "district"])
+
+    return df
