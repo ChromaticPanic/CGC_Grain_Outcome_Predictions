@@ -1,7 +1,10 @@
 from dotenv import load_dotenv
 import sqlalchemy as sq  # type: ignore
+from sqlalchemy import Connection  # type: ignore
 import pandas as pd  # type: ignore
 import os, sys
+
+from typing import Any, Optional
 
 sys.path.append("../")
 from Shared.DataService import DataService
@@ -25,7 +28,7 @@ def updateLog(fileName: str, message: str) -> None:
         print(message)
 
 
-def connect_db() -> sq.Connection:
+def connect_db() -> Connection:
     if (
         PG_DB is None
         or PG_ADDR is None
@@ -43,13 +46,13 @@ def connect_db() -> sq.Connection:
     return conn
 
 
-def getErgotData(conn: sq.Connection) -> pd.DataFrame:
+def getErgotData(conn: Connection) -> pd.DataFrame:
     query = sq.text("select * FROM public.agg_ergot_samples")
     ergot_df = pd.read_sql(query, conn)
     return ergot_df
 
 
-def getWeatherData_v1(months: list | None) -> pd.DataFrame:
+def getWeatherData_v1(months: Optional[list[Any]]) -> pd.DataFrame:
     """
     This function is called with 1 parameters  months.
         months: list of months for which the weather data is required.
@@ -94,7 +97,7 @@ def getWeatherData_v1(months: list | None) -> pd.DataFrame:
     return new_weather_df
 
 
-def getSoilMoistureData(conn: sq.Connection, months: list | None) -> pd.DataFrame:
+def getSoilMoistureData(conn: Connection, months: Optional[list[Any]]) -> pd.DataFrame:
     """
     This function is called with 2 parameters conn and months.
         conn: connection to the database
@@ -111,7 +114,7 @@ def getSoilMoistureData(conn: sq.Connection, months: list | None) -> pd.DataFram
     return soil_moisture_df
 
 
-def getSoilData(conn: sq.Connection) -> pd.DataFrame:
+def getSoilData(conn: Connection) -> pd.DataFrame:
     query = sq.text("select * FROM public.agg_soil_data")
     soil_df = pd.read_sql(query, conn)
     return soil_df
