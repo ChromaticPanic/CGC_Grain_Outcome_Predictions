@@ -49,7 +49,12 @@ def getErgotData(conn: sq.Connection) -> pd.DataFrame:
     return ergot_df
 
 
-def getWeatherData_v1() -> pd.DataFrame:
+def getWeatherData_v1(months: list | None) -> pd.DataFrame:
+    """
+    This function is called with 1 parameters  months.
+        months: list of months for which the weather data is required.
+    note : If months is None, then the function returns the weather data for all months.
+    """
     agg_weather = pd.read_csv("Datasets/aggregatedDly.csv")
     all_col = agg_weather.columns.tolist()
     uni_col = set()
@@ -61,8 +66,28 @@ def getWeatherData_v1() -> pd.DataFrame:
     new_weather_df = pd.DataFrame()
     new_weather_df["year"] = agg_weather["year"]
     new_weather_df["district"] = agg_weather["district"]
+    if months is None:
+        list_months = [
+            "01",
+            "02",
+            "03",
+            "04",
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11",
+            "12",
+        ]
+    else:
+        list_months = list(months)
     for col_name in uni_col:
-        fil_col = agg_weather.filter(like=col_name)
+        fil_month_columns = agg_weather.filter(
+            regex="^(" + "|".join(list_months) + ")", axis=1
+        )
+        fil_col = fil_month_columns.filter(like=col_name)
         new_weather_df[col_name] = fil_col.mean(axis=1)
         agg_weather.drop(columns=fil_col.columns, inplace=True)
 
@@ -107,7 +132,7 @@ def getDatasetV1() -> pd.DataFrame:
     ergot_df = ergot_df[["year", "district", "has_ergot"]]
 
     # get weather data
-    weather_df = getWeatherData_v1()
+    weather_df = getWeatherData_v1(None)
     conn.close()
     dataset_v1 = weather_df.merge(ergot_df, on=["year", "district"])
     return dataset_v1
@@ -152,7 +177,7 @@ def getDatasetV2() -> pd.DataFrame:
     df = df.merge(soil_df, on=["district"], how="left")
 
     # Get weather data
-    weather_df = getWeatherData_v1()
+    weather_df = getWeatherData_v1(None)
     df = df.merge(weather_df, on=["year", "district"])
 
     return df
