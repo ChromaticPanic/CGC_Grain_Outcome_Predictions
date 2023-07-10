@@ -59,7 +59,7 @@ def getWeatherData_v1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
         months: list of months for which the weather data is required.
     note : If months is None, then the function returns the weather data for all months.
     """
-    agg_weather = pd.read_csv("Datasets/aggregatedDly.csv")
+    agg_weather = pd.read_csv("data/aggregatedDly.csv")
     all_col = agg_weather.columns.tolist()
     uni_col = set()
     for i in range(2, len(all_col)):
