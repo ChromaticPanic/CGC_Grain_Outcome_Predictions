@@ -1,74 +1,87 @@
-# # creates the ideal sets using modifysets and individual sets
+from sets.first15Yrs import First15Yrs
+from sets.badErgot import BadErgot
+from sets.complete import Complete
+from sets.winter import Winter
+from sets.spring import Spring
+from sets.summer import Summer
+from sets.fall import Fall
 
-#     def genDataSet1():
-#         # year ergot was worst weather by month
-#         print()
 
-#     def genDataSet1():
-#         # year ergot was soil
-#         print()
+class SetCreator:
+    def __new__(cls): 
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(SetCreator, cls).__new__(cls)
+        return cls.instance
 
-#     def genDataSet2():
-#         # year ergot was worst soil moisture
-#         print()
+    def __init__(self):
+        self.listOfSets = []
+        
+        self.addFirst15Yrs()
+        self.addBadErgot()
+        self.addComplete()
+        self.addWinter()
+        self.addSpring()
+        self.addSummer()
+        self.addFall()
 
-#     def genDataSet2():
-#         # first 20 years by week, soil moisture, soil
-#         print()
 
-#     def genDataSet2():
-#         # first 20 years by day, soil moisture, soil, weather
-#         print()
+    def addFirst15Yrs(self):
+        first15Yrs = First15Yrs()
+        dataDict = {"desc": '', "df": None}
 
-#     def genDataSet():
-#         # onl fall months
+        # first 15 years by week, soil moisture, soil
+        # first 15 years by day, soil moisture, soil, weather
 
-#     def genDataSet():
-#         # onl spring months
+    def addBadErgot(self):
+        badErgot = BadErgot()
+        dataDict = {"desc": '', "df": None}
 
-#     def genDataSet2():
-#         # only dataset on winter months
-#         print()
+        # year ergot was worst weather by month
+        # year ergot was soil
+        # year ergot was worst soil moisture
 
-#     def genDataSet2():
-#         # only dataset on summer months
-#         print()
+    def addComplete(self):
+        complete = Complete()
+        dataDict = {"desc": '', "df": None}
 
-#     def genDataSet2():
-#         # all for weather by month
-#         print()
+        # all for weather by month
+        # add for weather by week
+        # all for weather by day
 
-#     def genDataSet2():
-#         # add for weather by week
-#         print()
+        # all for soil moisture and moisture by month
+        # all for soil moisture and moisture by week
+        # all for soil moisture and moisture by day
 
-#     def genDataSet2():
-#         # all for weather by day
-#         print()
+        # all for weather and soil moisture by month
+        # all for weather and soil moisture and soil by month
+        # add for weather and soil moisture by week
+        # add for weather and soil moisture and soil by week
+        # all for weather and soil moisture by day
+        # all for weather and soil moisture and soil by day
 
-#     def genDataSet2():
-#         # all for weather and soil moisture by month
-#         print()
+    def addWinter(self):
+        winter = Winter()
+        dataDict = {"desc": '', "df": None}
 
-#     def genDataSet2():
-#         # all for weather and soil moisture by month
-#         # soil too
-#         print()
+        # only dataset on winter months
 
-#     def genDataSet2():
-#         # add for weather and soil moisture by week
-#         print()
+    def addSpring(self):
+        spring = Spring()
+        dataDict = {"desc": '', "df": None}
 
-#     def genDataSet2():
-#         # add for weather and soil moisture by week
-#         # soil too
-#         print()
+        # onl spring months
 
-#     def genDataSet2():
-#         # all for weather and soil moisture by day
-#         print()
+    def addSummer(self):
+        summer = Summer()
+        dataDict = {"desc": '', "df": None}
 
-#     def genDataSet2():
-#         # all for weather and soil moisture by day
-#         # soil data too
-#         print()
+        # only dataset on summer months
+
+    def addFall(self):
+        fall = Fall()
+        dataDict = {"desc": '', "df": None}
+
+        # onl fall months
+
+    def getSets(self):
+        return self.listOfSets
