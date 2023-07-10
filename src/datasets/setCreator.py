@@ -2,7 +2,7 @@
 # cares about aggregate naming scheme for days, weeks and months - column names are independent
 from dotenv import load_dotenv
 import sqlalchemy as sq
-import pandas as pd
+import pandas as pd  # type: ignore
 import os, sys
 
 try:
