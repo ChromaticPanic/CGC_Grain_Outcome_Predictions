@@ -102,6 +102,39 @@ class SetCreator:
         self.addSummer()
         self.addFall()
 
+        self.listOfSets = []
+
+
+    def verifySoilIsAggregated(self, db, queryBuilder):
+        query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
+        tableExists = queryBuilder.readTableExists(db.execute(query))
+
+        if not tableExists:
+            SoilAggregator()
+
+    def verifyErgotIsAggregated(self, db, queryBuilder):
+        query = sq.text(queryBuilder.tableExistsReq(AGG_ERGOT_TABLE))
+        tableExists = queryBuilder.readTableExists(db.execute(query))
+
+        if not tableExists:
+            ErgotAggregator()
+
+    def verifyHlyIsAggregated(self, path):
+        hasHlyByDay = os.path.isfile(f"{path}/{HLY_CSV_BY_DAY_FILE}")
+        hasHlyByWeek = os.path.isfile(f"{path}/{HLY_CSV_BY_WEEK_FILE}")
+        hasHlyByMonth = os.path.isfile(f"{path}/{HLY_CSV_BY_MONTH_FILE}")
+
+        if not hasHlyByDay or not hasHlyByWeek or not hasHlyByMonth:
+            print()
+
+    def verifyMoistureIsAggregated(self, path):
+        hasMoistureByDay = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_DAY_FILE}")
+        hasMoistureByWeek = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_WEEK_FILE}")
+        hasMoistureByMonth = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_MONTH_FILE}")
+        
+        if not hasMoistureByDay or not hasMoistureByWeek or not hasMoistureByMonth:
+            print()
+
 
     def verifySoilIsAggregated(self, db, queryBuilder):
         query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
