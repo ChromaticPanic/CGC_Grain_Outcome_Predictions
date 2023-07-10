@@ -1,27 +1,26 @@
-from dotenv import load_dotenv
-import sqlalchemy as sq
-import pandas as pd
-
-try:
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-except:
-    pass
-
-sys.path.append("../")
-from Shared.DataService import DataService
+import pandas as pd  # type: ignore
+from abstractSet import AbstractSet
 
 
-load_dotenv()
-PG_DB = os.getenv("POSTGRES_DB")
-PG_ADDR = os.getenv("POSTGRES_ADDR")
-PG_PORT = os.getenv("POSTGRES_PORT")
-PG_USER = os.getenv("POSTGRES_USER")
-PG_PW = os.getenv("POSTGRES_PW")
-
-
-class First15Yrs:
-    def __init__(self):
-        sq.text()
-
-        self.df = pd.read_sql(weatherDataQuery, conn)
-        print()
+class First15Yrs(AbstractSet):
+    def __init__(
+        self,
+        hlyByDayDF: pd.DataFrame,
+        hlyByWeekDF: pd.DataFrame,
+        hlyByMonthDF: pd.DataFrame,
+        moistureByDayDF: pd.DataFrame,
+        moistureByWeekDF: pd.DataFrame,
+        moistureByMonthDF: pd.DataFrame,
+        soilDF: pd.DataFrame,
+        ergotDF: pd.DataFrame,
+    ):
+        super().__init__(
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF,
+        )
