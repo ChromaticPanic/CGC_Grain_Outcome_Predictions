@@ -1,0 +1,2 @@
+class AbstractSet():
+    print()
