@@ -27,14 +27,14 @@ class SetCreator:
 
     def addFirst15Yrs(self):
         first15Yrs = First15Yrs()
-        dataDict = {"desc": '', "df": None}
+        dataDict = {"desc": '', "test": None, "train": None, "dev": None}
 
         # first 15 years by week, soil moisture, soil
         # first 15 years by day, soil moisture, soil, weather
 
     def addBadErgot(self):
         badErgot = BadErgot()
-        dataDict = {"desc": '', "df": None}
+        dataDict = {"desc": '', "test": None, "train": None, "dev": None}
 
         # year ergot was worst weather by month
         # year ergot was soil
@@ -42,7 +42,7 @@ class SetCreator:
 
     def addComplete(self):
         complete = Complete()
-        dataDict = {"desc": '', "df": None}
+        dataDict = {"desc": '', "test": None, "train": None, "dev": None}
 
         # all for weather by month
         # add for weather by week
@@ -61,25 +61,25 @@ class SetCreator:
 
     def addWinter(self):
         winter = Winter()
-        dataDict = {"desc": '', "df": None}
+        dataDict = {"desc": '', "test": None, "train": None, "dev": None}
 
         # only dataset on winter months
 
     def addSpring(self):
         spring = Spring()
-        dataDict = {"desc": '', "df": None}
+        dataDict = {"desc": '', "test": None, "train": None, "dev": None}
 
         # onl spring months
 
     def addSummer(self):
         summer = Summer()
-        dataDict = {"desc": '', "df": None}
+        dataDict = {"desc": '', "test": None, "train": None, "dev": None}
 
         # only dataset on summer months
 
     def addFall(self):
         fall = Fall()
-        dataDict = {"desc": '', "df": None}
+        dataDict = {"desc": '', "test": None, "train": None, "dev": None}
 
         # onl fall months
 
