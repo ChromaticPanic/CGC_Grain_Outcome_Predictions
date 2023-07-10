@@ -1,0 +1,2 @@
+class BadErgot:
+    print()
