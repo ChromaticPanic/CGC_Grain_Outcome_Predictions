@@ -94,16 +94,78 @@ class SetCreator:
 
         db.cleanup()
 
-        self.addFirst15Yrs()
-        self.addBadErgot()
-        self.addComplete()
-        self.addWinter()
-        self.addSpring()
-        self.addSummer()
-        self.addFall()
+        self.addFirst15Yrs(
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF,
+        )
+        self.addBadErgot(
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF,
+        )
+        self.addComplete(
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF,
+        )
+        self.addWinter(
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF,
+        )
+        self.addSpring(
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF,
+        )
+        self.addSummer(
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF,
+        )
+        self.addFall(
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF,
+        )
 
         self.listOfSets = []
-
 
     def verifySoilIsAggregated(self, db, queryBuilder):
         query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
@@ -120,21 +182,44 @@ class SetCreator:
             ErgotAggregator()
 
     def verifyHlyIsAggregated(self, path):
-        hasHlyByDay = os.path.isfile(f"{path}/{HLY_CSV_BY_DAY_FILE}")
-        hasHlyByWeek = os.path.isfile(f"{path}/{HLY_CSV_BY_WEEK_FILE}")
-        hasHlyByMonth = os.path.isfile(f"{path}/{HLY_CSV_BY_MONTH_FILE}")
+        hasHlyByDay = os.path.isfile(f"{path}/{HLY_CSV_BY_DAY}")
+        hasHlyByWeek = os.path.isfile(f"{path}/{HLY_CSV_BY_WEEK}")
+        hasHlyByMonth = os.path.isfile(f"{path}/{HLY_CSV_BY_MONTH}")
 
         if not hasHlyByDay or not hasHlyByWeek or not hasHlyByMonth:
-            print()
+            hlyAggregator = HlyAggregator()
+
+            try:
+                os.chdir(os.path.dirname(os.path.abspath(__file__)))
+            except:
+                pass
+
+            if not hasHlyByDay:
+                hlyAggregator.aggregateByDay(path)
+            if not hasHlyByWeek:
+                hlyAggregator.aggregateByWeek(path)
+            if not hasHlyByMonth:
+                hlyAggregator.aggregateByMonth(path)
 
     def verifyMoistureIsAggregated(self, path):
-        hasMoistureByDay = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_DAY_FILE}")
-        hasMoistureByWeek = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_WEEK_FILE}")
-        hasMoistureByMonth = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_MONTH_FILE}")
-        
-        if not hasMoistureByDay or not hasMoistureByWeek or not hasMoistureByMonth:
-            print()
+        hasMoistureByDay = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_DAY}")
+        hasMoistureByWeek = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_WEEK}")
+        hasMoistureByMonth = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_MONTH}")
 
+        if not hasMoistureByDay or not hasMoistureByWeek or not hasMoistureByMonth:
+            moistureAggregator = MoistureAggregator()
+
+            try:
+                os.chdir(os.path.dirname(os.path.abspath(__file__)))
+            except:
+                pass
+
+            if not hasMoistureByDay:
+                moistureAggregator.aggregateByDay(path)
+            if not hasMoistureByWeek:
+                moistureAggregator.aggregateByWeek(path)
+            if not hasMoistureByMonth:
+                moistureAggregator.aggregateByMonth(path)
 
     def verifySoilIsAggregated(self, db, queryBuilder):
         query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
