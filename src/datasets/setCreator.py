@@ -6,6 +6,43 @@ from sets.spring import Spring
 from sets.summer import Summer
 from sets.fall import Fall
 
+from dotenv import load_dotenv
+import sqlalchemy as sq
+import pandas as pd
+import os, sys
+
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
+
+sys.path.append("../")
+from Shared.GenericQueryBuilder import GenericQueryBuilder
+from Shared.DataService import DataService
+from Ergot.ergotAggregator import ErgotAggregator
+from ImportSoil.soilAggregator import SoilAggregator
+
+LOCAL_FILE_DATASETS_LOC = "./data"
+
+HLY_CSV_BY_DAY_FILE = "agg_hly_by_day.csv"
+HLY_CSV_BY_WEEK_FILE = "agg_hly_by_week.csv"
+HLY_CSV_BY_MONTH_FILE = "agg_hly_by_month.csv"
+
+MOISTURE_CSV_BY_DAY_FILE = "agg_moisture_by_day.csv"
+MOISTURE_CSV_BY_WEEK_FILE = "agg_moisture_by_week.csv"
+MOISTURE_CSV_BY_MONTH_FILE = "agg_moisture_by_month.csv"
+
+AGG_SOIL_TABLE = "agg_soil_data"
+AGG_ERGOT_TABLE = "agg_ergot_sample"
+
+
+load_dotenv()
+PG_DB = os.getenv("POSTGRES_DB")
+PG_ADDR = os.getenv("POSTGRES_ADDR")
+PG_PORT = os.getenv("POSTGRES_PORT")
+PG_USER = os.getenv("POSTGRES_USER")
+PG_PW = os.getenv("POSTGRES_PW")
+
 
 class SetCreator:
     def __new__(cls): 
@@ -13,9 +50,34 @@ class SetCreator:
             cls.instance = super(SetCreator, cls).__new__(cls)
         return cls.instance
 
-    def __init__(self):
-        self.listOfSets = []
+    def __init__(self):        
+        if (
+            PG_DB is None
+            or PG_ADDR is None
+            or PG_PORT is None
+            or PG_USER is None
+            or PG_PW is None
+        ):
+            raise ValueError("Environment variables not set")
+
+        db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
+        queryBuilder = GenericQueryBuilder()
+        conn = db.connect()
         
+        # checks if the data that is needed has been aggregated, if not, proceeds to aggregate it
+        self.verifySoilIsAggregated(db, queryBuilder)
+        self.verifyErgotIsAggregated(db, queryBuilder)
+        self.verifyHlyIsAggregated(LOCAL_FILE_DATASETS_LOC)
+        self.verifyMoistureIsAggregated(LOCAL_FILE_DATASETS_LOC)
+
+        # pull all data
+        # #hlyDF = pd.read_sql(HLY_QUERY, conn)
+        # soilDF = pd.read_sql(SOIL_QUERY, conn)
+        # #moistureDF = pd.read_sql(MOISTURE_QUERY, conn)
+        # ergotDF = pd.read_sql(ERGOT_QUERY, conn)
+
+        db.cleanup()
+
         self.addFirst15Yrs()
         self.addBadErgot()
         self.addComplete()
@@ -23,6 +85,39 @@ class SetCreator:
         self.addSpring()
         self.addSummer()
         self.addFall()
+
+        self.listOfSets = []
+
+
+    def verifySoilIsAggregated(self, db, queryBuilder):
+        query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
+        tableExists = queryBuilder.readTableExists(db.execute(query))
+
+        if not tableExists:
+            SoilAggregator()
+
+    def verifyErgotIsAggregated(self, db, queryBuilder):
+        query = sq.text(queryBuilder.tableExistsReq(AGG_ERGOT_TABLE))
+        tableExists = queryBuilder.readTableExists(db.execute(query))
+
+        if not tableExists:
+            ErgotAggregator()
+
+    def verifyHlyIsAggregated(self, path):
+        hasHlyByDay = os.path.isfile(f"{path}/{HLY_CSV_BY_DAY_FILE}")
+        hasHlyByWeek = os.path.isfile(f"{path}/{HLY_CSV_BY_WEEK_FILE}")
+        hasHlyByMonth = os.path.isfile(f"{path}/{HLY_CSV_BY_MONTH_FILE}")
+
+        if not hasHlyByDay or not hasHlyByWeek or not hasHlyByMonth:
+            print()
+
+    def verifyMoistureIsAggregated(self, path):
+        hasMoistureByDay = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_DAY_FILE}")
+        hasMoistureByWeek = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_WEEK_FILE}")
+        hasMoistureByMonth = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_MONTH_FILE}")
+        
+        if not hasMoistureByDay or not hasMoistureByWeek or not hasMoistureByMonth:
+            print()
 
 
     def addFirst15Yrs(self):
