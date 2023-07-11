@@ -14,13 +14,4 @@ class Fall(AbstractSet):
         soilDF: pd.DataFrame,
         ergotDF: pd.DataFrame,
     ):
-        super().__init__(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
+        super().__init__()

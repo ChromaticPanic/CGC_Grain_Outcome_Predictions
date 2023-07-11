@@ -69,55 +69,125 @@ class SetCreator:
         conn = db.connect()
 
         # checks if the data that is needed has been aggregated, if not, proceed to aggregate it
-        self.verifySoilIsAggregated(db, queryBuilder)
-        self.verifyErgotIsAggregated(db, queryBuilder)
-        self.verifyHlyIsAggregated(LOCAL_FILE_DATASETS_LOC)
-        self.verifyMoistureIsAggregated(LOCAL_FILE_DATASETS_LOC)
+        self.__verifySoilIsAggregated(db, queryBuilder)
+        self.__verifyErgotIsAggregated(db, queryBuilder)
+        self.__verifyHlyIsAggregated(LOCAL_FILE_DATASETS_LOC)
+        self.__verifyMoistureIsAggregated(LOCAL_FILE_DATASETS_LOC)
 
         # pull all data
-        self.hlyByDayDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_DAY}")
-        self.hlyByWeekDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_WEEK}")
-        self.hlyByMonthDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_MONTH}")
+        hlyByDayDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_DAY}")
+        hlyByWeekDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_WEEK}")
+        hlyByMonthDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_MONTH}")
 
-        self.moistureByDayDF = pd.read_csv(
+        moistureByDayDF = pd.read_csv(
             f"{LOCAL_FILE_DATASETS_LOC}/{MOISTURE_CSV_BY_DAY}"
         )
-        self.moistureByWeekDF = pd.read_csv(
+        moistureByWeekDF = pd.read_csv(
             f"{LOCAL_FILE_DATASETS_LOC}/{MOISTURE_CSV_BY_WEEK}"
         )
-        self.moistureByMonthDF = pd.read_csv(
+        moistureByMonthDF = pd.read_csv(
             f"{LOCAL_FILE_DATASETS_LOC}/{MOISTURE_CSV_BY_MONTH}"
         )
 
-        self.soilDF = pd.read_sql(SOIL_QUERY, conn)
-        self.ergotDF = pd.read_sql(ERGOT_QUERY, conn)
+        soilDF = pd.read_sql(SOIL_QUERY, conn)
+        ergotDF = pd.read_sql(ERGOT_QUERY, conn)
 
         db.cleanup()
 
-        self.addFirst15Yrs()
-        self.addBadErgot()
-        self.addComplete()
-        self.addWinter()
-        self.addSpring()
-        self.addSummer()
-        self.addFall()
+
+        self.first15Yrs = First15Yrs(        
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF
+        )
+
+        self.badErgot = BadErgot(        
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF
+        )
+
+        self.complete = Complete(        
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF
+        )
+
+        self.winter = Winter(        
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF
+        )
+
+        self.spring = Spring(        
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF
+        )
+
+        self.summer = Summer(        
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF
+        )
+
+        self.fall = Fall(        
+            hlyByDayDF,
+            hlyByWeekDF,
+            hlyByMonthDF,
+            moistureByDayDF,
+            moistureByWeekDF,
+            moistureByMonthDF,
+            soilDF,
+            ergotDF
+        )
 
 
-    def verifySoilIsAggregated(self, db, queryBuilder):
+    def __verifySoilIsAggregated(self, db, queryBuilder):
         query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
         tableExists = queryBuilder.readTableExists(db.execute(query))
 
         if not tableExists:
             SoilAggregator()
 
-    def verifyErgotIsAggregated(self, db, queryBuilder):
+    def __verifyErgotIsAggregated(self, db, queryBuilder):
         query = sq.text(queryBuilder.tableExistsReq(AGG_ERGOT_TABLE))
         tableExists = queryBuilder.readTableExists(db.execute(query))
 
         if not tableExists:
             ErgotAggregator()
 
-    def verifyHlyIsAggregated(self, path):
+    def __verifyHlyIsAggregated(self, path):
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))
         except:
@@ -142,7 +212,7 @@ class SetCreator:
             if not hasHlyByMonth:
                 hlyAggregator.aggregateByMonth(path)
 
-    def verifyMoistureIsAggregated(self, path):
+    def __verifyMoistureIsAggregated(self, path):
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))
         except:
@@ -232,120 +302,7 @@ class SetCreator:
                 moistureAggregator.aggregateByMonth(path)
 
 
-    def addFirst15Yrs(self):
-        first15Yrs = First15Yrs(        
-            self.hlyByDayDF,
-            self.hlyByWeekDF,
-            self.hlyByMonthDF,
-            self.moistureByDayDF,
-            self.moistureByWeekDF,
-            self.moistureByMonthDF,
-            self.soilDF,
-            self.ergotDF,
-        )
-        
-        # first 15 years by week, soil moisture, soil
-        # first 15 years by day, soil moisture, soil, weather
-
-    def addBadErgot(self):
-        badErgot = BadErgot(        
-            self.hlyByDayDF,
-            self.hlyByWeekDF,
-            self.hlyByMonthDF,
-            self.moistureByDayDF,
-            self.moistureByWeekDF,
-            self.moistureByMonthDF,
-            self.soilDF,
-            self.ergotDF,
-        )
-
-        # year ergot was worst weather by month
-        # year ergot was soil
-        # year ergot was worst soil moisture
-
-    def addComplete(self):
-        complete = Complete(        
-            self.hlyByDayDF,
-            self.hlyByWeekDF,
-            self.hlyByMonthDF,
-            self.moistureByDayDF,
-            self.moistureByWeekDF,
-            self.moistureByMonthDF,
-            self.soilDF,
-            self.ergotDF,
-        )
-
-        # all for weather by month
-        # add for weather by week
-        # all for weather by day
-
-        # all for soil moisture and moisture by month
-        # all for soil moisture and moisture by week
-        # all for soil moisture and moisture by day
-
-        # all for weather and soil moisture by month
-        # all for weather and soil moisture and soil by month
-        # add for weather and soil moisture by week
-        # add for weather and soil moisture and soil by week
-        # all for weather and soil moisture by day
-        # all for weather and soil moisture and soil by day
-
-    def addWinter(self):
-        winter = Winter(        
-            self.hlyByDayDF,
-            self.hlyByWeekDF,
-            self.hlyByMonthDF,
-            self.moistureByDayDF,
-            self.moistureByWeekDF,
-            self.moistureByMonthDF,
-            self.soilDF,
-            self.ergotDF,
-        )
-
-        # only dataset on winter months
-
-    def addSpring(self):
-        spring = Spring(        
-            self.hlyByDayDF,
-            self.hlyByWeekDF,
-            self.hlyByMonthDF,
-            self.moistureByDayDF,
-            self.moistureByWeekDF,
-            self.moistureByMonthDF,
-            self.soilDF,
-            self.ergotDF,
-        )
-
-        # onl spring months
-
-    def addSummer(self):
-        summer = Summer(        
-            self.hlyByDayDF,
-            self.hlyByWeekDF,
-            self.hlyByMonthDF,
-            self.moistureByDayDF,
-            self.moistureByWeekDF,
-            self.moistureByMonthDF,
-            self.soilDF,
-            self.ergotDF,
-        )
-
-        # only dataset on summer months
-
-    def addFall(self):
-        fall = Fall(        
-            self.hlyByDayDF,
-            self.hlyByWeekDF,
-            self.hlyByMonthDF,
-            self.moistureByDayDF,
-            self.moistureByWeekDF,
-            self.moistureByMonthDF,
-            self.soilDF,
-            self.ergotDF,
-        )
-
-        # onl fall months
-
-    def getSets(self):
+    def getSetList1(self):
+        setList = []
         #dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         return self.listOfSets
