@@ -31,9 +31,9 @@ class Winter(AbstractSet):
         lastAttr = str(cols[len(cols) - 1])
         
         # Drops all column names based on the regular expression
-        if(lastAttr.find('-')): # This is a daily aggregate
+        if(lastAttr.find('-') != -1): # This is a daily aggregate
             return df[df.columns.drop(list(df.filter(regex='^0[3-9]-|^[10-11]-')))]
-        elif(lastAttr.find('12')): # This is a monthly aggregate
+        elif(lastAttr.find('12:')): # This is a monthly aggregate
             return df[df.columns.drop(list(df.filter(regex='^[3-11]:')))]
         else: # This is a weekly aggregate
             return df[df.columns.drop(list(df.filter(regex='^[9-48]:')))]

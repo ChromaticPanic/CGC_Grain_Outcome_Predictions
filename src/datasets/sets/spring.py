@@ -31,9 +31,9 @@ class Spring(AbstractSet):
         lastAttr = str(cols[len(cols) - 1])
         
         # Drops all column names based on the regular expression
-        if(lastAttr.find('-')): # This is a daily aggregate
+        if(lastAttr.find('-') != -1): # This is a daily aggregate
             return df[df.columns.drop(list(df.filter(regex='^0[1-2]-|^0[5-9]-|^[10-12]-')))]
-        elif(lastAttr.find('12')): # This is a monthly aggregate
+        elif(lastAttr.find('12:')): # This is a monthly aggregate
             return df[df.columns.drop(list(df.filter(regex='^[1-2]:|^[5-12]:')))]
         else: # This is a weekly aggregate
             return df[df.columns.drop(list(df.filter(regex='^[1-8]:|^[17-52]:')))]
