@@ -1,7 +1,7 @@
 # cares about years
 # cares about aggregate naming scheme for days, weeks and months - column names are independent
 from dotenv import load_dotenv
-import sqlalchemy as sq
+import sqlalchemy as sq  # type: ignore
 import pandas as pd  # type: ignore
 import os, sys
 

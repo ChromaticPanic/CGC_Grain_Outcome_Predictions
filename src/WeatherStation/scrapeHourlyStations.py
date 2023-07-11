@@ -3,9 +3,9 @@ from WeatherQueryBuilder import WeatherQueryBuilder  # type: ignore
 from DataProcessor import DataProcessor  # type: ignore
 from dotenv import load_dotenv
 import os, sys, typing
-import sqlalchemy as sqa
+import sqlalchemy as sqa  # type: ignore
 import numpy as np
-import pandas as pd
+import pandas as pd  # type: ignore
 import geopandas as gpd  # type: ignore
 
 sys.path.append("../")

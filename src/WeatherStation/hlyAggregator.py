@@ -81,7 +81,7 @@ class HlyAggregator:
                     "mean_stn_press": "mean",
                     "min_visibility": "mean",
                     "max_visibility": "mean",
-                    "mean_visibility": "mean"
+                    "mean_visibility": "mean",
                 }
             )
             .reset_index()
@@ -113,7 +113,7 @@ class HlyAggregator:
             "mean_stn_press",
             "min_visibility",
             "max_visibility",
-            "mean_visibility"
+            "mean_visibility",
         ]
 
         dates = self.helper.getDatesInYr()
@@ -154,7 +154,7 @@ class HlyAggregator:
                     "mean_stn_press": "mean",
                     "min_visibility": "mean",
                     "max_visibility": "mean",
-                    "mean_visibility": "mean"
+                    "mean_visibility": "mean",
                 }
             )
             .reset_index()
@@ -185,7 +185,7 @@ class HlyAggregator:
             "mean_stn_press",
             "min_visibility",
             "max_visibility",
-            "mean_visibility"
+            "mean_visibility",
         ]
 
         dates = self.helper.getWeeksInYr()
@@ -226,7 +226,7 @@ class HlyAggregator:
                     "mean_stn_press": "mean",
                     "min_visibility": "mean",
                     "max_visibility": "mean",
-                    "mean_visibility": "mean"
+                    "mean_visibility": "mean",
                 }
             )
             .reset_index()
@@ -257,7 +257,7 @@ class HlyAggregator:
             "mean_stn_press",
             "min_visibility",
             "max_visibility",
-            "mean_visibility"
+            "mean_visibility",
         ]
 
         dates = self.helper.getMonthsInYr()
