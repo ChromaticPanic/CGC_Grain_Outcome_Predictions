@@ -54,8 +54,8 @@ class HlyAggregator:
             dayInt = int(dateComponents[1])
             weekInt = datetime.date(2001, monthInt, dayInt).isocalendar()[1]
 
-            self.df[
-                self.df[(self.df["month"] == monthInt) & (self.df["day"] == dayInt)],
+            self.df.loc[
+                (self.df["month"] == monthInt) & (self.df["day"] == dayInt),
                 "week",
             ] = weekInt
 
@@ -82,7 +82,7 @@ class HlyAggregator:
                     "mean_stn_press": "mean",
                     "min_visibility": "mean",
                     "max_visibility": "mean",
-                    "mean_visibility": "mean",
+                    "mean_visibility": "mean"
                 }
             )
             .reset_index()
@@ -114,7 +114,7 @@ class HlyAggregator:
             "mean_stn_press",
             "min_visibility",
             "max_visibility",
-            "mean_visibility",
+            "mean_visibility"
         ]
 
         dates = self.helper.getDatesInYr()
@@ -155,7 +155,7 @@ class HlyAggregator:
                     "mean_stn_press": "mean",
                     "min_visibility": "mean",
                     "max_visibility": "mean",
-                    "mean_visibility": "mean",
+                    "mean_visibility": "mean"
                 }
             )
             .reset_index()
@@ -186,7 +186,7 @@ class HlyAggregator:
             "mean_stn_press",
             "min_visibility",
             "max_visibility",
-            "mean_visibility",
+            "mean_visibility"
         ]
 
         dates = self.helper.getWeeksInYr()
@@ -227,7 +227,7 @@ class HlyAggregator:
                     "mean_stn_press": "mean",
                     "min_visibility": "mean",
                     "max_visibility": "mean",
-                    "mean_visibility": "mean",
+                    "mean_visibility": "mean"
                 }
             )
             .reset_index()
@@ -258,7 +258,7 @@ class HlyAggregator:
             "mean_stn_press",
             "min_visibility",
             "max_visibility",
-            "mean_visibility",
+            "mean_visibility"
         ]
 
         dates = self.helper.getMonthsInYr()

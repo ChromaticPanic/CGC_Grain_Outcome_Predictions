@@ -17,7 +17,7 @@ class AbstractSet:
         self.hlyByWeekDF = hlyByWeekDF
         self.hlyByMonthDF = hlyByMonthDF
         self.moistureByDayDF = moistureByDayDF
-        self.moistureByWeekDF = moistureByWeekDF
+        self.moistureByWeekDF = moistureByWeekDFx
         self.moistureByMonthDF = moistureByMonthDF
         self.soilDF = soilDF
         self.ergotDF = ergotDF

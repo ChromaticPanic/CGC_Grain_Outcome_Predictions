@@ -1,5 +1,5 @@
-import pandas as pd  # type: ignore
 from abstractSet import AbstractSet
+import pandas as pd  # type: ignore
 
 
 class Spring(AbstractSet):
