@@ -1,15 +1,21 @@
+from dotenv import load_dotenv
 import sqlalchemy as sq
 import geopandas as gpd  # type: ignore
 import pandas as pd  # type: ignore
-from dotenv import load_dotenv
+import numpy as np
 import os, sys
+
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
 
 sys.path.append("../")
 from Shared.GenericQueryBuilder import GenericQueryBuilder
 from Shared.DataService import DataService
 
 
-TABLENAME = "agg_ergot_samples"
+TABLENAME = "agg_ergot_sample"
 
 load_dotenv()
 PG_DB = os.getenv("POSTGRES_DB")
@@ -114,31 +120,32 @@ class ErgotAggregator:
                 )
 
                 # load samples for some of the previous years
-                prev1Year = ergot.query(
-                    f"year == {year - 1} and district == {district}"
-                )
-                prev2Year = ergot.query(
-                    f"year == {year - 2} and district == {district}"
-                )
-                prev3Year = ergot.query(
-                    f"year == {year - 3} and district == {district}"
-                )
+                prev1Year = ergot.query(f"year == {year - 1} and district == {district}")
+                prev2Year = ergot.query(f"year == {year - 2} and district == {district}")
+                prev3Year = ergot.query(f"year == {year - 3} and district == {district}")
 
                 currEntry = {
                     "year": year,
                     "district": district,
                     "percnt_true": currSamples["incidence"].sum() / len(currSamples),
                     "has_ergot": currSamples["incidence"].sum() > 0,
+                    "median_severity": currSamples["severity"].median(),
                     "sum_severity": currSamples["severity"].sum(),
+                    "present_in_neighbor": neighborSamples["incidence"].sum() > 0,
+                    "sum_severity_in_neighbor": neighborSamples["incidence"].sum()
+                    / len(neighborSamples),
                     "present_prev1": prev1Year["incidence"].sum() > 0,
                     "present_prev2": prev2Year["incidence"].sum() > 0,
                     "present_prev3": prev3Year["incidence"].sum() > 0,
-                    "present_in_neighbor": neighborSamples["incidence"].sum() > 0,
-                    "severity_prev1": prev1Year["incidence"].sum() / len(prev1Year),
-                    "severity_prev2": prev2Year["incidence"].sum() / len(prev2Year),
-                    "severity_prev3": prev3Year["incidence"].sum() / len(prev3Year),
-                    "severity_in_neighbor": neighborSamples["incidence"].sum()
-                    / len(neighborSamples),
+                    "sum_severity_prev1": prev1Year["incidence"].sum() / len(prev1Year),
+                    "sum_severity_prev2": prev2Year["incidence"].sum() / len(prev2Year),
+                    "sum_severity_prev3": prev3Year["incidence"].sum() / len(prev3Year),
+                    "percnt_true_prev1": prev1Year["incidence"].sum() / len(prev1Year),
+                    "percnt_true_prev2": prev2Year["incidence"].sum() / len(prev2Year),
+                    "percnt_true_prev3": prev3Year["incidence"].sum() / len(prev3Year),
+                    "median_prev1": prev1Year["severity"].median(),
+                    "median_prev2": prev2Year["severity"].median(),
+                    "median_prev3": prev3Year["severity"].median(),
                 }
 
                 ergotList.append(currEntry)
@@ -147,12 +154,67 @@ class ErgotAggregator:
 
         # set any unexpected values to 0
         aggErgot.loc[aggErgot["percnt_true"].isna(), "percnt_true"] = 0
-        aggErgot.loc[aggErgot["severity_prev1"].isna(), "severity_prev1"] = 0
-        aggErgot.loc[aggErgot["severity_prev2"].isna(), "severity_prev2"] = 0
-        aggErgot.loc[aggErgot["severity_prev3"].isna(), "severity_prev3"] = 0
+        aggErgot.loc[aggErgot["sum_severity_prev1"].isna(), "severity_prev1"] = 0
+        aggErgot.loc[aggErgot["sum_severity_prev2"].isna(), "severity_prev2"] = 0
+        aggErgot.loc[aggErgot["sum_severity_prev3"].isna(), "severity_prev3"] = 0
         aggErgot.loc[
-            aggErgot["severity_in_neighbor"].isna(), "severity_in_neighbor"
+            aggErgot["sum_severity_in_neighbor"].isna(), "severity_in_neighbor"
         ] = 0
+
+        # bin ergot_present and sum_severity by IQR
+        q1_ergot_present_cutoff = np.percentile(aggErgot.percnt_true, 25)
+        q2_ergot_present_cutoff = np.percentile(aggErgot.percnt_true, 50)
+        q3_ergot_present_cutoff = np.percentile(aggErgot.percnt_true, 75)
+
+        q1_sum_severity_severity_cutoff = np.percentile(aggErgot.sum_severity, 25)
+        q2_sum_severity_severity_cutoff = np.percentile(aggErgot.sum_severity, 50)
+        q3_sum_severity_severity_cutoff = np.percentile(aggErgot.sum_severity, 75)
+
+        aggErgot["ergot_present_in_q1"] = False
+        aggErgot["ergot_present_in_q2"] = False
+        aggErgot["ergot_present_in_q3"] = False
+        aggErgot["ergot_present_in_q4"] = False
+
+        aggErgot["sum_severity_in_q1"] = False
+        aggErgot["sum_severity_in_q2"] = False
+        aggErgot["sum_severity_in_q3"] = False
+        aggErgot["sum_severity_in_q4"] = False
+
+        aggErgot.loc[
+            aggErgot["percnt_true"] <= q1_ergot_present_cutoff, "ergot_present_in_q1"
+        ] = True
+        aggErgot.loc[
+            (aggErgot["percnt_true"] > q1_ergot_present_cutoff)
+            & (aggErgot["percnt_true"] <= q2_ergot_present_cutoff),
+            "ergot_present_in_q2",
+        ] = True
+        aggErgot.loc[
+            (aggErgot["percnt_true"] > q2_ergot_present_cutoff)
+            & (aggErgot["percnt_true"] <= q3_ergot_present_cutoff),
+            "ergot_present_in_q3",
+        ] = True
+        aggErgot.loc[
+            aggErgot["percnt_true"] > q3_ergot_present_cutoff, "ergot_present_in_q4"
+        ] = True
+
+        aggErgot.loc[
+            aggErgot["sum_severity"] <= q1_sum_severity_severity_cutoff,
+            "sum_severity_in_q1",
+        ] = True
+        aggErgot.loc[
+            (aggErgot["sum_severity"] > q1_ergot_present_cutoff)
+            & (aggErgot["sum_severity"] <= q2_ergot_present_cutoff),
+            "sum_severity_in_q2",
+        ] = True
+        aggErgot.loc[
+            (aggErgot["sum_severity"] > q2_ergot_present_cutoff)
+            & (aggErgot["sum_severity"] <= q3_ergot_present_cutoff),
+            "sum_severity_in_q3",
+        ] = True
+        aggErgot.loc[
+            aggErgot["sum_severity"] > q3_sum_severity_severity_cutoff,
+            "sum_severity_in_q4",
+        ] = True
 
         return aggErgot
 
@@ -160,19 +222,41 @@ class ErgotAggregator:
         query = sq.text(
             f"""
             CREATE TABLE {TABLENAME} (
-                year                    INT,
-                district                INT,
-                percnt_true             FLOAT, 
-                has_ergot               BOOL, 
-                sum_severity            FLOAT, 
-                present_prev1           BOOL, 
-                present_prev2           BOOL, 
-                present_prev3           BOOL, 
-                present_in_neighbor     BOOL, 
-                severity_prev1          FLOAT, 
-                severity_prev2          FLOAT, 
-                severity_prev3          FLOAT, 
-                severity_in_neighbor    FLOAT,
+                year                        INT,
+                district                    INT,
+                percnt_true                 FLOAT, 
+                has_ergot                   BOOL, 
+                median_severity             FLOAT,
+                sum_severity                FLOAT, 
+
+                present_in_neighbor         BOOL, 
+                sum_severity_in_neighbor    FLOAT,
+
+                present_prev1               BOOL, 
+                present_prev2               BOOL, 
+                present_prev3               BOOL, 
+                
+                sum_severity_prev1          FLOAT, 
+                sum_severity_prev2          FLOAT, 
+                sum_severity_prev3          FLOAT, 
+                
+                percnt_true_prev1           FLOAT,
+                percnt_true_prev2           FLOAT,
+                percnt_true_prev3           FLOAT,
+
+                median_prev1                FLOAT,
+                median_prev2                FLOAT,
+                median_prev3                FLOAT,
+                
+                percnt_true_in_q1           BOOL,
+                percnt_true_in_q2           BOOL,
+                percnt_true_in_q3           BOOL,
+                percnt_true_in_q4           BOOL,     
+
+                sum_severity_in_q1          BOOL,
+                sum_severity_in_q2          BOOL,
+                sum_severity_in_q3          BOOL,
+                sum_severity_in_q4          BOOL,
 
                 CONSTRAINT PK_agg_ergot_sample PRIMARY KEY(year, district)
             );
