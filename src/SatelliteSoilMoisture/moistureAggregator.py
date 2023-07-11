@@ -64,6 +64,7 @@ class MoistureAggregator:
                 & (self.moistureData["day"] == dayInt),
                 "week",
             ] = weekInt
+        print(self.moistureData["week"])
 
     def aggregateByDay(self, pathToSave):
         agg_df = (
