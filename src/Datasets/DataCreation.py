@@ -52,6 +52,7 @@ def getErgotData(conn: Connection) -> pd.DataFrame:
     ergot_df = pd.read_sql(query, conn)
     return ergot_df
 
+
 def getErgotSamples(conn: Connection) -> pd.DataFrame:
     query = sq.text("select * FROM public.ergot_sample")
     ergot_df = pd.read_sql(query, conn)
@@ -193,7 +194,15 @@ def getDatasetV2(months: Optional[typing.List[Any]]) -> pd.DataFrame:
 
     return df
 
-def getDatasetV3() -> pd.DataFrame:
+
+def getDatasetV3(months: Optional[typing.List[Any]]) -> pd.DataFrame:
+    """
+    v_3: contains ergot, weather, soil_moisture, soil data
+    This dataset is used for the following stated problem:
+        Given a district and its weather, soil attributes -> predict if the district is gonna have ergot or not.
+    To-do: Need to get the weather data|soil_moisture for only the month with the appearance of ergot (ergot wont grow in winter)
+    """
+
     conn = connect_db()
 
     # Get ergot data
@@ -208,10 +217,13 @@ def getDatasetV3() -> pd.DataFrame:
         ergot_df.loc[ergot_df["province"] == "AB", "crop_district"] * 10
     ) + 4800
     ergot_df["district"] = pd.to_numeric(ergot_df["district"], downcast="integer")
-    ergot_df.drop(columns=['sample_id', 'crop_district', 'province'], inplace=True)
-    ergot_df.drop(ergot_df[(ergot_df['year'] == 2022) | (ergot_df.district == 4730)].index, inplace=True)
+    ergot_df.drop(columns=["sample_id", "crop_district", "province"], inplace=True)
+    ergot_df.drop(
+        ergot_df[(ergot_df["year"] == 2022) | (ergot_df.district == 4730)].index,
+        inplace=True,
+    )
 
-    sm_df = getSoilMoistureData(conn, None).drop(
+    sm_df = getSoilMoistureData(conn, months).drop(
         columns=[
             "index",
             "cr_num",
@@ -223,9 +235,7 @@ def getDatasetV3() -> pd.DataFrame:
     )
 
     # Get soil moisture data
-    sm_df = (
-        sm_df.groupby(["year", "district"]).mean().reset_index()
-    )
+    sm_df = sm_df.groupby(["year", "district"]).mean().reset_index()
 
     df = ergot_df.merge(sm_df, on=["year", "district"], how="left")
 
@@ -234,8 +244,8 @@ def getDatasetV3() -> pd.DataFrame:
     df = df.merge(soil_df, on=["district"], how="left")
 
     # Get weather data
-    weather_df = getWeatherData_v1(None)
-    weather_df.drop(weather_df[weather_df['year'] == 2022].index, inplace=True)
+    weather_df = getWeatherData_v1(months)
+    weather_df.drop(weather_df[weather_df["year"] == 2022].index, inplace=True)
     df = df.merge(weather_df, on=["year", "district"])
 
     return df
