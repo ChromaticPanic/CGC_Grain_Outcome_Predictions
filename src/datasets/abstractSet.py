@@ -26,10 +26,16 @@ class AbstractSet(ABC):
     def _setHlyByWeek(self, hlyByWeekDF: pd.DataFrame):
         self.hlyByWeekDF = hlyByWeekDF
 
+    def setHlyByWeek(self, hlyByWeekDF: pd.DataFrame):
+        self.hlyByWeekDF = hlyByWeekDF
+
     def getHlyByWeek(self) -> pd.DataFrame:
         return self.hlyByWeekDF.drop(columns=["year", "district"])
 
     def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
+        self.hlyByMonthDF = hlyByMonthDF
+
+    def setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
         self.hlyByMonthDF = hlyByMonthDF
 
     def getHlyByMonth(self) -> pd.DataFrame:
@@ -38,10 +44,16 @@ class AbstractSet(ABC):
     def _setMoistureByDay(self, moistureByDayDF: pd.DataFrame):
         self.moistureByDayDF = moistureByDayDF
 
+    def setMoistureByDay(self, moistureByDayDF: pd.DataFrame):
+        self.moistureByDayDF = moistureByDayDF
+
     def getMoistureByDay(self) -> pd.DataFrame:
         return self.moistureByDayDF.drop(columns=["year", "district"])
 
     def _setMoistureByWeek(self, moistureByWeekDF: pd.DataFrame):
+        self.moistureByWeekDF = moistureByWeekDF
+
+    def setMoistureByWeek(self, moistureByWeekDF: pd.DataFrame):
         self.moistureByWeekDF = moistureByWeekDF
 
     def getMoistureByWeek(self) -> pd.DataFrame:
@@ -50,16 +62,25 @@ class AbstractSet(ABC):
     def _setMoistureByMonth(self, moistureByMonthDF: pd.DataFrame):
         self.moistureByMonthDF = moistureByMonthDF
 
+    def setMoistureByMonth(self, moistureByMonthDF: pd.DataFrame):
+        self.moistureByMonthDF = moistureByMonthDF
+
     def getMoistureByMonth(self) -> pd.DataFrame:
         return self.moistureByMonthDF.drop(columns=["year", "district"])
 
     def _setSoil(self, soilDF: pd.DataFrame):
         self.soilDF = soilDF
 
+    def setSoil(self, soilDF: pd.DataFrame):
+        self.soilDF = soilDF
+
     def getSoil(self) -> pd.DataFrame:
         return self.soilDF.drop(columns=["district"])
 
     def _setErgot(self, ergotDF: pd.DataFrame):
+        self.ergotDF = ergotDF
+
+    def setErgot(self, ergotDF: pd.DataFrame):
         self.ergotDF = ergotDF
 
     def getErgot(self) -> pd.DataFrame:
