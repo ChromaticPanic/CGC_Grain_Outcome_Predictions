@@ -182,6 +182,11 @@ class SetCreator:
             ErgotAggregator()
 
     def verifyHlyIsAggregated(self, path):
+        try:
+            os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        except:
+            pass
+
         hasHlyByDay = os.path.isfile(f"{path}/{HLY_CSV_BY_DAY}")
         hasHlyByWeek = os.path.isfile(f"{path}/{HLY_CSV_BY_WEEK}")
         hasHlyByMonth = os.path.isfile(f"{path}/{HLY_CSV_BY_MONTH}")
@@ -202,6 +207,11 @@ class SetCreator:
                 hlyAggregator.aggregateByMonth(path)
 
     def verifyMoistureIsAggregated(self, path):
+        try:
+            os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        except:
+            pass
+
         hasMoistureByDay = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_DAY}")
         hasMoistureByWeek = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_WEEK}")
         hasMoistureByMonth = os.path.isfile(f"{path}/{MOISTURE_CSV_BY_MONTH}")
