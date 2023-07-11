@@ -52,6 +52,11 @@ def getErgotData(conn: Connection) -> pd.DataFrame:
     ergot_df = pd.read_sql(query, conn)
     return ergot_df
 
+def getErgotSamples(conn: Connection) -> pd.DataFrame:
+    query = sq.text("select * FROM public.ergot_sample")
+    ergot_df = pd.read_sql(query, conn)
+    return ergot_df
+
 
 def getWeatherData_v1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
@@ -59,7 +64,7 @@ def getWeatherData_v1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
         months: list of months for which the weather data is required.
     note : If months is None, then the function returns the weather data for all months.
     """
-    agg_weather = pd.read_csv("data/aggregatedDly.csv")
+    agg_weather = pd.read_csv("../Datasets/data/aggregatedDly.csv")
     all_col = agg_weather.columns.tolist()
     uni_col = set()
     for i in range(2, len(all_col)):
@@ -184,6 +189,53 @@ def getDatasetV2(months: Optional[typing.List[Any]]) -> pd.DataFrame:
 
     # Get weather data
     weather_df = getWeatherData_v1(months)
+    df = df.merge(weather_df, on=["year", "district"])
+
+    return df
+
+def getDatasetV3() -> pd.DataFrame:
+    conn = connect_db()
+
+    # Get ergot data
+    ergot_df = getErgotSamples(conn)
+    ergot_df.loc[ergot_df["province"] == "MB", "district"] = (
+        ergot_df.loc[ergot_df["province"] == "MB", "crop_district"] + 4600
+    )
+    ergot_df.loc[ergot_df["province"] == "SK", "district"] = (
+        ergot_df.loc[ergot_df["province"] == "SK", "crop_district"] - 1
+    ) + 4700
+    ergot_df.loc[ergot_df["province"] == "AB", "district"] = (
+        ergot_df.loc[ergot_df["province"] == "AB", "crop_district"] * 10
+    ) + 4800
+    ergot_df["district"] = pd.to_numeric(ergot_df["district"], downcast="integer")
+    ergot_df.drop(columns=['sample_id', 'crop_district', 'province'], inplace=True)
+    ergot_df.drop(ergot_df[(ergot_df['year'] == 2022) | (ergot_df.district == 4730)].index, inplace=True)
+
+    sm_df = getSoilMoistureData(conn, None).drop(
+        columns=[
+            "index",
+            "cr_num",
+            "soil_moisture_min",
+            "soil_moisture_max",
+            "month",
+            "day",
+        ]
+    )
+
+    # Get soil moisture data
+    sm_df = (
+        sm_df.groupby(["year", "district"]).mean().reset_index()
+    )
+
+    df = ergot_df.merge(sm_df, on=["year", "district"], how="left")
+
+    # Get soil data
+    soil_df = getSoilData(conn)
+    df = df.merge(soil_df, on=["district"], how="left")
+
+    # Get weather data
+    weather_df = getWeatherData_v1(None)
+    weather_df.drop(weather_df[weather_df['year'] == 2022].index, inplace=True)
     df = df.merge(weather_df, on=["year", "district"])
 
     return df
