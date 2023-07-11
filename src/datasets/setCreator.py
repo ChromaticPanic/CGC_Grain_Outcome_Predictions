@@ -94,76 +94,76 @@ class SetCreator:
 
         db.cleanup()
 
-        self.addFirst15Yrs(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
-        self.addBadErgot(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
-        self.addComplete(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
-        self.addWinter(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
-        self.addSpring(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
-        self.addSummer(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
-        self.addFall(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
+        # self.addFirst15Yrs(
+        #     hlyByDayDF,
+        #     hlyByWeekDF,
+        #     hlyByMonthDF,
+        #     moistureByDayDF,
+        #     moistureByWeekDF,
+        #     moistureByMonthDF,
+        #     soilDF,
+        #     ergotDF,
+        # )
+        # self.addBadErgot(
+        #     hlyByDayDF,
+        #     hlyByWeekDF,
+        #     hlyByMonthDF,
+        #     moistureByDayDF,
+        #     moistureByWeekDF,
+        #     moistureByMonthDF,
+        #     soilDF,
+        #     ergotDF,
+        # )
+        # self.addComplete(
+        #     hlyByDayDF,
+        #     hlyByWeekDF,
+        #     hlyByMonthDF,
+        #     moistureByDayDF,
+        #     moistureByWeekDF,
+        #     moistureByMonthDF,
+        #     soilDF,
+        #     ergotDF,
+        # )
+        # self.addWinter(
+        #     hlyByDayDF,
+        #     hlyByWeekDF,
+        #     hlyByMonthDF,
+        #     moistureByDayDF,
+        #     moistureByWeekDF,
+        #     moistureByMonthDF,
+        #     soilDF,
+        #     ergotDF,
+        # )
+        # self.addSpring(
+        #     hlyByDayDF,
+        #     hlyByWeekDF,
+        #     hlyByMonthDF,
+        #     moistureByDayDF,
+        #     moistureByWeekDF,
+        #     moistureByMonthDF,
+        #     soilDF,
+        #     ergotDF,
+        # )
+        # self.addSummer(
+        #     hlyByDayDF,
+        #     hlyByWeekDF,
+        #     hlyByMonthDF,
+        #     moistureByDayDF,
+        #     moistureByWeekDF,
+        #     moistureByMonthDF,
+        #     soilDF,
+        #     ergotDF,
+        # )
+        # self.addFall(
+        #     hlyByDayDF,
+        #     hlyByWeekDF,
+        #     hlyByMonthDF,
+        #     moistureByDayDF,
+        #     moistureByWeekDF,
+        #     moistureByMonthDF,
+        #     soilDF,
+        #     ergotDF,
+        # )
 
         self.listOfSets = []
 
