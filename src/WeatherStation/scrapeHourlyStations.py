@@ -1,6 +1,6 @@
-from ClimateDataRequester import ClimateDataRequester
-from WeatherQueryBuilder import WeatherQueryBuilder
-from DataProcessor import DataProcessor
+from ClimateDataRequester import ClimateDataRequester  # type: ignore
+from WeatherQueryBuilder import WeatherQueryBuilder  # type: ignore
+from DataProcessor import DataProcessor  # type: ignore
 from dotenv import load_dotenv
 import os, sys, typing
 import sqlalchemy as sqa  # type: ignore

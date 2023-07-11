@@ -6,7 +6,7 @@ import sqlalchemy as sq  # type: ignore
 import sys
 
 sys.path.append("../")
-from SoilMoistureQueryHandler import SoilMoistureQueryHandler
+from SoilMoistureQueryHandler import SoilMoistureQueryHandler  # type: ignore
 from Shared.DataService import DataService
 
 # path to soil moister data
