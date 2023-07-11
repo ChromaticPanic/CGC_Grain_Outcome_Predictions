@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-import sqlalchemy as sq
+import sqlalchemy as sq  # type: ignore
 import pandas as pd  # type: ignore
 import os, sys
 
@@ -94,8 +94,7 @@ class SetCreator:
 
         db.cleanup()
 
-
-        self.first15Yrs = First15Yrs(        
+        self.first15Yrs = First15Yrs(
             hlyByDayDF,
             hlyByWeekDF,
             hlyByMonthDF,
@@ -103,10 +102,10 @@ class SetCreator:
             moistureByWeekDF,
             moistureByMonthDF,
             soilDF,
-            ergotDF
+            ergotDF,
         )
 
-        self.badErgot = BadErgot(        
+        self.badErgot = BadErgot(
             hlyByDayDF,
             hlyByWeekDF,
             hlyByMonthDF,
@@ -114,10 +113,10 @@ class SetCreator:
             moistureByWeekDF,
             moistureByMonthDF,
             soilDF,
-            ergotDF
+            ergotDF,
         )
 
-        self.complete = Complete(        
+        self.complete = Complete(
             hlyByDayDF,
             hlyByWeekDF,
             hlyByMonthDF,
@@ -125,10 +124,10 @@ class SetCreator:
             moistureByWeekDF,
             moistureByMonthDF,
             soilDF,
-            ergotDF
+            ergotDF,
         )
 
-        self.winter = Winter(        
+        self.winter = Winter(
             hlyByDayDF,
             hlyByWeekDF,
             hlyByMonthDF,
@@ -136,10 +135,10 @@ class SetCreator:
             moistureByWeekDF,
             moistureByMonthDF,
             soilDF,
-            ergotDF
+            ergotDF,
         )
 
-        self.spring = Spring(        
+        self.spring = Spring(
             hlyByDayDF,
             hlyByWeekDF,
             hlyByMonthDF,
@@ -147,10 +146,10 @@ class SetCreator:
             moistureByWeekDF,
             moistureByMonthDF,
             soilDF,
-            ergotDF
+            ergotDF,
         )
 
-        self.summer = Summer(        
+        self.summer = Summer(
             hlyByDayDF,
             hlyByWeekDF,
             hlyByMonthDF,
@@ -158,10 +157,10 @@ class SetCreator:
             moistureByWeekDF,
             moistureByMonthDF,
             soilDF,
-            ergotDF
+            ergotDF,
         )
 
-        self.fall = Fall(        
+        self.fall = Fall(
             hlyByDayDF,
             hlyByWeekDF,
             hlyByMonthDF,
@@ -169,9 +168,8 @@ class SetCreator:
             moistureByWeekDF,
             moistureByMonthDF,
             soilDF,
-            ergotDF
+            ergotDF,
         )
-
 
     def __verifySoilIsAggregated(self, db, queryBuilder):
         query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
@@ -304,18 +302,16 @@ class SetCreator:
 
     def getSetList1(self):
         setList = []
-        #dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        # dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         return self.listOfSets
 
-
-                # year ergot was worst weather by month
+        # year ergot was worst weather by month
         # year ergot was soil
         # year ergot was worst soil moisture
 
-                # all for weather by month
+        # all for weather by month
         # add for weather by week
         # all for weather by day
-
 
         # all for soil moisture and moisture by month
         # all for soil moisture and moisture by week
@@ -327,7 +323,6 @@ class SetCreator:
         # add for weather and soil moisture and soil by week
         # all for weather and soil moisture by day
         # all for weather and soil moisture and soil by day
-
 
         # first 15 years by week, soil moisture, soil
         # first 15 years by day, soil moisture, soil, weather
