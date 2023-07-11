@@ -2,7 +2,7 @@ import os
 import xarray as xr
 import geopandas as gpd  # type: ignore
 from dotenv import load_dotenv
-import sqlalchemy as sq
+import sqlalchemy as sq  # type: ignore
 import sys
 
 sys.path.append("../")

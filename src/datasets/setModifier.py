@@ -8,15 +8,45 @@ import numpy as np
 
 
 class SetModifier:
-    ERGOT_PREDICTORS = ["percnt_true", "sum_severity", "ergot_present_in_q3", "ergot_present_in_q4", "sum_severity_in_q3",
-        "sum_severity_in_q4"
+    ERGOT_PREDICTORS = [
+        "percnt_true",
+        "sum_severity",
+        "ergot_present_in_q3",
+        "ergot_present_in_q4",
+        "sum_severity_in_q3",
+        "sum_severity_in_q4",
     ]
-    ERGOT_FEATURES = ["percnt_true", "has_ergot", "median_severity", "sum_severity", "present_in_neighbor", "sum_severity_in_neighbor", 
-        "present_prev1", "present_prev2", "present_prev3", "sum_severity_prev1", "sum_severity_prev2", "sum_severity_prev3",
-        "percnt_true_prev1", "percnt_true_prev2", "percnt_true_prev3", "median_prev1", "median_prev2", "median_prev3",
-        "severity_prev1", "severity_prev2", "severity_prev3", "severity_in_neighbor", "ergot_present_in_q1", "ergot_present_in_q2",
-        "ergot_present_in_q3", "ergot_present_in_q4", "sum_severity_in_q1", "sum_severity_in_q2", "sum_severity_in_q3", 
-        "sum_severity_in_q4"
+    ERGOT_FEATURES = [
+        "percnt_true",
+        "has_ergot",
+        "median_severity",
+        "sum_severity",
+        "present_in_neighbor",
+        "sum_severity_in_neighbor",
+        "present_prev1",
+        "present_prev2",
+        "present_prev3",
+        "sum_severity_prev1",
+        "sum_severity_prev2",
+        "sum_severity_prev3",
+        "percnt_true_prev1",
+        "percnt_true_prev2",
+        "percnt_true_prev3",
+        "median_prev1",
+        "median_prev2",
+        "median_prev3",
+        "severity_prev1",
+        "severity_prev2",
+        "severity_prev3",
+        "severity_in_neighbor",
+        "ergot_present_in_q1",
+        "ergot_present_in_q2",
+        "ergot_present_in_q3",
+        "ergot_present_in_q4",
+        "sum_severity_in_q1",
+        "sum_severity_in_q2",
+        "sum_severity_in_q3",
+        "sum_severity_in_q4",
     ]
 
     def rmErgotPredictors(self, df: pd.DataFrame) -> pd.DataFrame:

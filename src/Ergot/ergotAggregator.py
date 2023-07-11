@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-import sqlalchemy as sq
+import sqlalchemy as sq  # type: ignore
 import geopandas as gpd  # type: ignore
 import pandas as pd  # type: ignore
 import numpy as np
@@ -120,9 +120,15 @@ class ErgotAggregator:
                 )
 
                 # load samples for some of the previous years
-                prev1Year = ergot.query(f"year == {year - 1} and district == {district}")
-                prev2Year = ergot.query(f"year == {year - 2} and district == {district}")
-                prev3Year = ergot.query(f"year == {year - 3} and district == {district}")
+                prev1Year = ergot.query(
+                    f"year == {year - 1} and district == {district}"
+                )
+                prev2Year = ergot.query(
+                    f"year == {year - 2} and district == {district}"
+                )
+                prev3Year = ergot.query(
+                    f"year == {year - 3} and district == {district}"
+                )
 
                 currEntry = {
                     "year": year,

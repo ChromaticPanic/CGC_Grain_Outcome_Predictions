@@ -1,6 +1,5 @@
-import sys
-import sqlalchemy as sq
-import os
+import sqlalchemy as sq  # type: ignore
+import os, sys
 
 sys.path.append("../")
 from Shared.GenericQueryBuilder import GenericQueryBuilder
