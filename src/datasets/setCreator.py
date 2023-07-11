@@ -79,22 +79,22 @@ class SetCreator:
         self.__verifyMoistureIsAggregated(LOCAL_FILE_DATASETS_LOC)
 
         # pull all data
-        hlyByDayDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_DAY}")
-        hlyByWeekDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_WEEK}")
-        hlyByMonthDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_MONTH}")
+        self.hlyByDayDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_DAY}")
+        self.hlyByWeekDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_WEEK}")
+        self.hlyByMonthDF = pd.read_csv(f"{LOCAL_FILE_DATASETS_LOC}/{HLY_CSV_BY_MONTH}")
 
-        moistureByDayDF = pd.read_csv(
+        self.moistureByDayDF = pd.read_csv(
             f"{LOCAL_FILE_DATASETS_LOC}/{MOISTURE_CSV_BY_DAY}"
         )
-        moistureByWeekDF = pd.read_csv(
+        self.moistureByWeekDF = pd.read_csv(
             f"{LOCAL_FILE_DATASETS_LOC}/{MOISTURE_CSV_BY_WEEK}"
         )
-        moistureByMonthDF = pd.read_csv(
+        self.moistureByMonthDF = pd.read_csv(
             f"{LOCAL_FILE_DATASETS_LOC}/{MOISTURE_CSV_BY_MONTH}"
         )
 
-        soilDF = pd.read_sql(SOIL_QUERY, conn)
-        ergotDF = pd.read_sql(ERGOT_QUERY, conn)
+        self.soilDF = pd.read_sql(SOIL_QUERY, conn)
+        self.ergotDF = pd.read_sql(ERGOT_QUERY, conn)
 
         db.cleanup()
 
