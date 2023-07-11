@@ -48,12 +48,24 @@ def connect_db() -> Connection:
 
 
 def getErgotData(conn: Connection) -> pd.DataFrame:
+    """
+    This function used to fetch aggregated ergot data from database.
+
+    Parameters:
+        conn: connection to the database
+    """
     query = sq.text("select * FROM public.agg_ergot_samples")
     ergot_df = pd.read_sql(query, conn)
     return ergot_df
 
 
 def getErgotSamples(conn: Connection) -> pd.DataFrame:
+    """
+    This function used to fetch ergot sample data from database.
+
+    Parameters:
+        conn: connection to the database
+    """
     query = sq.text("select * FROM public.ergot_sample")
     ergot_df = pd.read_sql(query, conn)
     return ergot_df
@@ -61,10 +73,13 @@ def getErgotSamples(conn: Connection) -> pd.DataFrame:
 
 def getWeatherData_v1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
-    This function is called with 1 parameters  months.
-        months: list of months for which the weather data is required.
-    note : If months is None, then the function returns the weather data for all months.
+    This function used to fetch aggregated weather satation data from database.
+
+    Parameters:
+        months: list of months for which the soil moisture data is required.
+    note : If months is None, then the function returns the soil moisture data for all months.
     """
+    # reaading the csv file
     agg_weather = pd.read_csv("../Datasets/data/aggregatedDly.csv")
     all_col = agg_weather.columns.tolist()
     uni_col = set()
@@ -73,9 +88,11 @@ def getWeatherData_v1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
         if "mean" in split_attr_name[0]:
             uni_col.add(all_col[i].split(":")[1])
 
+    # creating a new dataframe
     new_weather_df = pd.DataFrame()
     new_weather_df["year"] = agg_weather["year"]
     new_weather_df["district"] = agg_weather["district"]
+    # filter for mointly data
     if months is None:
         list_months = [
             "01",
@@ -108,7 +125,9 @@ def getSoilMoistureData(
     conn: Connection, months: Optional[typing.List[Any]]
 ) -> pd.DataFrame:
     """
-    This function is called with 2 parameters conn and months.
+    This function used to fetch soil moisture data from database.
+
+    Parameters:
         conn: connection to the database
         months: list of months for which the soil moisture data is required.
     note : If months is None, then the function returns the soil moisture data for all months.
@@ -124,6 +143,12 @@ def getSoilMoistureData(
 
 
 def getSoilData(conn: Connection) -> pd.DataFrame:
+    """
+    This function used to fetch soil(type) data from database.
+
+    Parameters:
+        conn: connection to the database
+    """
     query = sq.text("select * FROM public.agg_soil_data")
     soil_df = pd.read_sql(query, conn)
     return soil_df
@@ -132,8 +157,14 @@ def getSoilData(conn: Connection) -> pd.DataFrame:
 def getDatasetV1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
     v1: contains only has_ergot as an output from ergot table and all the weather attributes as input from weather table
-    This dataset is used for the following stated problem:
-        Given a district and its weather attributes -> predict if the district is gonna have ergot or not.
+        Target: "has_ergot" from ergot table
+
+    Problem statement: Given a district and its weather attributes -> predict if the district is gonna have ergot or not.
+
+    Parameters:
+        months: list of months for which the soil moisture data is required.
+    note : If months is None, then the function returns the soil moisture data for all months.
+
     To-do: we currently take the mean of all months for each attribute ->
         need to test on specific months because ergot won't grow in winter
     """
@@ -152,8 +183,15 @@ def getDatasetV1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
 
 def getDatasetV2(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
-    v_2: contains ergot, weather, soil_moisture, soil data
-    Same problem statement as v1
+    v_2: contains only has_ergot as an output from ergot table and all attributes from weather, soil_moisture, soil data as input
+        Target: "has_ergot" from ergot table
+
+    Problem statement: Given a district and other attributes from weather, soil_moisture, soil data -> predict if the district is gonna have ergot or not.
+
+    Parameters:
+        months: list of months for which the soil moisture data is required.
+    note : If months is None, then the function returns the soil moisture data for all months.
+
     To-do: Need to get the weather data|soil_moisture for only the month with the appearance of ergot (ergot wont grow in winter)
     """
     conn = connect_db()
