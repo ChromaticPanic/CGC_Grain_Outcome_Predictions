@@ -65,7 +65,16 @@ class AbstractSet(ABC):
     def getErgot(self) -> pd.DataFrame:
         return self.ergotDF.drop(columns=["year", "district"])
 
-    def getCombinedDF(self, hlyByDay: bool, hlyByWeek: bool, hlyByMonth: bool, moistureByDay: bool, moistureByWeek: bool, moistureByMonth: bool, soil: bool) -> pd.DataFrame:
+    def getCombinedDF(
+        self,
+        hlyByDay: bool,
+        hlyByWeek: bool,
+        hlyByMonth: bool,
+        moistureByDay: bool,
+        moistureByWeek: bool,
+        moistureByMonth: bool,
+        soil: bool,
+    ) -> pd.DataFrame:
         combinedDF = self.ergotDF
 
         if hlyByDay:
@@ -77,9 +86,13 @@ class AbstractSet(ABC):
         if moistureByDay:
             combinedDF = combinedDF.merge(self.moistureByDayDF, on=["year", "district"])
         if moistureByWeek:
-            combinedDF = combinedDF.merge(self.moistureByWeekDF, on=["year", "district"])
+            combinedDF = combinedDF.merge(
+                self.moistureByWeekDF, on=["year", "district"]
+            )
         if moistureByMonth:
-            combinedDF = combinedDF.merge(self.moistureByMonthDF, on=["year", "district"])
+            combinedDF = combinedDF.merge(
+                self.moistureByMonthDF, on=["year", "district"]
+            )
         if soil:
             combinedDF = combinedDF.merge(self.soilDF, on=["district"])
 
