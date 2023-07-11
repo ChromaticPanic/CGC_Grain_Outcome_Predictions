@@ -16,18 +16,40 @@ class Complete(AbstractSet):
     ):
         super().__init__()
 
+        self._setHlyByDay(hlyByDayDF)
+        self._setHlyByWeek(hlyByWeekDF)
+        self._setHlyByMonth(hlyByMonthDF)
+        self._setMoistureByDay(moistureByDayDF)
+        self._setMoistureByWeek(moistureByWeekDF)
+        self._setMoistureByMonth(moistureByMonthDF)
+        self._setSoil(soilDF)
+        self._setErgot(ergotDF)
 
-        # all for weather by month
-        # add for weather by week
-        # all for weather by day
 
-        # all for soil moisture and moisture by month
-        # all for soil moisture and moisture by week
-        # all for soil moisture and moisture by day
+    def selectData(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df
 
-        # all for weather and soil moisture by month
-        # all for weather and soil moisture and soil by month
-        # add for weather and soil moisture by week
-        # add for weather and soil moisture and soil by week
-        # all for weather and soil moisture by day
-        # all for weather and soil moisture and soil by day
+    def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
+        super()._setHlyByDay(hlyByDayDF)
+
+    def _setHlyByWeek(self, hlyByWeekDF: pd.DataFrame):
+        super()._setHlyByWeek(hlyByWeekDF)
+
+    def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
+        super()._setHlyByMonth(hlyByMonthDF)
+
+    def _setMoistureByDay(self, moistureByDayDF: pd.DataFrame):
+        super()._setMoistureByDay(moistureByDayDF)
+
+    def _setMoistureByWeek(self, moistureByWeekDF: pd.DataFrame):
+        super()._setMoistureByWeek(moistureByWeekDF)
+
+    def _setMoistureByMonth(self, moistureByMonthDF: pd.DataFrame):
+        super()._setMoistureByMonth(moistureByMonthDF)
+
+    def _setSoil(self, soilDF: pd.DataFrame):
+        super()._setSoil(soilDF)
+
+    def _setErgot(self, ergotDF: pd.DataFrame):
+        super()._setErgot(ergotDF)
+        

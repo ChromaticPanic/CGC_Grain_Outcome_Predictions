@@ -1,7 +1,8 @@
+from abc import ABC, abstractmethod
 import pandas as pd  # type: ignore
 
 
-class AbstractSet:
+class AbstractSet(ABC):
     def __init__(self):
         self.hlyByDayDF = None
         self.hlyByWeekDF = None
@@ -12,50 +13,53 @@ class AbstractSet:
         self.soilDF = None
         self.ergotDF = None
 
+    @abstractmethod
+    def selectData(self, df: pd.DataFrame) -> pd.DataFrame:
+        pass
 
-    def setHlyByDay(self, hlyByDayDF: pd.DataFrame):
+    def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
         self.hlyByDayDF = hlyByDayDF
 
     def getHlyByDay(self) -> pd.DataFrame:
         return self.hlyByDayDF
 
-    def setHlyByWeek(self, hlyByWeekDF: pd.DataFrame):
+    def _setHlyByWeek(self, hlyByWeekDF: pd.DataFrame):
         self.hlyByWeekDF = hlyByWeekDF
 
     def getHlyByWeek(self) -> pd.DataFrame:
         return self.hlyByWeekDF
 
-    def setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
+    def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
         self.hlyByMonthDF = hlyByMonthDF
 
     def getHlyByMonth(self) -> pd.DataFrame:
         return self.hlyByMonthDF
 
-    def setMoistureByDay(self, moistureByDayDF: pd.DataFrame):
+    def _setMoistureByDay(self, moistureByDayDF: pd.DataFrame):
         self.moistureByDayDF = moistureByDayDF
 
     def getMoistureByDay(self) -> pd.DataFrame:
         return self.moistureByDayDF
 
-    def setMoistureByWeek(self, moistureByWeekDF: pd.DataFrame):
+    def _setMoistureByWeek(self, moistureByWeekDF: pd.DataFrame):
         self.moistureByWeekDF = moistureByWeekDF
 
     def getMoistureByWeek(self) -> pd.DataFrame:
         return self.moistureByWeekDF
 
-    def setMoistureByMonth(self, moistureByMonthDF: pd.DataFrame):
+    def _setMoistureByMonth(self, moistureByMonthDF: pd.DataFrame):
         self.moistureByMonthDF = moistureByMonthDF
 
     def getMoistureByMonth(self) -> pd.DataFrame:
         return self.moistureByMonthDF
 
-    def setSoil(self, soilDF: pd.DataFrame):
+    def _setSoil(self, soilDF: pd.DataFrame):
         self.soilDF = soilDF
 
     def getSoil(self) -> pd.DataFrame:
         return self.soilDF
 
-    def setErgot(self, ergotDF: pd.DataFrame):
+    def _setErgot(self, ergotDF: pd.DataFrame):
         self.ergotDF = ergotDF
 
     def getErgot(self) -> pd.DataFrame:
