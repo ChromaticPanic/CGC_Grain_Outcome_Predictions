@@ -50,7 +50,7 @@ class MoistureAggregator:
         self.moistureData.drop(columns="date", inplace=True)
 
         # setup for weekly aggregations
-        self.df["week"] = None
+        self.moistureData["week"] = None
         dates = self.helper.getDatesInYr()
 
         for date in dates:
@@ -59,14 +59,15 @@ class MoistureAggregator:
             dayInt = int(dateComponents[1])
             weekInt = datetime.date(2001, monthInt, dayInt).isocalendar()[1]
 
-            self.df[
-                self.df[(self.df["month"] == monthInt) & (self.df["day"] == dayInt)],
-                "week",
+            self.moistureData.loc[
+                (self.moistureData["month"] == monthInt) & (self.moistureData["day"] == dayInt),
+                "week"
             ] = weekInt
+        print(self.moistureData["week"])
 
     def aggregateByDay(self, pathToSave):
         agg_df = (
-            self.df.groupby(["district", "year", "month", "day"])
+            self.moistureData.groupby(["district", "year", "month", "day"])
             .agg({"soil_moisture": ["min", "max", "mean"]})
             .reset_index()
         )
@@ -79,7 +80,7 @@ class MoistureAggregator:
             "day",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean",
+            "soil_moisture_mean"
         ]
 
         dates = self.helper.getDatesInYr()
@@ -99,7 +100,7 @@ class MoistureAggregator:
 
     def aggregateByWeek(self, pathToSave):
         agg_df = (
-            self.df.groupby(["district", "year", "week"])
+            self.moistureData.groupby(["district", "year", "week"])
             .agg({"soil_moisture": ["min", "max", "mean"]})
             .reset_index()
         )
@@ -111,7 +112,7 @@ class MoistureAggregator:
             "week",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean",
+            "soil_moisture_mean"
         ]
 
         dates = self.helper.getWeeksInYr()
@@ -131,7 +132,7 @@ class MoistureAggregator:
 
     def aggregateByMonth(self, pathToSave):
         agg_df = (
-            self.df.groupby(["district", "year", "month"])
+            self.moistureData.groupby(["district", "year", "month"])
             .agg({"soil_moisture": ["min", "max", "mean"]})
             .reset_index()
         )
@@ -143,7 +144,7 @@ class MoistureAggregator:
             "month",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean",
+            "soil_moisture_mean"
         ]
 
         dates = self.helper.getMonthsInYr()

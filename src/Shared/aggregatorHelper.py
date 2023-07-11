@@ -51,7 +51,7 @@ class AggregatorHelper:
         self,
         dates: list,
         agg_df: pd.DataFrame,
-        stationData: pd.DataFrame,
+        data: pd.DataFrame,
         dateType: str,
     ) -> pd.DataFrame:
         """
@@ -61,14 +61,21 @@ class AggregatorHelper:
 
         # the year range we want to pull data from - ints
         years = [year for year in range(MIN_YEAR, MAX_YEAR + 1)]
-        uniqueDistricts = stationData["district"].unique()
+        uniqueDistricts = data["district"].unique()
 
         # get the columns we will want to pull information from
         cols = agg_df.columns.tolist()  # type: ignore
         cols.remove("district")
         cols.remove("year")
-        cols.remove("month")
-        cols.remove("day")
+
+        if dateType == "dates":
+            cols.remove("month")
+            cols.remove("day")
+        elif dateType == "weeks":
+            cols.remove("week")
+        elif dateType == "months":
+            cols.remove("month")
+
 
         for year in years:
             print(f"Processing year: {year}")
@@ -86,21 +93,22 @@ class AggregatorHelper:
 
                     if dateType == "dates":
                         currRow = self.__getDataPerDates(year, district, date, agg_df)
-                    if dateType == "weeks":
+                    elif dateType == "weeks":
                         currRow = self.__getDataPerWeeks(year, district, date, agg_df)
-                    if dateType == "months":
+                        print(currRow.head())
+                        print(agg_df.columns)
+                    elif dateType == "months":
                         currRow = self.__getDataPerMonths(year, district, date, agg_df)
 
-                    if currRow:
-                        for col in cols:  # parse each of the desired columns
-                            currAttr = f"{date}:{col}"  # the current attribute which corresponds to the date and the column
-                            currVal = 0  # defaults as zero incase it does not exist
+                    for col in cols:  # parse each of the desired columns
+                        currAttr = f"{date}:{col}"  # the current attribute which corresponds to the date and the column
+                        currVal = 0  # defaults as zero incase it does not exist
 
-                            if len(currRow[col]) == 1:
-                                # the current value from the loaded data
-                                currVal = currRow[col].item()
+                        if len(currRow[col]) == 1:
+                            # the current value from the loaded data
+                            currVal = currRow[col].item()
 
-                            currData[currAttr] = currVal
+                        currData[currAttr] = currVal
 
                 listForDF.append(currData)
 
