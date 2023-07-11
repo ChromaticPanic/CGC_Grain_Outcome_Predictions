@@ -76,7 +76,6 @@ class AggregatorHelper:
         elif dateType == "months":
             cols.remove("month")
 
-
         for year in years:
             print(f"Processing year: {year}")
 
@@ -95,8 +94,6 @@ class AggregatorHelper:
                         currRow = self.__getDataPerDates(year, district, date, agg_df)
                     elif dateType == "weeks":
                         currRow = self.__getDataPerWeeks(year, district, date, agg_df)
-                        print(currRow.head())
-                        print(agg_df.columns)
                     elif dateType == "months":
                         currRow = self.__getDataPerMonths(year, district, date, agg_df)
 
@@ -128,14 +125,14 @@ class AggregatorHelper:
 
     def __getDataPerWeeks(self, year, district, week, agg_df):
         return agg_df.loc[
-            (agg_df["year"] == year)
-            & (agg_df["week"] == week)
-            & (agg_df["district"] == district)
+            (agg_df["year"] == int(year))
+            & (agg_df["week"] == int(week))
+            & (agg_df["district"] == int(district))
         ]
 
     def __getDataPerMonths(self, year, district, month, agg_df):
         return agg_df.loc[
-            (agg_df["year"] == year)
-            & (agg_df["month"] == month)
-            & (agg_df["district"] == district)
+            (agg_df["year"] == int(year))
+            & (agg_df["month"] == int(month))
+            & (agg_df["district"] == int(district))
         ]

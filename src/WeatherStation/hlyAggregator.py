@@ -56,7 +56,7 @@ class HlyAggregator:
 
             self.df.loc[
                 (self.df["month"] == monthInt) & (self.df["day"] == dayInt),
-                "week",
+                "week"
             ] = weekInt
 
     def aggregateByDay(self, pathToSave):
