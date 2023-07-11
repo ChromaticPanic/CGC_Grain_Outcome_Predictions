@@ -306,3 +306,28 @@ class SetCreator:
         setList = []
         #dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         return self.listOfSets
+
+
+                # year ergot was worst weather by month
+        # year ergot was soil
+        # year ergot was worst soil moisture
+
+                # all for weather by month
+        # add for weather by week
+        # all for weather by day
+
+
+        # all for soil moisture and moisture by month
+        # all for soil moisture and moisture by week
+        # all for soil moisture and moisture by day
+
+        # all for weather and soil moisture by month
+        # all for weather and soil moisture and soil by month
+        # add for weather and soil moisture by week
+        # add for weather and soil moisture and soil by week
+        # all for weather and soil moisture by day
+        # all for weather and soil moisture and soil by day
+
+
+        # first 15 years by week, soil moisture, soil
+        # first 15 years by day, soil moisture, soil, weather
