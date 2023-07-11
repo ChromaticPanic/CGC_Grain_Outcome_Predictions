@@ -64,6 +64,7 @@ class MoistureAggregator:
                 & (self.moistureData["day"] == dayInt),
                 "week",
             ] = weekInt
+        print(self.moistureData["week"])
 
     def aggregateByDay(self, pathToSave):
         agg_df = (
@@ -80,7 +81,7 @@ class MoistureAggregator:
             "day",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean",
+            "soil_moisture_mean"
         ]
 
         dates = self.helper.getDatesInYr()
@@ -112,7 +113,7 @@ class MoistureAggregator:
             "week",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean",
+            "soil_moisture_mean"
         ]
 
         dates = self.helper.getWeeksInYr()
@@ -144,7 +145,7 @@ class MoistureAggregator:
             "month",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean",
+            "soil_moisture_mean"
         ]
 
         dates = self.helper.getMonthsInYr()
