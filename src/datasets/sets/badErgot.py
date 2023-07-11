@@ -14,13 +14,10 @@ class BadErgot(AbstractSet):
         soilDF: pd.DataFrame,
         ergotDF: pd.DataFrame,
     ):
-        super().__init__(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
+        super().__init__()
+
+
+
+        # year ergot was worst weather by month
+        # year ergot was soil
+        # year ergot was worst soil moisture

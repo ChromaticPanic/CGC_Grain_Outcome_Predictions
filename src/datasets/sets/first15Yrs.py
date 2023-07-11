@@ -14,13 +14,10 @@ class First15Yrs(AbstractSet):
         soilDF: pd.DataFrame,
         ergotDF: pd.DataFrame,
     ):
-        super().__init__(
-            hlyByDayDF,
-            hlyByWeekDF,
-            hlyByMonthDF,
-            moistureByDayDF,
-            moistureByWeekDF,
-            moistureByMonthDF,
-            soilDF,
-            ergotDF,
-        )
+        super().__init__()
+
+
+
+
+        # first 15 years by week, soil moisture, soil
+        # first 15 years by day, soil moisture, soil, weather
