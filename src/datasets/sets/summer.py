@@ -32,14 +32,18 @@ class Summer(AbstractSet):
         # Drops all column names based on the regular expression
         if lastAttr.find("-") != -1:  # This is a daily aggregate
             return df[df.columns.drop(list(df.filter(regex="^0[1-4]-|^09-|^1[0-2]-")))]
-        elif lastAttr.find("12:"):  # This is a monthly aggregate
+        elif lastAttr.find("12:") != -1:  # This is a monthly aggregate
             return df[df.columns.drop(list(df.filter(regex="^[1-4]:|^9:|^1[0-2]:")))]
-        else:  # This is a weekly aggregate
+        elif lastAttr.find("52:") != -1:  # This is a weekly aggregate
             return df[
                 df.columns.drop(
                     list(df.filter(regex="^[1-9]:|^1[0-6]:|^3[3-9]:|^4[0-9]:|^5[0-2]:"))
                 )
             ]
+        else:
+            print(
+                "[ERROR] unexpected set of columns recieved when selecting data in the summer set"
+            )
 
     def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
         hlyByDayDF = self.selectData(hlyByDayDF)
