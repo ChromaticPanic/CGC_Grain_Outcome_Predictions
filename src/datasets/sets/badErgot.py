@@ -26,7 +26,7 @@ class BadErgot(AbstractSet):
         self._setErgot(ergotDF)
 
     def selectData(self, df: pd.DataFrame) -> pd.DataFrame:
-        return df.loc[(df["year"] >= 2002) & (df["year"] <= 2012)]
+        return df.loc[(df["year"] >= 2000) & (df["year"] <= 2015)]
 
     def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
         hlyByDayDF = self.selectData(hlyByDayDF)

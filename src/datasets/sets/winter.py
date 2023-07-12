@@ -32,12 +32,16 @@ class Winter(AbstractSet):
         # Drops all column names based on the regular expression
         if lastAttr.find("-") != -1:  # This is a daily aggregate
             return df[df.columns.drop(list(df.filter(regex="^0[3-9]-|^1[0-1]-")))]
-        elif lastAttr.find("12:"):  # This is a monthly aggregate
+        elif lastAttr.find("12:") != -1:  # This is a monthly aggregate
             return df[df.columns.drop(list(df.filter(regex="^[3-9]:|^1[0-1]:")))]
-        else:  # This is a weekly aggregate
+        elif lastAttr.find("52:") != -1:  # This is a weekly aggregate
             return df[
                 df.columns.drop(list(df.filter(regex="^9:|^[1-3][0-9]:|^4[0-8]:")))
             ]
+        else:
+            print(
+                "[ERROR] unexpected set of columns recieved when selecting data in the winter set"
+            )
 
     def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
         hlyByDayDF = self.selectData(hlyByDayDF)
@@ -47,7 +51,7 @@ class Winter(AbstractSet):
         hlyByWeekDF = self.selectData(hlyByWeekDF)
         super()._setHlyByWeek(hlyByWeekDF)
 
-    def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
+    def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):  ############################
         hlyByMonthDF = self.selectData(hlyByMonthDF)
         super()._setHlyByMonth(hlyByMonthDF)
 
