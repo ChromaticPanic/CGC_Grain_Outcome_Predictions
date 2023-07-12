@@ -1,10 +1,10 @@
 from sklearn.model_selection import train_test_split  # type: ignore
 from sklearn.preprocessing import StandardScaler  # type: ignore
 from sklearn.preprocessing import MinMaxScaler  # type: ignore
-from sklearn.impute import SimpleImputer  # type: ignore
 from scipy import stats  # type: ignore
 import pandas as pd  # type: ignore
 import numpy as np
+import math
 
 
 class SetModifier:
@@ -70,12 +70,22 @@ class SetModifier:
         return df.drop(columns=toRemove)
 
     def InputeData(self, df, strat):
-        if strat == "zero" or strat == "mean" or strat == "median" or strat == "mode":
-            imputer = SimpleImputer(strategy=strat)
-            df = imputer.fit_transform(df)
+        cols = df.columns.tolist()
+        replacements = [0]*(len(cols))
 
+        if strat == 'mean' or strat == 'median' or strat == 'mode':
+            if strat == 'mean':
+                replacements = df.mean(axis = 0, skipna = True)
+            elif strat == 'median':
+                replacements = df.median(axis = 0, skipna = True)
+            elif strat == 'mode':
+                replacements = df.mode(axis = 0, skipna = True)
+        
+        for index, col in enumerate(cols):
+            df[col].fillna(replacements[index], inplace=True)
+            
         return df
-
+    
     def attemptBellCurve(self, df):
         colList = df.columns.tolist()
 
@@ -87,6 +97,10 @@ class SetModifier:
                 logData = np.log(df[col])
                 sqrtData = np.sqrt(df[col])
                 cbrtRoot = np.cbrt(df[col])
+
+                logData = np.log(df[col]).replace(-math.inf, 0)
+                sqrtData = np.sqrt(df[col]).replace(-math.inf, 0)
+                cbrtRoot = np.cbrt(df[col]).replace(-math.inf, 0)
 
                 logResults = stats.shapiro(logData)
                 sqrtResults = stats.shapiro(sqrtData)
@@ -108,13 +122,15 @@ class SetModifier:
             if forNeuralNetwork
             else MinMaxScaler(feature_range=(0, 1))
         )
+        scaledValues = scaler.fit_transform(df)
 
-        return scaler.fit_transform(df)
+        return pd.DataFrame(scaledValues, columns=df.columns, index=df.index)
 
     def useStandardScaler(self, df):
         scaler = StandardScaler()
+        scaledValues = scaler.fit_transform(df)
 
-        return scaler.fit_transform(df)
+        return pd.DataFrame(scaledValues, columns=df.columns, index=df.index)
 
     def randomSplit(
         self, df: pd.DataFrame, testSize: float = 0.2, randomSeed: int = 42
@@ -123,7 +139,7 @@ class SetModifier:
             df, test_size=testSize, random_state=randomSeed
         )
 
-        return {"trainSet": train_set, "test_set": test_set}
+        return {"train": train_set, "test": test_set}
 
     def stratifiedSplit(
         self,
@@ -136,4 +152,4 @@ class SetModifier:
             df, stratify=descrimRow, test_size=testSize, random_state=randomSeed
         )
 
-        return {"trainSet": train_set, "test_set": test_set}
+        return {"train": train_set, "test": test_set}

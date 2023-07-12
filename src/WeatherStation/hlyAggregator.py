@@ -10,7 +10,7 @@ except:
 
 sys.path.append("../")
 from Shared.DataService import DataService
-from Shared.aggregatorHelper import AggregatorHelper
+from Shared.aggregatorHelper import AggregatorHelper  # type: ignore
 
 
 load_dotenv()
