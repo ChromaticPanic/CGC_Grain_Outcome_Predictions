@@ -71,21 +71,23 @@ class SetModifier:
 
     def InputeData(self, df, strat):
         cols = df.columns.tolist()
-        replacements = [0]*(len(cols))
+        replacements = []
 
-        if strat == 'mean' or strat == 'median' or strat == 'mode':
-            if strat == 'mean':
-                replacements = df.mean(axis = 0, skipna = True)
-            elif strat == 'median':
-                replacements = df.median(axis = 0, skipna = True)
-            elif strat == 'mode':
-                replacements = df.mode(axis = 0, skipna = True)
-        
-        for index, col in enumerate(cols):
-            df[col].fillna(replacements[index], inplace=True)
-            
+        if strat == "mean" or strat == "median" or strat == "mode" or strat == "zero":
+            if strat == "mean":
+                replacements = df.mean(axis=0, skipna=True)
+            elif strat == "median":
+                replacements = df.median(axis=0, skipna=True)
+            elif strat == "mode":
+                replacements = df.mode(axis=0, skipna=True)
+            elif strat == "zero":
+                replacements = [0] * (len(cols))
+
+            for index, col in enumerate(cols):
+                df[col].fillna(replacements[index], inplace=True)
+
         return df
-    
+
     def attemptBellCurve(self, df):
         colList = df.columns.tolist()
 
