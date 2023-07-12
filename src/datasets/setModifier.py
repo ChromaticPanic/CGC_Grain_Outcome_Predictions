@@ -87,7 +87,7 @@ class SetModifier:
                 df[col].fillna(replacements[index], inplace=True)
 
         return df
-
+    
     def attemptBellCurve(self, df):
         colList = df.columns.tolist()
 

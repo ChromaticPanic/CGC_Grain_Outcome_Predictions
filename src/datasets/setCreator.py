@@ -246,6 +246,7 @@ class SetCreator:
                 moistureAggregator.aggregateByMonth(path)
 
     def getSetList1(self):
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         setList = []
         trainTestSet = {}
         trainDevSet = {}
@@ -1237,7 +1238,6 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
-
         dataDict[
             "desc"
         ] = "Data from years with bad ergot [mean]|[minMax]|[straified on has_ergot]"
