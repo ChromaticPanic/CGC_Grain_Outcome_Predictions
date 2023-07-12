@@ -25,7 +25,6 @@ class Complete(AbstractSet):
         self._setSoil(soilDF)
         self._setErgot(ergotDF)
 
-
     def selectData(self, df: pd.DataFrame) -> pd.DataFrame:
         return df
 
@@ -52,4 +51,3 @@ class Complete(AbstractSet):
 
     def _setErgot(self, ergotDF: pd.DataFrame):
         super()._setErgot(ergotDF)
-        

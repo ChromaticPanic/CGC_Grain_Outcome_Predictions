@@ -25,7 +25,6 @@ class First15Yrs(AbstractSet):
         self._setSoil(soilDF)
         self._setErgot(ergotDF)
 
-
     def selectData(self, df: pd.DataFrame) -> pd.DataFrame:
         return df.loc[(df["year"] >= 1995) & (df["year"] <= 2009)]
 
@@ -59,4 +58,3 @@ class First15Yrs(AbstractSet):
     def _setErgot(self, ergotDF: pd.DataFrame):
         ergotDF = self.selectData(ergotDF)
         super()._setErgot(ergotDF)
-        

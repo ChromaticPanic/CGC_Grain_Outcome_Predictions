@@ -25,18 +25,19 @@ class Spring(AbstractSet):
         self._setSoil(soilDF)
         self._setErgot(ergotDF)
 
-
     def selectData(self, df: pd.DataFrame) -> pd.DataFrame:
         cols = df.columns.tolist()
         lastAttr = str(cols[len(cols) - 1])
-        
+
         # Drops all column names based on the regular expression
-        if(lastAttr.find('-') != -1): # This is a daily aggregate
-            return df[df.columns.drop(list(df.filter(regex='^0[1-2]-|^0[5-9]-|^[10-12]-')))]
-        elif(lastAttr.find('12:')): # This is a monthly aggregate
-            return df[df.columns.drop(list(df.filter(regex='^[1-2]:|^[5-12]:')))]
-        else: # This is a weekly aggregate
-            return df[df.columns.drop(list(df.filter(regex='^[1-8]:|^[17-52]:')))]
+        if lastAttr.find("-") != -1:  # This is a daily aggregate
+            return df[
+                df.columns.drop(list(df.filter(regex="^0[1-2]-|^0[5-9]-|^[10-12]-")))
+            ]
+        elif lastAttr.find("12:"):  # This is a monthly aggregate
+            return df[df.columns.drop(list(df.filter(regex="^[1-2]:|^[5-12]:")))]
+        else:  # This is a weekly aggregate
+            return df[df.columns.drop(list(df.filter(regex="^[1-8]:|^[17-52]:")))]
 
     def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
         hlyByDayDF = self.selectData(hlyByDayDF)
