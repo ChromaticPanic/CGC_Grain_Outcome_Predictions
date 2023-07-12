@@ -25,7 +25,6 @@ class BadErgot(AbstractSet):
         self._setSoil(soilDF)
         self._setErgot(ergotDF)
 
-
     def selectData(self, df: pd.DataFrame) -> pd.DataFrame:
         return df.loc[(df["year"] >= 2002) & (df["year"] <= 2012)]
 
