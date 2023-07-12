@@ -67,13 +67,13 @@ class AbstractSet(ABC):
 
     def getCombinedDF(
         self,
-        hlyByDay: bool,
-        hlyByWeek: bool,
-        hlyByMonth: bool,
-        moistureByDay: bool,
-        moistureByWeek: bool,
-        moistureByMonth: bool,
-        soil: bool,
+        hlyByDay: bool = False,
+        hlyByWeek: bool = False,
+        hlyByMonth: bool = False,
+        moistureByDay: bool = False,
+        moistureByWeek: bool = False,
+        moistureByMonth: bool = False,
+        soil: bool = False,
     ) -> pd.DataFrame:
         combinedDF = self.ergotDF
 
