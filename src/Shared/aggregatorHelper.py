@@ -96,6 +96,8 @@ class AggregatorHelper:
                         currRow = self.__getDataPerWeeks(year, district, date, agg_df)
                     elif dateType == "months":
                         currRow = self.__getDataPerMonths(year, district, date, agg_df)
+                    else:
+                        raise ValueError(f"[ERROR] {dateType} is an invalid datetype")
 
                     for col in cols:  # parse each of the desired columns
                         currAttr = f"{date}:{col}"  # the current attribute which corresponds to the date and the column

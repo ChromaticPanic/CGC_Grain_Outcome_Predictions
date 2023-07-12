@@ -3,7 +3,7 @@
 #
 # Purpose: handles (builds/processes) requests to a database
 # ----------------------------------------------------
-import sqlalchemy
+import sqlalchemy  # type: ignore
 
 
 class GenericQueryBuilder:

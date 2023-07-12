@@ -5,7 +5,7 @@
 # Run this script, when viewing in PGAdmin, limit results to prevent the container from crashing
 # ---------------------------------------------
 import geopandas  # type: ignore
-import sqlalchemy
+import sqlalchemy  # type: ignore
 import os
 from dotenv import load_dotenv
 

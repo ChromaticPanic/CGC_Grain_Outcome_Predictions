@@ -1,4 +1,4 @@
-import sqlalchemy
+import sqlalchemy  # type: ignore
 
 class GenericQueryBuilder:
     def tableExistsReq(self, tablename: str) -> str: ...

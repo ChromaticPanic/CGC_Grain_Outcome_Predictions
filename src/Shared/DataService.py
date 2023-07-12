@@ -7,7 +7,7 @@ Typical usage example:
   
 """
 import atexit
-import sqlalchemy as sq
+import sqlalchemy as sq  # type: ignore
 
 
 class DataService:

@@ -79,4 +79,3 @@ class DecisionTreeVisualizer:
             os.remove("tree.dot")
         except Exception as e:
             print(f"[ERROR]: {e}")
-            

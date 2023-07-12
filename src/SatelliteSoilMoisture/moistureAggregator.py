@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-import sqlalchemy as sq
+import sqlalchemy as sq  # type: ignore
 import pandas as pd  # type: ignore
 import os, sys, datetime
 
@@ -60,8 +60,9 @@ class MoistureAggregator:
             weekInt = datetime.date(2001, monthInt, dayInt).isocalendar()[1]
 
             self.moistureData.loc[
-                (self.moistureData["month"] == monthInt) & (self.moistureData["day"] == dayInt),
-                "week"
+                (self.moistureData["month"] == monthInt)
+                & (self.moistureData["day"] == dayInt),
+                "week",
             ] = weekInt
 
     def aggregateByDay(self, pathToSave):
@@ -79,7 +80,7 @@ class MoistureAggregator:
             "day",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean"
+            "soil_moisture_mean",
         ]
 
         dates = self.helper.getDatesInYr()
@@ -111,7 +112,7 @@ class MoistureAggregator:
             "week",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean"
+            "soil_moisture_mean",
         ]
 
         dates = self.helper.getWeeksInYr()
@@ -130,7 +131,6 @@ class MoistureAggregator:
             print(e)
 
     def aggregateByMonth(self, pathToSave):
-
         agg_df = (
             self.moistureData.groupby(["district", "year", "month"])
             .agg({"soil_moisture": ["min", "max", "mean"]})
@@ -144,7 +144,7 @@ class MoistureAggregator:
             "month",
             "soil_moisture_min",
             "soil_moisture_max",
-            "soil_moisture_mean"
+            "soil_moisture_mean",
         ]
 
         dates = self.helper.getMonthsInYr()
