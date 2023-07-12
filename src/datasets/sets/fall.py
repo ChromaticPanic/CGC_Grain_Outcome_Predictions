@@ -35,7 +35,11 @@ class Fall(AbstractSet):
         elif lastAttr.find("12:"):  # This is a monthly aggregate
             return df[df.columns.drop(list(df.filter(regex="^[1-8]:|^12:")))]
         else:  # This is a weekly aggregate
-            return df[df.columns.drop(list(df.filter(regex="^[1-32]:|^[49-52]:")))]
+            return df[
+                df.columns.drop(
+                    list(df.filter(regex="^[1-9]:|^[1-2][0-9]:|^3[0-2]:|^49:|^5[0-2]:"))
+                )
+            ]
 
     def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
         hlyByDayDF = self.selectData(hlyByDayDF)
