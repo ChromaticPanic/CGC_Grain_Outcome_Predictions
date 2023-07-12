@@ -32,12 +32,18 @@ class Spring(AbstractSet):
         # Drops all column names based on the regular expression
         if lastAttr.find("-") != -1:  # This is a daily aggregate
             return df[
-                df.columns.drop(list(df.filter(regex="^0[1-2]-|^0[5-9]-|^[10-12]-")))
+                df.columns.drop(list(df.filter(regex="^0[1-2]-|^0[5-9]-|^1[0-2]-")))
             ]
         elif lastAttr.find("12:"):  # This is a monthly aggregate
-            return df[df.columns.drop(list(df.filter(regex="^[1-2]:|^[5-12]:")))]
+            return df[
+                df.columns.drop(list(df.filter(regex="^[1-2]:|^[5-9]:|^1[0-2]:")))
+            ]
         else:  # This is a weekly aggregate
-            return df[df.columns.drop(list(df.filter(regex="^[1-8]:|^[17-52]:")))]
+            return df[
+                df.columns.drop(
+                    list(df.filter(regex="^[1-8]:|^1[7-9]:|^[2-4][0-9]:|^5[0,2]:"))
+                )
+            ]
 
     def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
         hlyByDayDF = self.selectData(hlyByDayDF)

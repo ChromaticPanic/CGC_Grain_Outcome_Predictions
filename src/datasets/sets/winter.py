@@ -31,11 +31,13 @@ class Winter(AbstractSet):
 
         # Drops all column names based on the regular expression
         if lastAttr.find("-") != -1:  # This is a daily aggregate
-            return df[df.columns.drop(list(df.filter(regex="^0[3-9]-|^[10-11]-")))]
+            return df[df.columns.drop(list(df.filter(regex="^0[3-9]-|^1[0-1]-")))]
         elif lastAttr.find("12:"):  # This is a monthly aggregate
-            return df[df.columns.drop(list(df.filter(regex="^[3-11]:")))]
+            return df[df.columns.drop(list(df.filter(regex="^[3-9]:|^1[0-1]:")))]
         else:  # This is a weekly aggregate
-            return df[df.columns.drop(list(df.filter(regex="^[9-48]:")))]
+            return df[
+                df.columns.drop(list(df.filter(regex="^9:|^[1-3][0-9]:|^4[0-8]:")))
+            ]
 
     def _setHlyByDay(self, hlyByDayDF: pd.DataFrame):
         hlyByDayDF = self.selectData(hlyByDayDF)
