@@ -84,6 +84,9 @@ class SetModifier:
                 replacements = [0] * (len(cols))
 
             for index, col in enumerate(cols):
+                if np.isnan(replacements[index]):
+                    replacements[index] = 0
+
                 df[col].fillna(replacements[index], inplace=True)
 
         return df
