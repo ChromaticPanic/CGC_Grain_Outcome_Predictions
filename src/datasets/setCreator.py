@@ -240,7 +240,6 @@ class SetCreator:
                 moistureAggregator.aggregateByMonth(path)
 
     def getSetList1(self):
-        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         setList = []
         trainTestSet = {}
         trainDevSet = {}
@@ -254,6 +253,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by day [median]|[minMax]|[straified on has_ergot]"
@@ -271,6 +272,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by day [median]|[StandardScalar]|[straified on has_ergot]"
@@ -289,6 +292,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by day [median]|[bellCurve]|[minMax]|[straified on has_ergot]"
@@ -307,6 +312,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by day [median]|[bellCurve]|[StandardScalar]|[straified on has_ergot]"
@@ -324,6 +331,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by week [median]|[minMax]|[straified on has_ergot]"
@@ -341,6 +350,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by week [median]|[StandardScalar]|[straified on has_ergot]"
@@ -359,6 +370,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by week [median]|[bellCurve]|[minMax]|[straified on has_ergot]"
@@ -377,6 +390,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by week [median]|[bellCurve]|[StandardScalar]|[straified on has_ergot]"
@@ -394,6 +409,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by month [median]|[minMax]|[straified on has_ergot]"
@@ -411,6 +428,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by month [median]|[StandardScalar]|[straified on has_ergot]"
@@ -429,6 +448,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by month [median]|[bellCurve]|[minMax]|[straified on has_ergot]"
@@ -447,6 +468,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "First 15 years aggregated by month [median]|[bellCurve]|[StandardScalar]|[straified on has_ergot]"
@@ -462,6 +485,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Hourly data by day [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -475,6 +500,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data by day [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -491,6 +518,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Hourly data by day [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -505,6 +534,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data by day [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -520,6 +551,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Hourly data by day [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -533,6 +566,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data by day [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -549,6 +584,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Hourly data by day [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -563,6 +600,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data by day [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -578,6 +617,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Hourly data by day [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -591,6 +632,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data by day [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -607,6 +650,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Hourly data by day [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -621,6 +666,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data by day [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -636,6 +683,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by day [mean]|[minMax]|[straified on has_ergot]"
@@ -651,6 +700,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by day [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -667,6 +718,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by day [mean]|[BellCurve]|[minMax]|[straified on has_ergot]"
@@ -683,6 +736,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by day [mean]|[BellCurve]|[StandardScalar]|[straified on has_ergot]"
@@ -698,6 +753,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by week [mean]|[minMax]|[straified on has_ergot]"
@@ -713,6 +770,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by week [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -729,6 +788,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by week [mean]|[BellCurve]|[minMax]|[straified on has_ergot]"
@@ -745,6 +806,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by week [mean]|[BellCurve]|[StandardScalar]|[straified on has_ergot]"
@@ -760,6 +823,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by month [mean]|[minMax]|[straified on has_ergot]"
@@ -775,6 +840,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by month [mean]|[StandardScalar]|[straified on has_ergot]"
@@ -791,6 +858,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by month [mean]|[BellCurve]|[minMax]|[straified on has_ergot]"
@@ -807,6 +876,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data by month [mean]|[BellCurve]|[StandardScalar]|[straified on has_ergot]"
@@ -822,6 +893,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Soil data [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -835,6 +908,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Soil data [mean]|[StandardScalar]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -849,6 +924,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Soil data [mean]|[BellCurve]|[minMax]|[straified on has_ergot]"
@@ -865,6 +942,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Soil data [mean]|[BellCurve]|[StandardScalar]|[straified on has_ergot]"
@@ -880,6 +959,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Winter data [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -893,6 +974,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Spring data [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -906,6 +989,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Summer data [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -919,6 +1004,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict["desc"] = "Fall data [mean]|[minMax]|[straified on has_ergot]"
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
@@ -932,6 +1019,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "All data aggregated by day [mean]|[minMax]|[straified on has_ergot]"
@@ -947,6 +1036,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "All data aggregated by week [mean]|[minMax]|[straified on has_ergot]"
@@ -964,6 +1055,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "All data aggregated by month [mean]|[minMax]|[straified on has_ergot]"
@@ -979,6 +1072,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data from years with bad ergot aggregated by day [mean]|[minMax]|[straified on has_ergot]"
@@ -994,6 +1089,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data from years with bad ergot aggregated by week [mean]|[minMax]|[straified on has_ergot]"
@@ -1009,6 +1106,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Hourly data from years with bad ergot aggregated by month [mean]|[minMax]|[straified on has_ergot]"
@@ -1024,6 +1123,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data from years with bad ergot aggregated by day [mean]|[minMax]|[straified on has_ergot]"
@@ -1039,6 +1140,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data from years with bad ergot aggregated by week [mean]|[minMax]|[straified on has_ergot]"
@@ -1054,6 +1157,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Moisture data from years with bad ergot aggregated by month [mean]|[minMax]|[straified on has_ergot]"
@@ -1071,6 +1176,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Data from years with bad ergot aggregated by day [mean]|[minMax]|[straified on has_ergot]"
@@ -1088,6 +1195,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "# Data from years with bad ergot aggregated by week [mean]|[minMax]|[straified on has_ergot]"
@@ -1105,6 +1214,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
         ] = "Data from years with bad ergot aggregated by month [mean]|[minMax]|[straified on has_ergot]"
@@ -1120,6 +1231,8 @@ class SetCreator:
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        
         dataDict[
             "desc"
         ] = "Data from years with bad ergot [mean]|[minMax]|[straified on has_ergot]"
