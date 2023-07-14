@@ -35,13 +35,10 @@ class ModelEvaluator:
         print(f'\trecall = {results["recall"]}')
         print(f'\tf1 = {results["f1"]}')
         print(f'\tauc = {results["auc"]}')
-        print(f'\tthe top 5 most relevant attributes were:')
-        for i in range(5):
-            print(f'\t\t{i}{results["importances"][i]}')
+        print(f'\tthe top 10 most relevant attributes were:')
 
-        print(f'\tthe top 5 most irrelevant attributes were:')
-        for i in range(5):
-            print(f'\t\t{i}{results["importances"][len(results["importances"]) - i - 1]}')
+        for i in range(10):
+            print(f'\t\t{i}{results["importances"][i]}')
 
         print()
 
