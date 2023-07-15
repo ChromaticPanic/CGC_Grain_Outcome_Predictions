@@ -15,7 +15,6 @@ python-dotenv
 pytest
 lxml
 black
-black[jupyter]
 jupyter-black
 mypy
 geoalchemy2
@@ -23,3 +22,8 @@ cdsapi
 xarray
 nbqa
 colorhash
+pandas-stubs
+lxml-stubs
+types-requests
+sqlalchemy-stubs
+types-SQLAlchemy
