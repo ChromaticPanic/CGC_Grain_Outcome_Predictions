@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import sqlalchemy as sq  # type: ignore
 from sqlalchemy import Connection  # type: ignore
 import pandas as pd  # type: ignore
+import numpy as np  # type: ignore
 import os, sys
 
 import typing
@@ -236,9 +237,16 @@ def getDatasetV2(months: Optional[typing.List[Any]]) -> pd.DataFrame:
 def getDatasetV3(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
     v_3: contains ergot, weather, soil_moisture, soil data
-    This dataset is used for the following stated problem:
-        Given a district and its weather, soil attributes -> predict if the district is gonna have ergot or not.
-    To-do: Need to get the weather data|soil_moisture for only the month with the appearance of ergot (ergot wont grow in winter)
+        Target: "incidence" from ergot table
+
+    Problem statement: Given a district and its all given attributes -> predict if the district is gonna have ergot or not.
+
+    Parameters:
+        months: list of months for which the soil moisture data is required.
+    note : If months is None, then the function returns the soil moisture data for all months.
+
+    To-do: we currently take the mean of all months for each attribute ->
+        need to test on specific months because ergot won't grow in winter
     """
 
     conn = connect_db()
@@ -276,6 +284,87 @@ def getDatasetV3(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     sm_df = sm_df.groupby(["year", "district"]).mean().reset_index()
 
     df = ergot_df.merge(sm_df, on=["year", "district"], how="left")
+
+    # Get soil data
+    soil_df = getSoilData(conn)
+    df = df.merge(soil_df, on=["district"], how="left")
+
+    # Get weather data
+    weather_df = getWeatherData_v1(months)
+    weather_df.drop(weather_df[weather_df["year"] == 2022].index, inplace=True)
+    df = df.merge(weather_df, on=["year", "district"])
+
+    return df
+
+
+def getDatasetV4(months: Optional[typing.List[Any]]) -> pd.DataFrame:
+    """
+    v_4: contains ergot, weather, soil_moisture, soil data
+        Target: "sellable" from ergot table
+
+    Problem statement: Given a district and its all given attributes -> predict that if the district produced the crop which are sellable.
+
+    Parameters:
+        months: list of months for which the soil moisture data is required.
+    note : If months is None, then the function returns the soil moisture data for all months.
+
+    To-do: we currently take the mean of all months for each attribute ->
+        need to test on specific months because ergot won't grow in winter
+    """
+
+    conn = connect_db()
+
+    # Get ergot data
+    agg_ergot_df = getErgotData(conn)
+    # drop district 4730 because it has no weather data and year = 2022 since soil moisture data is only until 2021.
+    agg_ergot_df.drop(
+        agg_ergot_df[
+            (agg_ergot_df.year == 2022) | (agg_ergot_df.district == 4730)
+        ].index,
+        inplace=True,
+    )
+
+    # Get ergot data
+    ergot_df = getErgotSamples(conn)
+    ergot_df.loc[ergot_df["province"] == "MB", "district"] = (
+        ergot_df.loc[ergot_df["province"] == "MB", "crop_district"] + 4600
+    )
+    ergot_df.loc[ergot_df["province"] == "SK", "district"] = (
+        ergot_df.loc[ergot_df["province"] == "SK", "crop_district"] - 1
+    ) + 4700
+    ergot_df.loc[ergot_df["province"] == "AB", "district"] = (
+        ergot_df.loc[ergot_df["province"] == "AB", "crop_district"] * 10
+    ) + 4800
+    ergot_df["district"] = pd.to_numeric(ergot_df["district"], downcast="integer")
+    ergot_df.drop(columns=["sample_id", "crop_district", "province"], inplace=True)
+    ergot_df.drop(
+        ergot_df[(ergot_df["year"] == 2022) | (ergot_df.district == 4730)].index,
+        inplace=True,
+    )
+
+    ergot_df["sellable"] = np.where(
+        ergot_df["severity"] > 0.04, False, True
+    )  # new column for sellable crop or not
+    ergot_df.drop(columns=["severity", "incidence"], inplace=True)
+
+    # merging both ergot tables
+    new_ergot_df = pd.merge(agg_ergot_df, ergot_df, on=["year", "district"])
+
+    sm_df = getSoilMoistureData(conn, months).drop(
+        columns=[
+            "index",
+            "cr_num",
+            "soil_moisture_min",
+            "soil_moisture_max",
+            "month",
+            "day",
+        ]
+    )
+
+    # Get soil moisture data
+    sm_df = sm_df.groupby(["year", "district"]).mean().reset_index()
+
+    df = new_ergot_df.merge(sm_df, on=["year", "district"], how="left")
 
     # Get soil data
     soil_df = getSoilData(conn)
