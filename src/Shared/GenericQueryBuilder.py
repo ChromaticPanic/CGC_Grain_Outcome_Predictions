@@ -15,5 +15,5 @@ class GenericQueryBuilder:
         );
         """
 
-    def readTableExists(self, results: sq.engine.cursor.CursorResult) -> bool:
+    def readTableExists(self, results: sq.engine.cursor.CursorResult) -> bool:  # type: ignore
         return results.first() is not None
