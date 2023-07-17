@@ -15,5 +15,5 @@ class GenericQueryBuilder:
         );
         """
 
-    def readTableExists(self, results: sqlalchemy.engine.cursor.CursorResult) -> bool:
+    def readTableExists(self, results: sqlalchemy.engine.CursorResult) -> bool:
         return results.first() is not None
