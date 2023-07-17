@@ -366,7 +366,7 @@ def createAggErgotV1() -> None:
 
     try:
         results = sq.text(queryBuilder.tableExistsReq(TABLENAME))
-        tableExists = queryBuilder.readTableExists(db.execute(results))  # type: ignore
+        tableExists = queryBuilder.readTableExists(db.execute(results))
 
         if not tableExists:
             createAggErgotTable(db)
@@ -405,7 +405,7 @@ def createAggErgotV2() -> None:
 
     try:
         results = sq.text(queryBuilder.tableExistsReq(TABLENAMEV2))
-        tableExists = queryBuilder.readTableExists(db.execute(results))  # type: ignore
+        tableExists = queryBuilder.readTableExists(db.execute(results))
 
         if not tableExists:
             createAggErgotTable(db)
