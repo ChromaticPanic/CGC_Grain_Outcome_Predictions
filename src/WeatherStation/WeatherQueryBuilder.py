@@ -22,9 +22,7 @@ class WeatherQueryBuilder(GenericQueryBuilder):
         WHERE station_id = \'{stationID}\';
         """
 
-    def readGetLastUpdated(
-        self, results: sqlalchemy.engine.CursorResult
-    ) -> typing.Tuple[str, bool]:
+    def readGetLastUpdated(self, results: object) -> typing.Tuple[str, bool]:
         row = results.first()
         if row:
             return (str(row[0]), bool(row[1]))
