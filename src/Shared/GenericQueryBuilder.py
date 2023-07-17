@@ -3,7 +3,7 @@
 #
 # Purpose: handles (builds/processes) requests to a database
 # ----------------------------------------------------
-import sqlalchemy
+import sqlalchemy as sq
 
 
 class GenericQueryBuilder:
@@ -15,5 +15,5 @@ class GenericQueryBuilder:
         );
         """
 
-    def readTableExists(self, results: sqlalchemy.engine.CursorResult) -> bool:
+    def readTableExists(self, results: sq.engine.cursor.LegacyCursorResult) -> bool:
         return results.first() is not None

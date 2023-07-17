@@ -43,6 +43,6 @@ class DataService:
         if self.conn is not None:
             self.disconnect()
 
-    def execute(self, query) -> sq.engine.CursorResult:
+    def execute(self, query) -> sq.engine.cursor.LegacyCursorResult:
         """Execute a query on the database"""
         return self.conn.execute(query)
