@@ -15,5 +15,7 @@ class GenericQueryBuilder:
         );
         """
 
-    def readTableExists(self, results: object) -> bool:
-        return results.first() is not None
+    def readTableExists(self, results) -> bool:
+        if hasattr(results, "first"):
+            return results.first() is not None
+        return False

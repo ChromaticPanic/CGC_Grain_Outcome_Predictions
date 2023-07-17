@@ -23,9 +23,10 @@ class WeatherQueryBuilder(GenericQueryBuilder):
         """
 
     def readGetLastUpdated(self, results: object) -> typing.Tuple[str, bool]:
-        row = results.first()
-        if row:
-            return (str(row[0]), bool(row[1]))
+        if hasattr(results, "first"):
+            row = results.first()
+            if row:
+                return (str(row[0]), bool(row[1]))
         return ("", False)
 
     def createHrlyProvStationTableReq(self, tablename: str) -> str:
