@@ -22,12 +22,11 @@ class WeatherQueryBuilder(GenericQueryBuilder):
         WHERE station_id = \'{stationID}\';
         """
 
-    def readGetLastUpdated(
-        self, results: sqlalchemy.engine.cursor.CursorResult
-    ) -> typing.Tuple[str, bool]:
-        row = results.first()
-        if row:
-            return (str(row[0]), bool(row[1]))
+    def readGetLastUpdated(self, results: object) -> typing.Tuple[str, bool]:
+        if hasattr(results, "first"):
+            row = results.first()
+            if row:
+                return (str(row[0]), bool(row[1]))
         return ("", False)
 
     def createHrlyProvStationTableReq(self, tablename: str) -> str:
