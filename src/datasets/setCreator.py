@@ -177,21 +177,21 @@ class SetCreator:
             ergotDF,
         )
 
-    def __verifySoilIsAggregated(self, db, queryBuilder):
+    def __verifySoilIsAggregated(self, db: DataService, queryBuilder: GenericQueryBuilder):
         query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
         tableExists = queryBuilder.readTableExists(db.execute(query))
 
         if not tableExists:
             SoilAggregator()
 
-    def __verifyErgotIsAggregated(self, db, queryBuilder):
+    def __verifyErgotIsAggregated(self, db: DataService, queryBuilder: GenericQueryBuilder):
         query = sq.text(queryBuilder.tableExistsReq(AGG_ERGOT_TABLE))
         tableExists = queryBuilder.readTableExists(db.execute(query))
 
         if not tableExists:
             ErgotAggregator()
 
-    def __verifyHlyIsAggregated(self, path):
+    def __verifyHlyIsAggregated(self, path: str):
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))
         except:

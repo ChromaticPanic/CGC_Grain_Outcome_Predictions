@@ -1,6 +1,8 @@
 from sklearn.model_selection import train_test_split  # type: ignore
 from sklearn.preprocessing import StandardScaler  # type: ignore
 from sklearn.preprocessing import MinMaxScaler  # type: ignore
+from sklearn.random_projection import GaussianRandomProjection  # type: ignore
+from sklearn.decomposition import PCA  # type: ignore
 from scipy import stats  # type: ignore
 import pandas as pd  # type: ignore
 import numpy as np
@@ -69,7 +71,7 @@ class SetModifier:
 
         return df.drop(columns=toRemove)
 
-    def InputeData(self, df, strat):
+    def InputeData(self, df: pd.DataFrame, strat: str) -> pd.DataFrame:
         cols = df.columns.tolist()
         replacements = []
 
@@ -91,7 +93,7 @@ class SetModifier:
 
         return df
     
-    def attemptBellCurve(self, df):
+    def attemptBellCurve(self, df: pd.DataFrame) -> pd.DataFrame:
         colList = df.columns.tolist()
 
         for col in colList:
@@ -121,7 +123,7 @@ class SetModifier:
 
         return df
 
-    def useMinMaxScaler(self, df, forNeuralNetwork: bool = False):
+    def useMinMaxScaler(self, df: pd.DataFrame, forNeuralNetwork: bool = False) -> pd.DataFrame:
         scaler = (
             MinMaxScaler(feature_range=(-1, 1))
             if forNeuralNetwork
@@ -131,7 +133,7 @@ class SetModifier:
 
         return pd.DataFrame(scaledValues, columns=df.columns, index=df.index)
 
-    def useStandardScaler(self, df):
+    def useStandardScaler(self, df: pd.DataFrame) -> pd.DataFrame:
         scaler = StandardScaler()
         scaledValues = scaler.fit_transform(df)
 
@@ -158,3 +160,15 @@ class SetModifier:
         )
 
         return {"train": train_set, "test": test_set}
+    
+    def usePCAReduction(self, dataset: pd.DataFrame) -> np.ndarray:
+        pca = PCA()
+        pca.fit_transform(dataset)
+
+        return pca
+
+    def useGausReduction(self, dataset: pd.DataFrame, num_components: int = 25) -> np.ndarray:
+        gaussian_rnd_proj = GaussianRandomProjection(random_state=0, n_components=num_components)
+        X_reduced = gaussian_rnd_proj.fit_transform(dataset)
+
+        return X_reduced
