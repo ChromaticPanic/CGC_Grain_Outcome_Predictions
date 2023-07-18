@@ -1,17 +1,19 @@
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_curve, log_loss, auc 
 from sklearn.model_selection import cross_val_score
+from collections import Counter
 import numpy as np
+import os
 
 
 class ModelEvaluator:
-    def evaluateModel(self, model, desc, xTrainSet, yTrainSet, xTestSet, yTestSet, numCV=5) -> dict:
+    def evaluateClassification(self, model, desc, xTrainSet, yTrainSet, xTestSet, yTestSet, saveFactorsLoc=None, hasFeatImportance=True, numCV=5) -> dict:
         y_train_pred = model.predict(xTrainSet)
         y_pred = model.predict(xTestSet)
         results = {}
 
         results["desc"] = desc
 
-        calc_accuracies = cross_val_score(model, xTestSet, yTestSet, cv=numCV, scoring="accuracy")
+        calc_accuracies = cross_val_score(model, xTestSet, yTestSet, cv=numCV, scoring="neg_mean_squared_error")
         results["avg_accuracy"] = np.average(calc_accuracies)
 
         results["r2"] = model.score(xTestSet, yTestSet)
@@ -24,9 +26,12 @@ class ModelEvaluator:
         fpr, tpr, t = roc_curve(yTestSet, y_pred)
         results["auc"] = auc(fpr, tpr)
 
-        results["importances"] = list(zip(model.feature_importances_, xTestSet.columns))
-        results["importances"].sort(reverse=True)
+        if hasFeatImportance:
+            results["importances"] = list(zip(model.feature_importances_, xTestSet.columns))
+            results["importances"].sort(reverse=True)
 
+            self.__saveRelevantFeatures(results["importances"], saveFactorsLoc)
+        
         print(f'[SUCCESS] evaluated {desc}')
         print(f'\tavg_accuracy = {results["avg_accuracy"]}')
         print(f'\tr2 = {results["r2"]}')
@@ -35,11 +40,70 @@ class ModelEvaluator:
         print(f'\trecall = {results["recall"]}')
         print(f'\tf1 = {results["f1"]}')
         print(f'\tauc = {results["auc"]}')
-        print(f'\tthe top 10 most relevant attributes were:')
 
-        for i in range(10):
-            print(f'\t\t{i}{results["importances"][i]}')
+        if hasFeatImportance:
+            print(f'\tthe top 10 most relevant attributes were:')
+
+            for i in range(10):
+                print(f'\t\t{i}{results["importances"][i]}')
 
         print()
 
         return results
+
+    def evaluateRegression(self, model, desc, xTrainSet, yTrainSet, xTestSet, yTestSet, saveFactorsLoc=None, hasFeatImportance=True, numCV=5) -> dict:
+        results = {}
+
+        results["desc"] = desc
+
+        calc_accuracies = cross_val_score(model, xTestSet, yTestSet, cv=numCV, scoring="neg_mean_squared_error")
+        results["avg_accuracy"] = np.average(calc_accuracies)
+
+        results["r2"] = model.score(xTestSet, yTestSet)
+
+        if hasFeatImportance:
+            results["importances"] = list(zip(model.feature_importances_, xTestSet.columns))
+            results["importances"].sort(reverse=True)
+
+            self.__saveRelevantFeatures(results["importances"], saveFactorsLoc)
+        
+        print(f'[SUCCESS] evaluated {desc}')
+        print(f'\tavg_accuracy = {results["avg_accuracy"]}')
+        print(f'\tr2 = {results["r2"]}')
+
+        if hasFeatImportance:
+            print(f'\tthe top 10 most relevant attributes were:')
+
+            for i in range(10):
+                print(f'\t\t{i}{results["importances"][i]}')
+
+        print()
+
+        return results
+
+    def __saveRelevantFeatures(self, features, saveFactorsLoc):
+        if saveFactorsLoc != None:
+            try:
+                os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+                with open(saveFactorsLoc, 'a') as file:
+                    for i in range(10):
+                        file.write(f'{features[i][1]},')
+            except:
+                pass
+
+    def readRelevantFeatures(self, saveFactorsLoc) -> dict:
+        dist = {}
+
+        try:
+            os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+            with open(saveFactorsLoc, 'r') as file:
+                content = file.read()
+
+                allFeatures = content.split(',')
+                dist = Counter(allFeatures)
+        except:
+            pass
+
+        return dist

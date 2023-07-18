@@ -1502,7 +1502,6 @@ class SetCreator:
         testDF = testDF[reducedSet]
         testDF = self.modder.InputeData(testDF, "median")
         testDF = self.modder.useMinMaxScaler(testDF)
-
         dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"
@@ -1512,7 +1511,6 @@ class SetCreator:
         setList.append(dataDict)
 
         return setList
-
     def getSetList5(self):
         setList = []
 
@@ -1521,7 +1519,6 @@ class SetCreator:
 
         testDF = self.complete.getCombinedDF(moistureByMonth=True)
         testDF = testDF[~testDF.isin(currDF)]
-
         currDF = self.modder.InputeData(currDF, "mean")
         currDF = self.modder.useMinMaxScaler(currDF)
 
