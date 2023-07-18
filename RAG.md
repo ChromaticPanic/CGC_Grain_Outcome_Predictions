@@ -37,23 +37,24 @@
 | 35. Fixed the ergot visualization | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | ... | ...
 | 36. Research on dimentionality reduction | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Unapplicable (Book) | True
 | 37. feature engineering for v4 | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/96] | True| 
-| 38. testing diffrent architecture for MLP | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | ...| 
-| 39. Hypertuning for MLP | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | ...| 
+| 38. testing diffrent architecture for MLP | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
+| 39. Hypertuning for MLP | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
 | 40. documenting the results | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | True | 
 | 41. attempting to make make dataset balanced | Jay |![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | True| 
 | 42. documentation on model | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
-| 43. SVM Classification | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
-| 44. KNN Classification | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
-| 45. Experiment Models on Created Dataset | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
-| 46. Model documentation about results| Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | False |
-| 47. Hypertuning Model(KNN) | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | False |
-| 48. Hypertuning Model(SVM) | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
-| 49. Start Documentation on Dataset  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | False |
-| 50. Research on Suitable Models | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a | False |
-| 51. individual ergot sample table with engineered features we can predict on | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/97] | True |
-| 52. combined weather station data table for easier subsetting for datasets | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/98] | True |
-| 53. research on imbalanced dataset strategies | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/99] | True |
-| 54. Dataset using satellite copernicus and soil moisture data plus aggregated prev year ergot as predictors Daily weekly monthly | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/100] | False |
-| 55. Use above dataset on RF, SVM, XGBoost models | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
-| 56. Try ensemble approach for balancing the dataset | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
-| 57. Multimodel approach | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
+| 43. start working on regression model(if possible) | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a | False|
+| 44. SVM Classification | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
+| 45. KNN Classification | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
+| 46. Experiment Models on Created Dataset | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
+| 47. Model documentation about results| Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | False |
+| 48. Hypertuning Model(KNN) | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | False |
+| 49. Hypertuning Model(SVM) | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
+| 50. Start Documentation on Dataset  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | False |
+| 51. Research on Suitable Models | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a | False |
+| 52. individual ergot sample table with engineered features we can predict on | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/97] | True |
+| 53. combined weather station data table for easier subsetting for datasets | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/98] | True |
+| 54. research on imbalanced dataset strategies | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/99] | True |
+| 55. Dataset using satellite copernicus and soil moisture data plus aggregated prev year ergot as predictors Daily weekly monthly | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/100] | False |
+| 56. Use above dataset on RF, SVM, XGBoost models | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
+| 57. Try ensemble approach for balancing the dataset | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
+| 58. Multimodel approach | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
