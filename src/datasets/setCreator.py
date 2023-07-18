@@ -1,3 +1,5 @@
+# cares about years
+# cares about aggregate naming scheme for days, weeks and months - column names are independent
 from dotenv import load_dotenv
 import sqlalchemy as sq  # type: ignore
 import pandas as pd  # type: ignore
@@ -1239,6 +1241,297 @@ class SetCreator:
         dataDict["test"] = trainTestSet["test"]
         dataDict["train"] = trainDevSet["train"]
         dataDict["dev"] = trainDevSet["test"]
+        setList.append(dataDict)
+
+        return setList
+
+    def getSetList2(self):
+        setList = []
+        trainTestSet = {}
+        trainDevSet = {}
+
+        # First 15 years aggregated by week [median]|[minMax]|[straified on has_ergot]
+        currDF = self.first15Yrs.getCombinedDF(
+            hlyByWeek=True, moistureByWeek=True, soil=True
+        )
+        currDF = self.modder.InputeData(currDF, "median")
+        currDF = self.modder.useMinMaxScaler(currDF)
+        trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+        currDF = trainTestSet["train"]
+        trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        dataDict[
+            "desc"
+        ] = "First 15 years aggregated by week [median]|[minMax]|[straified on has_ergot]"
+        dataDict["test"] = trainTestSet["test"]
+        dataDict["train"] = trainDevSet["train"]
+        dataDict["dev"] = trainDevSet["test"]
+        setList.append(dataDict)
+
+        # Data aggregated by month [mean]|[minMax]|[straified on has_ergot]
+        currDF = self.complete.getCombinedDF(
+            hlyByMonth=True, moistureByMonth=True, soil=True
+        )
+        currDF = self.modder.InputeData(currDF, "mean")
+        currDF = self.modder.useMinMaxScaler(currDF)
+        trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+        currDF = trainTestSet["train"]
+        trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        dataDict[
+            "desc"
+        ] = "Data aggregated by month [mean]|[minMax]|[straified on has_ergot]"
+        dataDict["test"] = trainTestSet["test"]
+        dataDict["train"] = trainDevSet["train"]
+        dataDict["dev"] = trainDevSet["test"]
+        setList.append(dataDict)
+
+        # Data aggregated by week [mean]|[minMax]|[straified on has_ergot]
+        currDF = self.complete.getCombinedDF(
+            hlyByWeek=True, moistureByWeek=True, soil=True
+        )
+        currDF = self.modder.InputeData(currDF, "mean")
+        currDF = self.modder.useMinMaxScaler(currDF)
+        trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+        currDF = trainTestSet["train"]
+        trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        dataDict[
+            "desc"
+        ] = "Data aggregated by week [mean]|[minMax]|[straified on has_ergot]"
+        dataDict["test"] = trainTestSet["test"]
+        dataDict["train"] = trainDevSet["train"]
+        dataDict["dev"] = trainDevSet["test"]
+        setList.append(dataDict)
+
+        return setList
+
+    def getSetList3(self):
+        setList = []
+        trainTestSet = {}
+        trainDevSet = {}
+
+        # First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]
+        reducedSet = ["8:mean_temp", 
+"10:min_temp",
+"10:max_temp",
+"28:max_temp",
+"28:max_humidex",
+"28:mean_humidex",
+"38:max_temp",
+"38:mean_temp",
+"38:max_humidex",
+"38:mean_humidex",
+"41:min_temp",
+"41:max_temp",
+"41:mean_temp",
+"41:max_dew_point_temp",
+"41:mean_dew_point_temp",
+"43:min_dew_point_temp",
+"43:mean_dew_point_temp",
+"50:min_temp",
+"51:max_temp",
+"51:max_dew_point_temp",
+"33:soil_moisture_max",
+"38:soil_moisture_max"]
+        reducedSet.extend(SetModifier.ERGOT_FEATURES)
+
+        currDF = self.first15Yrs.getCombinedDF(
+            hlyByWeek=True, moistureByWeek=True
+        )
+        currDF = currDF[reducedSet]
+        currDF = self.modder.InputeData(currDF, "median")
+        currDF = self.modder.useMinMaxScaler(currDF)
+        trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+        currDF = trainTestSet["train"]
+        trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        dataDict[
+            "desc"
+        ] = "First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]"
+        dataDict["test"] = trainTestSet["test"]
+        dataDict["train"] = trainDevSet["train"]
+        dataDict["dev"] = trainDevSet["test"]
+        setList.append(dataDict)
+
+        # Data aggregated by month [reduced]|[mean]|[minMax]|[straified on has_ergot]
+        reducedSet = ["2:min_temp",
+"2:max_temp",
+"2:max_dew_point_temp",
+"3:max_precip",
+"3:mean_precip",
+"4:max_temp",
+"4:mean_temp",
+"5:mean_temp",
+"7:mean_precip",
+"7:min_rel_humid",
+"7:mean_rel_humid",
+"9:max_temp",
+"9:mean_temp",
+"9:max_humidex",
+"9:mean_humidex",
+"12:mean_dew_point_temp",
+"12:max_precip",
+"12:mean_precip",
+"6:soil_moisture_max",
+"7:soil_moisture_min",
+"8:soil_moisture_min",
+"8:soil_moisture_max",
+"8:soil_moisture_mean",
+"9:soil_moisture_max"]
+        reducedSet.extend(SetModifier.ERGOT_FEATURES)
+
+        currDF = self.complete.getCombinedDF(
+            hlyByMonth=True, moistureByMonth=True
+        )
+                
+        currDF = currDF[reducedSet]
+        currDF = self.modder.InputeData(currDF, "mean")
+        currDF = self.modder.useMinMaxScaler(currDF)
+        trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+        currDF = trainTestSet["train"]
+        trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        dataDict[
+            "desc"
+        ] = "Data aggregated by month [reduced]|[mean]|[minMax]|[straified on has_ergot]"
+        dataDict["test"] = trainTestSet["test"]
+        dataDict["train"] = trainDevSet["train"]
+        dataDict["dev"] = trainDevSet["test"]
+        setList.append(dataDict)
+
+        # Data aggregated by week [reduced]|[mean]|[minMax]|[straified on has_ergot]
+        reducedSet = ["2:mean_temp",
+"2:max_dew_point_temp",
+"2:mean_dew_point_temp",
+"6:max_temp",
+"6:max_dew_point_temp",
+"8:mean_temp",
+"28:mean_precip",
+"31:mean_temp",
+"36:max_temp",
+"36:mean_humidex",
+"38:max_temp",
+"38:max_humidex",
+"41:max_temp",
+"41:mean_temp",
+"43:max_temp",
+"43:max_dew_point_temp",
+"49:max_temp",
+"49:max_dew_point_temp",
+"50:max_precip",
+"50:mean_precip",
+"51:max_precip",
+"51:mean_precip",
+"33:soil_moisture_max",
+"34:soil_moisture_max",
+"34:soil_moisture_mean"]
+        reducedSet.extend(SetModifier.ERGOT_FEATURES)
+
+        currDF = self.complete.getCombinedDF(
+            hlyByWeek=True, moistureByWeek=True
+        )
+
+        currDF = currDF[reducedSet]
+        currDF = self.modder.InputeData(currDF, "mean")
+        currDF = self.modder.useMinMaxScaler(currDF)
+        trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+        currDF = trainTestSet["train"]
+        trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        dataDict[
+            "desc"
+        ] = "Data aggregated by week [reduced]|[mean]|[minMax]|[straified on has_ergot]"
+        dataDict["test"] = trainTestSet["test"]
+        dataDict["train"] = trainDevSet["train"]
+        dataDict["dev"] = trainDevSet["test"]
+        setList.append(dataDict)
+
+        return setList
+
+    def getSetList4(self):
+        setList = []
+
+        # First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]
+        reducedSet = ["8:mean_temp", 
+"10:min_temp",
+"10:max_temp",
+"28:max_temp",
+"28:max_humidex",
+"28:mean_humidex",
+"38:max_temp",
+"38:mean_temp",
+"38:max_humidex",
+"38:mean_humidex",
+"41:min_temp",
+"41:max_temp",
+"41:mean_temp",
+"41:max_dew_point_temp",
+"41:mean_dew_point_temp",
+"43:min_dew_point_temp",
+"43:mean_dew_point_temp",
+"50:min_temp",
+"51:max_temp",
+"51:max_dew_point_temp",
+"33:soil_moisture_max",
+"38:soil_moisture_max"]
+        reducedSet.extend(SetModifier.ERGOT_FEATURES)
+
+        currDF = self.first15Yrs.getCombinedDF(
+            hlyByWeek=True, moistureByWeek=True
+        )
+
+        testDF = self.complete.getCombinedDF(
+            hlyByWeek=True, moistureByWeek=True
+        )
+
+        testDF = testDF[~testDF.isin(currDF)]
+
+        currDF = currDF[reducedSet]
+        currDF = self.modder.InputeData(currDF, "median")
+        currDF = self.modder.useMinMaxScaler(currDF)
+
+        testDF = testDF[reducedSet]
+        testDF = self.modder.InputeData(testDF, "median")
+        testDF = self.modder.useMinMaxScaler(testDF)
+        
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        dataDict[
+            "desc"
+        ] = "First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]"
+        dataDict["test"] = testDF
+        dataDict["train"] = currDF
+        setList.append(dataDict)
+
+        return setList
+    
+    def getSetList5(self):
+        setList = []
+
+        # Moisture data from years with bad ergot aggregated by month [mean]|[minMax]|[straified on has_ergot]
+        currDF = self.badErgot.getCombinedDF(moistureByMonth=True)
+
+        testDF = self.complete.getCombinedDF(moistureByMonth=True)
+        testDF = testDF[~testDF.isin(currDF)]
+        
+        currDF = self.modder.InputeData(currDF, "mean")
+        currDF = self.modder.useMinMaxScaler(currDF)
+
+        testDF = self.modder.InputeData(testDF, "median")
+        testDF = self.modder.useMinMaxScaler(testDF)
+
+        dataDict = {"desc": "", "test": None, "train": None, "dev": None}
+        dataDict[
+            "desc"
+        ] = "Moisture data from years with bad ergot aggregated by month [mean]|[minMax]|[straified on has_ergot]"
+        dataDict["test"] = testDF
+        dataDict["train"] = currDF
         setList.append(dataDict)
 
         return setList
