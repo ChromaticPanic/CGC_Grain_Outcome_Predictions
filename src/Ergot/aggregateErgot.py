@@ -306,7 +306,7 @@ def createAggErgotTable(db):
 def createAggErgotTableV2(db):
     query = sq.text(
         f"""
-        CREATE TABLE {TABLENAME} (
+        CREATE TABLE {TABLENAMEV2} (
             year                        INT,
             district                    INT,
             percnt_true                 FLOAT, 
@@ -408,7 +408,7 @@ def createAggErgotV2() -> None:
         tableExists = queryBuilder.readTableExists(db.execute(results))
 
         if not tableExists:
-            createAggErgotTable(db)
+            createAggErgotTableV2(db)
 
         aggErgot.to_sql(
             TABLENAMEV2, con=conn, schema="public", if_exists="replace", index=False
