@@ -48,11 +48,11 @@ def pullDlyWeatherData(conn: sq.engine.Connection) -> pd.DataFrame:
     # pulling weather station data from the database
     weatherDataQuery = sq.text(
         """
-        SELECT * FROM public.ab_station_data
+        SELECT * FROM public.ab_dly_station_data
         UNION
-        SELECT * FROM public.mb_station_data
+        SELECT * FROM public.mb_dly_station_data
         UNION
-        SELECT * FROM public.sk_station_data;
+        SELECT * FROM public.sk_dly_station_data;
         """
     )
 
