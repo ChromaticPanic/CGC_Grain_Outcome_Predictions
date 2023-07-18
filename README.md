@@ -29,19 +29,36 @@
         - [Accessing the system with VSCode](#accessing-the-system-with-vscode)
 - [Data Sources](#data-sources)
 - [Database Tables](#database-tables)
-    - [census_ag_regions](#census_ag_regions)
-    - [stations_hly](#stations_hly)
-    - [stations_dly](#stations_dly)
-    - [mb_staion_data](#mb_staion_data)
-    - [ab_station_data](#ab_station_data)
-    - [sk_station_data](#sk_station_data)
-    - [copernicus_satelite_data](#copernicus_satelite_data)
-    - [ergot_sample](#ergot_sample)
-    - [labeled_soil](#labeled_soil)
-    - [soil_geometry](#soil_geometry)
-    - [soil_components](#soil_components)
-    - [soil_data](#soil_data)
-    - [soil_surronding_land](#soil_surronding_land)
+    - **Copernicus**
+        - [copernicus_satelite_data](#copernicus_satelite_data)
+        - [agg_day_copernicus_satellite_data]()
+    - **Ergot**
+        - [ergot_sample](#ergot_sample)
+        - [agg_ergot_sample]()
+    - **Geography**
+        - [census_ag_regions](#census_ag_regions)
+    - **Soil**
+        - [labeled_soil](#labeled_soil)
+        - [soil_geometry](#soil_geometry)
+        - [soil_components](#soil_components)
+        - [soil_data](#soil_data)
+        - [soil_surronding_land](#soil_surronding_land)
+        - [labeled_soil]()
+        - [agg_soil_data]()
+    - **Soil Moisture**
+        - [soil_moisture]()
+        - [agg_soil_moisture]()
+    - **Weather Station Data**
+        - [ab_dly_station_data](#ab_station_data)
+        - [mb_dly_staion_data](#mb_staion_data)
+        - [sk_dly_station_data](#sk_station_data)
+        - [ab_hly_station_data]()
+        - [mb_hly_station_data]()
+        - [sk_hly_station_data]()
+    - **Weather Station Metadata**
+        - [stations_dly](#stations_dly)
+        - [stations_hly](#stations_hly)
+        - [station_data_last_updated]()
 - [Useful links](#useful-links)
 
 <br>
@@ -103,14 +120,14 @@ Our current environment uses docker compose to launch containers housing [PGADMI
     - Username: xxxxxxxx
     - Password: xxxx
 
-#### Tensorflow
-- Tensorflow-gpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. 
-
 #### pgsync
 - pgsync is used to synchroniza postgres databases
 - ```sudo apt-get install ruby-dev libpq-dev build-essential```
 - ```docker pull ankane/pgsync```
 - ```alias pgsync="docker run -ti ankane/pgsync"```
+
+#### Tensorflow
+- Tensorflow-gpu is a machine learning framework. It is used to train the model and can be accessed at http://localhost:8888. 
 
 **NOTE: Jupyter Labs requires a token for entry. This token can be located in the following ways:**
 - (*windows*) printed in the terminal used to run setup.bat 
@@ -217,6 +234,42 @@ These can later be verified by running
 |station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
 |-|-|-|-|-|-|-|-|-|-|-|-|
 ||||||°C|°C|°C|mm|cm|mm|cm|
+
+<br>
+<br>
+<br>
+
+### mb_staion_data 
+### ab_station_data
+### sk_station_data
+|station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
+|-|-|-|-|-|-|-|-|-|-|-|-|
+||||||°C|°C|°C|mm|cm|mm|cm|
+
+"id"
+"station_id"
+"year"
+"month"
+"day"
+"min_temp"
+"max_temp"
+"mean_temp"
+"min_dew_point_temp"
+"max_dew_point_temp"
+"mean_dew_point_temp"
+"min_humidex"
+"max_humidex"
+"mean_humidex"
+"total_precip"
+"min_rel_humid"
+"max_rel_humid"
+"mean_rel_humid"
+"min_stn_press"
+"max_stn_press"
+"mean_stn_press"
+"min_visibility"
+"max_visibility"
+"mean_visibility"
 
 <br>
 <br>
