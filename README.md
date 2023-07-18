@@ -21,8 +21,8 @@
     - [Containers](#containers)
         - [PGAdmin](#pgadmin)
         - [PostgreSQL](#postgresql)
-        - [Tensorflow](#tensorflow)
         - [pgsync](#pgsync)
+        - [Tensorflow](#tensorflow)
     - [Using Aviary Labs](#using-aviary-labs)
         - [Setting up credentials](#setting-up-credentials)
         - [Commands](#commands)
@@ -31,34 +31,35 @@
 - [Database Tables](#database-tables)
     - **Copernicus**
         - [copernicus_satelite_data](#copernicus_satelite_data)
-        - [agg_day_copernicus_satellite_data]()
+        - [agg_day_copernicus_satellite_data](#agg_day_copernicus_satellite_data)
     - **Ergot**
         - [ergot_sample](#ergot_sample)
-        - [agg_ergot_sample]()
+        - [ergot_sample_feat_eng](#ergot_sample_feat_eng)
+        - [agg_ergot_sample](#agg_ergot_sample)
     - **Geography**
         - [census_ag_regions](#census_ag_regions)
     - **Soil**
         - [labeled_soil](#labeled_soil)
-        - [soil_geometry](#soil_geometry)
         - [soil_components](#soil_components)
         - [soil_data](#soil_data)
+        - [soil_geometry](#soil_geometry)
         - [soil_surronding_land](#soil_surronding_land)
-        - [labeled_soil]()
-        - [agg_soil_data]()
+        - [agg_soil_data](#agg_soil_data)
     - **Soil Moisture**
-        - [soil_moisture]()
-        - [agg_soil_moisture]()
+        - [soil_moisture](#soil_moisture)
+        - [agg_soil_moisture](#agg_soil_moisture)
     - **Weather Station Data**
-        - [ab_dly_station_data](#ab_station_data)
-        - [mb_dly_staion_data](#mb_staion_data)
-        - [sk_dly_station_data](#sk_station_data)
-        - [ab_hly_station_data]()
-        - [mb_hly_station_data]()
-        - [sk_hly_station_data]()
+        - [ab_dly_station_data](#ab_dly_station_data)
+        - [mb_dly_staion_data](#mb_dly_staion_data)
+        - [sk_dly_station_data](#sk_dly_station_data)
+        - [ab_hly_station_data](#ab_hly_station_data)
+        - [mb_hly_station_data](#mb_hly_station_data)
+        - [sk_hly_station_data](sk_hly_station_data)
+        - [agg_weather_combined](#agg_weather_combined)
     - **Weather Station Metadata**
         - [stations_dly](#stations_dly)
         - [stations_hly](#stations_hly)
-        - [station_data_last_updated]()
+        - [station_data_last_updated](#station_data_last_updated)
 - [Useful links](#useful-links)
 
 <br>
@@ -209,79 +210,7 @@ These can later be verified by running
 <br>
 
 ## Database Tables
-![Database schema](.github/img/ab_station_data.png)
-
-### census_ag_regions
-|district|car_name|pr_uid|ag_uid|geometry|cr_num|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| region identifer  | region name  | province identifier  | | region boundaries  | crop region number (often used as the reference)
-
-
-<br>
-
-### stations_hly
-### stations_dly
-|station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|district|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -|
-||province abbreviation|EPSG:3347|EPSG:3347||unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||crop region number
-
-<img src='.github/img/allStations.png' width="600"/>
-<br>
-
-### mb_staion_data 
-### ab_station_data
-### sk_station_data
-|station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
-|-|-|-|-|-|-|-|-|-|-|-|-|
-||||||°C|°C|°C|mm|cm|mm|cm|
-
-<br>
-<br>
-<br>
-
-### mb_staion_data 
-### ab_station_data
-### sk_station_data
-|station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
-|-|-|-|-|-|-|-|-|-|-|-|-|
-||||||°C|°C|°C|mm|cm|mm|cm|
-
-"id"
-"station_id"
-"year"
-"month"
-"day"
-"min_temp"
-"max_temp"
-"mean_temp"
-"min_dew_point_temp"
-"max_dew_point_temp"
-"mean_dew_point_temp"
-"min_humidex"
-"max_humidex"
-"mean_humidex"
-"total_precip"
-"min_rel_humid"
-"max_rel_humid"
-"mean_rel_humid"
-"min_stn_press"
-"max_stn_press"
-"mean_stn_press"
-"min_visibility"
-"max_visibility"
-"mean_visibility"
-
-<br>
-<br>
-<br>
-
-### soil_moisture
-|date|province|latitude|longitude|soil_moisture|
-|-|-|-|-|-|
-|||EPSG:3347|EPSG:3347|<2cm thickness in %|
-
-<br>
-<br>
+![Database schema](.github/img/tables.png)
 
 ### copernicus_satelite_data
 |lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
@@ -295,11 +224,48 @@ Please note that all attributes are listed one to one minus the two corrected ab
 <br>
 <br>
 
-### ergot_sample
+### copernicus_satelite_data
+|lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|
+|EPSG:3347|EPSG:3347||2m_dewpoint_temperature*|2m_temperature*
 
+<br>
+<br>
+
+### agg_day_copernicus_satellite_data
+|year|month|day|cr_num|district|min_dewpoint_temperature|max_dewpoint_temperature|mean_dewpoint_temperature|min_temperature|max_temperature|mean_temperature|min_evaporation_from_bare_soil|max_evaporation_from_bare_soil|mean_evaporation_from_bare_soil|min_skin_reservoir_content|max_skin_reservoir_content|mean_skin_reservoir_content|min_skin_temperature|max_skin_temperature|mean_skin_temperature|min_snowmelt|max_snowmelt|mean_snowmelt|min_soil_temperature_level_1|max_soil_temperature_level_1|mean_soil_temperature_level_1|min_soil_temperature_level_2|max_soil_temperature_level_2|mean_soil_temperature_level_2|min_soil_temperature_level_3|max_soil_temperature_level_3|mean_soil_temperature_level_3|min_soil_temperature_level_4|max_soil_temperature_level_4|mean_soil_temperature_level_4|min_surface_net_solar_radiation|max_surface_net_solar_radiation|mean_surface_net_solar_radiation|min_surface_pressure|max_surface_pressure|mean_surface_pressure|min_volumetric_soil_water_layer_1|max_volumetric_soil_water_layer_1|mean_volumetric_soil_water_layer_1|min_volumetric_soil_water_layer_2|max_volumetric_soil_water_layer_2|mean_volumetric_soil_water_layer_2|min_volumetric_soil_water_layer_3|max_volumetric_soil_water_layer_3|mean_volumetric_soil_water_layer_3|min_volumetric_soil_water_layer_4|max_volumetric_soil_water_layer_4|mean_volumetric_soil_water_layer_4|min_leaf_area_index_high_vegetation|max_leaf_area_index_high_vegetation|mean_leaf_area_index_high_vegetation|min_leaf_area_index_low_vegetation|max_leaf_area_index_low_vegetation|mean_leaf_area_index_low_vegetation|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+
+<br>
+<br>
+
+### ergot_sample
 |sample_id|year|province|crop_district|incidence|severity|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | sample identifier  |   | province abbreviation  | crop region number | truth value for the presence of ergot | percentage of severity detected|
+
+<br>
+<br>
+
+### ergot_sample_feat_eng
+|sample_id|year|province|crop_district|incidence|severity|district|downgrade|severity_bin_quan|severity_bin_arb|
+|-|-|-|-|-|-|-|-|-|-|
+
+<br>
+<br>
+
+### agg_ergot_sample
+
+|year|district|percnt_true|has_ergot|median_severity|sum_severity|present_in_neighbor|sum_severity_in_neighbor|present_prev1|present_prev2|present_prev3|sum_severity_prev1|sum_severity_prev2|sum_severity_prev3|percnt_true_prev1|percnt_true_prev2|percnt_true_prev3|median_prev1|median_prev2|median_prev3|severity_prev1|severity_prev2|severity_prev3|severity_in_neighbor|ergot_present_in_q1|ergot_present_in_q2|ergot_present_in_q3|ergot_present_in_q4|sum_severity_in_q1|sum_severity_in_q2|sum_severity_in_q3|sum_severity_in_q4|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+
+<br>
+<br>
+
+### census_ag_regions
+|district|car_name|pr_uid|ag_uid|geometry|cr_num|
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| region identifer  | region name  | province identifier  | | region boundaries  | crop region number (often used as the reference)
 
 <br>
 <br>
@@ -312,16 +278,6 @@ Please note that all attributes are listed one to one minus the two corrected ab
 <br>
 
 <img src='.github/img/mappedSoils.png' width="600"/>
-<br>
-<br>
-
-### soil_geometry
-|area|perimeter|poly_id|geometry|
-|-|-|-|-|
-|||unique identifier|EPSG:3347|
-
-All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
-
 <br>
 <br>
 
@@ -344,12 +300,89 @@ All data descriptions can be found [here (names)](https://sis.agr.gc.ca/cansis/n
 <br>
 <br>
 
+### soil_geometry
+|area|perimeter|poly_id|geometry|
+|-|-|-|-|
+|||unique identifier|EPSG:3347|
+
+All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
+
+<br>
+<br>
+
 ### soil_surronding_land
 |poly_id|land_area|water_area|fresh_area|ocean_area|total_area|
 |-|-|-|-|-|-|
 |unique identifier|in hectares|in hectares|in hectares|in hectares|in hectares|
 
 All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html). 
+
+<br>
+<br>
+
+### agg_soil_data
+
+|district|avg_percnt_coarse_frag|avg_total_sand|avg_total_silt|avg_total_clay|avg_percnt_carbon|avg_calcium_ph|avg_proj_ph|avg_water_reten_0|avg_water_reten_10|avg_water_reten_33|avg_water_reten_1500|avg_bulk_density|avg_elec_cond|avg_percnt_wood|avg_water_holding_cap|avg_land_area|avg_water_area|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+
+<br>
+<br>
+
+### soil_moisture
+|date|province|latitude|longitude|soil_moisture|
+|-|-|-|-|-|
+|||EPSG:3347|EPSG:3347|<2cm thickness in %|
+
+<br>
+<br>
+
+### agg_soil_moisture
+|index|year|month|day|cr_num|district|soil_moisture_min|soil_moisture_max|soil_moisture_mean|
+|-|-|-|-|-|-|-|-|-|
+
+<br>
+<br>
+
+### ab_dly_station_data
+### mb_dly_staion_data 
+### sk_dly_station_data
+|station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
+|-|-|-|-|-|-|-|-|-|-|-|-|
+||||||°C|°C|°C|mm|cm|mm|cm|
+
+<br>
+<br>
+
+### ab_hly_station_data
+### mb_hly_staion_data 
+### sk_hly_station_data
+|id|station_id|year|month|day|min_temp|max_temp|mean_temp|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|total_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+
+<br>
+<br>
+
+### agg_weather_combined
+|district|year|month|day|min_temp_x|max_temp_x|mean_temp_x|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|min_precip|max_precip|mean_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|max_temp_y|min_temp_y|mean_temp_y|min_total_rain|max_total_rain|mean_total_rain|min_total_snow|max_total_snow|mean_total_snow|min_total_precip|max_total_precip|mean_total_precip|min_snow_on_grnd|max_snow_on_grnd|mean_snow_on_grnd|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+
+<br>
+<br>
+
+### stations_dly
+### stations_hly
+|station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|district|
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -|
+||province abbreviation|EPSG:3347|EPSG:3347||unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||crop region number
+
+<img src='.github/img/allStations.png' width="600"/>
+
+<br>
+<br>
+
+### station_data_last_updated
+|station_id|last_updated|is_active|
+|-|-|-|
 
 <br>
 <hr>
