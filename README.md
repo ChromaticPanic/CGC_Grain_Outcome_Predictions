@@ -29,26 +29,26 @@
         - [Accessing the system with VSCode](#accessing-the-system-with-vscode)
 - [Data Sources](#data-sources)
 - [Database Tables](#database-tables)
-    - **Copernicus**
+    - Copernicus
         - [copernicus_satelite_data](#copernicus_satelite_data)
         - [agg_day_copernicus_satellite_data](#agg_day_copernicus_satellite_data)
-    - **Ergot**
+    - Ergot
         - [ergot_sample](#ergot_sample)
         - [ergot_sample_feat_eng](#ergot_sample_feat_eng)
         - [agg_ergot_sample](#agg_ergot_sample)
-    - **Geography**
+    - Geography
         - [census_ag_regions](#census_ag_regions)
-    - **Soil**
+    - Soil
         - [labeled_soil](#labeled_soil)
         - [soil_components](#soil_components)
         - [soil_data](#soil_data)
         - [soil_geometry](#soil_geometry)
         - [soil_surronding_land](#soil_surronding_land)
         - [agg_soil_data](#agg_soil_data)
-    - **Soil Moisture**
+    - Soil Moisture
         - [soil_moisture](#soil_moisture)
         - [agg_soil_moisture](#agg_soil_moisture)
-    - **Weather Station Data**
+    - Weather Station Data
         - [ab_dly_station_data](#ab_dly_station_data)
         - [mb_dly_staion_data](#mb_dly_staion_data)
         - [sk_dly_station_data](#sk_dly_station_data)
@@ -56,7 +56,7 @@
         - [mb_hly_station_data](#mb_hly_station_data)
         - [sk_hly_station_data](sk_hly_station_data)
         - [agg_weather_combined](#agg_weather_combined)
-    - **Weather Station Metadata**
+    - Weather Station Metadata
         - [stations_dly](#stations_dly)
         - [stations_hly](#stations_hly)
         - [station_data_last_updated](#station_data_last_updated)
@@ -321,7 +321,6 @@ All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/
 <br>
 
 ### agg_soil_data
-
 |district|avg_percnt_coarse_frag|avg_total_sand|avg_total_silt|avg_total_clay|avg_percnt_carbon|avg_calcium_ph|avg_proj_ph|avg_water_reten_0|avg_water_reten_10|avg_water_reten_33|avg_water_reten_1500|avg_bulk_density|avg_elec_cond|avg_percnt_wood|avg_water_holding_cap|avg_land_area|avg_water_area|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 
