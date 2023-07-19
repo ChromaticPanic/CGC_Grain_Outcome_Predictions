@@ -33,8 +33,8 @@
 | 31. Looking into the problem of biases | Daniel & Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/90] | True |
 | 32. ML Models (LR, RF, DT, GB) | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/79] | True |
 | 33. Experimenting with the newly dataset created using different cross validation method | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a | True |
-| 34. Autoencoder | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a | False
-| 35. Fixed the ergot visualization | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | ... | ...
+| 34. Autoencoder | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Block on local | False
+| 35. Fixed the ergot visualization | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Nope | False
 | 36. Research on dimentionality reduction | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Unapplicable (Book) | True
 | 37. feature engineering for v4 | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/96] | True| 
 | 38. testing diffrent architecture for MLP | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
