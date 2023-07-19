@@ -54,7 +54,7 @@ def getErgotData(conn: Connection) -> pd.DataFrame:
     Parameters:
         conn: connection to the database
     """
-    query = sq.text("select * FROM public.agg_ergot_samples")
+    query = sq.text("select * FROM public.agg_ergot_sample")
     ergot_df = pd.read_sql(query, conn)
     return ergot_df
 
