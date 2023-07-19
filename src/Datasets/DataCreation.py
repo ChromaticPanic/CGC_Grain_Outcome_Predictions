@@ -270,11 +270,9 @@ def getDatasetV3(months: Optional[typing.List[Any]]) -> pd.DataFrame:
 
     # Get ergot data
     ergot_df = calcUIDs(getErgotSamples(conn))
-    ergot_df.drop(columns=["sample_id", "crop_district",
-                  "province"], inplace=True)
+    ergot_df.drop(columns=["sample_id", "crop_district", "province"], inplace=True)
     ergot_df.drop(
-        ergot_df[(ergot_df["year"] == 2022) | (
-            ergot_df.district == 4730)].index,
+        ergot_df[(ergot_df["year"] == 2022) | (ergot_df.district == 4730)].index,
         inplace=True,
     )
 
@@ -335,11 +333,9 @@ def getDatasetV4(months: Optional[typing.List[Any]]) -> pd.DataFrame:
 
     # Get ergot data
     ergot_df = calcUIDs(getErgotSamples(conn))
-    ergot_df.drop(columns=["sample_id", "crop_district",
-                  "province"], inplace=True)
+    ergot_df.drop(columns=["sample_id", "crop_district", "province"], inplace=True)
     ergot_df.drop(
-        ergot_df[(ergot_df["year"] == 2022) | (
-            ergot_df.district == 4730)].index,
+        ergot_df[(ergot_df["year"] == 2022) | (ergot_df.district == 4730)].index,
         inplace=True,
     )
 
@@ -365,7 +361,7 @@ def getDatasetV4(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     # Get soil moisture data
     sm_df = sm_df.groupby(["year", "district"]).mean().reset_index()
 
-    df = new_ergot_df.merge(sm_df, on=["year", "district"], how="left")
+    df = sm_df.merge(new_ergot_df, on=["year", "district"], how="left")
 
     # Get soil data
     soil_df = getSoilData(conn)
