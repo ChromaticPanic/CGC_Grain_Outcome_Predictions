@@ -22,6 +22,7 @@ PG_PORT = os.getenv("POSTGRES_PORT")
 PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 
+
 # %%
 def pullAgRegions(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
     regionQuery = sq.text("select district, geometry FROM public.census_ag_regions")
@@ -30,11 +31,13 @@ def pullAgRegions(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
         regionQuery, conn, crs="EPSG:3347", geom_col="geometry"
     )
 
+
 # %%
 def pullErgot(conn: sq.engine.Connection) -> pd.DataFrame:
     ergotQuery = sq.text("SELECT * FROM public.ergot_sample")
 
     return pd.read_sql_query(ergotQuery, conn)
+
 
 # %%
 def calcUIDs(ergot: pd.DataFrame) -> pd.DataFrame:
@@ -52,6 +55,7 @@ def calcUIDs(ergot: pd.DataFrame) -> pd.DataFrame:
 
     return ergot
 
+
 # %%
 def calcNeighbors(agRegions: gpd.GeoDataFrame) -> dict:
     touches = {}
@@ -66,6 +70,7 @@ def calcNeighbors(agRegions: gpd.GeoDataFrame) -> dict:
         touches[str(agRegion1["district"])] = currTouches
 
     return touches
+
 
 # %%
 def createErgotFeatures(ergot: pd.DataFrame, touches: gpd.GeoDataFrame) -> pd.DataFrame:
@@ -180,6 +185,7 @@ def createErgotFeatures(ergot: pd.DataFrame, touches: gpd.GeoDataFrame) -> pd.Da
 
     return aggErgot
 
+
 # %%
 def createErgotFeaturesV2(
     ergotdf: pd.DataFrame, touches: gpd.GeoDataFrame
@@ -244,6 +250,7 @@ def createErgotFeaturesV2(
 
     return aggErgot
 
+
 # %%
 def createAggErgotTable(db):
     query = sq.text(
@@ -293,6 +300,7 @@ def createAggErgotTable(db):
 
     db.execute(query)
 
+
 # %%
 def createAggErgotTableV2(db):
     query = sq.text(
@@ -332,6 +340,7 @@ def createAggErgotTableV2(db):
 
     db.execute(query)
 
+
 # %%
 def createAggErgotV1() -> None:
     if (
@@ -369,6 +378,7 @@ def createAggErgotV1() -> None:
         print([f"[ERROR] {e}"])
 
     db.cleanup()
+
 
 # %%
 def createAggErgotV2() -> None:
@@ -408,13 +418,13 @@ def createAggErgotV2() -> None:
 
     db.cleanup()
 
+
 # %%
 def main():
     # createAggErgotV1()
     createAggErgotV2()
 
+
 # %%
 if __name__ == "__main__":
     main()
-
-
