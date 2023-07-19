@@ -1,15 +1,16 @@
+from Shared.DataService import DataService
 from dotenv import load_dotenv
 import sqlalchemy as sq  # type: ignore
 from sqlalchemy import Connection  # type: ignore
 import pandas as pd  # type: ignore
 import numpy as np  # type: ignore
-import os, sys
+import os
+import sys
 
 import typing
 from typing import Any, Optional
 
 sys.path.append("../../")
-from Shared.DataService import DataService
 
 LOG_FILE = "/data/pull_moisture.log"
 load_dotenv()
@@ -55,7 +56,7 @@ def getErgotData(conn: Connection) -> pd.DataFrame:
     Parameters:
         conn: connection to the database
     """
-    query = sq.text("select * FROM public.agg_ergot_samples")
+    query = sq.text("select * FROM public.agg_ergot_sample")
     ergot_df = pd.read_sql(query, conn)
     return ergot_df
 
@@ -155,6 +156,22 @@ def getSoilData(conn: Connection) -> pd.DataFrame:
     return soil_df
 
 
+def calcUIDs(ergot: pd.DataFrame) -> pd.DataFrame:
+    ergot.loc[ergot["province"] == "MB", "district"] = (
+        ergot.loc[ergot["province"] == "MB", "crop_district"] + 4600
+    )
+    ergot.loc[ergot["province"] == "SK", "district"] = (
+        ergot.loc[ergot["province"] == "SK", "crop_district"] - 1
+    ) + 4700
+    ergot.loc[ergot["province"] == "AB", "district"] = (
+        ergot.loc[ergot["province"] == "AB", "crop_district"] * 10
+    ) + 4800
+
+    ergot[["district"]] = ergot[["district"]].astype(int)
+
+    return ergot
+
+
 def getDatasetV1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     """
     v1: contains only has_ergot as an output from ergot table and all the weather attributes as input from weather table
@@ -239,7 +256,7 @@ def getDatasetV3(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     v_3: contains ergot, weather, soil_moisture, soil data
         Target: "incidence" from ergot table
 
-    Problem statement: Given a district and its all given attributes -> predict if the district is gonna have ergot or not.
+    Problem statement: Given an ergot sample and its all given attributes -> predict if the district is gonna have ergot or not.
 
     Parameters:
         months: list of months for which the soil moisture data is required.
@@ -252,20 +269,12 @@ def getDatasetV3(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     conn = connect_db()
 
     # Get ergot data
-    ergot_df = getErgotSamples(conn)
-    ergot_df.loc[ergot_df["province"] == "MB", "district"] = (
-        ergot_df.loc[ergot_df["province"] == "MB", "crop_district"] + 4600
-    )
-    ergot_df.loc[ergot_df["province"] == "SK", "district"] = (
-        ergot_df.loc[ergot_df["province"] == "SK", "crop_district"] - 1
-    ) + 4700
-    ergot_df.loc[ergot_df["province"] == "AB", "district"] = (
-        ergot_df.loc[ergot_df["province"] == "AB", "crop_district"] * 10
-    ) + 4800
-    ergot_df["district"] = pd.to_numeric(ergot_df["district"], downcast="integer")
-    ergot_df.drop(columns=["sample_id", "crop_district", "province"], inplace=True)
+    ergot_df = calcUIDs(getErgotSamples(conn))
+    ergot_df.drop(columns=["sample_id", "crop_district",
+                  "province"], inplace=True)
     ergot_df.drop(
-        ergot_df[(ergot_df["year"] == 2022) | (ergot_df.district == 4730)].index,
+        ergot_df[(ergot_df["year"] == 2022) | (
+            ergot_df.district == 4730)].index,
         inplace=True,
     )
 
@@ -325,20 +334,12 @@ def getDatasetV4(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     )
 
     # Get ergot data
-    ergot_df = getErgotSamples(conn)
-    ergot_df.loc[ergot_df["province"] == "MB", "district"] = (
-        ergot_df.loc[ergot_df["province"] == "MB", "crop_district"] + 4600
-    )
-    ergot_df.loc[ergot_df["province"] == "SK", "district"] = (
-        ergot_df.loc[ergot_df["province"] == "SK", "crop_district"] - 1
-    ) + 4700
-    ergot_df.loc[ergot_df["province"] == "AB", "district"] = (
-        ergot_df.loc[ergot_df["province"] == "AB", "crop_district"] * 10
-    ) + 4800
-    ergot_df["district"] = pd.to_numeric(ergot_df["district"], downcast="integer")
-    ergot_df.drop(columns=["sample_id", "crop_district", "province"], inplace=True)
+    ergot_df = calcUIDs(getErgotSamples(conn))
+    ergot_df.drop(columns=["sample_id", "crop_district",
+                  "province"], inplace=True)
     ergot_df.drop(
-        ergot_df[(ergot_df["year"] == 2022) | (ergot_df.district == 4730)].index,
+        ergot_df[(ergot_df["year"] == 2022) | (
+            ergot_df.district == 4730)].index,
         inplace=True,
     )
 
