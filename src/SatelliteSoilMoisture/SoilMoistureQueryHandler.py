@@ -1,4 +1,4 @@
-import sqlalchemy as sq  # type: ignore
+import sqlalchemy as sq
 import os, sys
 
 sys.path.append("../")

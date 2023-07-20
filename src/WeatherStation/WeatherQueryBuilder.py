@@ -4,7 +4,7 @@
 # Purpose: handles (builds/processes) requests to a database
 # ----------------------------------------------------
 import sys, numpy, typing
-import sqlalchemy  # type: ignore
+import sqlalchemy
 
 sys.path.append("../")
 from Shared.GenericQueryBuilder import GenericQueryBuilder
