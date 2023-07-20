@@ -1,4 +1,4 @@
-import sqlalchemy as sq  # type: ignore
+import sqlalchemy as sq
 
 class DataService:
     dbURL: str

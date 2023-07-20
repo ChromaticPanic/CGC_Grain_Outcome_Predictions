@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os, sys, typing
 import sqlalchemy
 import numpy as np
-import pandas as pd  # type: ignore
+import pandas as pd
 import geopandas as gpd  # type: ignore
 
 sys.path.append("../")
