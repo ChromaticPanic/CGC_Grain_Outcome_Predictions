@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import pandas as pd  # type: ignore
+import pandas as pd
 
 
 class AbstractSet(ABC):

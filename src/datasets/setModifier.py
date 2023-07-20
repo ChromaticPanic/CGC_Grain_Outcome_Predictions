@@ -2,7 +2,7 @@ from sklearn.model_selection import train_test_split  # type: ignore
 from sklearn.preprocessing import StandardScaler  # type: ignore
 from sklearn.preprocessing import MinMaxScaler  # type: ignore
 from scipy import stats  # type: ignore
-import pandas as pd  # type: ignore
+import pandas as pd
 import numpy as np
 import math
 

@@ -1,5 +1,5 @@
 from abstractSet import AbstractSet
-import pandas as pd  # type: ignore
+import pandas as pd
 
 
 class BadErgot(AbstractSet):

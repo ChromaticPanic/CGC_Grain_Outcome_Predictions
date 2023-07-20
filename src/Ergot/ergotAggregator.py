@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
-import sqlalchemy as sq  # type: ignore
+import sqlalchemy as sq
 import geopandas as gpd  # type: ignore
-import pandas as pd  # type: ignore
+import pandas as pd
 import numpy as np
 import os, sys
 

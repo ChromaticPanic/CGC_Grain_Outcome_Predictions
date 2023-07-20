@@ -7,9 +7,9 @@ Typical usage example:
   req = ClimateDataRequester()
   df = req.get_data(stationName: str)
 """
-import lxml.html  # type: ignore
-import requests as rq  # type: ignore
-import pandas as pd  # type: ignore
+import lxml.html
+import requests as rq
+import pandas as pd
 import urllib3
 import typing
 import sys
