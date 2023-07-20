@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-import sqlalchemy as sq  # type: ignore
-import pandas as pd  # type: ignore
+import sqlalchemy as sq
+import pandas as pd
 import os, sys, datetime
 
 try:

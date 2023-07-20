@@ -1,4 +1,4 @@
-import pandas as pd  # type: ignore
+import pandas as pd
 
 class GenericQueryBuilder:
     def getDatesInYr(self) -> list: ...

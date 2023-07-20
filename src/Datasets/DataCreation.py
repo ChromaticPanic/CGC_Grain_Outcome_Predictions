@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
-import sqlalchemy as sq  # type: ignore
-from sqlalchemy import Connection  # type: ignore
-import pandas as pd  # type: ignore
+import sqlalchemy as sq
+from sqlalchemy import Connection
+import pandas as pd
 import os, sys
 
 import typing
