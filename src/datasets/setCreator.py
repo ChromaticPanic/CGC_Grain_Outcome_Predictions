@@ -239,7 +239,6 @@ class SetCreator:
             if not hasMoistureByMonth:
                 moistureAggregator.aggregateByMonth(path)
 
-
     def getSetList1(self):
         dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         setList = []

@@ -11,7 +11,7 @@ try:
 except:
     pass
 
-from aggregateErgot import calcUIDs
+from aggregateErgot import calcUIDs  # type: ignore
 
 sys.path.append("../")
 from Shared.DataService import DataService
