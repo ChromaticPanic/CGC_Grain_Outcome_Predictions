@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 import sqlalchemy as sq
-from sqlalchemy import Connection
 import pandas as pd
 import os, sys
 
@@ -29,7 +28,7 @@ def updateLog(fileName: str, message: str) -> None:
         print(message)
 
 
-def connect_db() -> Connection:
+def connect_db() -> sq.engine.Connection:
     if (
         PG_DB is None
         or PG_ADDR is None
@@ -47,7 +46,7 @@ def connect_db() -> Connection:
     return conn
 
 
-def getErgotData(conn: Connection) -> pd.DataFrame:
+def getErgotData(conn: sq.engine.Connection) -> pd.DataFrame:
     """
     This function used to fetch aggregated ergot data from database.
 
@@ -59,7 +58,7 @@ def getErgotData(conn: Connection) -> pd.DataFrame:
     return ergot_df
 
 
-def getErgotSamples(conn: Connection) -> pd.DataFrame:
+def getErgotSamples(conn: sq.engine.Connection) -> pd.DataFrame:
     """
     This function used to fetch ergot sample data from database.
 
@@ -122,7 +121,7 @@ def getWeatherData_v1(months: Optional[typing.List[Any]]) -> pd.DataFrame:
 
 
 def getSoilMoistureData(
-    conn: Connection, months: Optional[typing.List[Any]]
+    conn: sq.engine.Connection, months: Optional[typing.List[Any]]
 ) -> pd.DataFrame:
     """
     This function used to fetch soil moisture data from database.
@@ -142,7 +141,7 @@ def getSoilMoistureData(
     return soil_moisture_df
 
 
-def getSoilData(conn: Connection) -> pd.DataFrame:
+def getSoilData(conn: sq.engine.Connection) -> pd.DataFrame:
     """
     This function used to fetch soil(type) data from database.
 
