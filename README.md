@@ -213,36 +213,33 @@ These can later be verified by running
 ![Database schema](.github/img/tables.png)
 
 ### copernicus_satelite_data
+A european satellite that tracks many of earths environmental variables. Extensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  Please note that the naming scheme for all variables are kept consistant **with an exception of 2m_dewpoint_temperature and 2m_temperature** which due to SQL restrictions have been renamed as **dewpoint_temperature** and **temperature** respectively.
+
 |lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|
-|EPSG:3347|EPSG:3347||2m_dewpoint_temperature*|2m_temperature*
+|EPSG:3347 coordinates|EPSG:3347 coordinates|YEAR-MO-DA HO:MIN:SC|K|K|m of water equivalent|m of water equivalent|K|m of water equivalent|K|K|K|K|Jm^-2|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|
 
 
-All data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  
-Please note that all attributes are listed one to one minus the two corrected above (due to SQL restrictions)
-
-<br>
-<br>
-
-### copernicus_satelite_data
-|lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|
-|EPSG:3347|EPSG:3347||2m_dewpoint_temperature*|2m_temperature*
 
 <br>
 <br>
 
 ### agg_day_copernicus_satellite_data
+An aggregation of the mean, minimum and maximum values for the data found in the copernicus_satelite_data table per each day. Similarly to the copernicus_satelite_data table, extensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).
+
 |year|month|day|cr_num|district|min_dewpoint_temperature|max_dewpoint_temperature|mean_dewpoint_temperature|min_temperature|max_temperature|mean_temperature|min_evaporation_from_bare_soil|max_evaporation_from_bare_soil|mean_evaporation_from_bare_soil|min_skin_reservoir_content|max_skin_reservoir_content|mean_skin_reservoir_content|min_skin_temperature|max_skin_temperature|mean_skin_temperature|min_snowmelt|max_snowmelt|mean_snowmelt|min_soil_temperature_level_1|max_soil_temperature_level_1|mean_soil_temperature_level_1|min_soil_temperature_level_2|max_soil_temperature_level_2|mean_soil_temperature_level_2|min_soil_temperature_level_3|max_soil_temperature_level_3|mean_soil_temperature_level_3|min_soil_temperature_level_4|max_soil_temperature_level_4|mean_soil_temperature_level_4|min_surface_net_solar_radiation|max_surface_net_solar_radiation|mean_surface_net_solar_radiation|min_surface_pressure|max_surface_pressure|mean_surface_pressure|min_volumetric_soil_water_layer_1|max_volumetric_soil_water_layer_1|mean_volumetric_soil_water_layer_1|min_volumetric_soil_water_layer_2|max_volumetric_soil_water_layer_2|mean_volumetric_soil_water_layer_2|min_volumetric_soil_water_layer_3|max_volumetric_soil_water_layer_3|mean_volumetric_soil_water_layer_3|min_volumetric_soil_water_layer_4|max_volumetric_soil_water_layer_4|mean_volumetric_soil_water_layer_4|min_leaf_area_index_high_vegetation|max_leaf_area_index_high_vegetation|mean_leaf_area_index_high_vegetation|min_leaf_area_index_low_vegetation|max_leaf_area_index_low_vegetation|mean_leaf_area_index_low_vegetation|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+||||identifies groups of related districts|unique region identifier|K|K|K|K|K|K|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|K|K|K|m of water equivalent|m of water equivalent|m of water equivalent|K|K|K|K|K|K|K|K|K|K|K|K|Jm^-2|Jm^-2|Jm^-2|Pa|Pa|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|
 
 <br>
 <br>
 
 ### ergot_sample
+Contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or districted were discarded.
+
 |sample_id|year|province|crop_district|incidence|severity|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| sample identifier  |   | province abbreviation  | crop region number | truth value for the presence of ergot | percentage of severity detected|
+|-|-|-|-|-|-|
+|sample identifier||province abbreviation|non-unique identifier for a district within a province|truth value for the presence of ergot|percentage of severity detected|
 
 <br>
 <br>
@@ -264,8 +261,8 @@ Please note that all attributes are listed one to one minus the two corrected ab
 
 ### census_ag_regions
 |district|car_name|pr_uid|ag_uid|geometry|cr_num|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| region identifer  | region name  | province identifier  | | region boundaries  | crop region number (often used as the reference)
+|-|-|-|-|-|-|
+|unique region identifer|region name|province identifier| | region geometry/boundaries|identifies groups of related districts|
 
 <br>
 <br>
@@ -273,7 +270,7 @@ Please note that all attributes are listed one to one minus the two corrected ab
 ### labeled_soil
 |id|poly_id|soil_ids|cr_num|district|
 |-|-|-|-|-|
-|unique identifier||list of all soil ids in the region|crop region|crop region district|
+|unique identifier|unique identifier for each polygon geometry|list of all soil ids found in a polygons geometry|identifies groups of related districts|unique region identifer|
 
 <br>
 
