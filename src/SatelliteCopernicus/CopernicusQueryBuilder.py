@@ -1,5 +1,5 @@
 import sys
-import sqlalchemy as sq  # type: ignore
+import sqlalchemy as sq
 
 sys.path.append("../")
 sys.path.append("../Shared")

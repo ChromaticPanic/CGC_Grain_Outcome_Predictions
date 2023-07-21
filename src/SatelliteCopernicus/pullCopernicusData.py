@@ -8,10 +8,10 @@ import calendar
 import multiprocessing as mp
 import cdsapi  # type: ignore
 from dotenv import load_dotenv
-import sqlalchemy as sq  # type: ignore
+import sqlalchemy as sq
 import geopandas as gpd  # type: ignore
 import xarray as xr  # type: ignore
-import pandas as pd  # type: ignore
+import pandas as pd
 import numpy as np
 import black
 import jupyter_black as bl  # type: ignore
