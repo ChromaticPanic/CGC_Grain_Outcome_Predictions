@@ -1,5 +1,5 @@
 from abstractSet import AbstractSet
-import pandas as pd  # type: ignore
+import pandas as pd
 
 
 class Winter(AbstractSet):
@@ -49,7 +49,7 @@ class Winter(AbstractSet):
         hlyByWeekDF = self.selectData(hlyByWeekDF)
         super()._setHlyByWeek(hlyByWeekDF)
 
-    def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):  ############################
+    def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
         hlyByMonthDF = self.selectData(hlyByMonthDF)
         super()._setHlyByMonth(hlyByMonthDF)
 

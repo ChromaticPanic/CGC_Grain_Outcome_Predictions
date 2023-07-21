@@ -1,7 +1,5 @@
-import sqlalchemy  # type: ignore
+import sqlalchemy as sq
 
 class GenericQueryBuilder:
     def tableExistsReq(self, tablename: str) -> str: ...
-    def readTableExists(
-        self, results: sqlalchemy.engine.cursor.CursorResult
-    ) -> bool: ...
+    def readTableExists(self, results) -> bool: ...

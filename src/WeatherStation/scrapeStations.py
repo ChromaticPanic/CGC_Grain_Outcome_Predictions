@@ -3,7 +3,7 @@ from WeatherQueryBuilder import WeatherQueryBuilder  # type: ignore
 from DataProcessor import DataProcessor  # type: ignore
 from dotenv import load_dotenv
 import os, sys, typing
-import sqlalchemy  # type: ignore
+import sqlalchemy
 import numpy as np
 import pandas as pd  # type: ignore
 import geopandas as gpd  # type: ignore
@@ -48,7 +48,7 @@ def main():
         stations, states = getStations(
             prov, db, queryHandler, conn
         )  # Pulls stations from the datbase. Expected attributes are: station_name, province
-        tablename = f"{prov.lower()}_station_data"  # Current province data table   # latitude, longitude, elevation, station_id, wmo_identifier, tc_identifier,
+        tablename = f"{prov.lower()}_dly_station_data"  # Current province data table   # latitude, longitude, elevation, station_id, wmo_identifier, tc_identifier,
         numUpdated = 0  # Number of records updated     # first_year, last_year, hly_first_year, hly_last_year, dly_first_year, dly_last_year,
         # mly_first_year, mly_last_year, geometry, cr_num, last_updated (gets added in line 38)
 

@@ -13,7 +13,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.tree import export_graphviz
 from subprocess import check_call
 from typing import Union
-import pandas as pd  # type: ignore
+import pandas as pd
 import os
 
 

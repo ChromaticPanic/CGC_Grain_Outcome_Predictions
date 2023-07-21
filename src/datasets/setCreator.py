@@ -1,8 +1,8 @@
 # cares about years
 # cares about aggregate naming scheme for days, weeks and months - column names are independent
 from dotenv import load_dotenv
-import sqlalchemy as sq  # type: ignore
-import pandas as pd  # type: ignore
+import sqlalchemy as sq
+import pandas as pd
 import os, sys
 
 try:
@@ -177,14 +177,18 @@ class SetCreator:
             ergotDF,
         )
 
-    def __verifySoilIsAggregated(self, db: DataService, queryBuilder: GenericQueryBuilder):
+    def __verifySoilIsAggregated(
+        self, db: DataService, queryBuilder: GenericQueryBuilder
+    ):
         query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
         tableExists = queryBuilder.readTableExists(db.execute(query))
 
         if not tableExists:
             SoilAggregator()
 
-    def __verifyErgotIsAggregated(self, db: DataService, queryBuilder: GenericQueryBuilder):
+    def __verifyErgotIsAggregated(
+        self, db: DataService, queryBuilder: GenericQueryBuilder
+    ):
         query = sq.text(queryBuilder.tableExistsReq(AGG_ERGOT_TABLE))
         tableExists = queryBuilder.readTableExists(db.execute(query))
 
@@ -1315,33 +1319,33 @@ class SetCreator:
         trainDevSet = {}
 
         # First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]
-        reducedSet = ["8:mean_temp", 
-"10:min_temp",
-"10:max_temp",
-"28:max_temp",
-"28:max_humidex",
-"28:mean_humidex",
-"38:max_temp",
-"38:mean_temp",
-"38:max_humidex",
-"38:mean_humidex",
-"41:min_temp",
-"41:max_temp",
-"41:mean_temp",
-"41:max_dew_point_temp",
-"41:mean_dew_point_temp",
-"43:min_dew_point_temp",
-"43:mean_dew_point_temp",
-"50:min_temp",
-"51:max_temp",
-"51:max_dew_point_temp",
-"33:soil_moisture_max",
-"38:soil_moisture_max"]
+        reducedSet = [
+            "8:mean_temp",
+            "10:min_temp",
+            "10:max_temp",
+            "28:max_temp",
+            "28:max_humidex",
+            "28:mean_humidex",
+            "38:max_temp",
+            "38:mean_temp",
+            "38:max_humidex",
+            "38:mean_humidex",
+            "41:min_temp",
+            "41:max_temp",
+            "41:mean_temp",
+            "41:max_dew_point_temp",
+            "41:mean_dew_point_temp",
+            "43:min_dew_point_temp",
+            "43:mean_dew_point_temp",
+            "50:min_temp",
+            "51:max_temp",
+            "51:max_dew_point_temp",
+            "33:soil_moisture_max",
+            "38:soil_moisture_max",
+        ]
         reducedSet.extend(SetModifier.ERGOT_FEATURES)
 
-        currDF = self.first15Yrs.getCombinedDF(
-            hlyByWeek=True, moistureByWeek=True
-        )
+        currDF = self.first15Yrs.getCombinedDF(hlyByWeek=True, moistureByWeek=True)
         currDF = currDF[reducedSet]
         currDF = self.modder.InputeData(currDF, "median")
         currDF = self.modder.useMinMaxScaler(currDF)
@@ -1359,36 +1363,36 @@ class SetCreator:
         setList.append(dataDict)
 
         # Data aggregated by month [reduced]|[mean]|[minMax]|[straified on has_ergot]
-        reducedSet = ["2:min_temp",
-"2:max_temp",
-"2:max_dew_point_temp",
-"3:max_precip",
-"3:mean_precip",
-"4:max_temp",
-"4:mean_temp",
-"5:mean_temp",
-"7:mean_precip",
-"7:min_rel_humid",
-"7:mean_rel_humid",
-"9:max_temp",
-"9:mean_temp",
-"9:max_humidex",
-"9:mean_humidex",
-"12:mean_dew_point_temp",
-"12:max_precip",
-"12:mean_precip",
-"6:soil_moisture_max",
-"7:soil_moisture_min",
-"8:soil_moisture_min",
-"8:soil_moisture_max",
-"8:soil_moisture_mean",
-"9:soil_moisture_max"]
+        reducedSet = [
+            "2:min_temp",
+            "2:max_temp",
+            "2:max_dew_point_temp",
+            "3:max_precip",
+            "3:mean_precip",
+            "4:max_temp",
+            "4:mean_temp",
+            "5:mean_temp",
+            "7:mean_precip",
+            "7:min_rel_humid",
+            "7:mean_rel_humid",
+            "9:max_temp",
+            "9:mean_temp",
+            "9:max_humidex",
+            "9:mean_humidex",
+            "12:mean_dew_point_temp",
+            "12:max_precip",
+            "12:mean_precip",
+            "6:soil_moisture_max",
+            "7:soil_moisture_min",
+            "8:soil_moisture_min",
+            "8:soil_moisture_max",
+            "8:soil_moisture_mean",
+            "9:soil_moisture_max",
+        ]
         reducedSet.extend(SetModifier.ERGOT_FEATURES)
 
-        currDF = self.complete.getCombinedDF(
-            hlyByMonth=True, moistureByMonth=True
-        )
-                
+        currDF = self.complete.getCombinedDF(hlyByMonth=True, moistureByMonth=True)
+
         currDF = currDF[reducedSet]
         currDF = self.modder.InputeData(currDF, "mean")
         currDF = self.modder.useMinMaxScaler(currDF)
@@ -1406,36 +1410,36 @@ class SetCreator:
         setList.append(dataDict)
 
         # Data aggregated by week [reduced]|[mean]|[minMax]|[straified on has_ergot]
-        reducedSet = ["2:mean_temp",
-"2:max_dew_point_temp",
-"2:mean_dew_point_temp",
-"6:max_temp",
-"6:max_dew_point_temp",
-"8:mean_temp",
-"28:mean_precip",
-"31:mean_temp",
-"36:max_temp",
-"36:mean_humidex",
-"38:max_temp",
-"38:max_humidex",
-"41:max_temp",
-"41:mean_temp",
-"43:max_temp",
-"43:max_dew_point_temp",
-"49:max_temp",
-"49:max_dew_point_temp",
-"50:max_precip",
-"50:mean_precip",
-"51:max_precip",
-"51:mean_precip",
-"33:soil_moisture_max",
-"34:soil_moisture_max",
-"34:soil_moisture_mean"]
+        reducedSet = [
+            "2:mean_temp",
+            "2:max_dew_point_temp",
+            "2:mean_dew_point_temp",
+            "6:max_temp",
+            "6:max_dew_point_temp",
+            "8:mean_temp",
+            "28:mean_precip",
+            "31:mean_temp",
+            "36:max_temp",
+            "36:mean_humidex",
+            "38:max_temp",
+            "38:max_humidex",
+            "41:max_temp",
+            "41:mean_temp",
+            "43:max_temp",
+            "43:max_dew_point_temp",
+            "49:max_temp",
+            "49:max_dew_point_temp",
+            "50:max_precip",
+            "50:mean_precip",
+            "51:max_precip",
+            "51:mean_precip",
+            "33:soil_moisture_max",
+            "34:soil_moisture_max",
+            "34:soil_moisture_mean",
+        ]
         reducedSet.extend(SetModifier.ERGOT_FEATURES)
 
-        currDF = self.complete.getCombinedDF(
-            hlyByWeek=True, moistureByWeek=True
-        )
+        currDF = self.complete.getCombinedDF(hlyByWeek=True, moistureByWeek=True)
 
         currDF = currDF[reducedSet]
         currDF = self.modder.InputeData(currDF, "mean")
@@ -1459,37 +1463,35 @@ class SetCreator:
         setList = []
 
         # First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]
-        reducedSet = ["8:mean_temp", 
-"10:min_temp",
-"10:max_temp",
-"28:max_temp",
-"28:max_humidex",
-"28:mean_humidex",
-"38:max_temp",
-"38:mean_temp",
-"38:max_humidex",
-"38:mean_humidex",
-"41:min_temp",
-"41:max_temp",
-"41:mean_temp",
-"41:max_dew_point_temp",
-"41:mean_dew_point_temp",
-"43:min_dew_point_temp",
-"43:mean_dew_point_temp",
-"50:min_temp",
-"51:max_temp",
-"51:max_dew_point_temp",
-"33:soil_moisture_max",
-"38:soil_moisture_max"]
+        reducedSet = [
+            "8:mean_temp",
+            "10:min_temp",
+            "10:max_temp",
+            "28:max_temp",
+            "28:max_humidex",
+            "28:mean_humidex",
+            "38:max_temp",
+            "38:mean_temp",
+            "38:max_humidex",
+            "38:mean_humidex",
+            "41:min_temp",
+            "41:max_temp",
+            "41:mean_temp",
+            "41:max_dew_point_temp",
+            "41:mean_dew_point_temp",
+            "43:min_dew_point_temp",
+            "43:mean_dew_point_temp",
+            "50:min_temp",
+            "51:max_temp",
+            "51:max_dew_point_temp",
+            "33:soil_moisture_max",
+            "38:soil_moisture_max",
+        ]
         reducedSet.extend(SetModifier.ERGOT_FEATURES)
 
-        currDF = self.first15Yrs.getCombinedDF(
-            hlyByWeek=True, moistureByWeek=True
-        )
+        currDF = self.first15Yrs.getCombinedDF(hlyByWeek=True, moistureByWeek=True)
 
-        testDF = self.complete.getCombinedDF(
-            hlyByWeek=True, moistureByWeek=True
-        )
+        testDF = self.complete.getCombinedDF(hlyByWeek=True, moistureByWeek=True)
 
         testDF = testDF[~testDF.isin(currDF)]
 
@@ -1500,7 +1502,6 @@ class SetCreator:
         testDF = testDF[reducedSet]
         testDF = self.modder.InputeData(testDF, "median")
         testDF = self.modder.useMinMaxScaler(testDF)
-        
         dataDict = {"desc": "", "test": None, "train": None, "dev": None}
         dataDict[
             "desc"

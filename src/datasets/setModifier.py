@@ -4,7 +4,7 @@ from sklearn.preprocessing import MinMaxScaler  # type: ignore
 from sklearn.random_projection import GaussianRandomProjection  # type: ignore
 from sklearn.decomposition import PCA  # type: ignore
 from scipy import stats  # type: ignore
-import pandas as pd  # type: ignore
+import pandas as pd
 import numpy as np
 import math
 
