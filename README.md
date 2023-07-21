@@ -216,7 +216,7 @@ These can later be verified by running
 - Schema: public  
 - Columns: 26
 
-A european satellite that tracks many of earths environmental variables. Extensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  Please note that the naming scheme for all variables are kept consistant **with an exception of 2m_dewpoint_temperature and 2m_temperature** which due to SQL restrictions have been renamed as **dewpoint_temperature** and **temperature** respectively.
+A european satellite that tracks many of earths environmental variables. Comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  Please note that the naming scheme for all variables are kept consistant **with an exception of 2m_dewpoint_temperature and 2m_temperature** which due to SQL restrictions have been renamed as **dewpoint_temperature** and **temperature** respectively.
 
 ||lon|lat|datetime|year|month|day|hour|cr_num|dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
 |-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|-|-|-|-|-|
@@ -233,7 +233,7 @@ A european satellite that tracks many of earths environmental variables. Extensi
 - Schema: public 
 - Columns: 59
 
-An aggregation of the mean, minimum and maximum values for the data found in the copernicus_satelite_data table per day. Similarly to the copernicus_satelite_data table, extensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).
+An aggregation of the mean, minimum and maximum values for the data found in the copernicus_satelite_data table per day. Similarly to the copernicus_satelite_data table, comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).
 
 |year|month|day|cr_num|district|min_dewpoint_temperature|max_dewpoint_temperature|mean_dewpoint_temperature|min_temperature|max_temperature|mean_temperature|min_evaporation_from_bare_soil|max_evaporation_from_bare_soil|mean_evaporation_from_bare_soil|min_skin_reservoir_content|max_skin_reservoir_content|mean_skin_reservoir_content|min_skin_temperature|max_skin_temperature|mean_skin_temperature|min_snowmelt|max_snowmelt|mean_snowmelt|min_soil_temperature_level_1|max_soil_temperature_level_1|mean_soil_temperature_level_1|min_soil_temperature_level_2|max_soil_temperature_level_2|mean_soil_temperature_level_2|min_soil_temperature_level_3|max_soil_temperature_level_3|mean_soil_temperature_level_3|min_soil_temperature_level_4|max_soil_temperature_level_4|mean_soil_temperature_level_4|min_surface_net_solar_radiation|max_surface_net_solar_radiation|mean_surface_net_solar_radiation|min_surface_pressure|max_surface_pressure|mean_surface_pressure|min_volumetric_soil_water_layer_1|max_volumetric_soil_water_layer_1|mean_volumetric_soil_water_layer_1|min_volumetric_soil_water_layer_2|max_volumetric_soil_water_layer_2|mean_volumetric_soil_water_layer_2|min_volumetric_soil_water_layer_3|max_volumetric_soil_water_layer_3|mean_volumetric_soil_water_layer_3|min_volumetric_soil_water_layer_4|max_volumetric_soil_water_layer_4|mean_volumetric_soil_water_layer_4|min_leaf_area_index_high_vegetation|max_leaf_area_index_high_vegetation|mean_leaf_area_index_high_vegetation|min_leaf_area_index_low_vegetation|max_leaf_area_index_low_vegetation|mean_leaf_area_index_low_vegetation|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
@@ -294,19 +294,33 @@ An aggregation on the data found in the ergot_sample table per year and district
 <br>
 
 ### census_ag_regions
-#### Schema: public 
-|district|car_name|pr_uid|ag_uid|geometry|cr_num|
-|-|-|-|-|-|-|
-|unique region identifer|region name|province identifier| | region geometry/boundaries|identifies groups of related districts|
+- Schema: public 
+- Columns: 7
+
+Holds the boundaries and geometries for provinces, districts and crop regions of interest
+
+||district|car_name|pr_uid|ag_uid|geometry|cr_num|color|
+|-|-|-|-|-|-|-|-|
+|**description**|unique region identifer|region name|province identifier| | region geometry/boundaries|identifies groups of related districts|assigned color on maps (based on cr_num)|
+|**type**|int|string|int|string|geometry|int|string|
+|**unit**|||||binary||hex number|
+|**constraints**|
 
 <br>
 <br>
 
 ### labeled_soil
-#### Schema: public 
-|id|poly_id|soil_ids|cr_num|district|
-|-|-|-|-|-|
-|unique identifier|unique identifier for each polygon geometry|list of all soil ids found in a polygons geometry|identifies groups of related districts|unique region identifer|
+- Schema: public 
+- Columns: 5
+
+Initally our goal with this table was to deduce which soils appeared in which districts through their various geometries. However, due to the complexities of the soil data, our aggregation strategy changed making this table mostly obsolete. The picture below is a visualization of this, where each color represents a polygon which can contain as many as 21 different soil types.
+
+||id|poly_id|soil_ids|cr_num|district|
+|-|-|-|-|-|-|
+|**description**|unique row identifier|unique geometry identifier|ordered list of all unique soil ids found in geometry|identifies groups of related districts|unique region identifer|
+|**type**|int|int|string|double|int|
+|**unit**|
+|**constraints**|
 
 <br>
 
@@ -315,52 +329,82 @@ An aggregation on the data found in the ergot_sample table per year and district
 <br>
 
 ### soil_components
-#### Schema: public
-|poly_id|cmp|percent|slope|stone|surface_area|province|soil_code|modifier|profile|soil_id|coarse_frag_1|coarse_frag_2|coarse_frag_3|depth|water_holding_cap|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
-|coresponding polygon|component identifer (increments)|polygon percentage occupying component||||abbreviation||defines soil characteristics||
+- Schema: public
+- Columns: 15
 
-All data descriptions can be found [here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (ratings)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/crt/index.html). 
+Soil Components represent the divide of different soils found within their respective geometries (since there can be as many as 21 different soil types per geometry). Soil geometries do not necessairly match up with the geometries of the districts (from the census_ag_regions table), rather, **much like a geometry can have multiple soils, a district can have multiple components**. Comprehensive data descriptions can be found [here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (ratings)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/crt/index.html). 
+
+||poly_id|cmp|percent|slope|stone|surface_area|province|soil_code|modifier|profile|soil_id|coarse_frag_1|coarse_frag_2|coarse_frag_3|depth|water_holding_cap|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique geometry identifier|component identifer (each geometry can have multiple)|percentage of which a component fills its geometry|(components)|(components)|(components)|province abbreviation|(components)|defines soil characteristics (components)|(components)|(components)|(ratings)|(ratings)|(ratings)|(ratings)|(ratings)
+|**type**|int|int|int|string|string|string|string|string|string|string|string|string|string|string|string|string|
+|**unit**||incrementing counter per poly_id|%|
+|**constraints**|
 
 <br>
 <br>
 
 ### soil_data
-#### Schema: public 
-|id|province|code|modifier|name|kind|water_table|root_restrict|restr_type|drainage|parent_material_texture_1|parent_material_texture_2|parent_material_texture_3|parent_material_chemical_1|parent_material_chemical_2|parent_material_chemical_3|mode_of_depo_1|mode_of_depo_2|mode_of_depo_3|layer_no|u_depth|l_depth|hzn_lit|hzn_mas|hzn_suf|hzn_mod|percnt_coarse_frag|sand_texture|percnt_v_fine_sand|total_sand|total_silt|total_clay|percnt_carbon|calcium_ph|proj_ph|percnt_base_sat|cec|ksat|water_reten_0|water_reten_10|water_reten_33|water_reten_1500|bulk_density|elec_cond|calc_equiv|decomp_class|percnt_wood|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public 
+- Columns: 47
 
-All data descriptions can be found [here (names)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/snt/index.html) and [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html). 
+The soil_data table holds the soil characteristics found in the different soils throughout a given province. Comprehensive data descriptions can be found [here (names)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/snt/index.html) and [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html). 
+
+||id|province|code|modifier|name|kind|water_table|root_restrict|restr_type|drainage|parent_material_texture_1|parent_material_texture_2|parent_material_texture_3|parent_material_chemical_1|parent_material_chemical_2|parent_material_chemical_3|mode_of_depo_1|mode_of_depo_2|mode_of_depo_3|layer_no|u_depth|l_depth|hzn_lit|hzn_mas|hzn_suf|hzn_mod|percnt_coarse_frag|sand_texture|percnt_v_fine_sand|total_sand|total_silt|total_clay|percnt_carbon|calcium_ph|proj_ph|percnt_base_sat|cec|ksat|water_reten_0|water_reten_10|water_reten_33|water_reten_1500|bulk_density|elec_cond|calc_equiv|decomp_class|percnt_wood|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique soil identifier|province abbreviation|||soil name (without abbreviations)|kind of surface material (names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|
+|**type**|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|int|int|int|string|string|string|string|int|string|int|int|int|int|double|double|double|int|int|double|int|int|int|int|double|int|int|int|int|
+|**unit**|||||||||||||||||||||cm|cm|||||%||%|%|%|%|%|pH|pH|%|Meq/100g|cm/h|%|%|%|%|g/cm^3|dS/m|%||%|
+|**constraints**|
 
 <br>
 <br>
 
 ### soil_geometry
-#### Schema: public 
-|area|perimeter|poly_id|geometry|
-|-|-|-|-|
-|||unique identifier|EPSG:3347|
+- Schema: public 
+- Columns: 4
 
-All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
+Holds the sizes and boundaries for the different soil geometries. Comprehensive data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
+
+||area|perimeter|poly_id|geometry|
+|-|-|-|-|-|
+|**description**|||unique geometry identifier||
+|**type**|double|double|int|geometry|
+|**unit**||||EPSG:3347|
+|**constraints**|||||
 
 <br>
 <br>
 
 ### soil_surronding_land
-#### Schema: public 
-|poly_id|land_area|water_area|fresh_area|ocean_area|total_area|
-|-|-|-|-|-|-|
-|unique identifier|in hectares|in hectares|in hectares|in hectares|in hectares|
+- Schema: public 
+- Columns: 6
 
-All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html). 
+The soil_surronding_land tables stores information about the land that surronds each soil geometry. Comprehensive data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html). 
+
+||poly_id|land_area|water_area|fresh_area|ocean_area|total_area|
+|-|-|-|-|-|-|-|
+|**description**|unique geometry identifier|||||accumulative|
+|**type**|int|int|int|int|int|int|
+|**unit**||hectares|hectares|hectares|hectares|hectares|
+|**constraints**|
 
 <br>
 <br>
 
 ### agg_soil_data
-#### Schema: public 
-|district|avg_percnt_coarse_frag|avg_total_sand|avg_total_silt|avg_total_clay|avg_percnt_carbon|avg_calcium_ph|avg_proj_ph|avg_water_reten_0|avg_water_reten_10|avg_water_reten_33|avg_water_reten_1500|avg_bulk_density|avg_elec_cond|avg_percnt_wood|avg_water_holding_cap|avg_land_area|avg_water_area|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public
+- Columns: 18
+
+An aggregation on the mean values of the data found in the soil_data table per district. Note that all variables are weighted based on the percentage of the component they occupy. Comprehensive data descriptions can be found [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html), 
+[here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (surronding land)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html)
+
+||district|avg_percnt_coarse_frag|avg_total_sand|avg_total_silt|avg_total_clay|avg_percnt_carbon|avg_calcium_ph|avg_proj_ph|avg_water_reten_0|avg_water_reten_10|avg_water_reten_33|avg_water_reten_1500|avg_bulk_density|avg_elec_cond|avg_percnt_wood|avg_water_holding_cap|avg_land_area|avg_water_area|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique region identifier|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(components)|(surronding land)|(surronding land)|
+|**type**|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
+|**unit**||%|%|%|%|%|ph|ph|%|%|%|%|g/cm^3|dS/m|%|%|hectares|hectares|
+|**constraints**|
 
 <br>
 <br>
