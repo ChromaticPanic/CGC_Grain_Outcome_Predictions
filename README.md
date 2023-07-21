@@ -410,18 +410,33 @@ An aggregation on the mean values of the data found in the soil_data table per d
 <br>
 
 ### soil_moisture
-#### Schema: public 
-|date|province|latitude|longitude|soil_moisture|
-|-|-|-|-|-|
-|||EPSG:3347|EPSG:3347|<2cm thickness in %|
+- Schema: public 
+- Columns: 7
+
+Satellite soil moisture data
+
+||id|lon|lat|date|cr_num|district|soil_moisture|
+|-|-|-|-|-|-|-|-|
+|**description**|unique recording identifier|X coordinate (longitude)|Y coordinate (latitude)|YEAR-MO-DA|identifies groups of related districts|unique region identifier|
+|**type**|int|double|double|date|int|int|double
+|**unit**||EPSG:3347|EPSG:3347||||<2cm thickness in %|
+|**constraints**|key|
 
 <br>
 <br>
 
 ### agg_soil_moisture
-#### Schema: public 
-|index|year|month|day|cr_num|district|soil_moisture_min|soil_moisture_max|soil_moisture_mean|
-|-|-|-|-|-|-|-|-|-|
+- Schema: public 
+- Columns: 9
+
+An aggregation of the mean, minimum and maximum soil moisture values from the data found in the soil_moisture table per day and district.
+
+||index|year|month|day|cr_num|district|soil_moisture_min|soil_moisture_max|soil_moisture_mean|
+|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique recording identifier||||identifies groups of related districts|unique region identifier|
+|**type**|int|int|int|int|int|int|double|double|double|
+|**unit**|||||||<2cm thickness in %|<2cm thickness in %|<2cm thickness in %|
+|**constraints**|
 
 <br>
 <br>
