@@ -11,11 +11,12 @@
 # -------------------------------------------
 from Shared.DataService import DataService
 from dotenv import load_dotenv
-import sqlalchemy as sq
-import pandas as pd
-import numpy as np
-import os, sys, typing
-
+import sqlalchemy as sq  # type: ignore
+from sqlalchemy import Connection  # type: ignore
+import pandas as pd  # type: ignore
+import numpy as np  # type: ignore
+import os
+import sys
 
 from typing import Any, Optional
 
