@@ -1,15 +1,15 @@
 import sys
 import pandas as pd
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split  # type: ignore
 
-# sys.path.append("../Datasets/")
-# from DataCreation import getDatasetV1, getDatasetV2, getDatasetV3
+import typing
+from typing import Any, Optional, Tuple
 
 
 def splitDataPivot(
-    df: pd.DataFrame, drop_features: list, target_variable: str
-) -> pd.DataFrame:
+    df: pd.DataFrame, drop_features: Optional[list], target_variable: str
+) -> Tuple[pd.DataFrame, pd.Series]:
     if drop_features == None:
         drop_features = []
 
@@ -28,12 +28,12 @@ def splitDataPivot(
 
 def splitData(
     df: pd.DataFrame,
-    drop_features: list,
+    drop_features: Optional[list],
     target_variable: str,
     pivot: int = 2019,
     val_size: float = 0.2,
     stratified: bool = False,
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series,]:
     # train set
     df_train = df[df["year"] < pivot]  # all data before PIVOT
     X_train_df, y_train_df = splitDataPivot(
