@@ -249,7 +249,7 @@ An aggregation of the mean, minimum and maximum values for the data found in the
 - Schema: public 
 - Columns: 6
 
-Contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or districted were discarded.
+Contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or district were discarded.
 
 ||sample_id|year|province|crop_district|incidence|severity|
 |-|-|-|-|-|-|-|
@@ -265,7 +265,7 @@ Contains all samples, both infected and diesease free, submited to the Canadian 
 - Schema: public 
 - Columns: 10
 
-Similarly to the ergot_sample table, ergot_sample_feat_eng contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or districted were discarded. The data is enhanced with additional engineered features
+Similarly to the ergot_sample table, ergot_sample_feat_eng contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or district were discarded. The data is enhanced with additional engineered features.
 
 ||sample_id|year|province|crop_district|district|incidence|severity|downgrade|severity_bin_quan|severity_bin_arb|
 |-|-|-|-|-|-|-|-|-|-|-|
@@ -297,7 +297,7 @@ An aggregation on the data found in the ergot_sample table per year and district
 - Schema: public 
 - Columns: 7
 
-Holds the boundaries and geometries for provinces, districts and crop regions of interest
+Holds the boundaries and geometries for provinces, districts and crop regions of interest.
 
 ||district|car_name|pr_uid|ag_uid|geometry|cr_num|color|
 |-|-|-|-|-|-|-|-|
@@ -397,7 +397,7 @@ The soil_surronding_land tables stores information about the land that surronds 
 - Columns: 18
 
 An aggregation on the mean values of the data found in the soil_data table per district. Note that all variables are weighted based on the percentage of the component they occupy. Comprehensive data descriptions can be found [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html), 
-[here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (surronding land)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html)
+[here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (surronding land)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html).
 
 ||district|avg_percnt_coarse_frag|avg_total_sand|avg_total_silt|avg_total_clay|avg_percnt_carbon|avg_calcium_ph|avg_proj_ph|avg_water_reten_0|avg_water_reten_10|avg_water_reten_33|avg_water_reten_1500|avg_bulk_density|avg_elec_cond|avg_percnt_wood|avg_water_holding_cap|avg_land_area|avg_water_area|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
@@ -413,7 +413,7 @@ An aggregation on the mean values of the data found in the soil_data table per d
 - Schema: public 
 - Columns: 7
 
-Satellite soil moisture data
+Satellite soil moisture data.
 
 ||id|lon|lat|date|cr_num|district|soil_moisture|
 |-|-|-|-|-|-|-|-|
@@ -444,10 +444,17 @@ An aggregation of the mean, minimum and maximum soil moisture values from the da
 ### ab_dly_station_data
 ### mb_dly_staion_data 
 ### sk_dly_station_data
-#### Schema: public 
-|station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
-|-|-|-|-|-|-|-|-|-|-|-|-|
-||||||°C|°C|°C|mm|cm|mm|cm|
+- Schema: public 
+- Columns: 12
+
+The daily weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier and that comprehensive documentation can be found [here](https://api.weather.gc.ca/openapi?f=html#/climate-daily/getClimate-dailyFeatures).
+
+||station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique station identifier|YEAR-MO-DA HO:MN:SC|
+|**type**|string|timestamp without time zone| int|int|int|double|double|double|double|double|double|double|
+|**unit**||||||°C|°C|°C|mm|cm|mm|cm|
+|**constraints**|
 
 <br>
 <br>
@@ -455,27 +462,50 @@ An aggregation of the mean, minimum and maximum soil moisture values from the da
 ### ab_hly_station_data
 ### mb_hly_staion_data 
 ### sk_hly_station_data
-#### Schema: public 
-|id|station_id|year|month|day|min_temp|max_temp|mean_temp|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|total_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public 
+- Columns: 24
+
+The hourly weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier and that comprehensive documentation can be found [here](https://api.weather.gc.ca/openapi?f=html#/climate-hourly/getClimate-hourlyFeatures).
+
+||id|station_id|year|month|day|min_temp|max_temp|mean_temp|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|total_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique row identifier|unique station identifier||||||||||how hot the weather feels|how hot the weather feels|how hot the weather feels|||||station pressure|station pressure|station pressure||||
+|**type**|int|string|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
+|**unit**||||||°C|°C|°C|°C|°C|°C||||mm|%|%|%|kPa|kPa|kPa|km|km|km|
+|**constraints**|key|
 
 <br>
 <br>
 
 ### agg_weather_combined
-#### Schema: public 
-|district|year|month|day|min_temp_x|max_temp_x|mean_temp_x|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|min_precip|max_precip|mean_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|max_temp_y|min_temp_y|mean_temp_y|min_total_rain|max_total_rain|mean_total_rain|min_total_snow|max_total_snow|mean_total_snow|min_total_precip|max_total_precip|mean_total_precip|min_snow_on_grnd|max_snow_on_grnd|mean_snow_on_grnd|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public
+- Columns: 40
+
+Since our weather station data is split accross the hourly and daily tables and they share some attributes, agg_weather_combined was created to join the two. The data present is aggregated by minimum, maximum and mean values per district and day. Similiar to the daily and hourly stations, the hourly weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier.
+
+||district|year|month|day|min_temp_x|max_temp_x|mean_temp_x|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|min_precip|max_precip|mean_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|max_temp_y|min_temp_y|mean_temp_y|min_total_rain|max_total_rain|mean_total_rain|min_total_snow|max_total_snow|mean_total_snow|min_total_precip|max_total_precip|mean_total_precip|min_snow_on_grnd|max_snow_on_grnd|mean_snow_on_grnd|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique region identifier||||(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|how hot the weather feels (hourly)|how hot the weather feels (hourly)|how hot the weather feels (hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|station pressure (hourly)|station pressure (hourly)|station pressure (hourly)|(hourly)|(hourly)|(hourly)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|
+|**type**|int|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
+|**unit**|||||°C|°C|°C|°C|°C|°C||||mm|mm|mm|%|%|%|kPa|kPa|kPa|km|km|km|°C|°C|°C|mm|mm|mm|cm|cm|cm|mm|mm|mm|cm|cm|cm|
+|**constraints**|
 
 <br>
 <br>
 
 ### stations_dly
 ### stations_hly
-#### Schema: public 
-|station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|district|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -|
-||province abbreviation|EPSG:3347|EPSG:3347||unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||crop region number
+- Schema: public 
+- Columns: 20
+
+The stations_dly and stations_hly tables contain meta data about the weather stations spread throughout Canada used to populate the weather station data tables. Please note that for **any set of coordinates, there may be one or more weather stations that may or may not be active** (depending on their first and last years). Furthermore, the **stated last years of a station do not reflect the absolute future use of a station**. Lastly, as per the image below, note that **daily stations appear in the same locations as hourly stations**.
+
+||station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|district|scraped|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**||province abbreviation|Y coordinate|X coordinate||unique station identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records|weather station point|crop region number|unique region identifier|data been pulled? (**unused**)|
+|**type**|string|string|double|double|double|string|double|string|int|int|double|double|double|double|double|double|geometry|double|double|boolean|
+|**unit**|||EPSG:3347|EPSG:3347|m|
+|**constraints**|
 
 <img src='.github/img/allStations.png' width="600"/>
 
@@ -483,9 +513,17 @@ An aggregation of the mean, minimum and maximum soil moisture values from the da
 <br>
 
 ### station_data_last_updated
-#### Schema: public 
-|station_id|last_updated|is_active|
-|-|-|-|
+- Schema: public 
+- Columns: 3
+
+This table is used to maintain the other weather station data tables by maintaining the dates they were last updated as well as by providing a manual override incase a station is no longer active or be it that it is no longer disirable to be pulling its information.
+
+||station_id|last_updated|is_active|
+|-|-|-|-|
+|**description**|unique station identifier|YEAR-MO-DA|manual override|
+|**type**|string|date|boolean|
+|**unit**|
+|**constraints**|key|
 
 <br>
 <hr>
