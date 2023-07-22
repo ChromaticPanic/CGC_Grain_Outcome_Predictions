@@ -220,9 +220,9 @@ A european satellite that tracks many of earths environmental variables. Compreh
 
 ||lon|lat|datetime|year|month|day|hour|cr_num|dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
 |-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|-|-|-|-|-|
-|**description**|X coordinate (longitude)|Y coordinate (latitude)|YEAR-MO-DA HO:MN:SC|||||identifies groups of related districts|labeled as 2m_dewpoint_temperature on copernicus|labeled as 2m_temperature on copernicus|
+|**description**|X coordinate (longitude)|Y coordinate (latitude)||||||identifies groups of related districts|labeled as 2m_dewpoint_temperature on copernicus|labeled as 2m_temperature on copernicus|
 |**type**|double|double|timestamp without time zone|int|int|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
-|**unit**|EPSG:3347|EPSG:3347|||||||K|K|m of water equivalent|m of water equivalent|K|m of water equivalent|K|K|K|K|Jm^-2|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|
+|**unit**|EPSG:3347|EPSG:3347|YEAR-MO-DA HO:MN:SC||||||K|K|m of water equivalent|m of water equivalent|K|m of water equivalent|K|K|K|K|Jm^-2|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|
 |**constraints**|
 
 
@@ -417,9 +417,9 @@ Satellite soil moisture data.
 
 ||id|lon|lat|date|cr_num|district|soil_moisture|
 |-|-|-|-|-|-|-|-|
-|**description**|unique recording identifier|X coordinate (longitude)|Y coordinate (latitude)|YEAR-MO-DA|identifies groups of related districts|unique region identifier|
+|**description**|unique recording identifier|X coordinate (longitude)|Y coordinate (latitude)||identifies groups of related districts|unique region identifier|
 |**type**|int|double|double|date|int|int|double
-|**unit**||EPSG:3347|EPSG:3347||||<2cm thickness in %|
+|**unit**||EPSG:3347|EPSG:3347|YEAR-MO-DA|||<2cm thickness in %|
 |**constraints**|key|
 
 <br>
@@ -451,9 +451,9 @@ The daily weather data from the various weather stations spread throughout Canad
 
 ||station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|
-|**description**|unique station identifier|YEAR-MO-DA HO:MN:SC|
+|**description**|unique station identifier||
 |**type**|string|timestamp without time zone| int|int|int|double|double|double|double|double|double|double|
-|**unit**||||||°C|°C|°C|mm|cm|mm|cm|
+|**unit**||YEAR-MO-DA HO:MN:SC||||°C|°C|°C|mm|cm|mm|cm|
 |**constraints**|
 
 <br>
@@ -520,9 +520,9 @@ This table is used to maintain the other weather station data tables by maintain
 
 ||station_id|last_updated|is_active|
 |-|-|-|-|
-|**description**|unique station identifier|YEAR-MO-DA|manual override|
+|**description**|unique station identifier|latest data's date|manual override|
 |**type**|string|date|boolean|
-|**unit**|
+|**unit**||YEAR-MO-DA|
 |**constraints**|key|
 
 <br>
