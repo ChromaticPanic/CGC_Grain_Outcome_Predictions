@@ -516,7 +516,7 @@ The stations_dly and stations_hly tables contain meta data about the weather sta
 - Schema: public 
 - Columns: 3
 
-This table is used to maintain the other weather station data tables by maintaining the dates they were last updated as well as by providing a manual override incase a station is no longer active or be it that it is no longer disirable to be pulling its information.
+This table is used to maintain the other weather station data tables using the dates they were last updated as well as by providing a manual override should a station become inactive or no longer disirable to have its information pulled.
 
 ||station_id|last_updated|is_active|
 |-|-|-|-|
