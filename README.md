@@ -27,6 +27,7 @@
         - [Setting up credentials](#setting-up-credentials)
         - [Commands](#commands)
         - [Accessing the system with VSCode](#accessing-the-system-with-vscode)
+- [Code Structure](#code-structure)
 - [Data Sources](#data-sources)
 - [Database Tables](#database-tables)
     - Copernicus
@@ -187,6 +188,57 @@ These can later be verified by running
 6. Click attach to a running container
 7. Select the desired container and follow prompts
 8. Default location is root access .. and then select data folder
+
+<br>
+<hr>
+<br>
+
+## Creating a model
+
+### 1. Extract, Transform, Load
+- Gathering data
+- Aggregation
+- Visualization
+- Feature engineering
+
+
+### 2. Dataset Selection
+- Choosing which feature to predict
+- Ensuring data similar to what you are attempting to predict is removed
+
+### 3. Dataset Splitting
+- Creating training and testing sets, some ways to do this include:
+    - 80/20 train/test split
+    - Assigning entire years of data to a train/test split
+
+### 4. Dataset Balancing
+- Upsampling: underrepresented attribute in an unbalanced dataset **gets copied and paired** with multiple splits of the overrepresented attribute
+- Downsampling: overrepresented attribute in an unbalanced dataset has some of its isntances removed
+
+### 5. Categorical Encoding
+- Specifying categorical columns for one hot encoding (**possible class values are turned into boolean features**)
+
+### 6. Model selection
+- Pick a model 
+- Hyperparameter (or hyperparameter range) tuning
+
+### 7. Regularization/Normalization
+Data is adjusted in order to meet model requirements or as an attempt to improve overall performance. This can include the following:
+- Imputation (replacing undesired values with mean, median, 0 etc...)
+- Scaling
+    - Standard scaler: **much less affected by outliers**
+    - Min max scaler: **consistant range of values accross features (desirable)**
+- Transforming a distribution into a bell curve (desirable, models expect this)
+    - log
+    - square root
+    - cube root
+
+
+
+### 8. Run
+- Training the model with the train set
+- Evaluation with the test set
+- Using the output model to make further predictions
 
 <br>
 <hr>
