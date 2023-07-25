@@ -27,6 +27,7 @@
         - [Setting up credentials](#setting-up-credentials)
         - [Commands](#commands)
         - [Accessing the system with VSCode](#accessing-the-system-with-vscode)
+- [Code Structure](#code-structure)
 - [Data Sources](#data-sources)
 - [Database Tables](#database-tables)
     - Copernicus
@@ -192,6 +193,57 @@ These can later be verified by running
 <hr>
 <br>
 
+## Creating a model
+
+### 1. Extract, Transform, Load
+- Gathering data
+- Aggregation
+- Visualization
+- Feature engineering
+
+
+### 2. Dataset Selection
+- Choosing which feature to predict
+- Ensuring data similar to what you are attempting to predict is removed
+
+### 3. Dataset Splitting
+- Creating training and testing sets, some ways to do this include:
+    - 80/20 train/test split
+    - Assigning entire years of data to a train/test split
+
+### 4. Dataset Balancing
+- Upsampling: underrepresented attribute in an unbalanced dataset **gets copied and paired** with multiple splits of the overrepresented attribute
+- Downsampling: overrepresented attribute in an unbalanced dataset has some of its isntances removed
+
+### 5. Categorical Encoding
+- Specifying categorical columns for one hot encoding (**possible class values are turned into boolean features**)
+
+### 6. Model selection
+- Pick a model 
+- Hyperparameter (or hyperparameter range) tuning
+
+### 7. Regularization/Normalization
+Data is adjusted in order to meet model requirements or as an attempt to improve overall performance. This can include the following:
+- Imputation (replacing undesired values with mean, median, 0 etc...)
+- Scaling
+    - Standard scaler: **much less affected by outliers**
+    - Min max scaler: **consistant range of values accross features (desirable)**
+- Transforming a distribution into a bell curve (desirable, models expect this)
+    - log
+    - square root
+    - cube root
+
+
+
+### 8. Run
+- Training the model with the train set
+- Evaluation with the test set
+- Using the output model to make further predictions
+
+<br>
+<hr>
+<br>
+
 ## Data Sources
 
 ### Manual retrieval required
@@ -213,67 +265,114 @@ These can later be verified by running
 ![Database schema](.github/img/tables.png)
 
 ### copernicus_satelite_data
-|lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|
-|EPSG:3347|EPSG:3347||2m_dewpoint_temperature*|2m_temperature*
+- Schema: public  
+- Columns: 26
 
+A european satellite that tracks many of earths environmental variables. Comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  Please note that the naming scheme for all variables are kept consistant **with an exception of 2m_dewpoint_temperature and 2m_temperature** which due to SQL restrictions have been renamed as **dewpoint_temperature** and **temperature** respectively.
 
-All data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  
-Please note that all attributes are listed one to one minus the two corrected above (due to SQL restrictions)
+||lon|lat|datetime|year|month|day|hour|cr_num|dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
+|-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|-|-|-|-|-|
+|**description**|X coordinate (longitude)|Y coordinate (latitude)||||||identifies groups of related districts|labeled as 2m_dewpoint_temperature on copernicus|labeled as 2m_temperature on copernicus|
+|**type**|double|double|timestamp without time zone|int|int|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
+|**unit**|EPSG:3347|EPSG:3347|YEAR-MO-DA HO:MN:SC||||||K|K|m of water equivalent|m of water equivalent|K|m of water equivalent|K|K|K|K|Jm^-2|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|
+|**constraints**|
 
-<br>
-<br>
-
-### copernicus_satelite_data
-|lon|lat|datetime| dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|
-|EPSG:3347|EPSG:3347||2m_dewpoint_temperature*|2m_temperature*
 
 <br>
 <br>
 
 ### agg_day_copernicus_satellite_data
+- Schema: public 
+- Columns: 59
+
+An aggregation of the mean, minimum and maximum values for the data found in the copernicus_satelite_data table per day. Similarly to the copernicus_satelite_data table, comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).
+
 |year|month|day|cr_num|district|min_dewpoint_temperature|max_dewpoint_temperature|mean_dewpoint_temperature|min_temperature|max_temperature|mean_temperature|min_evaporation_from_bare_soil|max_evaporation_from_bare_soil|mean_evaporation_from_bare_soil|min_skin_reservoir_content|max_skin_reservoir_content|mean_skin_reservoir_content|min_skin_temperature|max_skin_temperature|mean_skin_temperature|min_snowmelt|max_snowmelt|mean_snowmelt|min_soil_temperature_level_1|max_soil_temperature_level_1|mean_soil_temperature_level_1|min_soil_temperature_level_2|max_soil_temperature_level_2|mean_soil_temperature_level_2|min_soil_temperature_level_3|max_soil_temperature_level_3|mean_soil_temperature_level_3|min_soil_temperature_level_4|max_soil_temperature_level_4|mean_soil_temperature_level_4|min_surface_net_solar_radiation|max_surface_net_solar_radiation|mean_surface_net_solar_radiation|min_surface_pressure|max_surface_pressure|mean_surface_pressure|min_volumetric_soil_water_layer_1|max_volumetric_soil_water_layer_1|mean_volumetric_soil_water_layer_1|min_volumetric_soil_water_layer_2|max_volumetric_soil_water_layer_2|mean_volumetric_soil_water_layer_2|min_volumetric_soil_water_layer_3|max_volumetric_soil_water_layer_3|mean_volumetric_soil_water_layer_3|min_volumetric_soil_water_layer_4|max_volumetric_soil_water_layer_4|mean_volumetric_soil_water_layer_4|min_leaf_area_index_high_vegetation|max_leaf_area_index_high_vegetation|mean_leaf_area_index_high_vegetation|min_leaf_area_index_low_vegetation|max_leaf_area_index_low_vegetation|mean_leaf_area_index_low_vegetation|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|||identifies groups of related districts|unique region identifier|
+|**type**|int|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
+|**unit**|||||K|K|K|K|K|K|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|K|K|K|m of water equivalent|m of water equivalent|m of water equivalent|K|K|K|K|K|K|K|K|K|K|K|K|Jm^-2|Jm^-2|Jm^-2|Pa|Pa|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|
+|**constraints**|
 
 <br>
 <br>
 
 ### ergot_sample
-|sample_id|year|province|crop_district|incidence|severity|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| sample identifier  |   | province abbreviation  | crop region number | truth value for the presence of ergot | percentage of severity detected|
+- Schema: public 
+- Columns: 6
+
+Contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or district were discarded.
+
+||sample_id|year|province|crop_district|incidence|severity|
+|-|-|-|-|-|-|-|
+|**description**|unique sample identifier||province abbreviation|non-unique identifier for a district within a province|truth value for the presence of ergot|percentage of severity detected|
+|**type**|int|int|string|int|boolean|double|
+|**unit**||||||%|
+|**constraints**|serial key|
 
 <br>
 <br>
 
 ### ergot_sample_feat_eng
-|sample_id|year|province|crop_district|incidence|severity|district|downgrade|severity_bin_quan|severity_bin_arb|
-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public 
+- Columns: 10
+
+Similarly to the ergot_sample table, ergot_sample_feat_eng contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or district were discarded. The data is enhanced with additional engineered features.
+
+||sample_id|year|province|crop_district|district|incidence|severity|downgrade|severity_bin_quan|severity_bin_arb|
+|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique sample identifier||province abbreviation|non-unique identifier for a district within a province|unique region identifier|truth value for the presence of ergot|percentage of severity detected|comparison to ergot's selling threshold of 0.4%|severity binning on quantiles|severity binning on 0.2, 0.4 and 0.8 respectively|
+|**type**|int|int|string|int|int|boolean|double|boolean|int|int|
+|**unit**|
+|**constraints**|
 
 <br>
 <br>
 
 ### agg_ergot_sample
+- Schema: public
+- Columns: 32
 
-|year|district|percnt_true|has_ergot|median_severity|sum_severity|present_in_neighbor|sum_severity_in_neighbor|present_prev1|present_prev2|present_prev3|sum_severity_prev1|sum_severity_prev2|sum_severity_prev3|percnt_true_prev1|percnt_true_prev2|percnt_true_prev3|median_prev1|median_prev2|median_prev3|severity_prev1|severity_prev2|severity_prev3|severity_in_neighbor|ergot_present_in_q1|ergot_present_in_q2|ergot_present_in_q3|ergot_present_in_q4|sum_severity_in_q1|sum_severity_in_q2|sum_severity_in_q3|sum_severity_in_q4|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+An aggregation on the data found in the ergot_sample table per year and district.
+
+||year|district|percnt_true|has_ergot|median_severity|sum_severity|present_in_neighbor|sum_severity_in_neighbor|present_prev1|present_prev2|present_prev3|sum_severity_prev1|sum_severity_prev2|sum_severity_prev3|percnt_true_prev1|percnt_true_prev2|percnt_true_prev3|median_prev1|median_prev2|median_prev3|sum_severity_prev1|sum_severity_prev2|sum_severity_prev3|sum_severity_in_neighbor|ergot_present_in_q1|ergot_present_in_q2|ergot_present_in_q3|ergot_present_in_q4|sum_severity_in_q1|sum_severity_in_q2|sum_severity_in_q3|sum_severity_in_q4|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**||unique region identifier|percentage of samples with ergot| district have any ergot?|||||last year had ergot?|2 years ago had ergot? (non accumulative)|3 years ago had ergot? (non accumulative)|non accumulative|non accumulative|non accumulative|percentage of samples with ergot for the last year|percentage of samples with ergot 2 years ago (non accumulative)|percentage of samples with ergot 3 years ago (non accumulative)|non accumulative|non accumulative|non accumulative|non accumulative|non accumulative|non accumulative|non accumulative|if the current (year, district) has its percnt_true in quantile 1|if the current (year, district) has its percnt_true in quantile 2|if the current (year, district) has its percnt_true in quantile 3|if the current (year, district) has its percnt_true in quantile 4|if the current (year, district) has its sum_severity in quantile 1|if the current (year, district) has its sum_severity in quantile 2|if the current (year, district) has its sum_severity in quantile 3|if the current (year, district) has its sum_severity in quantile 4|
+|**type**|int|int|double|boolean|double|double|boolean|double|boolean|boolean|boolean|double|double|double|double|double|double|double|double|double|double|double|double|double|boolean|boolean|boolean|boolean|boolean|boolean|boolean|boolean|
+|**unit**|||%||||||||||||%|%|%|
+|**constraints**|
 
 <br>
 <br>
 
 ### census_ag_regions
-|district|car_name|pr_uid|ag_uid|geometry|cr_num|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| region identifer  | region name  | province identifier  | | region boundaries  | crop region number (often used as the reference)
+- Schema: public 
+- Columns: 7
+
+Holds the boundaries and geometries for provinces, districts and crop regions of interest.
+
+||district|car_name|pr_uid|ag_uid|geometry|cr_num|color|
+|-|-|-|-|-|-|-|-|
+|**description**|unique region identifer|region name|province identifier| | region geometry/boundaries|identifies groups of related districts|assigned color on maps (based on cr_num)|
+|**type**|int|string|int|string|geometry|int|string|
+|**unit**|||||binary||hex number|
+|**constraints**|
 
 <br>
 <br>
 
 ### labeled_soil
-|id|poly_id|soil_ids|cr_num|district|
-|-|-|-|-|-|
-|unique identifier||list of all soil ids in the region|crop region|crop region district|
+- Schema: public 
+- Columns: 5
+
+Initally our goal with this table was to deduce which soils appeared in which districts through their various geometries. However, due to the complexities of the soil data, our aggregation strategy changed making this table mostly obsolete. The picture below is a visualization of this, where each color represents a polygon which can contain as many as 21 different soil types.
+
+||id|poly_id|soil_ids|cr_num|district|
+|-|-|-|-|-|-|
+|**description**|unique row identifier|unique geometry identifier|ordered list of all unique soil ids found in geometry|identifies groups of related districts|unique region identifer|
+|**type**|int|int|string|double|int|
+|**unit**|
+|**constraints**|
 
 <br>
 
@@ -282,62 +381,114 @@ Please note that all attributes are listed one to one minus the two corrected ab
 <br>
 
 ### soil_components
-|poly_id|cmp|percent|slope|stone|surface_area|province|soil_code|modifier|profile|soil_id|coarse_frag_1|coarse_frag_2|coarse_frag_3|depth|water_holding_cap|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
-|coresponding polygon|component identifer (increments)|polygon percentage occupying component||||abbreviation||defines soil characteristics||
+- Schema: public
+- Columns: 15
 
-All data descriptions can be found [here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (ratings)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/crt/index.html). 
+Soil Components represent the divide of different soils found within their respective geometries (since there can be as many as 21 different soil types per geometry). Soil geometries do not necessairly match up with the geometries of the districts (from the census_ag_regions table), rather, **much like a geometry can have multiple soils, a district can have multiple components**. Comprehensive data descriptions can be found [here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (ratings)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/crt/index.html). 
+
+||poly_id|cmp|percent|slope|stone|surface_area|province|soil_code|modifier|profile|soil_id|coarse_frag_1|coarse_frag_2|coarse_frag_3|depth|water_holding_cap|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique geometry identifier|component identifer (each geometry can have multiple)|percentage of which a component fills its geometry|(components)|(components)|(components)|province abbreviation|(components)|defines soil characteristics (components)|(components)|(components)|(ratings)|(ratings)|(ratings)|(ratings)|(ratings)
+|**type**|int|int|int|string|string|string|string|string|string|string|string|string|string|string|string|string|
+|**unit**||incrementing counter per poly_id|%|
+|**constraints**|
 
 <br>
 <br>
 
 ### soil_data
-|id|province|code|modifier|name|kind|water_table|root_restrict|restr_type|drainage|parent_material_texture_1|parent_material_texture_2|parent_material_texture_3|parent_material_chemical_1|parent_material_chemical_2|parent_material_chemical_3|mode_of_depo_1|mode_of_depo_2|mode_of_depo_3|layer_no|u_depth|l_depth|hzn_lit|hzn_mas|hzn_suf|hzn_mod|percnt_coarse_frag|sand_texture|percnt_v_fine_sand|total_sand|total_silt|total_clay|percnt_carbon|calcium_ph|proj_ph|percnt_base_sat|cec|ksat|water_reten_0|water_reten_10|water_reten_33|water_reten_1500|bulk_density|elec_cond|calc_equiv|decomp_class|percnt_wood|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public 
+- Columns: 47
 
-All data descriptions can be found [here (names)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/snt/index.html) and [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html). 
+The soil_data table holds the soil characteristics found in the different soils throughout a given province. Comprehensive data descriptions can be found [here (names)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/snt/index.html) and [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html). 
+
+||id|province|code|modifier|name|kind|water_table|root_restrict|restr_type|drainage|parent_material_texture_1|parent_material_texture_2|parent_material_texture_3|parent_material_chemical_1|parent_material_chemical_2|parent_material_chemical_3|mode_of_depo_1|mode_of_depo_2|mode_of_depo_3|layer_no|u_depth|l_depth|hzn_lit|hzn_mas|hzn_suf|hzn_mod|percnt_coarse_frag|sand_texture|percnt_v_fine_sand|total_sand|total_silt|total_clay|percnt_carbon|calcium_ph|proj_ph|percnt_base_sat|cec|ksat|water_reten_0|water_reten_10|water_reten_33|water_reten_1500|bulk_density|elec_cond|calc_equiv|decomp_class|percnt_wood|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique soil identifier|province abbreviation|||soil name (without abbreviations)|kind of surface material (names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|
+|**type**|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|int|int|int|string|string|string|string|int|string|int|int|int|int|double|double|double|int|int|double|int|int|int|int|double|int|int|int|int|
+|**unit**|||||||||||||||||||||cm|cm|||||%||%|%|%|%|%|pH|pH|%|Meq/100g|cm/h|%|%|%|%|g/cm^3|dS/m|%||%|
+|**constraints**|
 
 <br>
 <br>
 
 ### soil_geometry
-|area|perimeter|poly_id|geometry|
-|-|-|-|-|
-|||unique identifier|EPSG:3347|
+- Schema: public 
+- Columns: 4
 
-All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
+Holds the sizes and boundaries for the different soil geometries. Comprehensive data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
+
+||area|perimeter|poly_id|geometry|
+|-|-|-|-|-|
+|**description**|||unique geometry identifier||
+|**type**|double|double|int|geometry|
+|**unit**||||EPSG:3347|
+|**constraints**|||||
 
 <br>
 <br>
 
 ### soil_surronding_land
-|poly_id|land_area|water_area|fresh_area|ocean_area|total_area|
-|-|-|-|-|-|-|
-|unique identifier|in hectares|in hectares|in hectares|in hectares|in hectares|
+- Schema: public 
+- Columns: 6
 
-All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html). 
+The soil_surronding_land tables stores information about the land that surronds each soil geometry. Comprehensive data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html). 
+
+||poly_id|land_area|water_area|fresh_area|ocean_area|total_area|
+|-|-|-|-|-|-|-|
+|**description**|unique geometry identifier|||||accumulative|
+|**type**|int|int|int|int|int|int|
+|**unit**||hectares|hectares|hectares|hectares|hectares|
+|**constraints**|
 
 <br>
 <br>
 
 ### agg_soil_data
-|district|avg_percnt_coarse_frag|avg_total_sand|avg_total_silt|avg_total_clay|avg_percnt_carbon|avg_calcium_ph|avg_proj_ph|avg_water_reten_0|avg_water_reten_10|avg_water_reten_33|avg_water_reten_1500|avg_bulk_density|avg_elec_cond|avg_percnt_wood|avg_water_holding_cap|avg_land_area|avg_water_area|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public
+- Columns: 18
+
+An aggregation on the mean values of the data found in the soil_data table per district. Note that all variables are weighted based on the percentage of the component they occupy. Comprehensive data descriptions can be found [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html), 
+[here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (surronding land)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html).
+
+||district|avg_percnt_coarse_frag|avg_total_sand|avg_total_silt|avg_total_clay|avg_percnt_carbon|avg_calcium_ph|avg_proj_ph|avg_water_reten_0|avg_water_reten_10|avg_water_reten_33|avg_water_reten_1500|avg_bulk_density|avg_elec_cond|avg_percnt_wood|avg_water_holding_cap|avg_land_area|avg_water_area|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique region identifier|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(components)|(surronding land)|(surronding land)|
+|**type**|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
+|**unit**||%|%|%|%|%|ph|ph|%|%|%|%|g/cm^3|dS/m|%|%|hectares|hectares|
+|**constraints**|
 
 <br>
 <br>
 
 ### soil_moisture
-|date|province|latitude|longitude|soil_moisture|
-|-|-|-|-|-|
-|||EPSG:3347|EPSG:3347|<2cm thickness in %|
+- Schema: public 
+- Columns: 7
+
+Satellite soil moisture data.
+
+||id|lon|lat|date|cr_num|district|soil_moisture|
+|-|-|-|-|-|-|-|-|
+|**description**|unique recording identifier|X coordinate (longitude)|Y coordinate (latitude)||identifies groups of related districts|unique region identifier|
+|**type**|int|double|double|date|int|int|double
+|**unit**||EPSG:3347|EPSG:3347|YEAR-MO-DA|||<2cm thickness in %|
+|**constraints**|key|
 
 <br>
 <br>
 
 ### agg_soil_moisture
-|index|year|month|day|cr_num|district|soil_moisture_min|soil_moisture_max|soil_moisture_mean|
-|-|-|-|-|-|-|-|-|-|
+- Schema: public 
+- Columns: 9
+
+An aggregation of the mean, minimum and maximum soil moisture values from the data found in the soil_moisture table per day and district.
+
+||index|year|month|day|cr_num|district|soil_moisture_min|soil_moisture_max|soil_moisture_mean|
+|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique recording identifier||||identifies groups of related districts|unique region identifier|
+|**type**|int|int|int|int|int|int|double|double|double|
+|**unit**|||||||<2cm thickness in %|<2cm thickness in %|<2cm thickness in %|
+|**constraints**|
 
 <br>
 <br>
@@ -345,9 +496,17 @@ All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/
 ### ab_dly_station_data
 ### mb_dly_staion_data 
 ### sk_dly_station_data
-|station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
-|-|-|-|-|-|-|-|-|-|-|-|-|
-||||||°C|°C|°C|mm|cm|mm|cm|
+- Schema: public 
+- Columns: 12
+
+The daily weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier and that comprehensive documentation can be found [here](https://api.weather.gc.ca/openapi?f=html#/climate-daily/getClimate-dailyFeatures).
+
+||station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique station identifier||
+|**type**|string|timestamp without time zone| int|int|int|double|double|double|double|double|double|double|
+|**unit**||YEAR-MO-DA HO:MN:SC||||°C|°C|°C|mm|cm|mm|cm|
+|**constraints**|
 
 <br>
 <br>
@@ -355,24 +514,50 @@ All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/
 ### ab_hly_station_data
 ### mb_hly_staion_data 
 ### sk_hly_station_data
-|id|station_id|year|month|day|min_temp|max_temp|mean_temp|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|total_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public 
+- Columns: 24
+
+The hourly weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier and that comprehensive documentation can be found [here](https://api.weather.gc.ca/openapi?f=html#/climate-hourly/getClimate-hourlyFeatures).
+
+||id|station_id|year|month|day|min_temp|max_temp|mean_temp|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|total_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique row identifier|unique station identifier||||||||||how hot the weather feels|how hot the weather feels|how hot the weather feels|||||station pressure|station pressure|station pressure||||
+|**type**|int|string|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
+|**unit**||||||°C|°C|°C|°C|°C|°C||||mm|%|%|%|kPa|kPa|kPa|km|km|km|
+|**constraints**|key|
 
 <br>
 <br>
 
 ### agg_weather_combined
-|district|year|month|day|min_temp_x|max_temp_x|mean_temp_x|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|min_precip|max_precip|mean_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|max_temp_y|min_temp_y|mean_temp_y|min_total_rain|max_total_rain|mean_total_rain|min_total_snow|max_total_snow|mean_total_snow|min_total_precip|max_total_precip|mean_total_precip|min_snow_on_grnd|max_snow_on_grnd|mean_snow_on_grnd|
-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+- Schema: public
+- Columns: 40
+
+Since our weather station data is split accross the hourly and daily tables and they share some attributes, agg_weather_combined was created to join the two. The data present is aggregated by minimum, maximum and mean values per district and day. Similiar to the daily and hourly stations, the hourly weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier.
+
+||district|year|month|day|min_temp_x|max_temp_x|mean_temp_x|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|min_precip|max_precip|mean_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|max_temp_y|min_temp_y|mean_temp_y|min_total_rain|max_total_rain|mean_total_rain|min_total_snow|max_total_snow|mean_total_snow|min_total_precip|max_total_precip|mean_total_precip|min_snow_on_grnd|max_snow_on_grnd|mean_snow_on_grnd|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**|unique region identifier||||(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|how hot the weather feels (hourly)|how hot the weather feels (hourly)|how hot the weather feels (hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|station pressure (hourly)|station pressure (hourly)|station pressure (hourly)|(hourly)|(hourly)|(hourly)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|
+|**type**|int|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
+|**unit**|||||°C|°C|°C|°C|°C|°C||||mm|mm|mm|%|%|%|kPa|kPa|kPa|km|km|km|°C|°C|°C|mm|mm|mm|cm|cm|cm|mm|mm|mm|cm|cm|cm|
+|**constraints**|
 
 <br>
 <br>
 
 ### stations_dly
 ### stations_hly
-|station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|district|
-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | -|
-||province abbreviation|EPSG:3347|EPSG:3347||unique identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records||crop region number
+- Schema: public 
+- Columns: 20
+
+The stations_dly and stations_hly tables contain meta data about the weather stations spread throughout Canada used to populate the weather station data tables. Please note that for **any set of coordinates, there may be one or more weather stations that may or may not be active** (depending on their first and last years). Furthermore, the **stated last years of a station do not reflect the absolute future use of a station**. Lastly, as per the image below, note that **daily stations appear in the same locations as hourly stations**.
+
+||station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|district|scraped|
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+|**description**||province abbreviation|Y coordinate|X coordinate||unique station identifier|||year of first records|year of last records|year of first hourly records|yea of last hourly records|year of first daily records|year of last daily records|year of first monthly records| year of last monthly records|weather station point|crop region number|unique region identifier|data been pulled? (**unused**)|
+|**type**|string|string|double|double|double|string|double|string|int|int|double|double|double|double|double|double|geometry|double|double|boolean|
+|**unit**|||EPSG:3347|EPSG:3347|m|
+|**constraints**|
 
 <img src='.github/img/allStations.png' width="600"/>
 
@@ -380,8 +565,17 @@ All data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/
 <br>
 
 ### station_data_last_updated
-|station_id|last_updated|is_active|
-|-|-|-|
+- Schema: public 
+- Columns: 3
+
+This table is used to maintain the other weather station data tables using the dates they were last updated as well as by providing a manual override should a station become inactive or no longer disirable to have its information pulled.
+
+||station_id|last_updated|is_active|
+|-|-|-|-|
+|**description**|unique station identifier|latest data's date|manual override|
+|**type**|string|date|boolean|
+|**unit**||YEAR-MO-DA|
+|**constraints**|key|
 
 <br>
 <hr>
