@@ -10,7 +10,6 @@ sys.path.append("../")
 from Shared.GenericQueryBuilder import GenericQueryBuilder
 from Shared.DataService import DataService
 
-
 # %%
 TABLENAME = "agg_ergot_sample"
 TABLENAMEV2 = "agg_ergot_sample_v2"
@@ -422,7 +421,7 @@ def createAggErgotV2() -> None:
 
 # %%
 def main():
-    createAggErgotV1()
+    # createAggErgotV1()
     createAggErgotV2()
 
 

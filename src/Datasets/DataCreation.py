@@ -10,7 +10,8 @@ import sys
 import typing
 from typing import Any, Optional
 
-sys.path.append("../../")
+sys.path.append("../")
+from Shared.DataService import DataService
 
 LOG_FILE = "/data/pull_moisture.log"
 load_dotenv()
