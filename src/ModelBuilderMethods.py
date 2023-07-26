@@ -1,6 +1,6 @@
 
 import pandas as pd
-from typing import List, Optional
+from typing import List, Optional, Tuple
 from sklearn.preprocessing import (
     MaxAbsScaler,
     MinMaxScaler,
@@ -11,6 +11,16 @@ from sklearn.preprocessing import (
     StandardScaler,
     OneHotEncoder,
     minmax_scale,
+)
+from imblearn.over_sampling import (
+    RandomOverSampler,
+    SMOTE,
+    ADASYN,
+    BorderlineSMOTE,
+    KMeansSMOTE,
+    SVMSMOTE,
+    SMOTENC,
+    SMOTEN,
 )
 
 def scaleColumns(df: pd.DataFrame, cols: List[str], options: Optional[object] = None, scalingMethod: Optional[int] = 0) -> pd.DataFrame:
@@ -61,3 +71,23 @@ def encodeColumns(df: pd.DataFrame, cols: List[str], options: Optional[object] =
         df[col] = encoder.fit_transform(df[col].values.reshape(-1, 1)) # not sure if correct
 
     return df
+
+
+def extractYears(df: pd.DataFrame, year: int, yearEnd: Optional[int] = None) -> pd.DataFrame:
+    """Extract the rows of a dataframe that correspond to a given year.
+
+    Args:
+        df (pd.DataFrame): The dataframe to extract from.
+        year (int): The year to extract.
+        yearEnd (int, optional): The end year to extract. Defaults to None.
+
+    Returns:
+        pd.DataFrame: The extracted dataframe.
+    """
+    
+    if yearEnd is None:
+        return df[df["year"] == year]
+    else:
+        return df[(df["year"] >= year) & (df["year"] <= yearEnd)]
+    
+
