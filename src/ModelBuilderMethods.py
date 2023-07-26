@@ -22,6 +22,29 @@ from imblearn.over_sampling import (
     SMOTENC,
     SMOTEN,
 )
+from imblearn.under_sampling import (
+    RandomUnderSampler,
+    ClusterCentroids,
+    CondensedNearestNeighbour,
+    EditedNearestNeighbours,
+    RepeatedEditedNearestNeighbours,
+    AllKNN,
+    InstanceHardnessThreshold,
+    NearMiss,
+    NeighbourhoodCleaningRule,
+    OneSidedSelection,
+    TomekLinks
+)
+from imblearn.combine import (
+    SMOTEENN,
+    SMOTETomek
+)
+from imblearn.ensemble import (
+    BalancedBaggingClassifier,
+    BalancedRandomForestClassifier,
+    EasyEnsembleClassifier,
+    RUSBoostClassifier
+)
 
 def scaleColumns(df: pd.DataFrame, cols: List[str], options: Optional[object] = None, scalingMethod: Optional[int] = 0) -> pd.DataFrame:
     """Scale the columns of a dataframe using a scaler.
