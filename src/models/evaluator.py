@@ -1,12 +1,10 @@
-from sklearn.metrics import (
-    precision_score,
-    recall_score,
-    f1_score,
-    roc_curve,
-    log_loss,
-    auc,
-)  # type: ignore
 from sklearn.model_selection import cross_val_score  # type: ignore
+from sklearn.metrics import precision_score  # type: ignore
+from sklearn.metrics import recall_score  # type: ignore
+from sklearn.metrics import f1_score  # type: ignore
+from sklearn.metrics import roc_curve  # type: ignore
+from sklearn.metrics import log_loss  # type: ignore
+from sklearn.metrics import auc  # type: ignore
 from collections import Counter
 import numpy as np
 import os
@@ -130,7 +128,7 @@ class ModelEvaluator:
                 pass
 
     def readRelevantFeatures(self, saveFactorsLoc) -> dict:
-        dist = {}
+        dist: dict[str, int] = {}
 
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))

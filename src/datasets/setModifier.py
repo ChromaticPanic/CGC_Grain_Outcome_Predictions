@@ -73,15 +73,15 @@ class SetModifier:
 
     def InputeData(self, df: pd.DataFrame, strat: str) -> pd.DataFrame:
         cols = df.columns.tolist()
-        replacements = pd.Series()
+        replacements: list(int) = []
 
         if strat == "mean" or strat == "median" or strat == "mode" or strat == "zero":
             if strat == "mean":
-                replacements = df.mean(axis=0, skipna=True)
+                replacements = df.mean(axis=0, skipna=True).tolist()
             elif strat == "median":
-                replacements = df.median(axis=0, skipna=True)
+                replacements = df.median(axis=0, skipna=True).tolist()
             elif strat == "mode":
-                replacements = df.mode(axis=0, skipna=True)
+                replacements = df.mode(axis=0, skipna=True).tolist()
             elif strat == "zero":
                 replacements = [0] * (len(cols))
 
