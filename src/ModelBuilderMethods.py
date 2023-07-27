@@ -39,12 +39,31 @@ from imblearn.combine import (
     SMOTEENN,
     SMOTETomek
 )
-from imblearn.ensemble import (
-    BalancedBaggingClassifier,
-    BalancedRandomForestClassifier,
-    EasyEnsembleClassifier,
-    RUSBoostClassifier
-)
+
+from Shared.DataService import DataService
+from dotenv import load_dotenv
+import os
+
+
+def getConn(envpath: str = ".env"):
+    load_dotenv(envpath)
+    PG_DB = os.getenv("POSTGRES_DB")
+    PG_ADDR = os.getenv("POSTGRES_ADDR")
+    PG_PORT = os.getenv("POSTGRES_PORT")
+    PG_USER = os.getenv("POSTGRES_USER")
+    PG_PW = os.getenv("POSTGRES_PW")
+
+    if (
+        PG_DB is None
+        or PG_ADDR is None
+        or PG_PORT is None
+        or PG_USER is None
+        or PG_PW is None
+    ):
+        raise Exception("Missing required env var(s)")
+    db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
+
+    return db.connect()
 
 def scaleColumns(df: pd.DataFrame, cols: List[str], options: Optional[object] = None, scalingMethod: Optional[int] = 0) -> pd.DataFrame:
     """Scale the columns of a dataframe using a scaler.
@@ -109,8 +128,8 @@ def extractYears(df: pd.DataFrame, year: int, yearEnd: Optional[int] = None) -> 
     """
     
     if yearEnd is None:
-        return df[df["year"] == year]
+        return df.loc[df["year"] == year]
     else:
-        return df[(df["year"] >= year) & (df["year"] <= yearEnd)]
+        return df.loc[(df["year"] >= year) & (df["year"] <= yearEnd)]
     
 
