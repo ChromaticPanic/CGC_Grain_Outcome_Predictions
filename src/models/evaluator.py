@@ -6,6 +6,7 @@ from sklearn.metrics import roc_curve  # type: ignore
 from sklearn.metrics import log_loss  # type: ignore
 from sklearn.metrics import auc  # type: ignore
 from collections import Counter
+from typing import Dict
 import numpy as np
 import os
 
@@ -128,7 +129,7 @@ class ModelEvaluator:
                 pass
 
     def readRelevantFeatures(self, saveFactorsLoc) -> dict:
-        dist: dict[str, int] = {}
+        dist: Dict[str, int] = {}
 
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))

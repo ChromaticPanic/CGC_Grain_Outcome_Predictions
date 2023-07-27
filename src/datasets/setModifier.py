@@ -4,6 +4,7 @@ from sklearn.preprocessing import MinMaxScaler  # type: ignore
 from sklearn.random_projection import GaussianRandomProjection  # type: ignore
 from sklearn.decomposition import PCA  # type: ignore
 from scipy import stats  # type: ignore
+from typing import List
 import pandas as pd
 import numpy as np
 import math
@@ -73,7 +74,7 @@ class SetModifier:
 
     def InputeData(self, df: pd.DataFrame, strat: str) -> pd.DataFrame:
         cols = df.columns.tolist()
-        replacements: list(int) = []
+        replacements: List[int] = []
 
         if strat == "mean" or strat == "median" or strat == "mode" or strat == "zero":
             if strat == "mean":
