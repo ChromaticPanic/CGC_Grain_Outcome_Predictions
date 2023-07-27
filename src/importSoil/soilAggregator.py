@@ -84,18 +84,18 @@ class SoilAggregator:
         db.cleanup()
 
     def pullSoilData(conn: sq.engine.Connection) -> pd.DataFrame:
-        """ 
-        Loads the soil property data per province and soil code from the soil data table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_data))  
+        """
+        Loads the soil property data per province and soil code from the soil data table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_data))
 
         Psuedocode:
         - Create the soil data SQL query
         - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
-        - Drop all irrelevant attributes (the attributes we are interested in keeping are provided as a list)
+        - Drop irrelevant attributes (the attributes we are interested in keeping are provided as a list)
         - [Rename id to soil_id](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html)
 
-        Note: 
+        Note:
         The inplace parameter makes it so that the dataframe itself is modified (as opposed to a copy). Therefore, the following two line are equivilant:
-        1. soil_data.rename(columns={"id": "soil_id"}, inplace=True)    
+        1. soil_data.rename(columns={"id": "soil_id"}, inplace=True)
         2. soil_data = soil_data.rename(columns={"id": "soil_id"})
         """
         query = sq.text(f"SELECT * FROM public.{SOIL_DATA_TABLE}")
@@ -127,13 +127,13 @@ class SoilAggregator:
 
     def pullSurroundingSoil(conn: sq.engine.Connection) -> pd.DataFrame:
         """
-        Purpose:  
-        Loads the land composition details around each soil geometry from the soil surronding land table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_surronding_land))  
+        Purpose:
+        Loads the land composition details around each soil geometry from the soil surronding land table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_surronding_land))
 
         Psuedocode:
         - Create the surronding soil SQL query
         - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
-        - Drop all irrelevant attributes (the attributes we are interested in keeping are provided as a list)
+        - Drop irrelevant attributes (the attributes we are interested in keeping are provided as a list)
         """
         query = sq.text(f"SELECT * FROM public.{SOIL_SURRONDINGS_TABLE}")
         surronding_soil = pd.read_sql(query, conn)
@@ -143,13 +143,13 @@ class SoilAggregator:
 
     def pullSoilComponents(conn: sq.engine.Connection) -> pd.DataFrame:
         """
-        Purpose:  
-        Loads the soil components (different soils) per soil geometry from the soil components table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_components))  
+        Purpose:
+        Loads the soil components (different soils) per soil geometry from the soil components table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_components))
 
         Psuedocode:
         - Create the soil component SQL query
         - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
-        - Drop all irrelevant attributes (the attributes we are interested in keeping are provided as a list)
+        - Drop irrelevant attributes (the attributes we are interested in keeping are provided as a list)
         """
         query = sq.text(f"SELECT * FROM public.{SOIL_COMP_TABLE}")
         soil_components = pd.read_sql(query, conn)
@@ -167,7 +167,7 @@ class SoilAggregator:
 
     def pullSoilGeometry(conn: sq.engine.Connection) -> pd.DataFrame:
         """
-        Purpose:  
+        Purpose:
         Loads the agriculture regions ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#census_ag_regions)) and then associates each soil geometry ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_geometry)) with their respective distirct
 
         Psuedocode:
@@ -186,7 +186,9 @@ class SoilAggregator:
             - *how=inner* specifies that all non intersecting points should be removed
         - Delete index_right (created during the join) and geomtetry and return the results as a DataFrame (without geometry)
         """
-        regionQuery = sq.text("select district, geometry FROM public.{AG_REGIONS_TABLE}")
+        regionQuery = sq.text(
+            "select district, geometry FROM public.{AG_REGIONS_TABLE}"
+        )
         agRegions = gpd.GeoDataFrame.from_postgis(
             regionQuery, conn, crs="EPSG:3347", geom_col="geometry"
         )
@@ -215,7 +217,7 @@ class SoilAggregator:
         soil_geometry: pd.DataFrame,
     ) -> pd.DataFrame:
         """
-        Purpose:  
+        Purpose:
         Merges all soil DataFrames into one
 
         Psuedocode:
@@ -230,7 +232,7 @@ class SoilAggregator:
         - Aggregate the remaining columns by district returning their mean
         - Name the columns into the final DataFrame
 
-        Note:  
+        Note:
         In each merge, any non intersecting data is deleted as per **how=inner**
         """
         merge_df = soil_components.merge(
