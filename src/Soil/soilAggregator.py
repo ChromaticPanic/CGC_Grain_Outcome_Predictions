@@ -2,7 +2,7 @@
 # soilAggregation.py
 #
 # After loading the soil data and agriculture regions data the following class can be used to aggregate the soil data per district
-#   soil data: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/importSoil/importSoil.ipynb
+#   soil data: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/Soil/importSoil.ipynb
 #   agriculture regions data: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/WeatherStation/Data_step%20csv%20import%20geo%20boundaries%20stations.ipynb
 #
 # Output table:
