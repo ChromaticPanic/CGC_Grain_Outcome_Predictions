@@ -1238,7 +1238,6 @@ class SetCreator:
         currDF = trainTestSet["train"]
         trainDevSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
 
-        
         dataDict[
             "desc"
         ] = "Data from years with bad ergot [mean]|[minMax]|[straified on has_ergot]"
@@ -1511,7 +1510,7 @@ class SetCreator:
         setList.append(dataDict)
 
         return setList
-    
+
     def getSetList5(self):
         setList = []
 
@@ -1520,7 +1519,7 @@ class SetCreator:
 
         testDF = self.complete.getCombinedDF(moistureByMonth=True)
         testDF = testDF[~testDF.isin(currDF)]
-        
+
         currDF = self.modder.InputeData(currDF, "mean")
         currDF = self.modder.useMinMaxScaler(currDF)
 

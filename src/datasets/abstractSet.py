@@ -26,14 +26,8 @@ class AbstractSet(ABC):
     def _setHlyByWeek(self, hlyByWeekDF: pd.DataFrame):
         self.hlyByWeekDF = hlyByWeekDF
 
-    def _setHlyByWeek(self, hlyByWeekDF: pd.DataFrame):
-        self.hlyByWeekDF = hlyByWeekDF
-
     def getHlyByWeek(self) -> pd.DataFrame:
         return self.hlyByWeekDF.drop(columns=["year", "district"])
-
-    def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
-        self.hlyByMonthDF = hlyByMonthDF
 
     def _setHlyByMonth(self, hlyByMonthDF: pd.DataFrame):
         self.hlyByMonthDF = hlyByMonthDF
@@ -44,14 +38,8 @@ class AbstractSet(ABC):
     def _setMoistureByDay(self, moistureByDayDF: pd.DataFrame):
         self.moistureByDayDF = moistureByDayDF
 
-    def _setMoistureByDay(self, moistureByDayDF: pd.DataFrame):
-        self.moistureByDayDF = moistureByDayDF
-
     def getMoistureByDay(self) -> pd.DataFrame:
         return self.moistureByDayDF.drop(columns=["year", "district"])
-
-    def _setMoistureByWeek(self, moistureByWeekDF: pd.DataFrame):
-        self.moistureByWeekDF = moistureByWeekDF
 
     def _setMoistureByWeek(self, moistureByWeekDF: pd.DataFrame):
         self.moistureByWeekDF = moistureByWeekDF
@@ -62,23 +50,14 @@ class AbstractSet(ABC):
     def _setMoistureByMonth(self, moistureByMonthDF: pd.DataFrame):
         self.moistureByMonthDF = moistureByMonthDF
 
-    def _setMoistureByMonth(self, moistureByMonthDF: pd.DataFrame):
-        self.moistureByMonthDF = moistureByMonthDF
-
     def getMoistureByMonth(self) -> pd.DataFrame:
         return self.moistureByMonthDF.drop(columns=["year", "district"])
 
     def _setSoil(self, soilDF: pd.DataFrame):
         self.soilDF = soilDF
 
-    def _setSoil(self, soilDF: pd.DataFrame):
-        self.soilDF = soilDF
-
     def getSoil(self) -> pd.DataFrame:
         return self.soilDF.drop(columns=["district"])
-
-    def _setErgot(self, ergotDF: pd.DataFrame):
-        self.ergotDF = ergotDF
 
     def _setErgot(self, ergotDF: pd.DataFrame):
         self.ergotDF = ergotDF
