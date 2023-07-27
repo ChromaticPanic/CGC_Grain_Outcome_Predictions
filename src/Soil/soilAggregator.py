@@ -83,7 +83,7 @@ class SoilAggregator:
         conn.commit()
         db.cleanup()
 
-    def pullSoilData(conn: sq.engine.Connection) -> pd.DataFrame:
+    def pullSoilData(self, conn: sq.engine.Connection) -> pd.DataFrame:
         """
         Loads the soil property data per province and soil code from the soil data table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_data))
 
@@ -125,7 +125,7 @@ class SoilAggregator:
 
         return soil_data
 
-    def pullSurroundingSoil(conn: sq.engine.Connection) -> pd.DataFrame:
+    def pullSurroundingSoil(self, conn: sq.engine.Connection) -> pd.DataFrame:
         """
         Purpose:
         Loads the land composition details around each soil geometry from the soil surronding land table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_surronding_land))
@@ -141,7 +141,7 @@ class SoilAggregator:
 
         return surronding_soil
 
-    def pullSoilComponents(conn: sq.engine.Connection) -> pd.DataFrame:
+    def pullSoilComponents(self, conn: sq.engine.Connection) -> pd.DataFrame:
         """
         Purpose:
         Loads the soil components (different soils) per soil geometry from the soil components table ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_components))
@@ -165,7 +165,7 @@ class SoilAggregator:
 
         return soil_components
 
-    def pullSoilGeometry(conn: sq.engine.Connection) -> pd.DataFrame:
+    def pullSoilGeometry(self, conn: sq.engine.Connection) -> pd.DataFrame:
         """
         Purpose:
         Loads the agriculture regions ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#census_ag_regions)) and then associates each soil geometry ([readme](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_geometry)) with their respective distirct
