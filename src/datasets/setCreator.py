@@ -10,15 +10,15 @@ try:
 except:
     pass
 
-from sets.first15Yrs import First15Yrs
-from sets.badErgot import BadErgot
-from sets.complete import Complete
-from sets.winter import Winter
-from sets.spring import Spring
-from sets.summer import Summer
-from sets.fall import Fall
+from sets.first15Yrs import First15Yrs  # type: ignore
+from sets.badErgot import BadErgot  # type: ignore
+from sets.complete import Complete  # type: ignore
+from sets.winter import Winter  # type: ignore
+from sets.spring import Spring  # type: ignore
+from sets.summer import Summer  # type: ignore
+from sets.fall import Fall  # type: ignore
 
-from setModifier import SetModifier
+from setModifier import SetModifier  # type: ignore
 
 sys.path.append("../")
 from Shared.GenericQueryBuilder import GenericQueryBuilder
