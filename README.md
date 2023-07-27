@@ -250,6 +250,7 @@ Data is adjusted in order to meet model requirements or as an attempt to improve
 - [2006 Census Agricultural Regions](https://www150.statcan.gc.ca/n1/pub/92-174-x/2007000/carboundary/gcar000b07a_e.zip): digital boundaries for Canada's agriculture regions 
 - [Weather Stations](https://dd.weather.gc.ca/climate/observations/climate_station_list.csv): list of weather stations that collect weather data spread throughout Canada
 - [Harvest Canada Ergot Data](https://www.grainscanada.gc.ca/en/grain-quality/harvest-sample/): grain samples tested for Ergot
+- [Soil Data](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/index.html): multiple data sources containing Canadian Soil data
 
 ### Automated retrieval
 - [Hourly Weather Station Data](https://dd.weather.gc.ca/climate/observations/hourly/): weather data (hourly) collected by Canadian weather stations
