@@ -53,7 +53,7 @@ class ClimateDataRequester:
 
                 newData = pd.read_csv(baseUrl + stationID + midUrl + str(currIndex))
         except Exception:
-            5 + 5
+            pass
 
         return df
 
