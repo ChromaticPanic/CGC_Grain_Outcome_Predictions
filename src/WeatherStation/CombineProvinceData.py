@@ -94,6 +94,7 @@ def main():
 
     db.cleanup()
 
+
 def pullHlyWeatherData(conn: sq.engine.Connection) -> pd.DataFrame:
     """
     Purpose:
@@ -120,6 +121,7 @@ def pullHlyWeatherData(conn: sq.engine.Connection) -> pd.DataFrame:
 
     return pd.read_sql(weatherDataQuery, conn)
 
+
 def pullDlyWeatherData(conn: sq.engine.Connection) -> pd.DataFrame:
     """
     Purpose:
@@ -145,6 +147,7 @@ def pullDlyWeatherData(conn: sq.engine.Connection) -> pd.DataFrame:
     )
 
     return pd.read_sql(weatherDataQuery, conn)
+
 
 def aggregateHlyData(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -214,6 +217,7 @@ def aggregateHlyData(df: pd.DataFrame) -> pd.DataFrame:
 
     return agg_df
 
+
 def aggregateDlyData(df: pd.DataFrame) -> pd.DataFrame:
     """
     Purpose:
@@ -263,6 +267,7 @@ def aggregateDlyData(df: pd.DataFrame) -> pd.DataFrame:
     ]
 
     return agg_df
+
 
 def pullStationData(conn: sq.engine.Connection) -> pd.DataFrame:
     """

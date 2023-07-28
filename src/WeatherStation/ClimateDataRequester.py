@@ -39,7 +39,7 @@ class ClimateDataRequester:
         """
         Purpose:
         Requests hourly data from the [Climate Data Online web service](https://dd.weather.gc.ca/climate/observations/)
-        
+
         Pseudocode:
         - Load the base URL (used for downloading the data), injecting it with both the start ane end year
         - Load the URL extension (used for downloading the data)
@@ -48,12 +48,12 @@ class ClimateDataRequester:
         """
         baseUrl = f"https://api.weather.gc.ca/collections/climate-hourly/items?datetime={startYear}-01-01%2000:00:00/{endYear}-12-31%2000:00:00&CLIMATE_IDENTIFIER="
         midUrl = "&sortby=PROVINCE_CODE,CLIMATE_IDENTIFIER,LOCAL_DATE&f=csv&limit=10000&startindex="
-        offset = 10000 # How much information can be read in a single request
+        offset = 10000  # How much information can be read in a single request
 
-        df = pd.DataFrame() # Creates a dataframe to load the information into
+        df = pd.DataFrame()  # Creates a dataframe to load the information into
         # The current position to read data from (since each request can only contain so much information)
-        currIndex = 0 
-        
+        currIndex = 0
+
         try:
             newData = pd.read_csv(baseUrl + stationID + midUrl + str(currIndex))
             while len(newData.index) > 0:
@@ -72,7 +72,7 @@ class ClimateDataRequester:
         """
         Purpose:
         Requests daily data from the [Climate Data Online web service](https://dd.weather.gc.ca/climate/observations/)
-        
+
         Psuedocode:
         - Get the list of potential daily files to download (if none exit)
         - Remove irrelevant files to download - does not fall within startYear - endYear (if none exit)
@@ -81,27 +81,27 @@ class ClimateDataRequester:
         """
         df = pd.DataFrame()
 
-        urlList = self.__get_url_list(province, stationID)
+        urlList = self.get_url_list(province, stationID)
         if len(urlList) == 0:
             return df
 
-        trimmedList = self.__trim_by_date(urlList, startYear, endYear)
+        trimmedList = self.trim_by_date(urlList, startYear, endYear)
         if len(trimmedList) == 0:
             return df
 
         dfList = []
         for url in trimmedList:
-            dfList.append(self.__pull_data(province + "/" + url))
+            dfList.append(self.pull_data(province + "/" + url))
 
         df = pd.concat(dfList)
         return df
 
     @typing.no_type_check
-    def __get_url_list(self, province: str, stationID: str = "") -> list:
+    def get_url_list(self, province: str, stationID: str = "") -> list:
         """
         Purpose:
         Gets the list of potential daily files to download
-        
+
         Psuedocode:
         - Loads the download html page
         - [Get the list of files that can be downloaded](lxml.html.fromstring)
@@ -116,13 +116,12 @@ class ClimateDataRequester:
             headers=self.headers,
             verify=False,
         )
-        
+
         if res.status_code == 200:
             tree = lxml.html.fromstring(res.text)
 
             for link in tree.xpath("//a/@href"):
                 if link.endswith(".csv"):
-
                     # If no stationID was provided when the function was called, add everything
                     if not stationID:
                         result.append(link)
@@ -132,14 +131,14 @@ class ClimateDataRequester:
 
         return result
 
-    def __trim_by_date(self, csvList: list, startYear: int, endYear: int) -> list:
+    def trim_by_date(self, csvList: list, startYear: int, endYear: int) -> list:
         """
         Purpose:
         Removes irrelevant files to download (does not fall within startYear - endYear)
-        
+
         Psuedocode:
         - Starting at the last item, break down the data to extract the year
-        - If the year fall within the startYear - endYear range, add it 
+        - If the year fall within the startYear - endYear range, add it
         """
         DATEPOS = 4
         result = []
@@ -155,11 +154,11 @@ class ClimateDataRequester:
 
         return result
 
-    def __pull_data(self, url: str) -> pd.DataFrame:
+    def pull_data(self, url: str) -> pd.DataFrame:
         """
         Purpose:
         Given a csv download links, download the file
-        
+
         Psuedocode:
         - Try to request the data given the default URL schema, and if possible, [load it directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)
         """
@@ -170,5 +169,5 @@ class ClimateDataRequester:
             df = pd.read_csv(path, encoding="ISO-8859-1")
         except Exception as e:
             print(f"[Error]: {e}")
-        
+
         return df
