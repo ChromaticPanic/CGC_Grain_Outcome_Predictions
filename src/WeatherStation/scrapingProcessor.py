@@ -13,8 +13,7 @@ import typing
 
 class ScrapingProcessor:
     @typing.no_type_check  # need to define a data class for this
-    def removeInactive(
-        self, stations: pd.DataFrame, states: list) -> pd.DataFrame:
+    def removeInactive(self, stations: pd.DataFrame, states: list) -> pd.DataFrame:
         """
         Purpose:
         Remove the inactive stations from the list of stations once pulled
@@ -35,8 +34,7 @@ class ScrapingProcessor:
         return stations
 
     @typing.no_type_check  # need to define a data class for this
-    def addLastUpdated(
-        self, stations: str, states: list) -> pd.DataFrame:
+    def addLastUpdated(self, stations: str, states: list) -> pd.DataFrame:
         """
         Purpose:
         Adds the date a station was last updated (from states)
@@ -60,7 +58,7 @@ class ScrapingProcessor:
         """
         Purpose:
         Finds the latest date from a list of dates (datetime64)
-        
+
         Pseudocode:
         - If the list does not contain a single value, exit
         - For each date, check if its valid
@@ -95,7 +93,7 @@ class ScrapingProcessor:
         """
         Purpose:
         Calculates the date range needed for a station to become current with its data
-        
+
         Psuedocode:
         - Get the year we should be pulling up to based on the current year or the last year with data
         - Get the minimum year we should start pulling from based on the first year with data
@@ -104,11 +102,11 @@ class ScrapingProcessor:
 
         Remarks: On line 108, when calculating the max year, if either are None, are error is thrown
         """
-        maxYear = min(lastYearWithData, currentYear)  
+        maxYear = min(lastYearWithData, currentYear)
         minYear = firstYearWithData  # Whenever the station started collecting data
 
         # Confirms the pulled year is a valid datetime (numpy)
-        if not np.isnat(np.datetime64(lastUpdated)):  
+        if not np.isnat(np.datetime64(lastUpdated)):
             lastUpdatedDate = pd.to_datetime(lastUpdated)
 
             if lastUpdatedDate.year > firstYearWithData:
@@ -317,7 +315,7 @@ class ScrapingProcessor:
         """
         Purpose:
         Aggregates hourly data to compress values into a single day (minimum, mean and maximum values)
-        
+
         Psuedocode:
         - [Aggregate the data](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html) [by station_id, year, month and day](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)
         - [Rename the columns](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html)
