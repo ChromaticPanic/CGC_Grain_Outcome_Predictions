@@ -3,7 +3,7 @@ from imblearn.ensemble import (
     BalancedBaggingClassifier,
     BalancedRandomForestClassifier,
     EasyEnsembleClassifier,
-    RUSBoostClassifier
+    RUSBoostClassifier,
 )
 from sklearn.ensemble import (
     AdaBoostClassifier,
@@ -21,9 +21,8 @@ from sklearn.ensemble import (
     RandomForestRegressor,
     StackingRegressor,
     VotingRegressor,
-    HistGradientBoostingRegressor
+    HistGradientBoostingRegressor,
 )
-
 
 
 # The goal of ensemble methods is to combine the predictions of several base estimators built with a given learning algorithm in order to improve generalizability / robustness over a single estimator.
@@ -32,8 +31,6 @@ from sklearn.ensemble import (
 #     Examples: Bagging methods, Forests of randomized trees, …
 #     By contrast, in boosting methods, base estimators are built sequentially and one tries to reduce the bias of the combined estimator. The motivation is to combine several weak models to produce a powerful ensemble.
 #     Examples: AdaBoost, Gradient Tree Boosting, …
-
-
 
 
 def getBalancedClassifier(classifier: int, options: Optional[object] = None) -> object:
@@ -46,7 +43,7 @@ def getBalancedClassifier(classifier: int, options: Optional[object] = None) -> 
     Returns:
         object: The classifier.
     """
-    
+
     if classifier == 0:
         return BalancedBaggingClassifier(options)
     elif classifier == 1:
@@ -57,7 +54,8 @@ def getBalancedClassifier(classifier: int, options: Optional[object] = None) -> 
         return RUSBoostClassifier(options)
     else:
         raise ValueError("Invalid classifier ID.")
-    
+
+
 def getClassifier(classifier: int, options: Optional[object] = None) -> object:
     """Get a classifier based on the classifier ID.
 
@@ -68,7 +66,7 @@ def getClassifier(classifier: int, options: Optional[object] = None) -> object:
     Returns:
         object: The classifier.
     """
-    
+
     if classifier == 0:
         return AdaBoostClassifier(options)
     elif classifier == 1:
