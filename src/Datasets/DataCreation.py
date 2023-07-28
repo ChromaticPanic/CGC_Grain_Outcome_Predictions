@@ -9,7 +9,7 @@
 # - v3: Given an ergot sample and its all given attributes -> predict if the district is gonna have ergot or not
 # - v4: Given a district and its all given attributes -> predict that if the district produced the crop which are sellable
 # -------------------------------------------
-from Shared.DataService import DataService
+# from Shared.DataService import DataService
 from dotenv import load_dotenv
 import sqlalchemy as sq  # type: ignore
 from sqlalchemy import Connection  # type: ignore
@@ -18,6 +18,7 @@ import numpy as np  # type: ignore
 import os
 import sys
 
+import typing
 from typing import Any, Optional
 
 sys.path.append("../")
