@@ -342,6 +342,7 @@ def getDatasetV4(months: Optional[typing.List[Any]]) -> pd.DataFrame:
 
     # Get ergot data
     agg_ergot_df = getErgotData(conn)
+    agg_ergot_df.fillna(0, inplace=True)
     # drop district 4730 because it has no weather data and year = 2022 since soil moisture data is only until 2021.
     agg_ergot_df.drop(
         agg_ergot_df[
@@ -380,7 +381,7 @@ def getDatasetV4(months: Optional[typing.List[Any]]) -> pd.DataFrame:
     # Get soil moisture data
     sm_df = sm_df.groupby(["year", "district"]).mean().reset_index()
 
-    df = sm_df.merge(new_ergot_df, on=["year", "district"], how="left")
+    df = new_ergot_df.merge(sm_df, on=["year", "district"], how="left")
 
     # Get soil data
     soil_df = getSoilData(conn)
