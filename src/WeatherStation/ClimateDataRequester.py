@@ -1,5 +1,5 @@
 # -------------------------------------------
-# climateDataRequester.py 
+# climateDataRequester.py
 #
 # Requests data from the [Climate Data Online web service](https://dd.weather.gc.ca/climate/observations/)
 #
