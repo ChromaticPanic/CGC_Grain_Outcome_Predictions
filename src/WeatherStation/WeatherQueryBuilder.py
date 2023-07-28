@@ -118,7 +118,7 @@ class WeatherQueryBuilder(GenericQueryBuilder):
 
     def createUpdateTableReq(self):
         """
-        Purpose:        
+        Purpose:
         Manually creates the SQL table to store the metadata for weather stations
         - date (string) and is active flag (boolean)
 
@@ -140,7 +140,7 @@ class WeatherQueryBuilder(GenericQueryBuilder):
 
     def modLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str:
         """
-        Purpose:        
+        Purpose:
         Changes the recorded date a station was last updated
 
         Table:
@@ -158,7 +158,7 @@ class WeatherQueryBuilder(GenericQueryBuilder):
 
     def addLastUpdatedReq(self, stationID: str, lastUpdated: numpy.datetime64) -> str:
         """
-        Purpose:        
+        Purpose:
         Adds the recorded date a station was last updated
 
         Table:
