@@ -1,10 +1,9 @@
-import sys
 import sqlalchemy as sq
+import sys
 
 sys.path.append("../")
-sys.path.append("../Shared")
-from GenericQueryBuilder import GenericQueryBuilder  # type: ignore
-from DataService import DataService  # type: ignore
+from Shared.GenericQueryBuilder import GenericQueryBuilder
+from Shared.DataService import DataService
 
 
 class CopernicusQueryBuilder(GenericQueryBuilder):
