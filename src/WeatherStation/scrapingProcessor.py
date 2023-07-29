@@ -1,7 +1,9 @@
 # ----------------------------------------------------
 # DataProcessor.py
 #
-# Purpose: handles the more complex data processing and manipulations for ScrapeStations.py
+# Purpose: handles the more complex data processing and manipulations for station scraping:
+# - scrapeDaily.py
+# - scrapeHourlyParallel.py
 # ----------------------------------------------------
 from datetime import datetime
 import numpy as np
@@ -9,11 +11,19 @@ import pandas as pd
 import typing
 
 
-class DataProcessor:
+class ScrapingProcessor:
     @typing.no_type_check  # need to define a data class for this
-    def removeInactive(
-        self, stations: pd.DataFrame, states: list({str, np.datetime64, bool})
-    ) -> pd.DataFrame:
+    def removeInactive(self, stations: pd.DataFrame, states: list) -> pd.DataFrame:
+        """
+        Purpose:
+        Remove the inactive stations from the list of stations once pulled
+
+        Pseudocode:
+        - For each state, check if its active
+        - If it is not active, remove it from the DataFrame
+
+        Remarks: stations and states are both parallel
+        """
         for state in states:
             if not state["is_active"]:
                 stations.drop(
@@ -24,9 +34,17 @@ class DataProcessor:
         return stations
 
     @typing.no_type_check  # need to define a data class for this
-    def addLastUpdated(
-        self, stations: str, states: list({str, np.datetime64, bool})
-    ) -> pd.DataFrame:
+    def addLastUpdated(self, stations: str, states: list) -> pd.DataFrame:
+        """
+        Purpose:
+        Adds the date a station was last updated (from states)
+
+        Pseudocode:
+        - Create the column in the DataFrame (defaults as None)
+        - For each state, [add the last_updated date based on the station_id](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html)
+
+        Remarks: stations and states are both parallel
+        """
         stations["last_updated"] = None
 
         for state in states:
@@ -37,18 +55,25 @@ class DataProcessor:
         return stations
 
     def findLatestDate(self, listOfDates: list) -> typing.Optional[np.datetime64]:
+        """
+        Purpose:
+        Finds the latest date from a list of dates (datetime64)
+
+        Pseudocode:
+        - If the list does not contain a single value, exit
+        - For each date, check if its valid
+        - If there are dates, get the maximum
+        - Otherwise exit
+        """
         validDates = []  # Holds the list of valid dates
-        latestDate = (
-            None  # Holds the latest date, defaults to None if no valid dates are given
-        )
+        latestDate = None  # The latest date, defaults to None if none are provided
 
         if len(listOfDates) < 1:
             return None
 
         for date in listOfDates:
-            if not np.isnat(
-                np.datetime64(date)
-            ):  # Numpy evaluates each date (casting is necessairy even if casted previously)
+            # Numpy evaluates each date (casting is necessairy even if casted previously)
+            if not np.isnat(np.datetime64(date)):
                 validDates.append(date)
 
         if validDates:
@@ -65,14 +90,23 @@ class DataProcessor:
         lastYearWithData: int,
         currentYear: int = datetime.now().year,
     ) -> typing.Tuple[int, int]:
-        maxYear = min(
-            lastYearWithData, currentYear
-        )  # Pull to the current year or whatever year the data goes up until (if either are None throws error)
+        """
+        Purpose:
+        Calculates the date range needed for a station to become current with its data
+
+        Psuedocode:
+        - Get the year we should be pulling up to based on the current year or the last year with data
+        - Get the minimum year we should start pulling from based on the first year with data
+        - Confirm this is infact a valid date
+        - If data has been pulled before our minimum year, change the minimum year to the year data was last pulled
+
+        Remarks: On line 108, when calculating the max year, if either are None, are error is thrown
+        """
+        maxYear = min(lastYearWithData, currentYear)
         minYear = firstYearWithData  # Whenever the station started collecting data
 
-        if not np.isnat(
-            np.datetime64(lastUpdated)
-        ):  # Confirms the pulled year is a valid datetime (numpy)
+        # Confirms the pulled year is a valid datetime (numpy)
+        if not np.isnat(np.datetime64(lastUpdated)):
             lastUpdatedDate = pd.to_datetime(lastUpdated)
 
             if lastUpdatedDate.year > firstYearWithData:
@@ -81,12 +115,28 @@ class DataProcessor:
         return minYear, maxYear
 
     def removeOlderThan(self, df: pd.DataFrame, lastUpdated: np.datetime64):
+        """
+        Purpose:
+        Drops old/duplicate data (as per the date of the previous update - lastUpdated)
+        """
         if lastUpdated:
-            df.drop(
-                df[df.date <= lastUpdated].index, inplace=True
-            )  # Drops old/duplicate data (as per the date of the previous update - lastUpdated)
+            df.drop(df[df.date <= lastUpdated].index, inplace=True)
 
     def processData(self, df: pd.DataFrame, lastUpdated: np.datetime64) -> pd.DataFrame:
+        """
+        Purpose:
+        Prepares data to be stored into the database
+
+        Pseudocode:
+        - [Drop irrelevant columns](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html)
+        - [Rename columns](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html)
+        - [Cast DataFrame column data types](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.astype.html)
+        - Remove obsolete data (would already be in the database)
+        - Impute null and incorrect values
+            - [dropna](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html)
+            - [loc](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html)
+            - [where](https://numpy.org/doc/stable/reference/generated/numpy.where.html)
+        """
         try:
             df.drop(
                 columns=[
@@ -176,6 +226,16 @@ class DataProcessor:
         return df
 
     def dataProcessHourly(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Purpose:
+        Prepares data to be stored into the database
+
+        Pseudocode:
+        - [Drop irrelevant columns](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html)
+        - [Rename columns](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html)
+        - [Impute null and incorrect values](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html)
+        - [Cast DataFrame column data types](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.astype.html)
+        """
         df.drop(
             columns=[
                 "x",
@@ -226,6 +286,7 @@ class DataProcessor:
         df[["year", "month", "day", "hour"]] = df[
             ["year", "month", "day", "hour"]
         ].astype(int)
+
         df[
             [
                 "dew_point_temp",
@@ -251,6 +312,15 @@ class DataProcessor:
         return df
 
     def tranformHourlyToDaily(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Purpose:
+        Aggregates hourly data to compress values into a single day (minimum, mean and maximum values)
+
+        Psuedocode:
+        - [Aggregate the data](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html) [by station_id, year, month and day](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)
+        - [Rename the columns](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html)
+        - [Cast DataFrame column data types](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.astype.html)
+        """
         # get min max mean for each day
         transformed = (
             df.groupby(["station_id", "year", "month", "day"])
@@ -267,7 +337,6 @@ class DataProcessor:
             )
             .reset_index()
         )
-        # print(transformed.columns)
 
         # rename columns
         transformed.columns = [  # type: ignore
