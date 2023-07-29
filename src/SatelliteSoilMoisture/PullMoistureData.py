@@ -249,7 +249,7 @@ def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> pd.DataFrame:
     )
 
     # Changes the points projection to match the agriculture regions of EPSG:3347
-    df.to_crs(crs="EPSG:3347", inplace=True)
+    df.to_crs(crs="EPSG:3347", inplace=True)  # type: ignore
 
     # Join the two dataframes based on which points fit within what agriculture regions
     df = gpd.sjoin(df, agRegions, how="left", predicate="within")
