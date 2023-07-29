@@ -1,11 +1,8 @@
 # ----------------------------------------------------
-# Querier.py
+# GenericQueryBuilder.py
 #
-# Purpose: handles (builds/processes) requests to a database
+# Purpose: handles (builds/processes) general requests to a database
 # ----------------------------------------------------
-import sqlalchemy as sq
-
-
 class GenericQueryBuilder:
     def tableExistsReq(self, tablename: str) -> str:
         return f"""
