@@ -1,3 +1,14 @@
+# ----------------------------------------------------
+# DataService.pyi
+#
+# Handles communications with PostgreSQL databases
+#
+# Typical usage example:
+#   db = DataService()
+#   conn = db.connect()
+#   db.execute(query: str)
+#   db.cleanup()
+# ----------------------------------------------------
 import sqlalchemy as sq
 
 class DataService:
@@ -13,6 +24,25 @@ class DataService:
         pw: str = ...,
     ) -> None: ...
     def connect(self) -> sq.engine.base.Connection: ...
-    def disconnect(self) -> None: ...
-    def cleanup(self) -> None: ...
+    # ----------------------------------------------------
+    # Purpose:
+    # Connect to PostgreSQL database
+    # ----------------------------------------------------
+
+    def disconnect(self): ...
+    # ----------------------------------------------------
+    # Purpose:
+    # Disconnect from PostgreSQL database
+    # ----------------------------------------------------
+
+    def cleanup(self): ...
+    # ----------------------------------------------------
+    # Purpose:
+    # Cleanup operation: close open connections
+    # ----------------------------------------------------
+
     def execute(self, query) -> object: ...
+    # ----------------------------------------------------
+    # Purpose:
+    # Execute a query on the database
+    # ----------------------------------------------------
