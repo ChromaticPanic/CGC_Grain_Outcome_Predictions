@@ -278,6 +278,44 @@ Data is adjusted in order to meet model requirements or as an attempt to improve
 
 A european satellite that tracks many of earths environmental variables. Comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  Please note that the naming scheme for all variables are kept consistant **with an exception of 2m_dewpoint_temperature and 2m_temperature** which due to SQL restrictions have been renamed as **dewpoint_temperature** and **temperature** respectively.
 
+
+<details><summary>view copernicus_satellite_data attribute list</summary>
+
+| attr                                  | type              | unit                  | desc                                      |
+| ------------------------------------- | ----------------- | --------------------- | ----------------------------------------- |
+| lon                                   | double            | EPSG:3347             | X coordinate (longitude)                  |
+| lat                                   | double            | EPSG:3347             | Y coordinate (latitude)                   |
+| datetime                              | timestamp         | YEAR-MO-DA HO:MN:SC   |                                           |
+| year                                  | int               |                       |                                           |
+| month                                 | int               |                       |                                           |
+| day                                   | int               |                       |                                           |
+| hour                                  | int               |                       |                                           |
+| cr_num                                | int               |                       | identifies groups of related districts    |
+| dewpoint_temperature                  | double            | K                     | labeled as 2m_dewpoint_temperature on copernicus |
+| temperature                           | double            | K                     | labeled as 2m_temperature on copernicus  |
+| evaporation_from_bare_soil            | double            | m of water equivalent |                                           |
+| skin_reservoir_content                | double            | m of water equivalent |                                           |
+| skin_temperature                      | double            | K                     |                                           |
+| snowmelt                              | double            | m of water equivalent |                                           |
+| soil_temperature_level_1              | double            | K                     |                                           |
+| soil_temperature_level_2              | double            | K                     |                                           |
+| soil_temperature_level_3              | double            | K                     |                                           |
+| soil_temperature_level_4              | double            | K                     |                                           |
+| surface_net_solar_radiation           | double            | Jm^-2                 |                                           |
+| surface_pressure                      | double            | Pa                    |                                           |
+| volumetric_soil_water_layer_1         | double            | m^3m^-3               |                                           |
+| volumetric_soil_water_layer_2         | double            | m^3m^-3               |                                           |
+| volumetric_soil_water_layer_3         | double            | m^3m^-3               |                                           |
+| volumetric_soil_water_layer_4         | double            | m^3m^-3               |                                           |
+| leaf_area_index_high_vegetation       | double            | m^2m^-2               |                                           |
+| leaf_area_index_low_vegetation        | double            | m^2m^-2               |                                           |
+
+
+</details>
+
+<details><summary>view copernicus_satellite_data attribute list</summary>
+    
+
 ||lon|lat|datetime|year|month|day|hour|cr_num|dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
 |-| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |------------- |------------- |-|-|-|-|-|-|-|
 |**description**|X coordinate (longitude)|Y coordinate (latitude)||||||identifies groups of related districts|labeled as 2m_dewpoint_temperature on copernicus|labeled as 2m_temperature on copernicus|
@@ -285,6 +323,7 @@ A european satellite that tracks many of earths environmental variables. Compreh
 |**unit**|EPSG:3347|EPSG:3347|YEAR-MO-DA HO:MN:SC||||||K|K|m of water equivalent|m of water equivalent|K|m of water equivalent|K|K|K|K|Jm^-2|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|
 |**constraints**|
 
+</details>
 
 [back to top](#overview)
 <br>
