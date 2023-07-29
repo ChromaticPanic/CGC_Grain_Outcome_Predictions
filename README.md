@@ -279,7 +279,7 @@ Data is adjusted in order to meet model requirements or as an attempt to improve
 A european satellite that tracks many of earths environmental variables. Comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  Please note that the naming scheme for all variables are kept consistant **with an exception of 2m_dewpoint_temperature and 2m_temperature** which due to SQL restrictions have been renamed as **dewpoint_temperature** and **temperature** respectively.
 
 
-<details><summary>view copernicus_satellite_data attribute list</summary>
+<details><summary>Vertical view copernicus_satellite_data attribute list</summary>
 
 | attr                                  | type              | unit                  | desc                                      |
 | ------------------------------------- | ----------------- | --------------------- | ----------------------------------------- |
@@ -313,7 +313,7 @@ A european satellite that tracks many of earths environmental variables. Compreh
 
 </details>
 
-<details><summary>view copernicus_satellite_data attribute list</summary>
+<details><summary>Horizontal view copernicus_satellite_data attribute list</summary>
     
 
 ||lon|lat|datetime|year|month|day|hour|cr_num|dewpoint_temperature| temperature | evaporation_from_bare_soil | skin_reservoir_content  | skin_temperature | snowmelt | soil_temperature_level_1| soil_temperature_level_2| soil_temperature_level_3 | soil_temperature_level_4  | surface_net_solar_radiation | surface_pressure | volumetric_soil_water_layer_1 | volumetric_soil_water_layer_2  | volumetric_soil_water_layer_3  | volumetric_soil_water_layer_4 |leaf_area_index_high_vegetation|leaf_area_index_low_vegetation|
@@ -335,12 +335,85 @@ A european satellite that tracks many of earths environmental variables. Compreh
 
 An aggregation of the mean, minimum and maximum values for the data found in the copernicus_satelite_data table per day. Similarly to the copernicus_satelite_data table, comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).
 
+
+<details><summary>Vertical view agg_day_copernicus_satellite_data attribute list</summary>
+
+| attr                                      | type              | unit                  | desc                                      |
+| ----------------------------------------- | ----------------- | --------------------- | ----------------------------------------- |
+| year                                      | int               |                       |                                           |
+| month                                     | int               |                       |                                           |
+| day                                       | int               |                       |                                           |
+| cr_num                                    | int               |                       | identifies groups of related districts    |
+| district                                  | double            |                       | unique region identifier                  |
+| min_dewpoint_temperature                  | double            | K                     |                                           |
+| max_dewpoint_temperature                  | double            | K                     |                                           |
+| mean_dewpoint_temperature                 | double            | K                     |                                           |
+| min_temperature                           | double            | K                     |                                           |
+| max_temperature                           | double            | K                     |                                           |
+| mean_temperature                          | double            | K                     |                                           |
+| min_evaporation_from_bare_soil            | double            | m of water equivalent |                                           |
+| max_evaporation_from_bare_soil            | double            | m of water equivalent |                                           |
+| mean_evaporation_from_bare_soil           | double            | m of water equivalent |                                           |
+| min_skin_reservoir_content                | double            | m of water equivalent |                                           |
+| max_skin_reservoir_content                | double            | m of water equivalent |                                           |
+| mean_skin_reservoir_content               | double            | m of water equivalent |                                           |
+| min_skin_temperature                      | double            | K                     |                                           |
+| max_skin_temperature                      | double            | K                     |                                           |
+| mean_skin_temperature                     | double            | K                     |                                           |
+| min_snowmelt                              | double            | m of water equivalent |                                           |
+| max_snowmelt                              | double            | m of water equivalent |                                           |
+| mean_snowmelt                             | double            | m of water equivalent |                                           |
+| min_soil_temperature_level_1              | double            | K                     |                                           |
+| max_soil_temperature_level_1              | double            | K                     |                                           |
+| mean_soil_temperature_level_1             | double            | K                     |                                           |
+| min_soil_temperature_level_2              | double            | K                     |                                           |
+| max_soil_temperature_level_2              | double            | K                     |                                           |
+| mean_soil_temperature_level_2             | double            | K                     |                                           |
+| min_soil_temperature_level_3              | double            | K                     |                                           |
+| max_soil_temperature_level_3              | double            | K                     |                                           |
+| mean_soil_temperature_level_3             | double            | K                     |                                           |
+| min_soil_temperature_level_4              | double            | K                     |                                           |
+| max_soil_temperature_level_4              | double            | K                     |                                           |
+| mean_soil_temperature_level_4             | double            | K                     |                                           |
+| min_surface_net_solar_radiation           | double            | Jm^-2                 |                                           |
+| max_surface_net_solar_radiation           | double            | Jm^-2                 |                                           |
+| mean_surface_net_solar_radiation          | double            | Jm^-2                 |                                           |
+| min_surface_pressure                      | double            | Pa                    |                                           |
+| max_surface_pressure                      | double            | Pa                    |                                           |
+| mean_surface_pressure                     | double            | Pa                    |                                           |
+| min_volumetric_soil_water_layer_1         | double            | m^3m^-3               |                                           |
+| max_volumetric_soil_water_layer_1         | double            | m^3m^-3               |                                           |
+| mean_volumetric_soil_water_layer_1        | double            | m^3m^-3               |                                           |
+| min_volumetric_soil_water_layer_2         | double            | m^3m^-3               |                                           |
+| max_volumetric_soil_water_layer_2         | double            | m^3m^-3               |                                           |
+| mean_volumetric_soil_water_layer_2        | double            | m^3m^-3               |                                           |
+| min_volumetric_soil_water_layer_3         | double            | m^3m^-3               |                                           |
+| max_volumetric_soil_water_layer_3         | double            | m^3m^-3               |                                           |
+| mean_volumetric_soil_water_layer_3        | double            | m^3m^-3               |                                           |
+| min_volumetric_soil_water_layer_4         | double            | m^3m^-3               |                                           |
+| max_volumetric_soil_water_layer_4         | double            | m^3m^-3               |                                           |
+| mean_volumetric_soil_water_layer_4        | double            | m^3m^-3               |                                           |
+| min_leaf_area_index_high_vegetation       | double            | m^2m^-2               |                                           |
+| max_leaf_area_index_high_vegetation       | double            | m^2m^-2               |                                           |
+| mean_leaf_area_index_high_vegetation      | double            | m^2m^-2               |                                           |
+| min_leaf_area_index_low_vegetation        | double            | m^2m^-2               |                                           |
+| max_leaf_area_index_low_vegetation        | double            | m^2m^-2               |                                           |
+| mean_leaf_area_index_low_vegetation       | double            | m^2m^-2               |                                           |
+
+
+</details>
+
+<details><summary>Horizontal view agg_day_copernicus_satellite_data attribute list</summary>
+    
+
 |year|month|day|cr_num|district|min_dewpoint_temperature|max_dewpoint_temperature|mean_dewpoint_temperature|min_temperature|max_temperature|mean_temperature|min_evaporation_from_bare_soil|max_evaporation_from_bare_soil|mean_evaporation_from_bare_soil|min_skin_reservoir_content|max_skin_reservoir_content|mean_skin_reservoir_content|min_skin_temperature|max_skin_temperature|mean_skin_temperature|min_snowmelt|max_snowmelt|mean_snowmelt|min_soil_temperature_level_1|max_soil_temperature_level_1|mean_soil_temperature_level_1|min_soil_temperature_level_2|max_soil_temperature_level_2|mean_soil_temperature_level_2|min_soil_temperature_level_3|max_soil_temperature_level_3|mean_soil_temperature_level_3|min_soil_temperature_level_4|max_soil_temperature_level_4|mean_soil_temperature_level_4|min_surface_net_solar_radiation|max_surface_net_solar_radiation|mean_surface_net_solar_radiation|min_surface_pressure|max_surface_pressure|mean_surface_pressure|min_volumetric_soil_water_layer_1|max_volumetric_soil_water_layer_1|mean_volumetric_soil_water_layer_1|min_volumetric_soil_water_layer_2|max_volumetric_soil_water_layer_2|mean_volumetric_soil_water_layer_2|min_volumetric_soil_water_layer_3|max_volumetric_soil_water_layer_3|mean_volumetric_soil_water_layer_3|min_volumetric_soil_water_layer_4|max_volumetric_soil_water_layer_4|mean_volumetric_soil_water_layer_4|min_leaf_area_index_high_vegetation|max_leaf_area_index_high_vegetation|mean_leaf_area_index_high_vegetation|min_leaf_area_index_low_vegetation|max_leaf_area_index_low_vegetation|mean_leaf_area_index_low_vegetation|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 |**description**|||identifies groups of related districts|unique region identifier|
 |**type**|int|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
 |**unit**|||||K|K|K|K|K|K|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|K|K|K|m of water equivalent|m of water equivalent|m of water equivalent|K|K|K|K|K|K|K|K|K|K|K|K|Jm^-2|Jm^-2|Jm^-2|Pa|Pa|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|
 |**constraints**|
+
+</details>
 
 [back to top](#overview)
 <br>
@@ -352,12 +425,31 @@ An aggregation of the mean, minimum and maximum values for the data found in the
 
 Contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or district were discarded.
 
+<details><summary>Vertical view ergot_sample attribute list</summary>
+
+| attr           | type    | unit | description                                                   | constraints |
+| -------------- | ------- | ---- | ------------------------------------------------------------- | ----------- |
+| sample_id      | int     |      | unique sample identifier                                      | serial key  |
+| year           | int     |      |                                                               |             |
+| province       | string  |      | province abbreviation                                         |             |
+| crop_district  | int     |      | non-unique identifier for a district within a province       |             |
+| incidence      | boolean |      | truth value for the presence of ergot                         |             |
+| severity       | double  | %    | percentage of severity detected                               |             |
+
+</details>
+
+<details><summary>Horizontal view ergot_sample attribute list</summary>
+    
+
 ||sample_id|year|province|crop_district|incidence|severity|
 |-|-|-|-|-|-|-|
 |**description**|unique sample identifier||province abbreviation|non-unique identifier for a district within a province|truth value for the presence of ergot|percentage of severity detected|
 |**type**|int|int|string|int|boolean|double|
 |**unit**||||||%|
 |**constraints**|serial key|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -369,12 +461,35 @@ Contains all samples, both infected and diesease free, submited to the Canadian 
 
 Similarly to the ergot_sample table, ergot_sample_feat_eng contains all samples, both infected and diesease free, submited to the Canadian Harvest program by farmers to be tested for ergot. Of the original data, samples without a specified province and or district were discarded. The data is enhanced with additional engineered features.
 
+<details><summary>Vertical view ergot_sample_feat_eng attribute list</summary>
+
+| attr               | type    | unit | description                                                                        | constraints |
+| ------------------ | ------- | ---- | ---------------------------------------------------------------------------------- | ----------- |
+| sample_id          | int     |      | unique sample identifier                                                           |             |
+| year               | int     |      |                                                                                    |             |
+| province           | string  |      | province abbreviation                                                              |             |
+| crop_district      | int     |      | non-unique identifier for a district within a province                            |             |
+| district           | int     |      | unique region identifier                                                           |             |
+| incidence          | boolean |      | truth value for the presence of ergot                                              |             |
+| severity           | double  |      | percentage of severity detected                                                    |             |
+| downgrade          | boolean |      | comparison to ergot's selling threshold of 0.4%                                    |             |
+| severity_bin_quan  | int     |      | severity binning on quantiles                                                      |             |
+| severity_bin_arb   | int     |      | severity binning on 0.2, 0.4 and 0.8 respectively                                  |             |
+
+</details>
+
+<details><summary>Horizontal view ergot_sample_feat_eng attribute list</summary>
+    
+
 ||sample_id|year|province|crop_district|district|incidence|severity|downgrade|severity_bin_quan|severity_bin_arb|
 |-|-|-|-|-|-|-|-|-|-|-|
 |**description**|unique sample identifier||province abbreviation|non-unique identifier for a district within a province|unique region identifier|truth value for the presence of ergot|percentage of severity detected|comparison to ergot's selling threshold of 0.4%|severity binning on quantiles|severity binning on 0.2, 0.4 and 0.8 respectively|
 |**type**|int|int|string|int|int|boolean|double|boolean|int|int|
 |**unit**|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -386,12 +501,57 @@ Similarly to the ergot_sample table, ergot_sample_feat_eng contains all samples,
 
 An aggregation on the data found in the ergot_sample table per year and district.
 
+<details><summary>Vertical view agg_ergot_sample attribute list</summary>
+
+| attr                       | type    | unit | description                                                                        |
+| -------------------------- | ------- | ---- | ---------------------------------------------------------------------------------- |
+| year                       | int     |      |                                                                                    |
+| district                   | int     |      | unique region identifier                                                           |
+| percnt_true                | double  | %    | percentage of samples with ergot                                                   |
+| has_ergot                  | boolean |      | district have any ergot?                                                           |
+| median_severity            | double  |      |                                                                                    |
+| sum_severity               | double  |      |                                                                                    |
+| present_in_neighbor        | boolean |      |                                                                                    |
+| sum_severity_in_neighbor   | double  |      |                                                                                    |
+| present_prev1              | boolean |      | last year had ergot?                                                               |
+| present_prev2              | boolean |      | 2 years ago had ergot? (non accumulative)                                          |
+| present_prev3              | boolean |      | 3 years ago had ergot? (non accumulative)                                          |
+| sum_severity_prev1         | double  |      | non accumulative                                                                   |
+| sum_severity_prev2         | double  |      | non accumulative                                                                   |
+| sum_severity_prev3         | double  |      | non accumulative                                                                   |
+| percnt_true_prev1          | double  | %    | percentage of samples with ergot for the last year                                 |
+| percnt_true_prev2          | double  | %    | percentage of samples with ergot 2 years ago (non accumulative)                    |
+| percnt_true_prev3          | double  | %    | percentage of samples with ergot 3 years ago (non accumulative)                    |
+| median_prev1               | double  |      | non accumulative                                                                   |
+| median_prev2               | double  |      | non accumulative                                                                   |
+| median_prev3               | double  |      | non accumulative                                                                   |
+| sum_severity_prev1         | double  |      | non accumulative                                                                   |
+| sum_severity_prev2         | double  |      | non accumulative                                                                   |
+| sum_severity_prev3         | double  |      | non accumulative                                                                   |
+| sum_severity_in_neighbor   | double  |      | non accumulative                                                                   |
+| ergot_present_in_q1        | boolean |      | if the current (year, district) has its percnt_true in quantile 1                  |
+| ergot_present_in_q2        | boolean |      | if the current (year, district) has its percnt_true in quantile 2                  |
+| ergot_present_in_q3        | boolean |      | if the current (year, district) has its percnt_true in quantile 3                  |
+| ergot_present_in_q4        | boolean |      | if the current (year, district) has its percnt_true in quantile 4                  |
+| sum_severity_in_q1         | boolean |      | if the current (year, district) has its sum_severity in quantile 1                 |
+| sum_severity_in_q2         | boolean |      | if the current (year, district) has its sum_severity in quantile 2                 |
+| sum_severity_in_q3         | boolean |      | if the current (year, district) has its sum_severity in quantile 3                 |
+| sum_severity_in_q4         | boolean |      | if the current (year, district) has its sum_severity in quantile 4                 |
+
+</details>
+
+<details><summary>Horizontal view agg_ergot_sample attribute list</summary>
+    
+
 ||year|district|percnt_true|has_ergot|median_severity|sum_severity|present_in_neighbor|sum_severity_in_neighbor|present_prev1|present_prev2|present_prev3|sum_severity_prev1|sum_severity_prev2|sum_severity_prev3|percnt_true_prev1|percnt_true_prev2|percnt_true_prev3|median_prev1|median_prev2|median_prev3|sum_severity_prev1|sum_severity_prev2|sum_severity_prev3|sum_severity_in_neighbor|ergot_present_in_q1|ergot_present_in_q2|ergot_present_in_q3|ergot_present_in_q4|sum_severity_in_q1|sum_severity_in_q2|sum_severity_in_q3|sum_severity_in_q4|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 |**description**||unique region identifier|percentage of samples with ergot| district have any ergot?|||||last year had ergot?|2 years ago had ergot? (non accumulative)|3 years ago had ergot? (non accumulative)|non accumulative|non accumulative|non accumulative|percentage of samples with ergot for the last year|percentage of samples with ergot 2 years ago (non accumulative)|percentage of samples with ergot 3 years ago (non accumulative)|non accumulative|non accumulative|non accumulative|non accumulative|non accumulative|non accumulative|non accumulative|if the current (year, district) has its percnt_true in quantile 1|if the current (year, district) has its percnt_true in quantile 2|if the current (year, district) has its percnt_true in quantile 3|if the current (year, district) has its percnt_true in quantile 4|if the current (year, district) has its sum_severity in quantile 1|if the current (year, district) has its sum_severity in quantile 2|if the current (year, district) has its sum_severity in quantile 3|if the current (year, district) has its sum_severity in quantile 4|
 |**type**|int|int|double|boolean|double|double|boolean|double|boolean|boolean|boolean|double|double|double|double|double|double|double|double|double|double|double|double|double|boolean|boolean|boolean|boolean|boolean|boolean|boolean|boolean|
 |**unit**|||%||||||||||||%|%|%|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -403,12 +563,32 @@ An aggregation on the data found in the ergot_sample table per year and district
 
 Holds the boundaries and geometries for provinces, districts and crop regions of interest.
 
+<details><summary>Vertical view census_ag_regions attribute list</summary>
+
+| attr      | type     | unit   | description                                                                 |
+| --------- | -------- | ------ | --------------------------------------------------------------------------- |
+| district  | int      |        | unique region identifier                                                    |
+| car_name  | string   |        | region name                                                                 |
+| pr_uid    | int      |        | province identifier                                                         |
+| ag_uid    | string   |        |                                                                             |
+| geometry  | geometry | binary | region geometry/boundaries                                                  |
+| cr_num    | int      |        | identifies groups of related districts                                      |
+| color     | string   | hex number  | assigned color on maps (based on cr_num)                                    |
+
+</details>
+
+<details><summary>Horizontal view census_ag_regions attribute list</summary>
+    
+
 ||district|car_name|pr_uid|ag_uid|geometry|cr_num|color|
 |-|-|-|-|-|-|-|-|
 |**description**|unique region identifer|region name|province identifier| | region geometry/boundaries|identifies groups of related districts|assigned color on maps (based on cr_num)|
 |**type**|int|string|int|string|geometry|int|string|
 |**unit**|||||binary||hex number|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -420,12 +600,30 @@ Holds the boundaries and geometries for provinces, districts and crop regions of
 
 Initally our goal with this table was to deduce which soils appeared in which districts through their various geometries. However, due to the complexities of the soil data, our aggregation strategy changed making this table mostly obsolete. The picture below is a visualization of this, where each color represents a polygon which can contain as many as 21 different soil types.
 
+<details><summary>Vertical view labeled_soil attribute list</summary>
+
+| attr     | type   | unit | description                                                             |
+| -------- | ------ | ---- | ----------------------------------------------------------------------- |
+| id       | int    |      | unique row identifier                                                   |
+| poly_id  | int    |      | unique geometry identifier                                              |
+| soil_ids | string |      | ordered list of all unique soil ids found in geometry                   |
+| cr_num   | double |      | identifies groups of related districts                                  |
+| district | int    |      | unique region identifier                                                |
+
+</details>
+
+<details><summary>Horizontal view labeled_soil attribute list</summary>
+    
+
 ||id|poly_id|soil_ids|cr_num|district|
 |-|-|-|-|-|-|
 |**description**|unique row identifier|unique geometry identifier|ordered list of all unique soil ids found in geometry|identifies groups of related districts|unique region identifer|
 |**type**|int|int|string|double|int|
 |**unit**|
 |**constraints**|
+
+</details>
+
 
 <br>
 
@@ -441,12 +639,41 @@ Initally our goal with this table was to deduce which soils appeared in which di
 
 Soil Components represent the divide of different soils found within their respective geometries (since there can be as many as 21 different soil types per geometry). Soil geometries do not necessairly match up with the geometries of the districts (from the census_ag_regions table), rather, **much like a geometry can have multiple soils, a district can have multiple components**. Comprehensive data descriptions can be found [here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (ratings)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/crt/index.html). 
 
+<details><summary>Vertical view soil_components attribute list</summary>
+
+| attr              | type   | unit | description                                                                     |
+| ----------------- | ------ | ---- | ------------------------------------------------------------------------------- |
+| poly_id           | int    |      | unique geometry identifier                                                      |
+| cmp               | int    |      | component identifer (each geometry can have multiple)                           |
+| percent           | int    | %    | percentage of which a component fills its geometry                              |
+| slope             | string |      | components                                                                      |
+| stone             | string |      | components                                                                      |
+| surface_area      | string |      | components                                                                      |
+| province          | string |      | province abbreviation                                                           |
+| soil_code         | string |      | components                                                                      |
+| modifier          | string |      | defines soil characteristics (components)                                       |
+| profile           | string |      | components                                                                      |
+| soil_id           | string |      | components                                                                      |
+| coarse_frag_1     | string |      | ratings                                                                         |
+| coarse_frag_2     | string |      | ratings                                                                         |
+| coarse_frag_3     | string |      | ratings                                                                         |
+| depth             | string |      | ratings                                                                         |
+| water_holding_cap | string |      | ratings                                                                         |
+
+</details>
+
+<details><summary>Horizontal view soil_components attribute list</summary>
+    
+
 ||poly_id|cmp|percent|slope|stone|surface_area|province|soil_code|modifier|profile|soil_id|coarse_frag_1|coarse_frag_2|coarse_frag_3|depth|water_holding_cap|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 |**description**|unique geometry identifier|component identifer (each geometry can have multiple)|percentage of which a component fills its geometry|(components)|(components)|(components)|province abbreviation|(components)|defines soil characteristics (components)|(components)|(components)|(ratings)|(ratings)|(ratings)|(ratings)|(ratings)
 |**type**|int|int|int|string|string|string|string|string|string|string|string|string|string|string|string|string|
 |**unit**||incrementing counter per poly_id|%|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -458,12 +685,72 @@ Soil Components represent the divide of different soils found within their respe
 
 The soil_data table holds the soil characteristics found in the different soils throughout a given province. Comprehensive data descriptions can be found [here (names)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/snt/index.html) and [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html). 
 
+<details><summary>Vertical view soil_data attribute list</summary>
+
+| attr                        | type   | unit    | description                                           |
+| --------------------------- | ------ | ------- | ----------------------------------------------------- |
+| id                          | string |         | unique soil identifier                                |
+| province                    | string |         | province abbreviation                                 |
+| code                        | string |         |                                                       |
+| modifier                    | string |         |                                                       |
+| name                        | string |         | soil name (without abbreviations)                      |
+| kind                        | string |         | kind of surface material (names)                       |
+| water_table                 | string |         | (names)                                               |
+| root_restrict               | string |         | (names)                                               |
+| restr_type                  | string |         | (names)                                               |
+| drainage                    | string |         | (names)                                               |
+| parent_material_texture_1   | string |         | (names)                                               |
+| parent_material_texture_2   | string |         | (names)                                               |
+| parent_material_texture_3   | string |         | (names)                                               |
+| parent_material_chemical_1  | string |         | (names)                                               |
+| parent_material_chemical_2  | string |         | (names)                                               |
+| parent_material_chemical_3  | string |         | (names)                                               |
+| mode_of_depo_1              | string |         | (names)                                               |
+| mode_of_depo_2              | string |         | (names)                                               |
+| mode_of_depo_3              | string |         | (names)                                               |
+| layer_no                    | int    |         | (layers)                                              |
+| u_depth                     | int    | cm      | (layers)                                              |
+| l_depth                     | int    | cm      | (layers)                                              |
+| hzn_lit                     | string |         | (layers)                                              |
+| hzn_mas                     | string |         | (layers)                                              |
+| hzn_suf                     | string |         | (layers)                                              |
+| hzn_mod                     | string |         | (layers)                                              |
+| percnt_coarse_frag          | int    | %       | (layers)                                              |
+| sand_texture                | string |         | (layers)                                              |
+| percnt_v_fine_sand          | int    | %       | (layers)                                              |
+| total_sand                  | int    | %       | (layers)                                              |
+| total_silt                  | int    | %       | (layers)                                              |
+| total_clay                  | int    | %       | (layers)                                              |
+| percnt_carbon               | double | %       | (layers)                                              |
+| calcium_ph                  | double | pH      | (layers)                                              |
+| proj_ph                     | int    | pH      | (layers)                                              |
+| percnt_base_sat             | double | %       | (layers)                                              |
+| cec                         | int    | Meq/100g| (layers)                                              |
+| ksat                        | int    | cm/h    | (layers)                                              |
+| water_reten_0               | int    | %       | (layers)                                              |
+| water_reten_10              | int    | %       | (layers)                                              |
+| water_reten_33              | int    | %       | (layers)                                              |
+| water_reten_1500            | int    | %       | (layers)                                              |
+| bulk_density                | double | g/cm^3  | (layers)                                              |
+| elec_cond                   | int    | dS/m    | (layers)                                              |
+| calc_equiv                  | int    | %       | (layers)                                              |
+| decomp_class                | int    |         | (layers)                                              |
+| percnt_wood                 | int    | %       | (layers)                                              |
+
+</details>
+
+<details><summary>Horizontal view soil_data attribute list</summary>
+    
+
 ||id|province|code|modifier|name|kind|water_table|root_restrict|restr_type|drainage|parent_material_texture_1|parent_material_texture_2|parent_material_texture_3|parent_material_chemical_1|parent_material_chemical_2|parent_material_chemical_3|mode_of_depo_1|mode_of_depo_2|mode_of_depo_3|layer_no|u_depth|l_depth|hzn_lit|hzn_mas|hzn_suf|hzn_mod|percnt_coarse_frag|sand_texture|percnt_v_fine_sand|total_sand|total_silt|total_clay|percnt_carbon|calcium_ph|proj_ph|percnt_base_sat|cec|ksat|water_reten_0|water_reten_10|water_reten_33|water_reten_1500|bulk_density|elec_cond|calc_equiv|decomp_class|percnt_wood|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 |**description**|unique soil identifier|province abbreviation|||soil name (without abbreviations)|kind of surface material (names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(names)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|
 |**type**|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|string|int|int|int|string|string|string|string|int|string|int|int|int|int|double|double|double|int|int|double|int|int|int|int|double|int|int|int|int|
 |**unit**|||||||||||||||||||||cm|cm|||||%||%|%|%|%|%|pH|pH|%|Meq/100g|cm/h|%|%|%|%|g/cm^3|dS/m|%||%|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -475,12 +762,29 @@ The soil_data table holds the soil characteristics found in the different soils 
 
 Holds the sizes and boundaries for the different soil geometries. Comprehensive data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/pat/index.html). 
 
+<details><summary>Vertical view soil_geometry attribute list</summary>
+
+| attr        | type    | unit     | description                |
+| ----------- | ------- | -------- | -------------------------- |
+| area        | double  |          |                            |
+| perimeter   | double  |          |                            |
+| poly_id     | int     |          | unique geometry identifier |
+| geometry    | geometry| EPSG:3347|                            |
+
+</details>
+
+<details><summary>Horizontal view soil_geometry attribute list</summary>
+    
+
 ||area|perimeter|poly_id|geometry|
 |-|-|-|-|-|
 |**description**|||unique geometry identifier||
 |**type**|double|double|int|geometry|
 |**unit**||||EPSG:3347|
 |**constraints**|||||
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -492,12 +796,31 @@ Holds the sizes and boundaries for the different soil geometries. Comprehensive 
 
 The soil_surronding_land tables stores information about the land that surronds each soil geometry. Comprehensive data descriptions can be found [here](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html). 
 
+<details><summary>Vertical view soil_surronding_land attribute list</summary>
+
+| attr       | type | unit    | description                    |
+| -----------| ---- | ------- | ------------------------------ |
+| poly_id    | int  |         | unique geometry identifier     |
+| land_area  | int  | hectares|                                |
+| water_area | int  | hectares|                                |
+| fresh_area | int  | hectares|                                |
+| ocean_area | int  | hectares|                                |
+| total_area | int  | hectares| accumulative                   |
+
+</details>
+
+<details><summary>Horizontal view soil_surronding_land attribute list</summary>
+    
+
 ||poly_id|land_area|water_area|fresh_area|ocean_area|total_area|
 |-|-|-|-|-|-|-|
 |**description**|unique geometry identifier|||||accumulative|
 |**type**|int|int|int|int|int|int|
 |**unit**||hectares|hectares|hectares|hectares|hectares|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -510,12 +833,43 @@ The soil_surronding_land tables stores information about the land that surronds 
 An aggregation on the mean values of the data found in the soil_data table per district. Note that all variables are weighted based on the percentage of the component they occupy. Comprehensive data descriptions can be found [here (layers)](https://sis.agr.gc.ca/cansis/nsdb/soil/v2/slt/index.html), 
 [here (components)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/cmp/index.html) and [here (surronding land)](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/lat/index.html).
 
+<details><summary>Vertical view agg_soil_data attribute list</summary>
+
+| attr                   | type   | unit     | description                        |
+| ---------------------- | ------ | -------- | ---------------------------------- |
+| district               | int    |          | unique region identifier           |
+| avg_percnt_coarse_frag | double | %        | (layers)                           |
+| avg_total_sand         | double | %        | (layers)                           |
+| avg_total_silt         | double | %        | (layers)                           |
+| avg_total_clay         | double | %        | (layers)                           |
+| avg_percnt_carbon      | double | %        | (layers)                           |
+| avg_calcium_ph         | double | ph       | (layers)                           |
+| avg_proj_ph            | double | ph       | (layers)                           |
+| avg_water_reten_0      | double | %        | (layers)                           |
+| avg_water_reten_10     | double | %        | (layers)                           |
+| avg_water_reten_33     | double | %        | (layers)                           |
+| avg_water_reten_1500   | double | %        | (layers)                           |
+| avg_bulk_density       | double | g/cm^3   | (layers)                           |
+| avg_elec_cond          | double | dS/m     | (layers)                           |
+| avg_percnt_wood        | double | %        | (layers)                           |
+| avg_water_holding_cap  | double | %        | (components)                       |
+| avg_land_area          | double | hectares | (surrounding land)                 |
+| avg_water_area         | double | hectares | (surrounding land)                 |
+
+</details>
+
+<details><summary>Horizontal view agg_soil_data attribute list</summary>
+    
+
 ||district|avg_percnt_coarse_frag|avg_total_sand|avg_total_silt|avg_total_clay|avg_percnt_carbon|avg_calcium_ph|avg_proj_ph|avg_water_reten_0|avg_water_reten_10|avg_water_reten_33|avg_water_reten_1500|avg_bulk_density|avg_elec_cond|avg_percnt_wood|avg_water_holding_cap|avg_land_area|avg_water_area|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 |**description**|unique region identifier|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(layers)|(components)|(surronding land)|(surronding land)|
 |**type**|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
 |**unit**||%|%|%|%|%|ph|ph|%|%|%|%|g/cm^3|dS/m|%|%|hectares|hectares|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -527,12 +881,32 @@ An aggregation on the mean values of the data found in the soil_data table per d
 
 Satellite soil moisture data.
 
+<details><summary>Vertical view soil_moisture attribute list</summary>
+
+| attr          | type   | unit           | description                       |
+| ------------- | ------ | -------------- | --------------------------------- |
+| id            | int    |                | unique recording identifier       |
+| lon           | double | EPSG:3347      | X coordinate (longitude)          |
+| lat           | double | EPSG:3347      | Y coordinate (latitude)           |
+| date          | date   | YEAR-MO-DA     |                                   |
+| cr_num        | int    |                | identifies groups of related districts |
+| district      | int    |                | unique region identifier          |
+| soil_moisture | double | <2cm thickness in % |                                |
+
+</details>
+
+<details><summary>Horizontal view soil_moisture attribute list</summary>
+    
+
 ||id|lon|lat|date|cr_num|district|soil_moisture|
 |-|-|-|-|-|-|-|-|
 |**description**|unique recording identifier|X coordinate (longitude)|Y coordinate (latitude)||identifies groups of related districts|unique region identifier|
 |**type**|int|double|double|date|int|int|double
 |**unit**||EPSG:3347|EPSG:3347|YEAR-MO-DA|||<2cm thickness in %|
 |**constraints**|key|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -544,12 +918,34 @@ Satellite soil moisture data.
 
 An aggregation of the mean, minimum and maximum soil moisture values from the data found in the soil_moisture table per day and district.
 
+<details><summary>Vertical view agg_soil_moisture attribute list</summary>
+
+| attr               | type   | unit               | description                        |
+| ------------------ | ------ | ------------------ | ---------------------------------- |
+| index              | int    |                    | unique recording identifier        |
+| year               | int    |                    |                                    |
+| month              | int    |                    |                                    |
+| day                | int    |                    |                                    |
+| cr_num             | int    |                    | identifies groups of related districts  |
+| district           | int    |                    | unique region identifier           |
+| soil_moisture_min  | double | <2cm thickness in %|                                    |
+| soil_moisture_max  | double | <2cm thickness in %|                                    |
+| soil_moisture_mean | double | <2cm thickness in %|                                    |
+
+</details>
+
+<details><summary>Horizontal view agg_soil_moisture attribute list</summary>
+    
+
 ||index|year|month|day|cr_num|district|soil_moisture_min|soil_moisture_max|soil_moisture_mean|
 |-|-|-|-|-|-|-|-|-|-|
 |**description**|unique recording identifier||||identifies groups of related districts|unique region identifier|
 |**type**|int|int|int|int|int|int|double|double|double|
 |**unit**|||||||<2cm thickness in %|<2cm thickness in %|<2cm thickness in %|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -563,12 +959,37 @@ An aggregation of the mean, minimum and maximum soil moisture values from the da
 
 The daily weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier and that comprehensive documentation can be found [here](https://api.weather.gc.ca/openapi?f=html#/climate-daily/getClimate-dailyFeatures).
 
+<details><summary>Vertical view sk_dly_station_data attribute list</summary>
+
+| attr         | type                         | unit             | description                    |
+| ------------ | ---------------------------- | ---------------- | ------------------------------ |
+| station_id   | string                       |                  | unique station identifier      |
+| date         | timestamp without time zone  | YEAR-MO-DA HO:MN:SC |                               |
+| year         | int                          |                  |                               |
+| month        | int                          |                  |                               |
+| day          | int                          |                  |                               |
+| max_temp     | double                       | °C               |                               |
+| min_temp     | double                       | °C               |                               |
+| mean_temp    | double                       | °C               |                               |
+| total_rain   | double                       | mm               |                               |
+| total_snow   | double                       | cm               |                               |
+| total_precip | double                       | mm               |                               |
+| snow_on_grnd | double                       | cm               |                               |
+
+</details>
+
+<details><summary>Horizontal view sk_dly_station_data attribute list</summary>
+    
+
 ||station_id|date|year|month|day|max_temp|min_temp|mean_temp|total_rain|total_snow|total_precip|snow_on_grnd|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|
 |**description**|unique station identifier||
 |**type**|string|timestamp without time zone| int|int|int|double|double|double|double|double|double|double|
 |**unit**||YEAR-MO-DA HO:MN:SC||||°C|°C|°C|mm|cm|mm|cm|
 |**constraints**|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -582,12 +1003,49 @@ The daily weather data from the various weather stations spread throughout Canad
 
 The hourly weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier and that comprehensive documentation can be found [here](https://api.weather.gc.ca/openapi?f=html#/climate-hourly/getClimate-hourlyFeatures).
 
+<details><summary>Vertical view sk_hly_station_data attribute list</summary>
+
+| attr                  | type    | unit  | description               |
+|-----------------------|---------|-------|----------------------------|
+| id                    | int     |       | unique row identifier     |
+| station_id            | string  |       | unique station identifier |
+| year                  | int     |       |                            |
+| month                 | int     |       |                            |
+| day                   | int     |       |                            |
+| min_temp              | double  | °C    |                            |
+| max_temp              | double  | °C    |                            |
+| mean_temp             | double  | °C    |                            |
+| min_dew_point_temp    | double  | °C    |                            |
+| max_dew_point_temp    | double  | °C    |                            |
+| mean_dew_point_temp   | double  | °C    |                            |
+| min_humidex           | double  |       | how hot the weather feels |
+| max_humidex           | double  |       | how hot the weather feels |
+| mean_humidex          | double  |       | how hot the weather feels |
+| total_precip          | double  | mm    |                            |
+| min_rel_humid         | double  | %     |                            |
+| max_rel_humid         | double  | %     |                            |
+| mean_rel_humid        | double  | %     |                            |
+| min_stn_press         | double  | kPa   | station pressure          |
+| max_stn_press         | double  | kPa   | station pressure          |
+| mean_stn_press        | double  | kPa   | station pressure          |
+| min_visibility        | double  | km    |                            |
+| max_visibility        | double  | km    |                            |
+| mean_visibility       | double  | km    |                            |
+
+</details>
+
+<details><summary>Horizontal view sk_hly_station_data attribute list</summary>
+    
+
 ||id|station_id|year|month|day|min_temp|max_temp|mean_temp|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|total_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 |**description**|unique row identifier|unique station identifier||||||||||how hot the weather feels|how hot the weather feels|how hot the weather feels|||||station pressure|station pressure|station pressure||||
 |**type**|int|string|int|int|int|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|double|
 |**unit**||||||°C|°C|°C|°C|°C|°C||||mm|%|%|%|kPa|kPa|kPa|km|km|km|
 |**constraints**|key|
+
+</details>
+
 
 [back to top](#overview)
 <br>
@@ -599,6 +1057,56 @@ The hourly weather data from the various weather stations spread throughout Cana
 
 Since our weather station data is split accross the hourly and daily tables and they share some attributes, agg_weather_combined was created to join the two. The data present is aggregated by minimum, maximum and mean values per district and day. Similiar to the daily and hourly stations, the hourly weather data from the various weather stations spread throughout Canada. Please note that **station_id is a string field**, this is because some stations contain letters in their unique identifier.
 
+<details><summary>Vertical view agg_weather_combined list</summary>
+
+| attr                 | type   | unit | description |
+|----------------------|--------|------|-------------|
+| district             | int    |      | unique region identifier |
+| year                 | int    |      |             |
+| month                | int    |      |             |
+| day                  | int    |      |             |
+| min_temp_x           | double | °C   | (hourly)    |
+| max_temp_x           | double | °C   | (hourly)    |
+| mean_temp_x          | double | °C   | (hourly)    |
+| min_dew_point_temp   | double | °C   | (hourly)    |
+| max_dew_point_temp   | double | °C   | (hourly)    |
+| mean_dew_point_temp  | double | °C   | (hourly)    |
+| min_humidex          | double |      | how hot the weather feels (hourly) |
+| max_humidex          | double |      | how hot the weather feels (hourly) |
+| mean_humidex         | double |      | how hot the weather feels (hourly) |
+| min_precip           | double | mm   | (hourly)    |
+| max_precip           | double | mm   | (hourly)    |
+| mean_precip          | double | mm   | (hourly)    |
+| min_rel_humid        | double | %    | (hourly)    |
+| max_rel_humid        | double | %    | (hourly)    |
+| mean_rel_humid       | double | %    | (hourly)    |
+| min_stn_press        | double | kPa  | station pressure (hourly) |
+| max_stn_press        | double | kPa  | station pressure (hourly) |
+| mean_stn_press       | double | kPa  | station pressure (hourly) |
+| min_visibility       | double | km   | (hourly)    |
+| max_visibility       | double | km   | (hourly)    |
+| mean_visibility      | double | km   | (hourly)    |
+| max_temp_y           | double | °C   | (daily)     |
+| min_temp_y           | double | °C   | (daily)     |
+| mean_temp_y          | double | °C   | (daily)     |
+| min_total_rain       | double | mm   | (daily)     |
+| max_total_rain       | double | mm   | (daily)     |
+| mean_total_rain      | double | mm   | (daily)     |
+| min_total_snow       | double | cm   | (daily)     |
+| max_total_snow       | double | cm   | (daily)     |
+| mean_total_snow      | double | cm   | (daily)     |
+| min_total_precip     | double | mm   | (daily)     |
+| max_total_precip     | double | mm   | (daily)     |
+| mean_total_precip    | double | mm   | (daily)     |
+| min_snow_on_grnd     | double | cm   | (daily)     |
+| max_snow_on_grnd     | double | cm   | (daily)     |
+| mean_snow_on_grnd    | double | cm   | (daily)     |
+
+</details>
+
+<details><summary>Horizontal view agg_weather_combined attribute list</summary>
+    
+
 ||district|year|month|day|min_temp_x|max_temp_x|mean_temp_x|min_dew_point_temp|max_dew_point_temp|mean_dew_point_temp|min_humidex|max_humidex|mean_humidex|min_precip|max_precip|mean_precip|min_rel_humid|max_rel_humid|mean_rel_humid|min_stn_press|max_stn_press|mean_stn_press|min_visibility|max_visibility|mean_visibility|max_temp_y|min_temp_y|mean_temp_y|min_total_rain|max_total_rain|mean_total_rain|min_total_snow|max_total_snow|mean_total_snow|min_total_precip|max_total_precip|mean_total_precip|min_snow_on_grnd|max_snow_on_grnd|mean_snow_on_grnd|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
 |**description**|unique region identifier||||(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|how hot the weather feels (hourly)|how hot the weather feels (hourly)|how hot the weather feels (hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|(hourly)|station pressure (hourly)|station pressure (hourly)|station pressure (hourly)|(hourly)|(hourly)|(hourly)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|(daily)|
@@ -606,16 +1114,69 @@ Since our weather station data is split accross the hourly and daily tables and 
 |**unit**|||||°C|°C|°C|°C|°C|°C||||mm|mm|mm|%|%|%|kPa|kPa|kPa|km|km|km|°C|°C|°C|mm|mm|mm|cm|cm|cm|mm|mm|mm|cm|cm|cm|
 |**constraints**|
 
+</details>
+
+
 [back to top](#overview)
 <br>
 <br>
 
 ### stations_dly
+- Schema: public
+- Columns: 0
+
+.
+
+<details><summary>Vertical view stations_dly attribute list</summary>
+
+
+
+</details>
+
+<details><summary>Horizontal view stations_dly attribute list</summary>
+    
+
+</details>
+
+
+[back to top](#overview)
+<br>
+<br>
 ### stations_hly
 - Schema: public 
 - Columns: 20
 
 The stations_dly and stations_hly tables contain meta data about the weather stations spread throughout Canada used to populate the weather station data tables. Please note that for **any set of coordinates, there may be one or more weather stations that may or may not be active** (depending on their first and last years). Furthermore, the **stated last years of a station do not reflect the absolute future use of a station**. Lastly, as per the image below, note that **daily stations appear in the same locations as hourly stations**.
+
+<details><summary>Vertical view stations_hly attribute list</summary>
+
+| attr                   | type     | unit       | description                                      |
+|------------------------|----------|------------|--------------------------------------------------|
+| station_name           | string   |            |                                                  |
+| province               | string   |            | province abbreviation                            |
+| latitude               | double   | EPSG:3347  | Y coordinate                                     |
+| longitude              | double   | EPSG:3347  | X coordinate                                     |
+| elevation              | double   | m          |                                                  |
+| station_id             | string   |            | unique station identifier                        |
+| wmo_identifier         | double   |            |                                                  |
+| tc_identifer           | string   |            |                                                  |
+| first_year             | int      |            | year of first records                            |
+| last_year              | int      |            | year of last records                             |
+| hly_first_year         | double   |            | year of first hourly records                     |
+| hly_last_year          | double   |            | year of last hourly records                      |
+| dly_first_year         | double   |            | year of first daily records                      |
+| dly_last_year          | double   |            | year of last daily records                       |
+| mly_first_year         | double   |            | year of first monthly records                    |
+| mly_last_year          | double   |            | year of last monthly records                     |
+| geometry               | geometry |            | weather station point                            |
+| cr_num                 | double   |            | crop region number                               |
+| district               | double   |            | unique region identifier                         |
+| scraped                | boolean  |            | data been pulled? (**unused**)                   |
+
+</details>
+
+<details><summary>Horizontal view stations_hly attribute list</summary>
+    
 
 ||station_name|province|latitude|longitude|elevation|station_id|wmo_identifier|tc_identifer|first_year|last_year|hly_first_year| hly_last_year|dly_first_year|dly_last_year|mly_first_year| mly_last_year|geometry|cr_num|district|scraped|
 |-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
@@ -623,6 +1184,9 @@ The stations_dly and stations_hly tables contain meta data about the weather sta
 |**type**|string|string|double|double|double|string|double|string|int|int|double|double|double|double|double|double|geometry|double|double|boolean|
 |**unit**|||EPSG:3347|EPSG:3347|m|
 |**constraints**|
+
+</details>
+
 
 <img src='.github/img/allStations.png' width="600"/>
 
@@ -636,12 +1200,28 @@ The stations_dly and stations_hly tables contain meta data about the weather sta
 
 This table is used to maintain the other weather station data tables using the dates they were last updated as well as by providing a manual override should a station become inactive or no longer disirable to have its information pulled.
 
+<details><summary>Vertical view station_data_last_updated attribute list</summary>
+
+| attr         | type     | unit       | description            |
+|--------------|----------|------------|------------------------|
+| station_id   | string   |            | unique station identifier |
+| last_updated | date     | YEAR-MO-DA | latest data's date     |
+| is_active    | boolean  |            | manual override        |
+
+</details>
+
+<details><summary>Horizontal view station_data_last_updated attribute list</summary>
+    
+
 ||station_id|last_updated|is_active|
 |-|-|-|-|
 |**description**|unique station identifier|latest data's date|manual override|
 |**type**|string|date|boolean|
 |**unit**||YEAR-MO-DA|
 |**constraints**|key|
+
+</details>
+
 
 [back to top](#overview)
 <br>
