@@ -1,11 +1,11 @@
 from typing import Optional
-from imblearn.ensemble import (
+from imblearn.ensemble import (  # type: ignore
     BalancedBaggingClassifier,
     BalancedRandomForestClassifier,
     EasyEnsembleClassifier,
     RUSBoostClassifier,
 )
-from sklearn.ensemble import (
+from sklearn.ensemble import (  # type: ignore
     AdaBoostClassifier,
     BaggingClassifier,
     ExtraTreesClassifier,
