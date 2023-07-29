@@ -1,4 +1,3 @@
-
 import pandas as pd
 from typing import List, Optional, Tuple
 from sklearn.preprocessing import (  # type: ignore
@@ -12,7 +11,7 @@ from sklearn.preprocessing import (  # type: ignore
     OneHotEncoder,
     minmax_scale,
 )
-from imblearn.over_sampling import ( # type: ignore
+from imblearn.over_sampling import (  # type: ignore
     RandomOverSampler,
     SMOTE,
     ADASYN,
@@ -22,7 +21,7 @@ from imblearn.over_sampling import ( # type: ignore
     SMOTENC,
     SMOTEN,
 )
-from imblearn.under_sampling import ( # type: ignore
+from imblearn.under_sampling import (  # type: ignore
     RandomUnderSampler,
     ClusterCentroids,
     CondensedNearestNeighbour,
@@ -33,12 +32,9 @@ from imblearn.under_sampling import ( # type: ignore
     NearMiss,
     NeighbourhoodCleaningRule,
     OneSidedSelection,
-    TomekLinks
+    TomekLinks,
 )
-from imblearn.combine import ( # type: ignore
-    SMOTEENN,
-    SMOTETomek
-)
+from imblearn.combine import SMOTEENN, SMOTETomek  # type: ignore
 
 from Shared.DataService import DataService
 from dotenv import load_dotenv
@@ -66,7 +62,9 @@ def getConn(envpath: str = ".env"):
     return db.connect()
 
 
-def extractYears(df: pd.DataFrame, year: int, yearEnd: Optional[int] = None) -> pd.DataFrame:
+def extractYears(
+    df: pd.DataFrame, year: int, yearEnd: Optional[int] = None
+) -> pd.DataFrame:
     """Extract the rows of a dataframe that correspond to a given year.
 
     Args:
@@ -77,10 +75,8 @@ def extractYears(df: pd.DataFrame, year: int, yearEnd: Optional[int] = None) -> 
     Returns:
         pd.DataFrame: The extracted dataframe.
     """
-    
+
     if yearEnd is None:
         return df.loc[df["year"] == year]
     else:
         return df.loc[(df["year"] >= year) & (df["year"] <= yearEnd)]
-    
-
