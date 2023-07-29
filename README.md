@@ -92,6 +92,7 @@ Our current environment uses docker compose to launch containers housing [PGADMI
 
 5. Refresh the webpages that appear to respectively load pgadmin and Jupyter labs. Jupyter labs requires a token for entry.
 
+[back to top](#overview)
 <br>
 
 ### Setting up on Linux
@@ -108,6 +109,7 @@ Our current environment uses docker compose to launch containers housing [PGADMI
     - tensorflow-gpu: ```sudo docker-compose -f tensorflow-gpu.yaml up -d```
     - tensorflow-cpu: ```sudo docker-compose -f tensorflow-cpu.yaml up -d```
 
+[back to top](#overview)
 <br>
 
 ### Containers 
@@ -137,6 +139,7 @@ Our current environment uses docker compose to launch containers housing [PGADMI
 - (*windows*) ```docker logs [container name]``` 
 - (*linux*) ```sudo docker logs [container name]``` 
 
+[back to top](#overview)
 <br>
 <hr>
 <br>
@@ -162,6 +165,7 @@ Our current environment uses docker compose to launch containers housing [PGADMI
 These can later be verified by running
 ```git config --list```
 
+[back to top](#overview)
 <br>
 
 ### Commands
@@ -180,7 +184,7 @@ These can later be verified by running
 <br>
 
 ### Accessing the system with VSCode
-1. Install Rmote - SSH extension
+1. Install Remote - SSH extension
 2. In the bottom left corner click on open a remote window
 3. Click to connect to host
 4. Enter aviary information in and follow prompts
@@ -189,6 +193,7 @@ These can later be verified by running
 7. Select the desired container and follow prompts
 8. Default location is root access .. and then select data folder
 
+[back to top](#overview)
 <br>
 <hr>
 <br>
@@ -240,6 +245,7 @@ Data is adjusted in order to meet model requirements or as an attempt to improve
 - Evaluation with the test set
 - Using the output model to make further predictions
 
+[back to top](#overview)
 <br>
 <hr>
 <br>
@@ -258,6 +264,7 @@ Data is adjusted in order to meet model requirements or as an attempt to improve
 - [Daily Weather Station Data](https://dd.weather.gc.ca/climate/observations/daily/): weather data (daily) collected by Canadian weather stations
 - [ERA5-Land Satelite Data](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview): satelite weather data 
 
+[back to top](#overview)
 <br>
 <hr>
 <br>
@@ -279,6 +286,7 @@ A european satellite that tracks many of earths environmental variables. Compreh
 |**constraints**|
 
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -295,6 +303,7 @@ An aggregation of the mean, minimum and maximum values for the data found in the
 |**unit**|||||K|K|K|K|K|K|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|m of water equivalent|K|K|K|m of water equivalent|m of water equivalent|m of water equivalent|K|K|K|K|K|K|K|K|K|K|K|K|Jm^-2|Jm^-2|Jm^-2|Pa|Pa|Pa|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^3m^-3|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|m^2m^-2|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -311,6 +320,7 @@ Contains all samples, both infected and diesease free, submited to the Canadian 
 |**unit**||||||%|
 |**constraints**|serial key|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -327,6 +337,7 @@ Similarly to the ergot_sample table, ergot_sample_feat_eng contains all samples,
 |**unit**|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -343,6 +354,7 @@ An aggregation on the data found in the ergot_sample table per year and district
 |**unit**|||%||||||||||||%|%|%|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -359,6 +371,7 @@ Holds the boundaries and geometries for provinces, districts and crop regions of
 |**unit**|||||binary||hex number|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -378,6 +391,8 @@ Initally our goal with this table was to deduce which soils appeared in which di
 <br>
 
 <img src='.github/img/mappedSoils.png' width="600"/>
+
+[back to top](#overview)
 <br>
 <br>
 
@@ -394,6 +409,7 @@ Soil Components represent the divide of different soils found within their respe
 |**unit**||incrementing counter per poly_id|%|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -410,6 +426,7 @@ The soil_data table holds the soil characteristics found in the different soils 
 |**unit**|||||||||||||||||||||cm|cm|||||%||%|%|%|%|%|pH|pH|%|Meq/100g|cm/h|%|%|%|%|g/cm^3|dS/m|%||%|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -426,6 +443,7 @@ Holds the sizes and boundaries for the different soil geometries. Comprehensive 
 |**unit**||||EPSG:3347|
 |**constraints**|||||
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -442,6 +460,7 @@ The soil_surronding_land tables stores information about the land that surronds 
 |**unit**||hectares|hectares|hectares|hectares|hectares|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -459,6 +478,7 @@ An aggregation on the mean values of the data found in the soil_data table per d
 |**unit**||%|%|%|%|%|ph|ph|%|%|%|%|g/cm^3|dS/m|%|%|hectares|hectares|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -475,6 +495,7 @@ Satellite soil moisture data.
 |**unit**||EPSG:3347|EPSG:3347|YEAR-MO-DA|||<2cm thickness in %|
 |**constraints**|key|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -491,6 +512,7 @@ An aggregation of the mean, minimum and maximum soil moisture values from the da
 |**unit**|||||||<2cm thickness in %|<2cm thickness in %|<2cm thickness in %|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -509,6 +531,7 @@ The daily weather data from the various weather stations spread throughout Canad
 |**unit**||YEAR-MO-DA HO:MN:SC||||°C|°C|°C|mm|cm|mm|cm|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -527,6 +550,7 @@ The hourly weather data from the various weather stations spread throughout Cana
 |**unit**||||||°C|°C|°C|°C|°C|°C||||mm|%|%|%|kPa|kPa|kPa|km|km|km|
 |**constraints**|key|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -543,6 +567,7 @@ Since our weather station data is split accross the hourly and daily tables and 
 |**unit**|||||°C|°C|°C|°C|°C|°C||||mm|mm|mm|%|%|%|kPa|kPa|kPa|km|km|km|°C|°C|°C|mm|mm|mm|cm|cm|cm|mm|mm|mm|cm|cm|cm|
 |**constraints**|
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -562,6 +587,7 @@ The stations_dly and stations_hly tables contain meta data about the weather sta
 
 <img src='.github/img/allStations.png' width="600"/>
 
+[back to top](#overview)
 <br>
 <br>
 
@@ -578,6 +604,7 @@ This table is used to maintain the other weather station data tables using the d
 |**unit**||YEAR-MO-DA|
 |**constraints**|key|
 
+[back to top](#overview)
 <br>
 <hr>
 <br>
@@ -591,3 +618,6 @@ This table is used to maintain the other weather station data tables using the d
 - [Canadian Soil Landing Page](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/index.html)
 - [Canadian Soil Entity Relationship Map](https://sis.agr.gc.ca/cansis/nsdb/slc/v3.2/model.html)
 - [OAS Weather Station API Documentation](https://api.weather.gc.ca/openapi?f=html#/)
+
+
+[back to top](#overview)
