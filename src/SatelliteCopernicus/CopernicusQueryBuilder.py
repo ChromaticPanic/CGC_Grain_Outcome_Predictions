@@ -20,7 +20,7 @@ class CopernicusQueryBuilder(GenericQueryBuilder):
         """
         Purpose:
         Manually creates the SQL tables to store the Copernicus Satellite Data
-        
+
         Table:
         - [agg_day_copernicus_satellite_data](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_day_copernicus_satellite_data)
 
