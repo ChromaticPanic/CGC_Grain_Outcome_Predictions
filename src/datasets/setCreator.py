@@ -24,7 +24,7 @@ sys.path.append("../")
 from Shared.GenericQueryBuilder import GenericQueryBuilder
 from Shared.DataService import DataService
 from Ergot.ergotAggregator import ErgotAggregator
-from importSoil.soilAggregator import SoilAggregator
+from Soil.soilAggregator import SoilAggregator
 from WeatherStation.hlyAggregator import HlyAggregator
 from SatelliteSoilMoisture.moistureAggregator import MoistureAggregator
 
