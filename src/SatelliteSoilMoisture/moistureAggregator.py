@@ -1,3 +1,16 @@
+# -------------------------------------------
+# moistureAggregator.py
+#
+# After loading the soil moisture data the following class can be used to calculate the minimum, mean and maximum of all attributes per district
+#   soil_moisture: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_moisture
+#
+# Output:
+#   An excel document with the expected output columns (saves as specified by pathToSave i.e datasets uses datasets/data/)
+#
+# Remarks:
+#  - This class is used by the setCreator
+#  - As weeks change per year, the weekly aggregation uses the year of 2001 (not a leap year)
+# -------------------------------------------
 from dotenv import load_dotenv
 import sqlalchemy as sq
 import pandas as pd
@@ -13,7 +26,16 @@ from Shared.DataService import DataService
 from Shared.aggregatorHelper import AggregatorHelper  # type: ignore
 
 
-load_dotenv()
+SOIL_MOISTURE_TABLE = "soil_moisture"  # table that contains the soil moisture data
+
+
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
+
+# Load the database connection environment variables located in the docker folder
+load_dotenv("../docker/.env")
 PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 PG_DB = os.getenv("POSTGRES_DB")
@@ -37,9 +59,9 @@ class MoistureAggregator:
         conn = db.connect()
 
         self.moistureData = self.__pullMoistureData(conn)
-        self.helper = AggregatorHelper()
-
         db.cleanup()
+
+        self.helper = AggregatorHelper()
 
         # extracts day, month, year, week from the date then deletes the date altogether
         self.moistureData["date"] = pd.to_datetime(self.moistureData["date"])
@@ -57,8 +79,11 @@ class MoistureAggregator:
             dateComponents = date.split("-")
             monthInt = int(dateComponents[0])
             dayInt = int(dateComponents[1])
+
+            #  calculate the week number (52 weeks in a year)
             weekInt = datetime.date(2001, monthInt, dayInt).isocalendar()[1]
 
+            #  Assign week numbers (week) based on the month and day in the DataFrame
             self.moistureData.loc[
                 (self.moistureData["month"] == monthInt)
                 & (self.moistureData["day"] == dayInt),
@@ -66,6 +91,17 @@ class MoistureAggregator:
             ] = weekInt
 
     def aggregateByDay(self, pathToSave):
+        """
+        Purpose:
+        Aggregate the soil moisture data by district, year, month and day
+
+        Psuedocode:
+        - Aggregate the columns by district, year, monthy, day
+        - Name the columns into the final DataFrame
+        - Get the unique dates in a year formatted as MO-DA
+        - Reshape the rows to transform them into columns where each attribute reappears for each date
+        - Export to csv
+        """
         agg_df = (
             self.moistureData.groupby(["district", "year", "month", "day"])
             .agg({"soil_moisture": ["min", "max", "mean"]})
@@ -99,6 +135,17 @@ class MoistureAggregator:
             print(e)
 
     def aggregateByWeek(self, pathToSave):
+        """
+        Purpose:
+        Aggregate the soil moisture data by district, year and week
+
+        Psuedocode:
+        - Aggregate the columns by district, year and week
+        - Name the columns into the final DataFrame
+        - Get the unique dates in a year formatted as W
+        - Reshape the rows to transform them into columns where each attribute reappears for each date
+        - Export to csv
+        """
         agg_df = (
             self.moistureData.groupby(["district", "year", "week"])
             .agg({"soil_moisture": ["min", "max", "mean"]})
@@ -131,6 +178,17 @@ class MoistureAggregator:
             print(e)
 
     def aggregateByMonth(self, pathToSave):
+        """
+        Purpose:
+        Aggregate the soil moisture data by district, year and month
+
+        Psuedocode:
+        - Aggregate the columns by district, year and month
+        - Name the columns into the final DataFrame
+        - Get the unique dates in a year formatted as M:
+        - Reshape the rows to transform them into columns where each attribute reappears for each date
+        - Export to csv
+        """
         agg_df = (
             self.moistureData.groupby(["district", "year", "month"])
             .agg({"soil_moisture": ["min", "max", "mean"]})
@@ -163,9 +221,20 @@ class MoistureAggregator:
             print(e)
 
     def __pullMoistureData(self, conn):
+        """
+        Purpose:
+        Loads the soil moisture data from the soil moisture table
+
+        Tables:
+        - [soil_moisture](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_moisture)
+
+        Psuedocode:
+        - Create the weather station data SQL query
+        - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+        """
         moistureQuery = sq.text(
-            """
-            SELECT * FROM public.soil_moisture
+            f"""
+            SELECT * FROM public.{SOIL_MOISTURE_TABLE}
             WHERE district IS NOT NULL;
             """
         )
