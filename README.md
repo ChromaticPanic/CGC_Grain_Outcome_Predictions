@@ -727,7 +727,6 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 | 1:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
 | 1:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
 | ...                             | ...             | ... | ... | ... |
-| district                              | bigint           |      |             |            |
 | 16:min_dewpoint_temperature           | double precision |      |             |            |
 | 16:min_temperature                    | double precision |      |             |            |
 | 16:min_evaporation_from_bare_soil     | double precision |      |             |            |
@@ -858,7 +857,6 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 | 9:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
 | 9:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
 | ...                             | ...             | ... | ... | ... |
-| district                              | bigint           |      |             |            |
 | 24:min_dewpoint_temperature           | double precision |      |             |            |
 | 24:min_temperature                    | double precision |      |             |            |
 | 24:min_evaporation_from_bare_soil     | double precision |      |             |            |
@@ -986,7 +984,6 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 | 17:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
 | 17:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
 | ...                             | ...             | ... | ... | ... |
-| district                              | bigint           |      |             |            |
 | 32:min_dewpoint_temperature           | double precision |      |             |            |
 | 32:min_temperature                    | double precision |      |             |            |
 | 32:min_evaporation_from_bare_soil     | double precision |      |             |            |
@@ -1114,7 +1111,6 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 | 25:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
 | 25:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
 | ...                             | ...             | ... | ... | ... |
-| district                              | bigint           |      |             |            |
 | 40:min_dewpoint_temperature           | double precision |      |             |            |
 | 40:min_temperature                    | double precision |      |             |            |
 | 40:min_evaporation_from_bare_soil     | double precision |      |             |            |
