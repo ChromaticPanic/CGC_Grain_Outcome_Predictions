@@ -1,11 +1,14 @@
-"""DataService handles communication with PostgreSQL database
-
--
-
-Typical usage example:
-
-  
-"""
+# ----------------------------------------------------
+# DataService.py
+#
+# Handles communications with PostgreSQL databases
+#
+# Typical usage example:
+#   db = DataService()
+#   conn = db.connect()
+#   db.execute(query: str)
+#   db.cleanup()
+# ----------------------------------------------------
 import atexit
 import sqlalchemy as sq
 
@@ -22,27 +25,39 @@ class DataService:
         port: int = 5432,
         user: str = "postgres",
         pw: str = "password",
-    ) -> None:
+    ):
         self.dbURL: str = f"postgresql://{user}:{pw}@{addr}:{port}/{db}"
         self.engine: sq.engine.base.Engine = sq.create_engine(self.dbURL)
         self.conn: sq.engine.base.Connection = self.connect()
-        atexit.register(self.cleanup)
+        atexit.register(self.cleanup)  # Ensures that connections eventually closed
 
     def connect(self) -> sq.engine.base.Connection:
-        """Connect to PostgreSQL database"""
+        """
+        Purpose:
+        Connect to PostgreSQL database
+        """
         self.conn = self.engine.connect()
         return self.conn
 
-    def disconnect(self) -> None:
-        """Disconnect from PostgreSQL database"""
+    def disconnect(self):
+        """
+        Purpose:
+        Disconnect from PostgreSQL database
+        """
         self.conn.close()
         self.engine.dispose()
 
-    def cleanup(self) -> None:
-        """Cleanup operations"""
+    def cleanup(self):
+        """
+        Purpose:
+        Cleanup operation: close open connections
+        """
         if self.conn is not None:
             self.disconnect()
 
     def execute(self, query) -> object:  # type: ignore
-        """Execute a query on the database"""
+        """
+        Purpose:
+        Execute a query on the database
+        """
         return self.conn.execute(query)

@@ -5,9 +5,9 @@ import pandas as pd
 
 sys.path.append("../src/WeatherStation")
 
-from DataProcessor import DataProcessor
+from scrapingProcessor import ScrapingProcessor
 
-processor = DataProcessor()
+processor = ScrapingProcessor()
 
 
 def test_remove_inactive_stations():

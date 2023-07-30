@@ -1,0 +1,470 @@
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "how this notebook works"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# dependencies\n",
+    "\n",
+    "import pandas as pd\n",
+    "import sqlalchemy as sq\n",
+    "import sys, os\n",
+    "import pickle\n",
+    "from imblearn.combine import SMOTEENN, SMOTETomek  # type: ignore\n",
+    "from imblearn.ensemble import (  # type: ignore\n",
+    "    BalancedBaggingClassifier,\n",
+    "    EasyEnsembleClassifier,\n",
+    ")\n",
+    "\n",
+    "from sklearn.metrics import (  # type: ignore\n",
+    "    accuracy_score,\n",
+    "    precision_score,\n",
+    "    recall_score,\n",
+    "    f1_score,\n",
+    "    roc_auc_score,\n",
+    "    classification_report,\n",
+    ")\n",
+    "\n",
+    "sys.path.append(\"../\")\n",
+    "os.chdir(\"../\")\n",
+    "from ModelBuilderMethods import getConn, extractYears"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# unlimited line output\n",
+    "pd.set_option(\"display.max_colwidth\", None)\n",
+    "pd.set_option(\"display.max_rows\", 500)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "setting up a dataset"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "weatherStationQuery = sq.text(\n",
+    "    \"\"\"\n",
+    "    SELECT * from dataset_cross_monthly_station\n",
+    "\"\"\"\n",
+    ")\n",
+    "\n",
+    "weatherSatQuery = sq.text(\n",
+    "    \"\"\"\n",
+    "    SELECT * from dataset_cross_monthly_sat\n",
+    "\"\"\"\n",
+    ")\n",
+    "\n",
+    "ergotPrevYearsAggQuery = sq.text(\n",
+    "    \"\"\"\n",
+    "    SELECT year, district, \n",
+    "    present_prev1, present_prev2, present_prev3,\n",
+    "    percnt_true_prev1, percnt_true_prev2, percnt_true_prev3 \n",
+    "    from agg_ergot_sample_v2\n",
+    "\"\"\"\n",
+    ")\n",
+    "\n",
+    "ergotTargetQuery = sq.text(\n",
+    "    \"\"\"\n",
+    "    SELECT year, district, downgrade from ergot_sample_feat_eng\n",
+    "\"\"\"\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "conn = getConn(\"./.env\")\n",
+    "\n",
+    "stationDf = pd.read_sql(weatherStationQuery, conn)\n",
+    "# satelliteDf = pd.read_sql(weatherSatQuery, conn)\n",
+    "ergotPrevDf = pd.read_sql(ergotPrevYearsAggQuery, conn)\n",
+    "ergotTargetDf = pd.read_sql(ergotTargetQuery, conn)\n",
+    "\n",
+    "conn.close()\n",
+    "del conn"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# merge on year and district\n",
+    "# tempdf = pd.merge(satelliteDf, ergotPrevDf, on=[\"year\", \"district\"], how=\"left\")\n",
+    "# del satelliteDf\n",
+    "# del ergotPrevDf\n",
+    "# tempdf = satelliteDf\n",
+    "tempdf = stationDf\n",
+    "\n",
+    "# merge on year and district\n",
+    "datasetDf = pd.merge(ergotTargetDf, tempdf, on=[\"year\", \"district\"], how=\"left\")\n",
+    "del ergotTargetDf\n",
+    "del tempdf"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "splitting the dataset"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# train 1995 - 2015 test 2016 - 2020\n",
+    "trainDf = extractYears(datasetDf, 1995, 2015)\n",
+    "testDf = extractYears(datasetDf, 2016, 2020)\n",
+    "del datasetDf"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "balancing the dataset https://imbalanced-learn.org/stable/\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# pre balancing check\n",
+    "# print value counts downgrade\n",
+    "print(trainDf[\"downgrade\"].value_counts())\n",
+    "print(testDf[\"downgrade\"].value_counts())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# count nan\n",
+    "print(trainDf.isna().sum())\n",
+    "# set nan to 0\n",
+    "trainDf = trainDf.fillna(0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "balancer = SMOTEENN(sampling_strategy=0.8, random_state=42)\n",
+    "balancedTrainDfX, balancedTrainDfY = balancer.fit_resample(\n",
+    "    trainDf.drop(columns=\"downgrade\"), trainDf[\"downgrade\"]\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# post balancing check\n",
+    "# print value counts downgrade\n",
+    "print(balancedTrainDfY.value_counts())"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### normalization / scaling\n",
+    "some blurb about scalers  \n",
+    "0 [MinMaxScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html)             \n",
+    "1 [MaxAbsScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MaxAbsScaler.html)  \n",
+    "2 [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html)  \n",
+    "3 [RobustScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html)  \n",
+    "4 [Normalizer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.Normalizer.html)  \n",
+    "5 [PowerTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.PowerTransformer.html)  \n",
+    "6 [QuantileTransformer](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.QuantileTransformer.html)  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# df = pd.DataFrame()\n",
+    "# scaled = scaleColumns(df, ['max_temp'], None, 1)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "categorical values [one-hot encoding](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html)  \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# encoded = encodeColumns(df, ['max_temp'], None)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def printMetrics(model_name, y_true, y_pred):\n",
+    "    print(model_name)\n",
+    "    print(\"Accuracy: \", accuracy_score(y_true, y_pred))\n",
+    "    print(\"Precision: \", precision_score(y_true, y_pred))\n",
+    "    print(\"Recall: \", recall_score(y_true, y_pred))\n",
+    "    print(\"F1: \", f1_score(y_true, y_pred))\n",
+    "    print(\"ROC AUC: \", roc_auc_score(y_true, y_pred))\n",
+    "    print(\"Classification Report: \\n\", classification_report(y_true, y_pred))\n",
+    "    print()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "selecting a model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ESTIMATORS = 400\n",
+    "DEPTH = 40\n",
+    "CORES = -1\n",
+    "MINSPLSPLIT = 8\n",
+    "MINSAMPLELEAF = 4\n",
+    "\n",
+    "model_rf = RandomForestClassifier(\n",
+    "    n_estimators=ESTIMATORS,\n",
+    "    random_state=42,\n",
+    "    max_depth=DEPTH,\n",
+    "    n_jobs=CORES,\n",
+    "    min_samples_split=MINSPLSPLIT,\n",
+    "    min_samples_leaf=MINSAMPLELEAF,\n",
+    ")\n",
+    "model_nobalance_rf = RandomForestClassifier(\n",
+    "    n_estimators=ESTIMATORS,\n",
+    "    random_state=42,\n",
+    "    max_depth=DEPTH,\n",
+    "    n_jobs=CORES,\n",
+    "    min_samples_split=MINSPLSPLIT,\n",
+    "    min_samples_leaf=MINSAMPLELEAF,\n",
+    ")\n",
+    "balanced_model_rf = BalancedRandomForestClassifier(\n",
+    "    n_estimators=ESTIMATORS,\n",
+    "    random_state=42,\n",
+    "    max_depth=DEPTH,\n",
+    "    n_jobs=CORES,\n",
+    "    min_samples_split=MINSPLSPLIT,\n",
+    "    min_samples_leaf=MINSAMPLELEAF,\n",
+    ")\n",
+    "balanced_model_balanced_rf = BalancedRandomForestClassifier(\n",
+    "    n_estimators=ESTIMATORS,\n",
+    "    random_state=42,\n",
+    "    max_depth=DEPTH,\n",
+    "    n_jobs=CORES,\n",
+    "    min_samples_split=MINSPLSPLIT,\n",
+    "    min_samples_leaf=MINSAMPLELEAF,\n",
+    ")\n",
+    "gradient_boosting_model = GradientBoostingClassifier(\n",
+    "    n_estimators=ESTIMATORS,\n",
+    "    random_state=42,\n",
+    "    max_depth=DEPTH,\n",
+    "    verbose=1,\n",
+    "    n_iter_no_change=100,\n",
+    ")\n",
+    "balanced_gradient_boosting_model = GradientBoostingClassifier(\n",
+    "    n_estimators=ESTIMATORS,\n",
+    "    random_state=42,\n",
+    "    max_depth=DEPTH,\n",
+    "    verbose=1,\n",
+    "    n_iter_no_change=100,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model_rf.fit(balancedTrainDfX, balancedTrainDfY)\n",
+    "model_nobalance_rf.fit(trainDf.drop(columns=\"downgrade\"), trainDf[\"downgrade\"])\n",
+    "balanced_model_rf.fit(trainDf.drop(columns=\"downgrade\"), trainDf[\"downgrade\"])\n",
+    "balanced_model_balanced_rf.fit(balancedTrainDfX, balancedTrainDfY)\n",
+    "gradient_boosting_model.fit(trainDf.drop(columns=\"downgrade\"), trainDf[\"downgrade\"])\n",
+    "balanced_gradient_boosting_model.fit(balancedTrainDfX, balancedTrainDfY)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "eval procedure"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# set nan to 0\n",
+    "testDf = testDf.fillna(0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# get predictions\n",
+    "predictions = model_rf.predict(testDf.drop(columns=\"downgrade\"))\n",
+    "predictions_nobalance = model_nobalance_rf.predict(testDf.drop(columns=\"downgrade\"))\n",
+    "predictions_balanced = balanced_model_rf.predict(testDf.drop(columns=\"downgrade\"))\n",
+    "predictions_balanced_balanced = balanced_model_balanced_rf.predict(\n",
+    "    testDf.drop(columns=\"downgrade\")\n",
+    ")\n",
+    "predictions_gradient_boosting = gradient_boosting_model.predict(\n",
+    "    testDf.drop(columns=\"downgrade\")\n",
+    ")\n",
+    "predictions_balanced_gradient_boosting = balanced_gradient_boosting_model.predict(\n",
+    "    testDf.drop(columns=\"downgrade\")\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(pd.DataFrame(predictions).value_counts())\n",
+    "print(pd.DataFrame(predictions_nobalance).value_counts())\n",
+    "print(pd.DataFrame(predictions_balanced).value_counts())\n",
+    "print(pd.DataFrame(predictions_balanced_balanced).value_counts())\n",
+    "print(pd.DataFrame(predictions_gradient_boosting).value_counts())\n",
+    "print(pd.DataFrame(predictions_balanced_gradient_boosting).value_counts())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# get accuracy precision recall f1 roc_auc\n",
+    "printMetrics(\n",
+    "    \"sk GB imbalanced train set\", testDf[\"downgrade\"], predictions_gradient_boosting\n",
+    ")\n",
+    "printMetrics(\n",
+    "    \"imb GB balanced train set\",\n",
+    "    testDf[\"downgrade\"],\n",
+    "    predictions_balanced_gradient_boosting,\n",
+    ")"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "print model performance metrics on test data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "printMetrics(\"sk RF balanced train set\", testDf[\"downgrade\"], predictions)\n",
+    "printMetrics(\"sk RF imbalanced train set\", testDf[\"downgrade\"], predictions_nobalance)\n",
+    "printMetrics(\"imb RF imbalanced train set\", testDf[\"downgrade\"], predictions_balanced)\n",
+    "printMetrics(\n",
+    "    \"imb RF balanced train set\", testDf[\"downgrade\"], predictions_balanced_balanced\n",
+    ")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.10"
+  },
+  "orig_nbformat": 4,
+  "vscode": {
+   "interpreter": {
+    "hash": "5b3ded1ccb95c1d9bd405e7b823d9e85424cde40fbb5985eb47e999ef50e15b4"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

@@ -5,7 +5,13 @@ import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
 import os, sys, calendar
-from aggregateErgot import calcUIDs
+
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
+
+from aggregateErgot import calcUIDs  # type: ignore
 
 sys.path.append("../")
 from Shared.DataService import DataService
