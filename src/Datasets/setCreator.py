@@ -22,10 +22,10 @@
 #
 # - Dataset5: Second best results from dataset3, where the train and test sets are based on different years
 #   - Moisture data from years with bad ergot aggregated by month [mean]|[minMax]|[straified on has_ergot]
-# 
-# Remarks: 
+#
+# Remarks:
 # -------------------------------------------
-#   - Data is searchable by its description, this means that if you want to learn more about the data from a particular model, 
+#   - Data is searchable by its description, this means that if you want to learn more about the data from a particular model,
 #     get its descript and search for it using control f
 #
 #   - Dataset1, Dataset2, Dataset3, Dataset4 and Dataset5 are not that great, they have iterropolation, unbalanced data and were tested using same year Ergot data
@@ -71,10 +71,10 @@ from SatelliteSoilMoisture.moistureAggregator import MoistureAggregator
 
 
 # Where we expect the find the loaded data (stored in CSVs since there are too many columns)
-LOCAL_FILE_DATASETS_LOC = "./data"  
+LOCAL_FILE_DATASETS_LOC = "./data"
 
 # The CSV holding the hourly weather station data by day
-HLY_CSV_BY_DAY = "agg_hly_by_day.csv" 
+HLY_CSV_BY_DAY = "agg_hly_by_day.csv"
 
 # The CSV holding the hourly weather station data by week
 HLY_CSV_BY_WEEK = "agg_hly_by_week.csv"
@@ -236,14 +236,11 @@ class SetCreator:
             ergotDF,
         )
 
-
     # Ensures this class is a singleton (only one instance can be created)
     def __new__(cls):
         if not hasattr(cls, "instance"):
             cls.instance = super(SetCreator, cls).__new__(cls)
         return cls.instance
-
-
 
     def __verifySoilIsAggregated(
         self, db: DataService, queryBuilder: GenericQueryBuilder
@@ -363,14 +360,14 @@ class SetCreator:
 
     def getSetList1(self):
         """
-        Purpose: 
+        Purpose:
         Creates exploratory datasets (seasons, worst years, first 15 years, all data, different data preprocessing)
         These sets all try a variety of different data preprocessing techniques found in the [setModifier]()
 
         Pseudocode:
         The general way all these sets are created are as follows:
         1. [Load the data]()
-        2. [Impute the data]() 
+        2. [Impute the data]()
         3. [Scale the data into train, test and dev]()
         4. Create a dictionary to hold the current set
         5. Give it a description (this also makes it easy to locate within this method)
@@ -1381,13 +1378,13 @@ class SetCreator:
 
     def getSetList2(self):
         """
-        Purpose: 
+        Purpose:
         Creates exploratory datasets (best from dataset1 plus all data aggregated combinations (day, week, month))
 
         Pseudocode:
         The general way all these sets are created are as follows:
         1. [Load the data]()
-        2. [Impute the data]() 
+        2. [Impute the data]()
         3. [Scale the data into train, test and dev]()
         4. Create a dictionary to hold the current set
         5. Give it a description (this also makes it easy to locate within this method)
@@ -1459,13 +1456,13 @@ class SetCreator:
 
     def getSetList3(self):
         """
-        Purpose: 
+        Purpose:
         Creates exploratory datasets (Results from Feature Reduction on dataset2 (using RFECV and random forests))
 
         Pseudocode:
         The general way all these sets are created are as follows:
         1. [Load the data]()
-        2. [Impute the data]() 
+        2. [Impute the data]()
         3. [Scale the data into train, test and dev]()
         4. Create a dictionary to hold the current set
         5. Give it a description (this also makes it easy to locate within this method)
@@ -1619,13 +1616,13 @@ class SetCreator:
 
     def getSetList4(self):
         """
-        Purpose: 
+        Purpose:
         Creates exploratory datasets (best results from dataset3, where the train and test sets are based on different years)
 
         Pseudocode:
         The general way all these sets are created are as follows:
         1. [Load the data]()
-        2. [Impute the data]() 
+        2. [Impute the data]()
         3. [Scale the data into train, test and dev]()
         4. Create a dictionary to hold the current set
         5. Give it a description (this also makes it easy to locate within this method)
@@ -1686,13 +1683,13 @@ class SetCreator:
 
     def getSetList5(self):
         """
-        Purpose: 
+        Purpose:
         Creates exploratory datasets (second best results from dataset3, where the train and test sets are based on different years)
 
         Pseudocode:
         The general way all these sets are created are as follows:
         1. [Load the data]()
-        2. [Impute the data]() 
+        2. [Impute the data]()
         3. [Scale the data into train, test and dev]()
         4. Create a dictionary to hold the current set
         5. Give it a description (this also makes it easy to locate within this method)

@@ -46,13 +46,13 @@ def splitData(
     Purpose:
     Splits the data equally into different sets based on the target column and its possible values
 
-    Psuedocode: 
+    Psuedocode:
     - Take the data before a specific year and set it as the training data
     - Take the data after a specific year and set it as the testing data
     - Drop irrelevant data
     - Seperate data (X) from the target Data (Y)
     - Split the sets into multiple subsets (kfolds)
-        - [random](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) 
+        - [random](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
         - [stratified](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
     """
 

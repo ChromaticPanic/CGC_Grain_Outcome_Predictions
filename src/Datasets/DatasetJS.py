@@ -1,18 +1,96 @@
-# %%
-import sqlalchemy as sq
+# -------------------------------------------
+# DatasetJS.ipynb
+#
+# After all the data has been loaded and aggregated, this notebook creates the final datasets
+#
+# Required tables:
+# -------------------------------------------
+# - [COMBINED_WEATHER_TABLE](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_weather_combined)
+# - [COPERNICUS_WEATHER_TABLE](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_day_copernicus_satellite_data)
+# - [SOIL_MOISTURE_TABLE](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_soil_moisture)
+# - [AGG_ERGOT_TABLE](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_ergot_sample_v2)
+# - [ERGOT_SAMPLES_TABLE](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#ergot_sample_feat_eng)
+#
+# Output:
+# -------------------------------------------
+# - [dataset_daily_sat](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_daily_sat)
+# - [dataset_weekly_sat](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_weekly_sat)
+# - [dataset_monthly_sat](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_monthly_sat)
+# - [dataset_cross_monthly_sat](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_monthly_sat)
+# - [dataset_cross_weekly_sat_JFMA](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_weekly_sat_JFMA)
+# - [dataset_cross_weekly_sat_MAMJ](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_weekly_sat_MAMJ)
+# - [dataset_cross_weekly_sat_MJJA](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_weekly_sat_MJJA)
+# - [dataset_cross_weekly_sat_JASO](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_weekly_sat_JASO)
+# - [dataset_daily_station](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_daily_station)
+# - [dataset_weekly_station](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_weekly_station)
+# - [dataset_monthly_station](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_monthly_station)
+# - [dataset_cross_monthly_station](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_monthly_station)
+# - [dataset_cross_weekly_station_JFMA](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_weekly_station_JFMA)
+# - [dataset_cross_weekly_station_MAMJ](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_weekly_station_MAMJ)
+# - [dataset_cross_weekly_station_MJJA](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_weekly_station_MJJA)
+# - [dataset_cross_weekly_station_JASO](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_cross_weekly_station_JASO)
+# - [dataset_daily_sat_soil](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_daily_sat_soil)
+# - [dataset_weekly_sat_soil](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_weekly_sat_soil)
+# - [dataset_monthly_sat_soil](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_monthly_sat_soil)
+# - [dataset_daily_station_soil](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_daily_station_soil)
+# - [dataset_weekly_station_soil](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_weekly_station_soil)
+# - [dataset_monthly_station_soil](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_monthly_station_soil)
+# -------------------------------------------
+from datetime import datetime as dt
+from dotenv import load_dotenv
 import geopandas as gpd  # type: ignore
+import sqlalchemy as sq
 import pandas as pd
 import numpy as np
-from dotenv import load_dotenv
 import os, sys, calendar
-from datetime import datetime as dt
+
 import typing
 
 sys.path.append("../")
 from Shared.DataService import DataService
 
-# %%
-load_dotenv()
+
+# Tables being used (see links in Required tables above)
+COMBINED_WEATHER_TABLE = "agg_weather_combined"
+COPERNICUS_WEATHER_TABLE = "agg_day_copernicus_satellite_data"
+SOIL_MOISTURE_TABLE = "agg_soil_moisture"
+AGG_ERGOT_TABLE = "agg_ergot_sample_v2"
+ERGOT_SAMPLES_TABLE = "ergot_sample_feat_eng"
+
+# Tables being created (see links in output above)
+TABLESATSOILMDAILY = "dataset_daily_sat_soil"
+TABLESATSOILMWEEKLY = "dataset_weekly_sat_soil"
+TABLESATSOILMMONTHLY = "dataset_monthly_sat_soil"
+TABLESTATIONSOILMDAILY = "dataset_daily_station_soil"
+TABLESTATIONSOILMWEEKLY = "dataset_weekly_station_soil"
+TABLESTATIONSOILMMONTHLY = "dataset_monthly_station_soil"
+TABLESATDAILY = "dataset_daily_sat"
+TABLESATWEEKLY = "dataset_weekly_sat"
+TABLESATMONTHLY = "dataset_monthly_sat"
+TABLESTATIONDAILY = "dataset_daily_station"
+TABLESTATIONWEEKLY = "dataset_weekly_station"
+TABLESTATIONMONTHLY = "dataset_monthly_station"
+
+TABLECROSSSATWEEKLYA = "dataset_cross_weekly_sat_JFMA"
+TABLECROSSSATWEEKLYB = "dataset_cross_weekly_sat_MAMJ"
+TABLECROSSSATWEEKLYC = "dataset_cross_weekly_sat_MJJA"
+TABLECROSSSATWEEKLYD = "dataset_cross_weekly_sat_JASO"
+TABLECROSSSTATIONWEEKLYA = "dataset_cross_weekly_station_JFMA"
+TABLECROSSSTATIONWEEKLYB = "dataset_cross_weekly_station_MAMJ"
+TABLECROSSSTATIONWEEKLYC = "dataset_cross_weekly_station_MJJA"
+TABLECROSSSTATIONWEEKLYD = "dataset_cross_weekly_station_JASO"
+
+TABLECROSSSATMONTHLY = "dataset_cross_monthly_sat"
+TABLECROSSSTATIONMONTHLY = "dataset_cross_monthly_station"
+
+
+# Load the database connection environment variables located in the docker folder
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
+
+load_dotenv("../docker/.env")
 PG_DB = os.getenv("POSTGRES_DB")
 PG_ADDR = os.getenv("POSTGRES_ADDR")
 PG_PORT = os.getenv("POSTGRES_PORT")
@@ -20,8 +98,17 @@ PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 
 
-# %%
+def main():
+    generateNoErgotTables()
+    generateCrossWeeklyTables()
+    generateCrossMonthlyTables()
+
+
 def getConn():
+    """
+    Purpose:
+    Get a connection to the database
+    """
     if (
         PG_DB is None
         or PG_ADDR is None
@@ -30,63 +117,112 @@ def getConn():
         or PG_PW is None
     ):
         raise Exception("Missing required env var(s)")
+
     db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
 
     return db.connect()
 
 
-# %%
 def pullWeatherStationData() -> pd.DataFrame:
-    # pulling weather station data from the database
+    """
+    Purpose:
+    Loads the weather station data from the combined weather station data table
+
+    Tables:
+    - [agg_weather_combined](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_weather_combined)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the weather station data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
     conn = getConn()
     weatherDataQuery = sq.text(
-        """
-        SELECT * FROM public.agg_weather_combined
+        f"""
+        SELECT * FROM public.{COMBINED_WEATHER_TABLE}
         """
     )
 
     df = pd.read_sql(weatherDataQuery, conn)
     conn.close()
+
     return df
 
 
-# %%
 def pullWeatherCopernicusData() -> pd.DataFrame:
-    # pulling weather station data from the database
+    """
+    Purpose:
+    Loads the Copernicus data from the Copernicus weather data table
+
+    Tables:
+    - [agg_day_copernicus_satellite_data](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_day_copernicus_satellite_data)
+
+    # Psuedocode:
+    - Get a connection to the database
+    - Create the Copernicus weather data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
     conn = getConn()
     weatherDataQuery = sq.text(
-        """
-        SELECT * FROM public.agg_day_copernicus_satellite_data
+        f"""
+        SELECT * FROM public.{COPERNICUS_WEATHER_TABLE}
         """
     )
 
     df = pd.read_sql(weatherDataQuery, conn)
     conn.close()
+
     return df
 
 
-# %%
 def pullSoilMoistureData() -> pd.DataFrame:
-    # pulling weather station data from the database
+    """
+    Purpose:
+    Loads the soil moisture data from the Satellite soil moisture data table
+
+    Tables:
+    - [agg_soil_moisture](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_soil_moisture)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the soil moisture data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
     conn = getConn()
     weatherDataQuery = sq.text(
-        """
+        f"""
         SELECT year, month, day, district, 
         soil_moisture_min, soil_moisture_max, soil_moisture_mean
-        FROM public.agg_soil_moisture
+        FROM public.{SOIL_MOISTURE_TABLE}
         """
     )
+
     df = pd.read_sql(weatherDataQuery, conn)
     conn.close()
+
     return df
 
 
-# %%
 def pullAggErgotData() -> pd.DataFrame:
-    # pulling weather station data from the database
+    """
+    Purpose:
+    Loads the ergot data from the aggregated ergot data table
+
+    Tables:
+    - [agg_ergot_sample_v2](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_ergot_sample_v2)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the ergot data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
     conn = getConn()
     weatherDataQuery = sq.text(
-        """
+        f"""
         SELECT year, district, 
             present_prev1, 
             present_prev2, 
@@ -100,71 +236,147 @@ def pullAggErgotData() -> pd.DataFrame:
             median_prev1,
             median_prev2,
             median_prev3
-        FROM public.agg_ergot_sample_v2
+        FROM public.{AGG_ERGOT_TABLE}
         """
     )
+
     df = pd.read_sql(weatherDataQuery, conn)
     conn.close()
+
     return df
 
 
-# %%
 def pullIndividualErgotSampleData() -> pd.DataFrame:
-    # pulling weather station data from the database
+    """
+    Purpose:
+    Loads the ergot data from the individual ergot sample data table
+
+    Tables:
+    - [ergot_sample_feat_eng](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#ergot_sample_feat_eng)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the ergot data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
     conn = getConn()
     weatherDataQuery = sq.text(
-        """
-        SELECT * FROM public.ergot_sample_feat_eng
+        f"""
+        SELECT * FROM public.{ERGOT_SAMPLES_TABLE}
         """
     )
+
     df = pd.read_sql(weatherDataQuery, conn)
     conn.close()
+
     return df
 
 
-# %%
 def addErgotData(df: pd.DataFrame) -> pd.DataFrame:
-    conn = getConn()
+    """
+    Purpose:
+    Loads the ergot data from the ergot sample data tables and join them together
+
+    Tables:
+    - [agg_ergot_sample_v2](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_ergot_sample_v2)
+    - [ergot_sample_feat_eng](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#ergot_sample_feat_eng)
+
+    Psuedocode:
+    - Get the ergot data
+    - [Merge](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html) the two DataFrames together on year and district
+    """
     aggErgotDf = pullAggErgotData()
     ergotDf = pullIndividualErgotSampleData()
 
     # right join on year, district
     mergedDf = pd.merge(df, aggErgotDf, on=["year", "district"], how="right")
     mergedDf = pd.merge(mergedDf, ergotDf, on=["year", "district"], how="left")
-    conn.close()
+
     return mergedDf
 
 
-# %%
 def getDailySat() -> pd.DataFrame:
+    """
+    Purpose:
+    Loads the Copernicus data from the Copernicus weather data table and preproccesses it
+
+    Tables:
+    - [agg_day_copernicus_satellite_data](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_day_copernicus_satellite_data)
+
+    Psuedocode:
+    - Load the Copernicus data
+    - Convert the year, month and day to a date
+    - Get the day of the year
+    - Drop the date column we just created
+    """
     df = pullWeatherCopernicusData()
+
     df["date"] = pd.to_datetime(df[["year", "month", "day"]])
     df["day_of_year"] = df["date"].dt.dayofyear
     df.drop(columns=["date"], inplace=True)
+
     return df
 
 
-# %%
 def getDailyStation() -> pd.DataFrame:
+    """
+    Purpose:
+    Loads the Weather station data from the weather station data table and preproccesses it
+
+    Tables:
+    - [agg_weather_combined](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_weather_combined)
+
+    Psuedocode:
+    - Load the data
+    - Convert the year, month and day to a date
+    - Get the day of the year
+    - Drop the date column we just created
+    """
     df = pullWeatherStationData()
+
     df["date"] = pd.to_datetime(df[["year", "month", "day"]])
     df["day_of_year"] = df["date"].dt.dayofyear
     df.drop(columns=["date"], inplace=True)
+
     return df
 
 
-# %%
 def getDailySoil() -> pd.DataFrame:
+    """
+    Purpose:
+    Loads the soil moisture data from the satellite soil moisture data table and preproccesses it
+
+    Tables:
+    - [agg_soil_moisture](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_soil_moisture)
+
+    Psuedocode:
+    - Load the data
+    - Convert the year, month and day to a date
+    - Get the day of the year
+    - Drop the date column we just created
+    """
     df = pullSoilMoistureData()
+
     df["date"] = pd.to_datetime(df[["year", "month", "day"]])
     df["day_of_year"] = df["date"].dt.dayofyear
     df.drop(columns=["date"], inplace=True)
+
     return df
 
 
-# %%
 def getWeeklySat(dailyDf: pd.DataFrame) -> pd.DataFrame:
+    """
+    Purpose:
+    Aggregate the Copernicus weather data by week
+
+    Pseudocode:
+    - Add the week to the data
+    - [Aggregate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html) the data
+      [by year, month, week of year and district](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)
+    """
     dailyDf["date"] = pd.to_datetime(dailyDf[["year", "month", "day"]])
+
     # add a week of year column
     dailyDf["week_of_year"] = dailyDf["date"].dt.isocalendar().week
     dailyDf = dailyDf.drop(columns=["date"])
@@ -236,9 +448,18 @@ def getWeeklySat(dailyDf: pd.DataFrame) -> pd.DataFrame:
     return weeklyDf
 
 
-# %%
 def getWeeklySoilMoisture(dailyDf: pd.DataFrame) -> pd.DataFrame:
+    """
+    Purpose:
+    Aggregate the Satellite soil moisture data by week
+
+    Pseudocode:
+    - Add the week to the data
+    - [Aggregate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html) the data
+      [by year, month, week of year and district](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)
+    """
     dailyDf["date"] = pd.to_datetime(dailyDf[["year", "month", "day"]])
+
     # add a week of year column
     dailyDf["week_of_year"] = dailyDf["date"].dt.isocalendar().week
     dailyDf = dailyDf.drop(columns=["date"])
@@ -259,8 +480,15 @@ def getWeeklySoilMoisture(dailyDf: pd.DataFrame) -> pd.DataFrame:
     return weeklyDf
 
 
-# %%
 def getMonthlySat(dailyDf: pd.DataFrame) -> pd.DataFrame:
+    """
+    Purpose:
+    Aggregate the Copernicus weather data by month
+
+    Pseudocode:
+    - [Aggregate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html) the data
+      [by year, month and district](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)
+    """
     monthlyDf = (
         dailyDf.groupby(["year", "month", "district"])
         .agg(
@@ -327,8 +555,15 @@ def getMonthlySat(dailyDf: pd.DataFrame) -> pd.DataFrame:
     return monthlyDf
 
 
-# %%
 def getMonthlySoilMoisture(dailyDf: pd.DataFrame) -> pd.DataFrame:
+    """
+    Purpose:
+    Aggregate the soil mositure data by month
+
+    Pseudocode:
+    - [Aggregate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html) the data
+      [by year, month and district](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)
+    """
     monthlyDf = (
         dailyDf.groupby(["year", "month", "district"])
         .agg(
@@ -344,9 +579,18 @@ def getMonthlySoilMoisture(dailyDf: pd.DataFrame) -> pd.DataFrame:
     return monthlyDf
 
 
-# %%
 def getWeeklyStation(dailyDf: pd.DataFrame) -> pd.DataFrame:
+    """
+    Purpose:
+    Aggregate the weather station data by week
+
+    Pseudocode:
+    - Add the week to the data
+    - [Aggregate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html) the data
+      [by year, month, week of year and district](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)
+    """
     dailyDf["date"] = pd.to_datetime(dailyDf[["year", "month", "day"]])
+
     # add a week of year column
     dailyDf["week_of_year"] = dailyDf["date"].dt.isocalendar().week
     dailyDf = dailyDf.drop(columns=["date"])
@@ -396,11 +640,19 @@ def getWeeklyStation(dailyDf: pd.DataFrame) -> pd.DataFrame:
         )
         .reset_index()
     )
+
     return weeklyDf
 
 
-# %%
 def getMonthlyStation(dailyDf: pd.DataFrame) -> pd.DataFrame:
+    """
+    Purpose:
+    Aggregate the weather station data by month
+
+    Pseudocode:
+    - [Aggregate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html) the data
+      [by year, month and district](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html)
+    """
     monthlyDf = (
         dailyDf.groupby(["year", "month", "district"])
         .agg(
@@ -445,11 +697,22 @@ def getMonthlyStation(dailyDf: pd.DataFrame) -> pd.DataFrame:
         )
         .reset_index()
     )
+
     return monthlyDf
 
 
-# %%
 def pushChunkwise(df: pd.DataFrame, tablename: str) -> None:
+    """
+    Purpose:
+    Stores data in the database in chunks
+
+    Pseudocode:
+    - Get a database connection
+    - [Push the data to the database](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html)
+    - Close the connection
+
+    Remarks: Some of our large data has too many columns to fit into the database, thus, we store the data in chunks accross multiple tables instead to bypass this restriction
+    """
     conn = getConn()
 
     df.to_sql(
@@ -464,21 +727,11 @@ def pushChunkwise(df: pd.DataFrame, tablename: str) -> None:
     conn.close()
 
 
-# %%
 def generateNoErgotTables():
-    TABLESATSOILMDAILY = "dataset_daily_sat_soil"
-    TABLESATSOILMWEEKLY = "dataset_weekly_sat_soil"
-    TABLESATSOILMMONTHLY = "dataset_monthly_sat_soil"
-    TABLESTATIONSOILMDAILY = "dataset_daily_station_soil"
-    TABLESTATIONSOILMWEEKLY = "dataset_weekly_station_soil"
-    TABLESTATIONSOILMMONTHLY = "dataset_monthly_station_soil"
-    TABLESATDAILY = "dataset_daily_sat"
-    TABLESATWEEKLY = "dataset_weekly_sat"
-    TABLESATMONTHLY = "dataset_monthly_sat"
-    TABLESTATIONDAILY = "dataset_daily_station"
-    TABLESTATIONWEEKLY = "dataset_weekly_station"
-    TABLESTATIONMONTHLY = "dataset_monthly_station"
-
+    """
+    Purpose:
+    Stores chunks of the tables with too many columns
+    """
     pushChunkwise(pullWeatherCopernicusData(), TABLESATDAILY)
 
     pushChunkwise(pullWeatherStationData(), TABLESTATIONDAILY)
@@ -536,45 +789,78 @@ def generateNoErgotTables():
     pushChunkwise(mergeDf, TABLESTATIONSOILMMONTHLY)
 
 
-# %%
 def getDatasetDailySat() -> pd.DataFrame:
-    conn = getConn()
+    """
+    Purpose:
+    Loads the daily Copernicus satellite data from the daily Copernicus satellite data table
 
+    Tables:
+    - [dataset_daily_sat](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_daily_sat)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the ergot data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
+    conn = getConn()
     query = sq.text(
-        """
-        SELECT * FROM public.dataset_daily_sat
+        f"""
+        SELECT * FROM public.{TABLESATDAILY}
         """
     )
 
     df = pd.read_sql(query, conn)
-
     conn.close()
+
     return df
 
 
-# %%
 def getDatasetDailyStation() -> pd.DataFrame:
-    conn = getConn()
+    """
+    Purpose:
+    Loads the daily weather station data from the daily weather station data table
 
+    Tables:
+    - [dataset_daily_station](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_daily_station)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the ergot data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
+    conn = getConn()
     query = sq.text(
-        """
-        SELECT * FROM public.dataset_daily_station
+        f"""
+        SELECT * FROM public.{TABLESTATIONDAILY}
         """
     )
 
     df = pd.read_sql(query, conn)
-
     conn.close()
+
     return df
 
 
-# %%
 def getDatasetWeeklySat() -> pd.DataFrame:
-    conn = getConn()
+    """
+    Purpose:
+    Loads the weekly Copernicus data from the weekly Copernicus satellite weather data table
 
+    Tables:
+    - [dataset_weekly_sat](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_weekly_sat)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the ergot data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
+    conn = getConn()
     query = sq.text(
-        """
-        SELECT * FROM public.dataset_weekly_sat
+        f"""
+        SELECT * FROM public.{TABLESATWEEKLY}
         """
     )
 
@@ -584,13 +870,24 @@ def getDatasetWeeklySat() -> pd.DataFrame:
     return df
 
 
-# %%
 def getDatasetWeeklyStation() -> pd.DataFrame:
-    conn = getConn()
+    """
+    Purpose:
+    Loads the weekly weather station data from the weekly weather station data table
 
+    Tables:
+    - [dataset_weekly_station](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_weekly_station)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the ergot data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
+    conn = getConn()
     query = sq.text(
-        """
-        SELECT * FROM public.dataset_weekly_station
+        f"""
+        SELECT * FROM public.{TABLESTATIONWEEKLY}
         """
     )
 
@@ -600,13 +897,24 @@ def getDatasetWeeklyStation() -> pd.DataFrame:
     return df
 
 
-# %%
 def getDatasetMonthlySat() -> pd.DataFrame:
-    conn = getConn()
+    """
+    Purpose:
+    Loads the monthly Copernicus data from the monthly Copernicus satellite weather data table
 
+    Tables:
+    - [dataset_monthly_sat](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_monthly_sat)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the ergot data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
+    conn = getConn()
     query = sq.text(
-        """
-        SELECT * FROM public.dataset_monthly_sat
+        f"""
+        SELECT * FROM public.{TABLESATMONTHLY}
         """
     )
 
@@ -616,13 +924,24 @@ def getDatasetMonthlySat() -> pd.DataFrame:
     return df
 
 
-# %%
 def getDatasetMonthlyStation() -> pd.DataFrame:
-    conn = getConn()
+    """
+    Purpose:
+    Loads the monthly weather station data from the monthly weather station data table
 
+    Tables:
+    - [dataset_monthly_station](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#dataset_monthly_station)
+
+    Psuedocode:
+    - Get a connection to the database
+    - Create the ergot data SQL query
+    - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+    - Close the database connection
+    """
+    conn = getConn()
     query = sq.text(
-        """
-        SELECT * FROM public.dataset_monthly_station
+        f"""
+        SELECT * FROM public.{TABLESTATIONMONTHLY}
         """
     )
 
@@ -632,13 +951,25 @@ def getDatasetMonthlyStation() -> pd.DataFrame:
     return df
 
 
-# %%
 def crossWeekOfYear(
     df: pd.DataFrame, weekRange: typing.List[int], exclude: typing.List[str]
 ) -> pd.DataFrame:
-    """We create a table where each row is a district and each column is a week of the year crossed with a weather attribute"""
-    """ the columns are labeled as such: attribute_week_of_year """
-    """ the weekRange is a list of ints that represent the weeks of the year we want to include in the table """
+    """
+    Purpose:
+    We create a table where each row is a district and each column is a week of the year crossed with a weather attribute the columns are labeled as such: attribute_week_of_year the weekRange is a list of ints that represent the weeks of the year we want to include in the table
+
+    Pseudocode:
+    - Drop columns that do not fit into the week range
+    - Get the names of all the columns
+    - Remove the irrelevant columns (these are the columns we wont want to appear once our data has been reshaped)
+    - Get the unique years and districts in remaining data
+    - Grab all attributes and establish them as key in a dictionary
+    - Once finished for the current date, district combination, store the dictionary into a list
+
+    Remark: for this function to work correctly the following columns must be present: year, district and week
+
+    Also note that we use a list of dictionaries since it is much faster to do so as opposed to the number of DataFrame manipulations we'd require otherwise
+    """
 
     # keep only rows that are in the weekRange
     df = df.loc[df["week_of_year"].isin(weekRange)]
@@ -684,13 +1015,25 @@ def crossWeekOfYear(
     return pd.DataFrame(listForDF)
 
 
-# %%
 def crossMonthOfYear(
     df: pd.DataFrame, monthRange: typing.List[int], exclude: typing.List[str]
 ) -> pd.DataFrame:
-    """We create a table where each row is a district and each column is a month of the year crossed with a weather attribute"""
-    """ the columns are labeled as such: attribute_month_of_year """
-    """ the monthRange is a list of ints that represent the months of the year we want to include in the table """
+    """
+    Purpose:
+    We create a table where each row is a district and each column is a month of the year crossed with a weather attribute the columns are labeled as such: attribute_month_of_year the monthRange is a list of ints that represent the months of the year we want to include in the table
+
+    Pseudocode:
+    - Drop columns that do not fit into the month range
+    - Get the names of all the columns
+    - Remove the irrelevant columns (these are the columns we wont want to appear once our data has been reshaped)
+    - Get the unique years and districts in remaining data
+    - Grab all attributes and establish them as key in a dictionary
+    - Once finished for the current date, district combination, store the dictionary into a list
+
+    Remark: for this function to work correctly the following columns must be present: year, district and month
+
+    Also note that we use a list of dictionaries since it is much faster to do so as opposed to the number of DataFrame manipulations we'd require otherwise
+    """
 
     # keep only rows that are in the monthRange
     df = df.loc[df["month"].isin(monthRange)]
@@ -731,16 +1074,11 @@ def crossMonthOfYear(
     return pd.DataFrame(listForDF)
 
 
-# %%
 def generateCrossWeeklyTables():
-    TABLECROSSSATWEEKLYA = "dataset_cross_weekly_sat_JFMA"
-    TABLECROSSSATWEEKLYB = "dataset_cross_weekly_sat_MAMJ"
-    TABLECROSSSATWEEKLYC = "dataset_cross_weekly_sat_MJJA"
-    TABLECROSSSATWEEKLYD = "dataset_cross_weekly_sat_JASO"
-    TABLECROSSSTATIONWEEKLYA = "dataset_cross_weekly_station_JFMA"
-    TABLECROSSSTATIONWEEKLYB = "dataset_cross_weekly_station_MAMJ"
-    TABLECROSSSTATIONWEEKLYC = "dataset_cross_weekly_station_MJJA"
-    TABLECROSSSTATIONWEEKLYD = "dataset_cross_weekly_station_JASO"
+    """
+    Purpose:
+    Crosses weekly data against the year to help determine the importance of each parameter of each week is to the model which is then stored in the database
+    """
 
     # weekly jan feb mar apr
     weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
@@ -791,10 +1129,11 @@ def generateCrossWeeklyTables():
     pushChunkwise(crossedDf, TABLECROSSSTATIONWEEKLYD)
 
 
-# %%
 def generateCrossMonthlyTables():
-    TABLECROSSSATMONTHLY = "dataset_cross_monthly_sat"
-    TABLECROSSSTATIONMONTHLY = "dataset_cross_monthly_station"
+    """
+    Purpose:
+    Crosses monthly data against the year to help determine the importance of each parameter of each month is to the model which is then stored in the database
+    """
 
     # monthly
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -809,13 +1148,5 @@ def generateCrossMonthlyTables():
     pushChunkwise(crossedDf, TABLECROSSSTATIONMONTHLY)
 
 
-# %%
-def generateFeatureCrossTables():
-    generateCrossWeeklyTables()
-    generateCrossMonthlyTables()
-
-
-# %%
 if __name__ == "__main__":
-    generateNoErgotTables()
-    generateFeatureCrossTables()
+    main()

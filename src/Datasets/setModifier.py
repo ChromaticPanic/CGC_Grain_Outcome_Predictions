@@ -67,10 +67,10 @@ class SetModifier:
 
     def rmErgotPredictors(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Purpose:  
+        Purpose:
         Removes the ergot predictors from the dataset (as they may provide the model with information that should be unknown at the time)
 
-        Pseudocode:  
+        Pseudocode:
         - Get the list of columns present in the DataFrame
         - For each column check if its a predictor
         - If it is, add it the list of columns to remove
@@ -87,10 +87,10 @@ class SetModifier:
 
     def rmErgotFeatures(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Purpose:  
+        Purpose:
         Removes the ergot features from the dataset
 
-        Pseudocode:  
+        Pseudocode:
         - Get the list of columns present in the DataFrame
         - For each column check if its a ergot feature
         - If it is, add it the list of columns to remove
@@ -137,7 +137,7 @@ class SetModifier:
             elif strat == "mode":
                 replacements = df.mode(axis=0, skipna=True).tolist()
             elif strat == "zero":
-                replacements = [0] * (len(cols)) # creates a list full of zeros
+                replacements = [0] * (len(cols))  # creates a list full of zeros
 
             # For each column, replace non numbers by the calculated replacements
             for index, col in enumerate(cols):
@@ -152,9 +152,9 @@ class SetModifier:
 
     def attemptBellCurve(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Purpose: 
+        Purpose:
         Models prefer bell curve distributions, therefore this function attempts to scale data to achieve this
-        
+
         Pseudocode:
         - Get the list of columns from the DataFrame provided
         - For each column calculate the p value (p values less than or equal to 0.05 mean the data is PROBABLY not in the shape of a bell curve)
@@ -208,15 +208,15 @@ class SetModifier:
         """
         Purpose:
         Models prefer data within consistant ranges (otherwise some values may impact results more then others)
-        This function scales all values into a consistantly small range 
-        
+        This function scales all values into a consistantly small range
+
         Pseudocode:
         - [Create the scaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MinMaxScaler.html)
         - Scale the values (this returns a multi-dimensional array)
         - Fit the data back into a DataFrame with the original columns and indexs
 
-        Remarks: Neural networks prefer working with values close to 0, therefore MinMaxScalar will set the range from -1 and 1 for neural networks 
-        and 0 and 1 for all other datasets (as per the forNeuralNetwork boolean flag) 
+        Remarks: Neural networks prefer working with values close to 0, therefore MinMaxScalar will set the range from -1 and 1 for neural networks
+        and 0 and 1 for all other datasets (as per the forNeuralNetwork boolean flag)
         """
         scaler = (
             MinMaxScaler(feature_range=(-1, 1))
@@ -233,7 +233,7 @@ class SetModifier:
         Purpose:
         Models prefer data within more consistant ranges (otherwise some values may impact results more then others)
         This function standardizes the data, however, there is no set range used in the scaling process
-        
+
         Pseudocode:
         - [Create the scaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html)
         - Use the scaler (this returns a multi-dimensional array)
@@ -252,9 +252,9 @@ class SetModifier:
         """
         Purpose:
         Splits the data randomly into different sets
-        
-        Pseudocode: 
-        - [Split the dataset](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html) 
+
+        Pseudocode:
+        - [Split the dataset](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
         - Return the data as a dictionary:
             - "train" holds 80% of the data (unless a different testSize is provided)
             - "test" holds 20% of the data (unless a different testSize is provided)
@@ -275,8 +275,8 @@ class SetModifier:
         """
         Purpose:
         Splits the data equally into different sets based on a column and its possible values
-        
-        Pseudocode: 
+
+        Pseudocode:
         - [Split the dataset](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
         - Return the data as a dictionary:
             - "train" holds 80% of the data (unless a different testSize is provided)
@@ -296,7 +296,7 @@ class SetModifier:
         Functions used:
         - [PCA](https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html)
 
-        Remarks: 
+        Remarks:
         - This does not ensure better performance
         - This function creates entirely new attributes
         """
@@ -315,7 +315,7 @@ class SetModifier:
         Functions used:
         - [GaussianRandomProjection](https://scikit-learn.org/stable/modules/generated/sklearn.random_projection.GaussianRandomProjection.html)
 
-        Remarks: 
+        Remarks:
         - This does not ensure better performance
         - This function creates entirely new attributes
         """
