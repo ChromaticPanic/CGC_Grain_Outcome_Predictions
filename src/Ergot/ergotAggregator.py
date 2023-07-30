@@ -1,3 +1,9 @@
+# -------------------------------------------
+# ergotAggregator.py
+#
+# The purpose of the code is to perform data preprocessing and aggregation on ergot samples and their related agricultural regions, creating aggregated features.
+# -------------------------------------------
+
 from dotenv import load_dotenv
 import sqlalchemy as sq
 import geopandas as gpd  # type: ignore
@@ -17,6 +23,7 @@ from Shared.DataService import DataService
 
 TABLENAME = "agg_ergot_sample"
 
+# Load the database connection environment variables located in the docker folder
 load_dotenv()
 PG_DB = os.getenv("POSTGRES_DB")
 PG_ADDR = os.getenv("POSTGRES_ADDR")
@@ -26,6 +33,8 @@ PG_PW = os.getenv("POSTGRES_PW")
 
 
 class ErgotAggregator:
+    # Purpose :
+    # - This function is responsible for aggregating ergot data, creating features, and storing the aggregated data in a new table. The function connects to the database using environment variables for the connection parameters, fetches the required data from the database, calculates various features for the data, and then creates a new table to store the aggregated data.
     def __init__(self):
         if (
             PG_DB is None
@@ -63,6 +72,8 @@ class ErgotAggregator:
 
         db.cleanup()
 
+    # Purpose:
+    # - The purpose of this function is to fetch the agricultural region data from the PostgreSQL database and convert it into a GeoDataFrame
     def pullAgRegions(self, conn: sq.engine.Connection) -> gpd.GeoDataFrame:
         regionQuery = sq.text("select district, geometry FROM public.census_ag_regions")
 
@@ -70,10 +81,18 @@ class ErgotAggregator:
             regionQuery, conn, crs="EPSG:3347", geom_col="geometry"
         )
 
+    # Purpose : Self contained data retrieval data aggregation
+    # Psuedocode:
+    # - Create the ergot data SQL query and load it into a Pandas DataFrame.
+    # - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+
     def pullErgot(self, conn: sq.engine.Connection) -> pd.DataFrame:
         ergotQuery = sq.text("SELECT * FROM public.ergot_sample")
 
         return pd.read_sql_query(ergotQuery, conn)
+
+    # Purpose:
+    # - The purpose of this function is to calculate and assign unique identifiers (UIDs) to each row in the ergot DataFrame based on the combination of "province" and "crop_district" values.
 
     def calcUIDs(self, ergot: pd.DataFrame) -> pd.DataFrame:
         ergot.loc[ergot["province"] == "MB", "district"] = (
@@ -90,6 +109,9 @@ class ErgotAggregator:
 
         return ergot
 
+    # Purpose:
+    # - The purpose of this function is to calculate the neighboring agricultural regions for each region in the agRegions GeoDataFrame based on their geometries.
+
     def calcNeighbors(self, agRegions: gpd.GeoDataFrame) -> dict:
         touches = {}
 
@@ -103,6 +125,16 @@ class ErgotAggregator:
             touches[str(agRegion1["district"])] = currTouches
 
         return touches
+
+    # Purpose:
+    # - The purpose of this function is to aggregate and calculate various features for each unique combination of "year" and "district" in the input ergot DataFrame.
+    # Psuedocode :
+    # - This function calculates and assigns unique identifiers (UIDs) to each row in the input Pandas DataFrame.
+    # - The UIDs are based on the combination of "province" and "crop_district" values.
+    # - converts the "district" column to integer data type.
+    # - Load the current samples for the current "year" and "district" for each unique year and district.
+    # - Convert the "ergotList" into a Pandas DataFrame.
+    # - Create bins for "ergot_present" and "sum_severity" features based on the Interquartile Range (IQR).
 
     def createErgotFeatures(
         self, ergot: pd.DataFrame, touches: gpd.GeoDataFrame
@@ -224,6 +256,7 @@ class ErgotAggregator:
 
         return aggErgot
 
+    # Purpose : Create a respective AggErgotTable from the attributes retrieved from previous calls of functions.
     def createAggErgotTable(self, db):
         query = sq.text(
             f"""
