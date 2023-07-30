@@ -307,6 +307,66 @@ Data is adjusted in order to meet model requirements or as an attempt to improve
 ## Database Tables
 ![Database schema](.github/img/tables.png)
 
+### Final Tables
+
+### dataset_daily_sat
+- Schema: public
+- Columns: 59
+
+A table containing daily aggregate weather data from the copernicus satellite dataset.
+<details><summary>Vertical view dataset_daily_sat attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_weekly_sat
+- Schema: public
+- Columns: 58
+
+A table containing weekly aggregate weather data from the copernicus satellite dataset.
+<details><summary>Vertical view dataset_weekly_sat attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_monthly_sat
+- Schema: public
+- Columns: 57
+
+A table containing monthly aggregate weather data from the copernicus satellite dataset.
+<details><summary>Vertical view dataset_monthly_sat attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_monthly_sat
+- Schema: public
+- Columns: 650
+
+A table containing monthly aggregate weather data from the copernicus satellite dataset. The data is crossed by the month to help determine the importance of each parameter of each month is to the model.
+<details><summary>Vertical view dataset_cross_monthly_sat attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+
+
 ### copernicus_satelite_data
 - Schema: public  
 - Columns: 26
