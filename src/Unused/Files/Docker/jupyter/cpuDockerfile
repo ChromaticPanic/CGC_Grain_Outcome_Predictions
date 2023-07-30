@@ -1,7 +1,0 @@
-FROM tensorflow/tensorflow:latest
-RUN /usr/bin/python3 -m pip install --upgrade pip
-RUN python3 -m pip install --no-cache-dir jupyterlab matplotlib ipyparallel pandas numpy geopandas psycopg2-binary sqlalchemy scikit-learn
-RUN mkdir -p /tf/ && chmod -R a+rwx /tf/
-WORKDIR /tf
-EXPOSE 14532
-CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter lab -e JUPYTER_TOKEN=\"NotASecureTokenIHopeYouAreBehindAFirewall\" --notebook-dir=/tf --ip 0.0.0.0 --port 14532 --no-browser --allow-root"]
