@@ -365,7 +365,257 @@ A table containing monthly aggregate weather data from the copernicus satellite 
 <br>
 <br>
 
+### dataset_cross_weekly_sat_JFMA
+- Schema: public
+- Columns: 866
 
+A table containing weekly aggregate weather data from the copernicus satellite dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of January, February, March, and April.
+<details><summary>Vertical view dataset_cross_weekly_sat_JFMA attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_weekly_sat_MAMJ
+- Schema: public
+- Columns: 866
+
+A table containing weekly aggregate weather data from the copernicus satellite dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of March, April, May, and June.
+<details><summary>Vertical view dataset_cross_weekly_sat_MAMJ attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_weekly_sat_MJJA
+- Schema: public
+- Columns: 866
+
+A table containing weekly aggregate weather data from the copernicus satellite dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of May, June, July, and August.
+<details><summary>Vertical view dataset_cross_weekly_sat_MJJA attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_weekly_sat_JASO
+- Schema: public
+- Columns: 866
+
+A table containing weekly aggregate weather data from the copernicus satellite dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of July, August, September, and October.
+<details><summary>Vertical view dataset_cross_weekly_sat_JASO attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_daily_station
+- Schema: public
+- Columns: 40
+
+A table containing daily aggregate weather data from the weather station dataset.
+<details><summary>Vertical view dataset_daily_station attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_weekly_station
+- Schema: public
+- Columns: 40
+
+A table containing weekly aggregate weather data from the weather station dataset.
+<details><summary>Vertical view dataset_weekly_station attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_monthly_station
+- Schema: public
+- Columns: 39
+
+A table containing monthly aggregate weather data from the weather station dataset.
+<details><summary>Vertical view dataset_monthly_station attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_monthly_station
+- Schema: public
+- Columns: 434
+
+A table containing monthly aggregate weather data from the weather station dataset. The data is crossed by the month to help determine the importance of each parameter of each month is to the model.
+<details><summary>Vertical view dataset_cross_monthly_station attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_weekly_station_JFMA
+- Schema: public
+- Columns: 578
+
+A table containing weekly aggregate weather data from the weather station dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of January, February, March, and April.
+<details><summary>Vertical view dataset_cross_weekly_station_JFMA attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_weekly_station_MAMJ
+- Schema: public
+- Columns: 578
+
+A table containing weekly aggregate weather data from the weather station dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of March, April, May, and June.
+<details><summary>Vertical view dataset_cross_weekly_station_MAMJ attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_weekly_station_MJJA
+- Schema: public
+- Columns: 578
+
+A table containing weekly aggregate weather data from the weather station dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of May, June, July, and August.
+<details><summary>Vertical view dataset_cross_weekly_station_MJJA attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_cross_weekly_station_JASO
+- Schema: public
+- Columns: 578
+
+A table containing weekly aggregate weather data from the weather station dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of July, August, September, and October.
+<details><summary>Vertical view dataset_cross_weekly_station_JASO attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_daily_sat_soil
+- Schema: public
+- Columns: 65
+
+A table containing daily aggregate weather data from the copernicus satellite dataset joined with soil moisture data from the satellite dataset.
+<details><summary>Vertical view dataset_daily_sat_soil attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_weekly_sat_soil
+- Schema: public
+- Columns: 62
+
+A table containing weekly aggregate weather data from the copernicus satellite dataset joined with soil moisture data from the satellite dataset.
+<details><summary>Vertical view dataset_weekly_sat_soil attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_monthly_sat_soil
+- Schema: public
+- Columns: 60
+
+A table containing monthly aggregate weather data from the copernicus satellite dataset joined with soil moisture data from the satellite dataset.
+<details><summary>Vertical view dataset_monthly_sat_soil attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_daily_station_soil
+- Schema: public
+- Columns: 46
+
+A table containing daily aggregate weather data from the weather station dataset joined with soil moisture data from the satellite dataset.
+<details><summary>Vertical view dataset_daily_station_soil attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_weekly_station_soil
+- Schema: public
+- Columns: 44
+
+A table containing weekly aggregate weather data from the weather station dataset joined with soil moisture data from the satellite dataset.
+<details><summary>Vertical view dataset_weekly_station_soil attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
+
+### dataset_monthly_station_soil
+- Schema: public
+- Columns: 42
+
+A table containing monthly aggregate weather data from the weather station dataset joined with soil moisture data from the satellite dataset.
+<details><summary>Vertical view dataset_monthly_station_soil attribute list</summary>
+
+
+</details>
+
+[back to top](#overview)
+<br>
+<br>
 
 ### copernicus_satelite_data
 - Schema: public  
