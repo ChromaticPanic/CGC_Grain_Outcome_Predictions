@@ -164,7 +164,7 @@ cython_debug/
 data/*
 _*/
 .vscode/*
-
+.pgsync.yml
 .vscode/*
 
 
