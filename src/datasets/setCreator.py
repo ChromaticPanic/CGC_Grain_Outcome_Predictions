@@ -10,13 +10,13 @@ try:
 except:
     pass
 
-from sets.first15Yrs import First15Yrs  # type: ignore
-from sets.badErgot import BadErgot  # type: ignore
-from sets.complete import Complete  # type: ignore
-from sets.winter import Winter  # type: ignore
-from sets.spring import Spring  # type: ignore
-from sets.summer import Summer  # type: ignore
-from sets.fall import Fall  # type: ignore
+from Sets.first15Yrs import First15Yrs  # type: ignore
+from Sets.badErgot import BadErgot  # type: ignore
+from Sets.complete import Complete  # type: ignore
+from Sets.winter import Winter  # type: ignore
+from Sets.spring import Spring  # type: ignore
+from Sets.summer import Summer  # type: ignore
+from Sets.fall import Fall  # type: ignore
 
 from setModifier import SetModifier  # type: ignore
 
