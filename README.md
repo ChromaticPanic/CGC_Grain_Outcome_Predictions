@@ -30,13 +30,37 @@
 - [Code Structure](#code-structure)
 - [Data Sources](#data-sources)
 - [Database Tables](#database-tables)
+    - Final tables
+        - [agg_ergot_sample](#agg_ergot_sample)
+        - [agg_ergot_sample_v2](#agg_ergot_sample_v2)
+        - [ergot_sample_feat_eng](#ergot_sample_feat_eng)
+        - [dataset_daily_sat](#dataset_daily_sat)
+        - [dataset_weekly_sat](#dataset_weekly_sat)
+        - [dataset_monthly_sat](#dataset_monthly_sat)
+        - [dataset_cross_monthly_sat](#dataset_cross_monthly_sat)
+        - [dataset_cross_weekly_sat_JFMA](#dataset_cross_weekly_sat_JFMA)
+        - [dataset_cross_weekly_sat_MAMJ](#dataset_cross_weekly_sat_MAMJ)
+        - [dataset_cross_weekly_sat_MJJA](#dataset_cross_weekly_sat_MJJA)
+        - [dataset_cross_weekly_sat_JASO](#dataset_cross_weekly_sat_JASO)
+        - [dataset_daily_station](#dataset_daily_station)
+        - [dataset_weekly_station](#dataset_weekly_station)
+        - [dataset_monthly_station](#dataset_monthly_station)
+        - [dataset_cross_monthly_station](#dataset_cross_monthly_station)
+        - [dataset_cross_weekly_station_JFMA](#dataset_cross_weekly_station_JFMA)
+        - [dataset_cross_weekly_station_MAMJ](#dataset_cross_weekly_station_MAMJ)
+        - [dataset_cross_weekly_station_MJJA](#dataset_cross_weekly_station_MJJA)
+        - [dataset_cross_weekly_station_JASO](#dataset_cross_weekly_station_JASO)
+        - [dataset_daily_sat_soil](#dataset_daily_sat_soil)
+        - [dataset_weekly_sat_soil](#dataset_weekly_sat_soil)
+        - [dataset_monthly_sat_soil](#dataset_monthly_sat_soil)
+        - [dataset_daily_station_soil](#dataset_daily_station_soil)
+        - [dataset_weekly_station_soil](#dataset_weekly_station_soil)
+        - [dataset_monthly_station_soil](#dataset_monthly_station_soil)
     - Copernicus
         - [copernicus_satelite_data](#copernicus_satelite_data)
         - [agg_day_copernicus_satellite_data](#agg_day_copernicus_satellite_data)
     - Ergot
         - [ergot_sample](#ergot_sample)
-        - [ergot_sample_feat_eng](#ergot_sample_feat_eng)
-        - [agg_ergot_sample](#agg_ergot_sample)
     - Geography
         - [census_ag_regions](#census_ag_regions)
     - Soil
@@ -217,8 +241,9 @@ These can later be verified by running
     - Assigning entire years of data to a train/test split
 
 ### 4. Dataset Balancing
-- Upsampling: underrepresented attribute in an unbalanced dataset **gets copied and paired** with multiple splits of the overrepresented attribute
-- Downsampling: overrepresented attribute in an unbalanced dataset has some of its isntances removed
+- Upsampling: underrepresented attribute in an unbalanced dataset **gets copied and paired** with multiple splits of the overrepresented attribute  
+- Downsampling: overrepresented attribute in an unbalanced dataset has some of its isntances removed  
+- Combination method SMOTEENN: **creates new instances** of the underrepresented attribute by using the k nearest neighbours of the existing instances, then **removes instances** of the overrepresented attribute  
 
 ### 5. Categorical Encoding
 - Specifying categorical columns for one hot encoding (**possible class values are turned into boolean features**)
@@ -226,6 +251,16 @@ These can later be verified by running
 ### 6. Model selection
 - Pick a model 
 - Hyperparameter (or hyperparameter range) tuning
+- Cross validation
+- Evaluation metrics
+    - Accuracy
+    - Precision
+    - Recall
+    - F1 score
+    - Confusion matrix
+    - ROC curve
+    - AUC score
+- Feature importance/selection
 
 ### 7. Regularization/Normalization
 Data is adjusted in order to meet model requirements or as an attempt to improve overall performance. This can include the following:
@@ -549,6 +584,54 @@ An aggregation on the data found in the ergot_sample table per year and district
 |**type**|int|int|double|boolean|double|double|boolean|double|boolean|boolean|boolean|double|double|double|double|double|double|double|double|double|double|double|double|double|boolean|boolean|boolean|boolean|boolean|boolean|boolean|boolean|
 |**unit**|||%||||||||||||%|%|%|
 |**constraints**|
+
+</details>
+
+
+[back to top](#overview)
+<br>
+<br>
+
+### agg_ergot_sample_v2
+- Schema: public
+- Columns: 0
+
+Aggregation based on the downgrade threshold of 0.04 % ergot
+
+<details><summary>Vertical view stations_dly attribute list</summary>
+
+| |Description|Type|Unit|Constraints|
+|-|----------|----|----|-----------|
+|year||bigint||
+|district||bigint||
+|percnt_true||double precision|%|
+|has_ergot||boolean||
+|median_severity||double precision||
+|sum_severity||double precision||
+|present_in_neighbor||boolean||
+|sum_severity_in_neighbor||double precision||
+|present_prev1||boolean||
+|present_prev2||boolean||
+|present_prev3||boolean||
+|sum_severity_prev1||double precision||
+|sum_severity_prev2||double precision||
+|sum_severity_prev3||double precision||
+|percnt_true_prev1||double precision|%|
+|percnt_true_prev2||double precision|%|
+|percnt_true_prev3||double precision|%|
+|median_prev1||double precision||
+|median_prev2||double precision||
+|median_prev3||double precision||
+|severity_prev1||double precision||
+|severity_prev2||double precision||
+|severity_prev3||double precision||
+|severity_in_neighbor||double precision||
+
+
+</details>
+
+<details><summary>Horizontal view stations_dly attribute list</summary>
+    
 
 </details>
 
@@ -1122,26 +1205,6 @@ Since our weather station data is split accross the hourly and daily tables and 
 <br>
 
 ### stations_dly
-- Schema: public
-- Columns: 0
-
-.
-
-<details><summary>Vertical view stations_dly attribute list</summary>
-
-
-
-</details>
-
-<details><summary>Horizontal view stations_dly attribute list</summary>
-    
-
-</details>
-
-
-[back to top](#overview)
-<br>
-<br>
 ### stations_hly
 - Schema: public 
 - Columns: 20
