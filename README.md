@@ -667,6 +667,123 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 <details><summary>Vertical view dataset_cross_weekly_sat_JFMA attribute list</summary>
 
 
+
+| Attribute                             | Type             | Unit | Description | Constraint |
+|---------------------------------------|------------------|------|-------------|------------|
+| year                                  | bigint           |      |             |            |
+| district                              | bigint           |      |             |            |
+| 1:min_dewpoint_temperature           | double precision |      |             |            |
+| 1:min_temperature                    | double precision |      |             |            |
+| 1:min_evaporation_from_bare_soil     | double precision |      |             |            |
+| 1:min_skin_reservoir_content         | double precision |      |             |            |
+| 1:min_skin_temperature               | double precision |      |             |            |
+| 1:min_snowmelt                       | double precision |      |             |            |
+| 1:min_soil_temperature_level_1       | double precision |      |             |            |
+| 1:min_soil_temperature_level_2       | double precision |      |             |            |
+| 1:min_soil_temperature_level_3       | double precision |      |             |            |
+| 1:min_soil_temperature_level_4       | double precision |      |             |            |
+| 1:min_surface_net_solar_radiation    | double precision |      |             |            |
+| 1:min_surface_pressure               | double precision |      |             |            |
+| 1:min_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 1:min_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 1:min_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 1:min_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 1:min_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 1:min_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 1:max_dewpoint_temperature           | double precision |      |             |            |
+| 1:max_temperature                    | double precision |      |             |            |
+| 1:max_evaporation_from_bare_soil     | double precision |      |             |            |
+| 1:max_skin_reservoir_content         | double precision |      |             |            |
+| 1:max_skin_temperature               | double precision |      |             |            |
+| 1:max_snowmelt                       | double precision |      |             |            |
+| 1:max_soil_temperature_level_1       | double precision |      |             |            |
+| 1:max_soil_temperature_level_2       | double precision |      |             |            |
+| 1:max_soil_temperature_level_3       | double precision |      |             |            |
+| 1:max_soil_temperature_level_4       | double precision |      |             |            |
+| 1:max_surface_net_solar_radiation    | double precision |      |             |            |
+| 1:max_surface_pressure               | double precision |      |             |            |
+| 1:max_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 1:max_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 1:max_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 1:max_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 1:max_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 1:max_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 1:mean_dewpoint_temperature          | double precision |      |             |            |
+| 1:mean_temperature                   | double precision |      |             |            |
+| 1:mean_evaporation_from_bare_soil    | double precision |      |             |            |
+| 1:mean_skin_reservoir_content        | double precision |      |             |            |
+| 1:mean_skin_temperature              | double precision |      |             |            |
+| 1:mean_snowmelt                      | double precision |      |             |            |
+| 1:mean_soil_temperature_level_1      | double precision |      |             |            |
+| 1:mean_soil_temperature_level_2      | double precision |      |             |            |
+| 1:mean_soil_temperature_level_3      | double precision |      |             |            |
+| 1:mean_soil_temperature_level_4      | double precision |      |             |            |
+| 1:mean_surface_net_solar_radiation   | double precision |      |             |            |
+| 1:mean_surface_pressure              | double precision |      |             |            |
+| 1:mean_volumetric_soil_water_layer_1 | double precision |      |             |            |
+| 1:mean_volumetric_soil_water_layer_2 | double precision |      |             |            |
+| 1:mean_volumetric_soil_water_layer_3 | double precision |      |             |            |
+| 1:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
+| 1:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
+| 1:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
+| ...                             | ...             | ... | ... | ... |
+| district                              | bigint           |      |             |            |
+| 16:min_dewpoint_temperature           | double precision |      |             |            |
+| 16:min_temperature                    | double precision |      |             |            |
+| 16:min_evaporation_from_bare_soil     | double precision |      |             |            |
+| 16:min_skin_reservoir_content         | double precision |      |             |            |
+| 16:min_skin_temperature               | double precision |      |             |            |
+| 16:min_snowmelt                       | double precision |      |             |            |
+| 16:min_soil_temperature_level_1       | double precision |      |             |            |
+| 16:min_soil_temperature_level_2       | double precision |      |             |            |
+| 16:min_soil_temperature_level_3       | double precision |      |             |            |
+| 16:min_soil_temperature_level_4       | double precision |      |             |            |
+| 16:min_surface_net_solar_radiation    | double precision |      |             |            |
+| 16:min_surface_pressure               | double precision |      |             |            |
+| 16:min_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 16:min_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 16:min_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 16:min_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 16:min_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 16:min_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 16:max_dewpoint_temperature           | double precision |      |             |            |
+| 16:max_temperature                    | double precision |      |             |            |
+| 16:max_evaporation_from_bare_soil     | double precision |      |             |            |
+| 16:max_skin_reservoir_content         | double precision |      |             |            |
+| 16:max_skin_temperature               | double precision |      |             |            |
+| 16:max_snowmelt                       | double precision |      |             |            |
+| 16:max_soil_temperature_level_1       | double precision |      |             |            |
+| 16:max_soil_temperature_level_2       | double precision |      |             |            |
+| 16:max_soil_temperature_level_3       | double precision |      |             |            |
+| 16:max_soil_temperature_level_4       | double precision |      |             |            |
+| 16:max_surface_net_solar_radiation    | double precision |      |             |            |
+| 16:max_surface_pressure               | double precision |      |             |            |
+| 16:max_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 16:max_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 16:max_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 16:max_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 16:max_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 16:max_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 16:mean_dewpoint_temperature          | double precision |      |             |            |
+| 16:mean_temperature                   | double precision |      |             |            |
+| 16:mean_evaporation_from_bare_soil    | double precision |      |             |            |
+| 16:mean_skin_reservoir_content        | double precision |      |             |            |
+| 16:mean_skin_temperature              | double precision |      |             |            |
+| 16:mean_snowmelt                      | double precision |      |             |            |
+| 16:mean_soil_temperature_level_1      | double precision |      |             |            |
+| 16:mean_soil_temperature_level_2      | double precision |      |             |            |
+| 16:mean_soil_temperature_level_3      | double precision |      |             |            |
+| 16:mean_soil_temperature_level_4      | double precision |      |             |            |
+| 16:mean_surface_net_solar_radiation   | double precision |      |             |            |
+| 16:mean_surface_pressure              | double precision |      |             |            |
+| 16:mean_volumetric_soil_water_layer_1 | double precision |      |             |            |
+| 16:mean_volumetric_soil_water_layer_2 | double precision |      |             |            |
+| 16:mean_volumetric_soil_water_layer_3 | double precision |      |             |            |
+| 16:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
+| 16:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
+| 16:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
+
+
 </details>
 
 [back to top](#overview)
@@ -681,6 +798,122 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 <details><summary>Vertical view dataset_cross_weekly_sat_MAMJ attribute list</summary>
 
 
+
+| Attribute                             | Type             | Unit | Description | Constraint |
+|---------------------------------------|------------------|------|-------------|------------|
+| year                                  | bigint           |      |             |            |
+| district                              | bigint           |      |             |            |
+| 9:min_dewpoint_temperature           | double precision |      |             |            |
+| 9:min_temperature                    | double precision |      |             |            |
+| 9:min_evaporation_from_bare_soil     | double precision |      |             |            |
+| 9:min_skin_reservoir_content         | double precision |      |             |            |
+| 9:min_skin_temperature               | double precision |      |             |            |
+| 9:min_snowmelt                       | double precision |      |             |            |
+| 9:min_soil_temperature_level_1       | double precision |      |             |            |
+| 9:min_soil_temperature_level_2       | double precision |      |             |            |
+| 9:min_soil_temperature_level_3       | double precision |      |             |            |
+| 9:min_soil_temperature_level_4       | double precision |      |             |            |
+| 9:min_surface_net_solar_radiation    | double precision |      |             |            |
+| 9:min_surface_pressure               | double precision |      |             |            |
+| 9:min_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 9:min_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 9:min_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 9:min_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 9:min_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 9:min_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 9:max_dewpoint_temperature           | double precision |      |             |            |
+| 9:max_temperature                    | double precision |      |             |            |
+| 9:max_evaporation_from_bare_soil     | double precision |      |             |            |
+| 9:max_skin_reservoir_content         | double precision |      |             |            |
+| 9:max_skin_temperature               | double precision |      |             |            |
+| 9:max_snowmelt                       | double precision |      |             |            |
+| 9:max_soil_temperature_level_1       | double precision |      |             |            |
+| 9:max_soil_temperature_level_2       | double precision |      |             |            |
+| 9:max_soil_temperature_level_3       | double precision |      |             |            |
+| 9:max_soil_temperature_level_4       | double precision |      |             |            |
+| 9:max_surface_net_solar_radiation    | double precision |      |             |            |
+| 9:max_surface_pressure               | double precision |      |             |            |
+| 9:max_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 9:max_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 9:max_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 9:max_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 9:max_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 9:max_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 9:mean_dewpoint_temperature          | double precision |      |             |            |
+| 9:mean_temperature                   | double precision |      |             |            |
+| 9:mean_evaporation_from_bare_soil    | double precision |      |             |            |
+| 9:mean_skin_reservoir_content        | double precision |      |             |            |
+| 9:mean_skin_temperature              | double precision |      |             |            |
+| 9:mean_snowmelt                      | double precision |      |             |            |
+| 9:mean_soil_temperature_level_1      | double precision |      |             |            |
+| 9:mean_soil_temperature_level_2      | double precision |      |             |            |
+| 9:mean_soil_temperature_level_3      | double precision |      |             |            |
+| 9:mean_soil_temperature_level_4      | double precision |      |             |            |
+| 9:mean_surface_net_solar_radiation   | double precision |      |             |            |
+| 9:mean_surface_pressure              | double precision |      |             |            |
+| 9:mean_volumetric_soil_water_layer_1 | double precision |      |             |            |
+| 9:mean_volumetric_soil_water_layer_2 | double precision |      |             |            |
+| 9:mean_volumetric_soil_water_layer_3 | double precision |      |             |            |
+| 9:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
+| 9:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
+| 9:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
+| ...                             | ...             | ... | ... | ... |
+| district                              | bigint           |      |             |            |
+| 24:min_dewpoint_temperature           | double precision |      |             |            |
+| 24:min_temperature                    | double precision |      |             |            |
+| 24:min_evaporation_from_bare_soil     | double precision |      |             |            |
+| 24:min_skin_reservoir_content         | double precision |      |             |            |
+| 24:min_skin_temperature               | double precision |      |             |            |
+| 24:min_snowmelt                       | double precision |      |             |            |
+| 24:min_soil_temperature_level_1       | double precision |      |             |            |
+| 24:min_soil_temperature_level_2       | double precision |      |             |            |
+| 24:min_soil_temperature_level_3       | double precision |      |             |            |
+| 24:min_soil_temperature_level_4       | double precision |      |             |            |
+| 24:min_surface_net_solar_radiation    | double precision |      |             |            |
+| 24:min_surface_pressure               | double precision |      |             |            |
+| 24:min_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 24:min_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 24:min_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 24:min_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 24:min_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 24:min_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 24:max_dewpoint_temperature           | double precision |      |             |            |
+| 24:max_temperature                    | double precision |      |             |            |
+| 24:max_evaporation_from_bare_soil     | double precision |      |             |            |
+| 24:max_skin_reservoir_content         | double precision |      |             |            |
+| 24:max_skin_temperature               | double precision |      |             |            |
+| 24:max_snowmelt                       | double precision |      |             |            |
+| 24:max_soil_temperature_level_1       | double precision |      |             |            |
+| 24:max_soil_temperature_level_2       | double precision |      |             |            |
+| 24:max_soil_temperature_level_3       | double precision |      |             |            |
+| 24:max_soil_temperature_level_4       | double precision |      |             |            |
+| 24:max_surface_net_solar_radiation    | double precision |      |             |            |
+| 24:max_surface_pressure               | double precision |      |             |            |
+| 24:max_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 24:max_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 24:max_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 24:max_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 24:max_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 24:max_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 24:mean_dewpoint_temperature          | double precision |      |             |            |
+| 24:mean_temperature                   | double precision |      |             |            |
+| 24:mean_evaporation_from_bare_soil    | double precision |      |             |            |
+| 24:mean_skin_reservoir_content        | double precision |      |             |            |
+| 24:mean_skin_temperature              | double precision |      |             |            |
+| 24:mean_snowmelt                      | double precision |      |             |            |
+| 24:mean_soil_temperature_level_1      | double precision |      |             |            |
+| 24:mean_soil_temperature_level_2      | double precision |      |             |            |
+| 24:mean_soil_temperature_level_3      | double precision |      |             |            |
+| 24:mean_soil_temperature_level_4      | double precision |      |             |            |
+| 24:mean_surface_net_solar_radiation   | double precision |      |             |            |
+| 24:mean_surface_pressure              | double precision |      |             |            |
+| 24:mean_volumetric_soil_water_layer_1 | double precision |      |             |            |
+| 24:mean_volumetric_soil_water_layer_2 | double precision |      |             |            |
+| 24:mean_volumetric_soil_water_layer_3 | double precision |      |             |            |
+| 24:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
+| 24:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
+| 24:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
+
 </details>
 
 [back to top](#overview)
@@ -694,6 +927,120 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 A table containing weekly aggregate weather data from the copernicus satellite dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of May, June, July, and August.
 <details><summary>Vertical view dataset_cross_weekly_sat_MJJA attribute list</summary>
 
+| Attribute                             | Type             | Unit | Description | Constraint |
+|---------------------------------------|------------------|------|-------------|------------|
+| year                                  | bigint           |      |             |            |
+| district                              | bigint           |      |             |            |
+| 17:min_dewpoint_temperature           | double precision |      |             |            |
+| 17:min_temperature                    | double precision |      |             |            |
+| 17:min_evaporation_from_bare_soil     | double precision |      |             |            |
+| 17:min_skin_reservoir_content         | double precision |      |             |            |
+| 17:min_skin_temperature               | double precision |      |             |            |
+| 17:min_snowmelt                       | double precision |      |             |            |
+| 17:min_soil_temperature_level_1       | double precision |      |             |            |
+| 17:min_soil_temperature_level_2       | double precision |      |             |            |
+| 17:min_soil_temperature_level_3       | double precision |      |             |            |
+| 17:min_soil_temperature_level_4       | double precision |      |             |            |
+| 17:min_surface_net_solar_radiation    | double precision |      |             |            |
+| 17:min_surface_pressure               | double precision |      |             |            |
+| 17:min_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 17:min_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 17:min_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 17:min_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 17:min_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 17:min_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 17:max_dewpoint_temperature           | double precision |      |             |            |
+| 17:max_temperature                    | double precision |      |             |            |
+| 17:max_evaporation_from_bare_soil     | double precision |      |             |            |
+| 17:max_skin_reservoir_content         | double precision |      |             |            |
+| 17:max_skin_temperature               | double precision |      |             |            |
+| 17:max_snowmelt                       | double precision |      |             |            |
+| 17:max_soil_temperature_level_1       | double precision |      |             |            |
+| 17:max_soil_temperature_level_2       | double precision |      |             |            |
+| 17:max_soil_temperature_level_3       | double precision |      |             |            |
+| 17:max_soil_temperature_level_4       | double precision |      |             |            |
+| 17:max_surface_net_solar_radiation    | double precision |      |             |            |
+| 17:max_surface_pressure               | double precision |      |             |            |
+| 17:max_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 17:max_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 17:max_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 17:max_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 17:max_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 17:max_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 17:mean_dewpoint_temperature          | double precision |      |             |            |
+| 17:mean_temperature                   | double precision |      |             |            |
+| 17:mean_evaporation_from_bare_soil    | double precision |      |             |            |
+| 17:mean_skin_reservoir_content        | double precision |      |             |            |
+| 17:mean_skin_temperature              | double precision |      |             |            |
+| 17:mean_snowmelt                      | double precision |      |             |            |
+| 17:mean_soil_temperature_level_1      | double precision |      |             |            |
+| 17:mean_soil_temperature_level_2      | double precision |      |             |            |
+| 17:mean_soil_temperature_level_3      | double precision |      |             |            |
+| 17:mean_soil_temperature_level_4      | double precision |      |             |            |
+| 17:mean_surface_net_solar_radiation   | double precision |      |             |            |
+| 17:mean_surface_pressure              | double precision |      |             |            |
+| 17:mean_volumetric_soil_water_layer_1 | double precision |      |             |            |
+| 17:mean_volumetric_soil_water_layer_2 | double precision |      |             |            |
+| 17:mean_volumetric_soil_water_layer_3 | double precision |      |             |            |
+| 17:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
+| 17:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
+| 17:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
+| ...                             | ...             | ... | ... | ... |
+| district                              | bigint           |      |             |            |
+| 32:min_dewpoint_temperature           | double precision |      |             |            |
+| 32:min_temperature                    | double precision |      |             |            |
+| 32:min_evaporation_from_bare_soil     | double precision |      |             |            |
+| 32:min_skin_reservoir_content         | double precision |      |             |            |
+| 32:min_skin_temperature               | double precision |      |             |            |
+| 32:min_snowmelt                       | double precision |      |             |            |
+| 32:min_soil_temperature_level_1       | double precision |      |             |            |
+| 32:min_soil_temperature_level_2       | double precision |      |             |            |
+| 32:min_soil_temperature_level_3       | double precision |      |             |            |
+| 32:min_soil_temperature_level_4       | double precision |      |             |            |
+| 32:min_surface_net_solar_radiation    | double precision |      |             |            |
+| 32:min_surface_pressure               | double precision |      |             |            |
+| 32:min_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 32:min_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 32:min_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 32:min_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 32:min_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 32:min_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 32:max_dewpoint_temperature           | double precision |      |             |            |
+| 32:max_temperature                    | double precision |      |             |            |
+| 32:max_evaporation_from_bare_soil     | double precision |      |             |            |
+| 32:max_skin_reservoir_content         | double precision |      |             |            |
+| 32:max_skin_temperature               | double precision |      |             |            |
+| 32:max_snowmelt                       | double precision |      |             |            |
+| 32:max_soil_temperature_level_1       | double precision |      |             |            |
+| 32:max_soil_temperature_level_2       | double precision |      |             |            |
+| 32:max_soil_temperature_level_3       | double precision |      |             |            |
+| 32:max_soil_temperature_level_4       | double precision |      |             |            |
+| 32:max_surface_net_solar_radiation    | double precision |      |             |            |
+| 32:max_surface_pressure               | double precision |      |             |            |
+| 32:max_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 32:max_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 32:max_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 32:max_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 32:max_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 32:max_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 32:mean_dewpoint_temperature          | double precision |      |             |            |
+| 32:mean_temperature                   | double precision |      |             |            |
+| 32:mean_evaporation_from_bare_soil    | double precision |      |             |            |
+| 32:mean_skin_reservoir_content        | double precision |      |             |            |
+| 32:mean_skin_temperature              | double precision |      |             |            |
+| 32:mean_snowmelt                      | double precision |      |             |            |
+| 32:mean_soil_temperature_level_1      | double precision |      |             |            |
+| 32:mean_soil_temperature_level_2      | double precision |      |             |            |
+| 32:mean_soil_temperature_level_3      | double precision |      |             |            |
+| 32:mean_soil_temperature_level_4      | double precision |      |             |            |
+| 32:mean_surface_net_solar_radiation   | double precision |      |             |            |
+| 32:mean_surface_pressure              | double precision |      |             |            |
+| 32:mean_volumetric_soil_water_layer_1 | double precision |      |             |            |
+| 32:mean_volumetric_soil_water_layer_2 | double precision |      |             |            |
+| 32:mean_volumetric_soil_water_layer_3 | double precision |      |             |            |
+| 32:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
+| 32:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
+| 32:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
 
 </details>
 
@@ -707,6 +1054,121 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 
 A table containing weekly aggregate weather data from the copernicus satellite dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of July, August, September, and October.
 <details><summary>Vertical view dataset_cross_weekly_sat_JASO attribute list</summary>
+
+| Attribute                             | Type             | Unit | Description | Constraint |
+|---------------------------------------|------------------|------|-------------|------------|
+| year                                  | bigint           |      |             |            |
+| district                              | bigint           |      |             |            |
+| 25:min_dewpoint_temperature           | double precision |      |             |            |
+| 25:min_temperature                    | double precision |      |             |            |
+| 25:min_evaporation_from_bare_soil     | double precision |      |             |            |
+| 25:min_skin_reservoir_content         | double precision |      |             |            |
+| 25:min_skin_temperature               | double precision |      |             |            |
+| 25:min_snowmelt                       | double precision |      |             |            |
+| 25:min_soil_temperature_level_1       | double precision |      |             |            |
+| 25:min_soil_temperature_level_2       | double precision |      |             |            |
+| 25:min_soil_temperature_level_3       | double precision |      |             |            |
+| 25:min_soil_temperature_level_4       | double precision |      |             |            |
+| 25:min_surface_net_solar_radiation    | double precision |      |             |            |
+| 25:min_surface_pressure               | double precision |      |             |            |
+| 25:min_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 25:min_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 25:min_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 25:min_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 25:min_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 25:min_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 25:max_dewpoint_temperature           | double precision |      |             |            |
+| 25:max_temperature                    | double precision |      |             |            |
+| 25:max_evaporation_from_bare_soil     | double precision |      |             |            |
+| 25:max_skin_reservoir_content         | double precision |      |             |            |
+| 25:max_skin_temperature               | double precision |      |             |            |
+| 25:max_snowmelt                       | double precision |      |             |            |
+| 25:max_soil_temperature_level_1       | double precision |      |             |            |
+| 25:max_soil_temperature_level_2       | double precision |      |             |            |
+| 25:max_soil_temperature_level_3       | double precision |      |             |            |
+| 25:max_soil_temperature_level_4       | double precision |      |             |            |
+| 25:max_surface_net_solar_radiation    | double precision |      |             |            |
+| 25:max_surface_pressure               | double precision |      |             |            |
+| 25:max_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 25:max_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 25:max_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 25:max_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 25:max_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 25:max_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 25:mean_dewpoint_temperature          | double precision |      |             |            |
+| 25:mean_temperature                   | double precision |      |             |            |
+| 25:mean_evaporation_from_bare_soil    | double precision |      |             |            |
+| 25:mean_skin_reservoir_content        | double precision |      |             |            |
+| 25:mean_skin_temperature              | double precision |      |             |            |
+| 25:mean_snowmelt                      | double precision |      |             |            |
+| 25:mean_soil_temperature_level_1      | double precision |      |             |            |
+| 25:mean_soil_temperature_level_2      | double precision |      |             |            |
+| 25:mean_soil_temperature_level_3      | double precision |      |             |            |
+| 25:mean_soil_temperature_level_4      | double precision |      |             |            |
+| 25:mean_surface_net_solar_radiation   | double precision |      |             |            |
+| 25:mean_surface_pressure              | double precision |      |             |            |
+| 25:mean_volumetric_soil_water_layer_1 | double precision |      |             |            |
+| 25:mean_volumetric_soil_water_layer_2 | double precision |      |             |            |
+| 25:mean_volumetric_soil_water_layer_3 | double precision |      |             |            |
+| 25:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
+| 25:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
+| 25:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
+| ...                             | ...             | ... | ... | ... |
+| district                              | bigint           |      |             |            |
+| 40:min_dewpoint_temperature           | double precision |      |             |            |
+| 40:min_temperature                    | double precision |      |             |            |
+| 40:min_evaporation_from_bare_soil     | double precision |      |             |            |
+| 40:min_skin_reservoir_content         | double precision |      |             |            |
+| 40:min_skin_temperature               | double precision |      |             |            |
+| 40:min_snowmelt                       | double precision |      |             |            |
+| 40:min_soil_temperature_level_1       | double precision |      |             |            |
+| 40:min_soil_temperature_level_2       | double precision |      |             |            |
+| 40:min_soil_temperature_level_3       | double precision |      |             |            |
+| 40:min_soil_temperature_level_4       | double precision |      |             |            |
+| 40:min_surface_net_solar_radiation    | double precision |      |             |            |
+| 40:min_surface_pressure               | double precision |      |             |            |
+| 40:min_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 40:min_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 40:min_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 40:min_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 40:min_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 40:min_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 40:max_dewpoint_temperature           | double precision |      |             |            |
+| 40:max_temperature                    | double precision |      |             |            |
+| 40:max_evaporation_from_bare_soil     | double precision |      |             |            |
+| 40:max_skin_reservoir_content         | double precision |      |             |            |
+| 40:max_skin_temperature               | double precision |      |             |            |
+| 40:max_snowmelt                       | double precision |      |             |            |
+| 40:max_soil_temperature_level_1       | double precision |      |             |            |
+| 40:max_soil_temperature_level_2       | double precision |      |             |            |
+| 40:max_soil_temperature_level_3       | double precision |      |             |            |
+| 40:max_soil_temperature_level_4       | double precision |      |             |            |
+| 40:max_surface_net_solar_radiation    | double precision |      |             |            |
+| 40:max_surface_pressure               | double precision |      |             |            |
+| 40:max_volumetric_soil_water_layer_1  | double precision |      |             |            |
+| 40:max_volumetric_soil_water_layer_2  | double precision |      |             |            |
+| 40:max_volumetric_soil_water_layer_3  | double precision |      |             |            |
+| 40:max_volumetric_soil_water_layer_4  | double precision |      |             |            |
+| 40:max_leaf_area_index_high_vegetation| double precision |      |             |            |
+| 40:max_leaf_area_index_low_vegetation | double precision |      |             |            |
+| 40:mean_dewpoint_temperature          | double precision |      |             |            |
+| 40:mean_temperature                   | double precision |      |             |            |
+| 40:mean_evaporation_from_bare_soil    | double precision |      |             |            |
+| 40:mean_skin_reservoir_content        | double precision |      |             |            |
+| 40:mean_skin_temperature              | double precision |      |             |            |
+| 40:mean_snowmelt                      | double precision |      |             |            |
+| 40:mean_soil_temperature_level_1      | double precision |      |             |            |
+| 40:mean_soil_temperature_level_2      | double precision |      |             |            |
+| 40:mean_soil_temperature_level_3      | double precision |      |             |            |
+| 40:mean_soil_temperature_level_4      | double precision |      |             |            |
+| 40:mean_surface_net_solar_radiation   | double precision |      |             |            |
+| 40:mean_surface_pressure              | double precision |      |             |            |
+| 40:mean_volumetric_soil_water_layer_1 | double precision |      |             |            |
+| 40:mean_volumetric_soil_water_layer_2 | double precision |      |             |            |
+| 40:mean_volumetric_soil_water_layer_3 | double precision |      |             |            |
+| 40:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
+| 40:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
+| 40:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
 
 
 </details>
@@ -722,6 +1184,48 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 A table containing daily aggregate weather data from the weather station dataset.
 <details><summary>Vertical view dataset_daily_station attribute list</summary>
 
+| Attribute           | Type                | Unit            | Description               | Constraint   |
+|---------------------|---------------------|-----------------|---------------------------|--------------|
+| district            | bigint              | N/A             | District identifier       |              |
+| year                | bigint              | Year            | Year                      |              |
+| month               | bigint              | Month           | Month                     |              |
+| day                 | bigint              | Day             | Day                       |              |
+| min_temp_x          | double precision    | Celsius         | Minimum temperature x     |              |
+| max_temp_x          | double precision    | Celsius         | Maximum temperature x     |              |
+| mean_temp_x         | double precision    | Celsius         | Mean temperature x        |              |
+| min_dew_point_temp  | double precision    | Celsius         | Minimum dew point temp    |              |
+| max_dew_point_temp  | double precision    | Celsius         | Maximum dew point temp    |              |
+| mean_dew_point_temp | double precision    | Celsius         | Mean dew point temp       |              |
+| min_humidex         | double precision    | N/A             | Minimum humidex           |              |
+| max_humidex         | double precision    | N/A             | Maximum humidex           |              |
+| mean_humidex        | double precision    | N/A             | Mean humidex              |              |
+| min_precip          | double precision    | Millimeters     | Minimum precipitation     |              |
+| max_precip          | double precision    | Millimeters     | Maximum precipitation     |              |
+| mean_precip         | double precision    | Millimeters     | Mean precipitation        |              |
+| min_rel_humid       | double precision    | Percent         | Minimum relative humidity |              |
+| max_rel_humid       | double precision    | Percent         | Maximum relative humidity |              |
+| mean_rel_humid      | double precision    | Percent         | Mean relative humidity    |              |
+| min_stn_press       | double precision    | Kilopascals     | Minimum station pressure  |              |
+| max_stn_press       | double precision    | Kilopascals     | Maximum station pressure  |              |
+| mean_stn_press      | double precision    | Kilopascals     | Mean station pressure     |              |
+| min_visibility      | double precision    | Kilometers      | Minimum visibility        |              |
+| max_visibility      | double precision    | Kilometers      | Maximum visibility        |              |
+| mean_visibility     | double precision    | Kilometers      | Mean visibility           |              |
+| max_temp_y          | double precision    | Celsius         | Maximum temperature y     |              |
+| min_temp_y          | double precision    | Celsius         | Minimum temperature y     |              |
+| mean_temp_y         | double precision    | Celsius         | Mean temperature y        |              |
+| min_total_rain      | double precision    | Millimeters     | Minimum total rain        |              |
+| max_total_rain      | double precision    | Millimeters     | Maximum total rain        |              |
+| mean_total_rain     | double precision    | Millimeters     | Mean total rain           |              |
+| min_total_snow      | double precision    | Centimeters     | Minimum total snow        |              |
+| max_total_snow      | double precision    | Centimeters     | Maximum total snow        |              |
+| mean_total_snow     | double precision    | Centimeters     | Mean total snow           |              |
+| min_total_precip    | double precision    | Millimeters     | Minimum total precipitation |              |
+| max_total_precip    | double precision    | Millimeters     | Maximum total precipitation |              |
+| mean_total_precip   | double precision    | Millimeters     | Mean total precipitation  |              |
+| min_snow_on_grnd    | double precision    | Centimeters     | Minimum snow on ground    |              |
+| max_snow_on_grnd    | double precision    | Centimeters     | Maximum snow on ground    |              |
+| mean_snow_on_grnd   | double precision    | Centimeters     | Mean snow on ground       |              |
 
 </details>
 
@@ -736,6 +1240,48 @@ A table containing daily aggregate weather data from the weather station dataset
 A table containing weekly aggregate weather data from the weather station dataset.
 <details><summary>Vertical view dataset_weekly_station attribute list</summary>
 
+| Attribute           | Type                | Unit            | Description               | Constraint   |
+|---------------------|---------------------|-----------------|---------------------------|--------------|
+| year                | bigint              | Year            | Year                      |              |
+| month               | bigint              | Month           | Month                     |              |
+| week_of_year        | bigint              | Week            | Week of the year          |              |
+| district            | bigint              | N/A             | District identifier       |              |
+| min_temp_x          | double precision    | Celsius         | Minimum temperature x     |              |
+| max_temp_x          | double precision    | Celsius         | Maximum temperature x     |              |
+| mean_temp_x         | double precision    | Celsius         | Mean temperature x        |              |
+| min_dew_point_temp  | double precision    | Celsius         | Minimum dew point temp    |              |
+| max_dew_point_temp  | double precision    | Celsius         | Maximum dew point temp    |              |
+| mean_dew_point_temp | double precision    | Celsius         | Mean dew point temp       |              |
+| min_humidex         | double precision    | N/A             | Minimum humidex           |              |
+| max_humidex         | double precision    | N/A             | Maximum humidex           |              |
+| mean_humidex        | double precision    | N/A             | Mean humidex              |              |
+| min_precip          | double precision    | Millimeters     | Minimum precipitation     |              |
+| max_precip          | double precision    | Millimeters     | Maximum precipitation     |              |
+| mean_precip         | double precision    | Millimeters     | Mean precipitation        |              |
+| min_rel_humid       | double precision    | Percent         | Minimum relative humidity |              |
+| max_rel_humid       | double precision    | Percent         | Maximum relative humidity |              |
+| mean_rel_humid      | double precision    | Percent         | Mean relative humidity    |              |
+| min_stn_press       | double precision    | Kilopascals     | Minimum station pressure  |              |
+| max_stn_press       | double precision    | Kilopascals     | Maximum station pressure  |              |
+| mean_stn_press      | double precision    | Kilopascals     | Mean station pressure     |              |
+| min_visibility      | double precision    | Kilometers      | Minimum visibility        |              |
+| max_visibility      | double precision    | Kilometers      | Maximum visibility        |              |
+| mean_visibility     | double precision    | Kilometers      | Mean visibility           |              |
+| max_temp_y          | double precision    | Celsius         | Maximum temperature y     |              |
+| min_temp_y          | double precision    | Celsius         | Minimum temperature y     |              |
+| mean_temp_y         | double precision    | Celsius         | Mean temperature y        |              |
+| min_total_rain      | double precision    | Millimeters     | Minimum total rain        |              |
+| max_total_rain      | double precision    | Millimeters     | Maximum total rain        |              |
+| mean_total_rain     | double precision    | Millimeters     | Mean total rain           |              |
+| min_total_snow      | double precision    | Centimeters     | Minimum total snow        |              |
+| max_total_snow      | double precision    | Centimeters     | Maximum total snow        |              |
+| mean_total_snow     | double precision    | Centimeters     | Mean total snow           |              |
+| min_total_precip    | double precision    | Millimeters     | Minimum total precipitation |              |
+| max_total_precip    | double precision    | Millimeters     | Maximum total precipitation |              |
+| mean_total_precip   | double precision    | Millimeters     | Mean total precipitation  |              |
+| min_snow_on_grnd    | double precision    | Centimeters     | Minimum snow on ground    |              |
+| max_snow_on_grnd    | double precision    | Centimeters     | Maximum snow on ground    |              |
+| mean_snow_on_grnd   | double precision    | Centimeters     | Mean snow on ground       |              |
 
 </details>
 
@@ -750,6 +1296,47 @@ A table containing weekly aggregate weather data from the weather station datase
 A table containing monthly aggregate weather data from the weather station dataset.
 <details><summary>Vertical view dataset_monthly_station attribute list</summary>
 
+| Attribute           | Type                | Unit            | Description               | Constraint   |
+|---------------------|---------------------|-----------------|---------------------------|--------------|
+| year                | bigint              | Year            | Year                      |              |
+| month               | bigint              | Month           | Month                     |              |
+| district            | bigint              | N/A             | District identifier       |              |
+| min_temp_x          | double precision    | Celsius         | Minimum temperature x     |              |
+| max_temp_x          | double precision    | Celsius         | Maximum temperature x     |              |
+| mean_temp_x         | double precision    | Celsius         | Mean temperature x        |              |
+| min_dew_point_temp  | double precision    | Celsius         | Minimum dew point temp    |              |
+| max_dew_point_temp  | double precision    | Celsius         | Maximum dew point temp    |              |
+| mean_dew_point_temp | double precision    | Celsius         | Mean dew point temp       |              |
+| min_humidex         | double precision    | N/A             | Minimum humidex           |              |
+| max_humidex         | double precision    | N/A             | Maximum humidex           |              |
+| mean_humidex        | double precision    | N/A             | Mean humidex              |              |
+| min_precip          | double precision    | Millimeters     | Minimum precipitation     |              |
+| max_precip          | double precision    | Millimeters     | Maximum precipitation     |              |
+| mean_precip         | double precision    | Millimeters     | Mean precipitation        |              |
+| min_rel_humid       | double precision    | Percent         | Minimum relative humidity |              |
+| max_rel_humid       | double precision    | Percent         | Maximum relative humidity |              |
+| mean_rel_humid      | double precision    | Percent         | Mean relative humidity    |              |
+| min_stn_press       | double precision    | Kilopascals     | Minimum station pressure  |              |
+| max_stn_press       | double precision    | Kilopascals     | Maximum station pressure  |              |
+| mean_stn_press      | double precision    | Kilopascals     | Mean station pressure     |              |
+| min_visibility      | double precision    | Kilometers      | Minimum visibility        |              |
+| max_visibility      | double precision    | Kilometers      | Maximum visibility        |              |
+| mean_visibility     | double precision    | Kilometers      | Mean visibility           |              |
+| max_temp_y          | double precision    | Celsius         | Maximum temperature y     |              |
+| min_temp_y          | double precision    | Celsius         | Minimum temperature y     |              |
+| mean_temp_y         | double precision    | Celsius         | Mean temperature y        |              |
+| min_total_rain      | double precision    | Millimeters     | Minimum total rain        |              |
+| max_total_rain      | double precision    | Millimeters     | Maximum total rain        |              |
+| mean_total_rain     | double precision    | Millimeters     | Mean total rain           |              |
+| min_total_snow      | double precision    | Centimeters     | Minimum total snow        |              |
+| max_total_snow      | double precision    | Centimeters     | Maximum total snow        |              |
+| mean_total_snow     | double precision    | Centimeters     | Mean total snow           |              |
+| min_total_precip    | double precision    | Millimeters     | Minimum total precipitation |              |
+| max_total_precip    | double precision    | Millimeters     | Maximum total precipitation |              |
+| mean_total_precip   | double precision    | Millimeters     | Mean total precipitation  |              |
+| min_snow_on_grnd    | double precision    | Centimeters     | Minimum snow on ground    |              |
+| max_snow_on_grnd    | double precision    | Centimeters     | Maximum snow on ground    |              |
+| mean_snow_on_grnd   | double precision    | Centimeters     | Mean snow on ground       |              |
 
 </details>
 
@@ -764,6 +1351,83 @@ A table containing monthly aggregate weather data from the weather station datas
 A table containing monthly aggregate weather data from the weather station dataset. The data is crossed by the month to help determine the importance of each parameter of each month is to the model.
 <details><summary>Vertical view dataset_cross_monthly_station attribute list</summary>
 
+| Attribute           | Type                | Unit            | Description               | Constraint   |
+|---------------------|---------------------|-----------------|---------------------------|--------------|
+| year                | bigint              | Year            | Year                      |              |
+| district            | bigint              | N/A             | District identifier       |              |
+| 1:min_temp_x        | double precision    | Celsius         | Minimum temperature x     |              |
+| 1:max_temp_x        | double precision    | Celsius         | Maximum temperature x     |              |
+| 1:mean_temp_x       | double precision    | Celsius         | Mean temperature x        |              |
+| 1:min_dew_point_temp| double precision    | Celsius         | Minimum dew point temp    |              |
+| 1:max_dew_point_temp| double precision    | Celsius         | Maximum dew point temp    |              |
+| 1:mean_dew_point_temp|double precision    | Celsius         | Mean dew point temp       |              |
+| 1:min_humidex       | double precision    | N/A             | Minimum humidex           |              |
+| 1:max_humidex       | double precision    | N/A             | Maximum humidex           |              |
+| 1:mean_humidex      | double precision    | N/A             | Mean humidex              |              |
+| 1:min_precip        | double precision    | Millimeters     | Minimum precipitation     |              |
+| 1:max_precip        | double precision    | Millimeters     | Maximum precipitation     |              |
+| 1:mean_precip       | double precision    | Millimeters     | Mean precipitation        |              |
+| 1:min_rel_humid     | double precision    | Percent         | Minimum relative humidity |              |
+| 1:max_rel_humid     | double precision    | Percent         | Maximum relative humidity |              |
+| 1:mean_rel_humid    | double precision    | Percent         | Mean relative humidity    |              |
+| 1:min_stn_press     | double precision    | Kilopascals     | Minimum station pressure  |              |
+| 1:max_stn_press     | double precision    | Kilopascals     | Maximum station pressure  |              |
+| 1:mean_stn_press    | double precision    | Kilopascals     | Mean station pressure     |              |
+| 1:min_visibility    | double precision    | Kilometers      | Minimum visibility        |              |
+| 1:max_visibility    | double precision    | Kilometers      | Maximum visibility        |              |
+| 1:mean_visibility   | double precision    | Kilometers      | Mean visibility           |              |
+| 1:max_temp_y        | double precision    | Celsius         | Maximum temperature y     |              |
+| 1:min_temp_y        | double precision    | Celsius         | Minimum temperature y     |              |
+| 1:mean_temp_y       | double precision    | Celsius         | Mean temperature y        |              |
+| 1:min_total_rain    | double precision    | Millimeters     | Minimum total rain        |              |
+| 1:max_total_rain    | double precision    | Millimeters     | Maximum total rain        |              |
+| 1:mean_total_rain   | double precision    | Millimeters     | Mean total rain           |              |
+| 1:min_total_snow    | double precision    | Centimeters     | Minimum total snow        |              |
+| 1:max_total_snow    | double precision    | Centimeters     | Maximum total snow        |              |
+| 1:mean_total_snow   | double precision    | Centimeters     | Mean total snow           |              |
+| 1:min_total_precip  | double precision    | Millimeters     | Minimum total precipitation |              |
+| 1:max_total_precip  | double precision    | Millimeters     | Maximum total precipitation |              |
+| 1:mean_total_precip | double precision    | Millimeters     | Mean total precipitation  |              |
+| 1:min_snow_on_grnd  | double precision    | Centimeters     | Minimum snow on ground    |              |
+| 1:max_snow_on_grnd  | double precision    | Centimeters     | Maximum snow on ground    |              |
+| 1:mean_snow_on_grnd | double precision    | Centimeters     | Mean snow on ground       |              |
+| ...           | ...                | ...            | ...               | ...   |
+| 12:min_temp_x        | double precision    | Celsius         | Minimum temperature x     |              |
+| 12:max_temp_x        | double precision    | Celsius         | Maximum temperature x     |              |
+| 12:mean_temp_x       | double precision    | Celsius         | Mean temperature x        |              |
+| 12:min_dew_point_temp| double precision    | Celsius         | Minimum dew point temp    |              |
+| 12:max_dew_point_temp| double precision    | Celsius         | Maximum dew point temp    |              |
+| 12:mean_dew_point_temp|double precision    | Celsius         | Mean dew point temp       |              |
+| 12:min_humidex       | double precision    | N/A             | Minimum humidex           |              |
+| 12:max_humidex       | double precision    | N/A             | Maximum humidex           |              |
+| 12:mean_humidex      | double precision    | N/A             | Mean humidex              |              |
+| 12:min_precip        | double precision    | Millimeters     | Minimum precipitation     |              |
+| 12:max_precip        | double precision    | Millimeters     | Maximum precipitation     |              |
+| 12:mean_precip       | double precision    | Millimeters     | Mean precipitation        |              |
+| 12:min_rel_humid     | double precision    | Percent         | Minimum relative humidity |              |
+| 12:max_rel_humid     | double precision    | Percent         | Maximum relative humidity |              |
+| 12:mean_rel_humid    | double precision    | Percent         | Mean relative humidity    |              |
+| 12:min_stn_press     | double precision    | Kilopascals     | Minimum station pressure  |              |
+| 12:max_stn_press     | double precision    | Kilopascals     | Maximum station pressure  |              |
+| 12:mean_stn_press    | double precision    | Kilopascals     | Mean station pressure     |              |
+| 12:min_visibility    | double precision    | Kilometers      | Minimum visibility        |              |
+| 12:max_visibility    | double precision    | Kilometers      | Maximum visibility        |              |
+| 12:mean_visibility   | double precision    | Kilometers      | Mean visibility           |              |
+| 12:max_temp_y        | double precision    | Celsius         | Maximum temperature y     |              |
+| 12:min_temp_y        | double precision    | Celsius         | Minimum temperature y     |              |
+| 12:mean_temp_y       | double precision    | Celsius         | Mean temperature y        |              |
+| 12:min_total_rain    | double precision    | Millimeters     | Minimum total rain        |              |
+| 12:max_total_rain    | double precision    | Millimeters     | Maximum total rain        |              |
+| 12:mean_total_rain   | double precision    | Millimeters     | Mean total rain           |              |
+| 12:min_total_snow    | double precision    | Centimeters     | Minimum total snow        |              |
+| 12:max_total_snow    | double precision    | Centimeters     | Maximum total snow        |              |
+| 12:mean_total_snow   | double precision    | Centimeters     | Mean total snow           |              |
+| 12:min_total_precip  | double precision    | Millimeters     | Minimum total precipitation |              |
+| 12:max_total_precip  | double precision    | Millimeters     | Maximum total precipitation |              |
+| 12:mean_total_precip | double precision    | Millimeters     | Mean total precipitation  |              |
+| 12:min_snow_on_grnd  | double precision    | Centimeters     | Minimum snow on ground    |              |
+| 12:max_snow_on_grnd  | double precision    | Centimeters     | Maximum snow on ground    |              |
+| 12:mean_snow_on_grnd | double precision    | Centimeters     | Mean snow on ground       |              |
 
 </details>
 
@@ -778,6 +1442,83 @@ A table containing monthly aggregate weather data from the weather station datas
 A table containing weekly aggregate weather data from the weather station dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of January, February, March, and April.
 <details><summary>Vertical view dataset_cross_weekly_station_JFMA attribute list</summary>
 
+| Attribute             | Type                | Unit | Description | Constraint |
+| --------------------- | ------------------- | ---- | ----------- | ---------- |
+| year                  | bigint              | -    |             |            |
+| district              | bigint              | -    |             |            |
+| 1:min_temp_x          | double precision    | °C   |             |            |
+| 1:max_temp_x          | double precision    | °C   |             |            |
+| 1:mean_temp_x         | double precision    | °C   |             |            |
+| 1:min_dew_point_temp  | double precision    | °C   |             |            |
+| 1:max_dew_point_temp  | double precision    | °C   |             |            |
+| 1:mean_dew_point_temp | double precision    | °C   |             |            |
+| 1:min_humidex         | double precision    | -    |             |            |
+| 1:max_humidex         | double precision    | -    |             |            |
+| 1:mean_humidex        | double precision    | -    |             |            |
+| 1:min_precip          | double precision    | mm   |             |            |
+| 1:max_precip          | double precision    | mm   |             |            |
+| 1:mean_precip         | double precision    | mm   |             |            |
+| 1:min_rel_humid       | double precision    | %    |             |            |
+| 1:max_rel_humid       | double precision    | %    |             |            |
+| 1:mean_rel_humid      | double precision    | %    |             |            |
+| 1:min_stn_press       | double precision    | kPa  |             |            |
+| 1:max_stn_press       | double precision    | kPa  |             |            |
+| 1:mean_stn_press      | double precision    | kPa  |             |            |
+| 1:min_visibility      | double precision    | km   |             |            |
+| 1:max_visibility      | double precision    | km   |             |            |
+| 1:mean_visibility     | double precision    | km   |             |            |
+| 1:max_temp_y          | double precision    | °C   |             |            |
+| 1:min_temp_y          | double precision    | °C   |             |            |
+| 1:mean_temp_y         | double precision    | °C   |             |            |
+| 1:min_total_rain      | double precision    | mm   |             |            |
+| 1:max_total_rain      | double precision    | mm   |             |            |
+| 1:mean_total_rain     | double precision    | mm   |             |            |
+| 1:min_total_snow      | double precision    | cm   |             |            |
+| 1:max_total_snow      | double precision    | cm   |             |            |
+| 1:mean_total_snow     | double precision    | cm   |             |            |
+| 1:min_total_precip    | double precision    | mm   |             |            |
+| 1:max_total_precip    | double precision    | mm   |             |            |
+| 1:mean_total_precip   | double precision    | mm   |             |            |
+| 1:min_snow_on_grnd    | double precision    | cm   |             |            |
+| 1:max_snow_on_grnd    | double precision    | cm   |             |            |
+| 1:mean_snow_on_grnd   | double precision    | cm   |             |            |
+| ...             | ...                | ... | ... | ... |
+| 16:min_temp_x          | double precision    | °C   |             |            |
+| 16:max_temp_x          | double precision    | °C   |             |            |
+| 16:mean_temp_x         | double precision    | °C   |             |            |
+| 16:min_dew_point_temp  | double precision    | °C   |             |            |
+| 16:max_dew_point_temp  | double precision    | °C   |             |            |
+| 16:mean_dew_point_temp | double precision    | °C   |             |            |
+| 16:min_humidex         | double precision    | -    |             |            |
+| 16:max_humidex         | double precision    | -    |             |            |
+| 16:mean_humidex        | double precision    | -    |             |            |
+| 16:min_precip          | double precision    | mm   |             |            |
+| 16:max_precip          | double precision    | mm   |             |            |
+| 16:mean_precip         | double precision    | mm   |             |            |
+| 16:min_rel_humid       | double precision    | %    |             |            |
+| 16:max_rel_humid       | double precision    | %    |             |            |
+| 16:mean_rel_humid      | double precision    | %    |             |            |
+| 16:min_stn_press       | double precision    | kPa  |             |            |
+| 16:max_stn_press       | double precision    | kPa  |             |            |
+| 16:mean_stn_press      | double precision    | kPa  |             |            |
+| 16:min_visibility      | double precision    | km   |             |            |
+| 16:max_visibility      | double precision    | km   |             |            |
+| 16:mean_visibility     | double precision    | km   |             |            |
+| 16:max_temp_y          | double precision    | °C   |             |            |
+| 16:min_temp_y          | double precision    | °C   |             |            |
+| 16:mean_temp_y         | double precision    | °C   |             |            |
+| 16:min_total_rain      | double precision    | mm   |             |            |
+| 16:max_total_rain      | double precision    | mm   |             |            |
+| 16:mean_total_rain     | double precision    | mm   |             |            |
+| 16:min_total_snow      | double precision    | cm   |             |            |
+| 16:max_total_snow      | double precision    | cm   |             |            |
+| 16:mean_total_snow     | double precision    | cm   |             |            |
+| 16:min_total_precip    | double precision    | mm   |             |            |
+| 16:max_total_precip    | double precision    | mm   |             |            |
+| 16:mean_total_precip   | double precision    | mm   |             |            |
+| 16:min_snow_on_grnd    | double precision    | cm   |             |            |
+| 16:max_snow_on_grnd    | double precision    | cm   |             |            |
+| 16:mean_snow_on_grnd   | double precision    | cm   |             |            |
 
 </details>
 
@@ -792,7 +1533,83 @@ A table containing weekly aggregate weather data from the weather station datase
 A table containing weekly aggregate weather data from the weather station dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of March, April, May, and June.
 <details><summary>Vertical view dataset_cross_weekly_station_MAMJ attribute list</summary>
 
-
+| Attribute             | Type                | Unit | Description | Constraint |
+| --------------------- | ------------------- | ---- | ----------- | ---------- |
+| year                  | bigint              | -    |             |            |
+| district              | bigint              | -    |             |            |
+| 9:min_temp_x          | double precision    | °C   |             |            |
+| 9:max_temp_x          | double precision    | °C   |             |            |
+| 9:mean_temp_x         | double precision    | °C   |             |            |
+| 9:min_dew_point_temp  | double precision    | °C   |             |            |
+| 9:max_dew_point_temp  | double precision    | °C   |             |            |
+| 9:mean_dew_point_temp | double precision    | °C   |             |            |
+| 9:min_humidex         | double precision    | -    |             |            |
+| 9:max_humidex         | double precision    | -    |             |            |
+| 9:mean_humidex        | double precision    | -    |             |            |
+| 9:min_precip          | double precision    | mm   |             |            |
+| 9:max_precip          | double precision    | mm   |             |            |
+| 9:mean_precip         | double precision    | mm   |             |            |
+| 9:min_rel_humid       | double precision    | %    |             |            |
+| 9:max_rel_humid       | double precision    | %    |             |            |
+| 9:mean_rel_humid      | double precision    | %    |             |            |
+| 9:min_stn_press       | double precision    | kPa  |             |            |
+| 9:max_stn_press       | double precision    | kPa  |             |            |
+| 9:mean_stn_press      | double precision    | kPa  |             |            |
+| 9:min_visibility      | double precision    | km   |             |            |
+| 9:max_visibility      | double precision    | km   |             |            |
+| 9:mean_visibility     | double precision    | km   |             |            |
+| 9:max_temp_y          | double precision    | °C   |             |            |
+| 9:min_temp_y          | double precision    | °C   |             |            |
+| 9:mean_temp_y         | double precision    | °C   |             |            |
+| 9:min_total_rain      | double precision    | mm   |             |            |
+| 9:max_total_rain      | double precision    | mm   |             |            |
+| 9:mean_total_rain     | double precision    | mm   |             |            |
+| 9:min_total_snow      | double precision    | cm   |             |            |
+| 9:max_total_snow      | double precision    | cm   |             |            |
+| 9:mean_total_snow     | double precision    | cm   |             |            |
+| 9:min_total_precip    | double precision    | mm   |             |            |
+| 9:max_total_precip    | double precision    | mm   |             |            |
+| 9:mean_total_precip   | double precision    | mm   |             |            |
+| 9:min_snow_on_grnd    | double precision    | cm   |             |            |
+| 9:max_snow_on_grnd    | double precision    | cm   |             |            |
+| 9:mean_snow_on_grnd   | double precision    | cm   |             |            |
+| ...             | ...                | ... | ... | ... |
+| 24:min_temp_x          | double precision    | °C   |             |            |
+| 24:max_temp_x          | double precision    | °C   |             |            |
+| 24:mean_temp_x         | double precision    | °C   |             |            |
+| 24:min_dew_point_temp  | double precision    | °C   |             |            |
+| 24:max_dew_point_temp  | double precision    | °C   |             |            |
+| 24:mean_dew_point_temp | double precision    | °C   |             |            |
+| 24:min_humidex         | double precision    | -    |             |            |
+| 24:max_humidex         | double precision    | -    |             |            |
+| 24:mean_humidex        | double precision    | -    |             |            |
+| 24:min_precip          | double precision    | mm   |             |            |
+| 24:max_precip          | double precision    | mm   |             |            |
+| 24:mean_precip         | double precision    | mm   |             |            |
+| 24:min_rel_humid       | double precision    | %    |             |            |
+| 24:max_rel_humid       | double precision    | %    |             |            |
+| 24:mean_rel_humid      | double precision    | %    |             |            |
+| 24:min_stn_press       | double precision    | kPa  |             |            |
+| 24:max_stn_press       | double precision    | kPa  |             |            |
+| 24:mean_stn_press      | double precision    | kPa  |             |            |
+| 24:min_visibility      | double precision    | km   |             |            |
+| 24:max_visibility      | double precision    | km   |             |            |
+| 24:mean_visibility     | double precision    | km   |             |            |
+| 24:max_temp_y          | double precision    | °C   |             |            |
+| 24:min_temp_y          | double precision    | °C   |             |            |
+| 24:mean_temp_y         | double precision    | °C   |             |            |
+| 24:min_total_rain      | double precision    | mm   |             |            |
+| 24:max_total_rain      | double precision    | mm   |             |            |
+| 24:mean_total_rain     | double precision    | mm   |             |            |
+| 24:min_total_snow      | double precision    | cm   |             |            |
+| 24:max_total_snow      | double precision    | cm   |             |            |
+| 24:mean_total_snow     | double precision    | cm   |             |            |
+| 24:min_total_precip    | double precision    | mm   |             |            |
+| 24:max_total_precip    | double precision    | mm   |             |            |
+| 24:mean_total_precip   | double precision    | mm   |             |            |
+| 24:min_snow_on_grnd    | double precision    | cm   |             |            |
+| 24:max_snow_on_grnd    | double precision    | cm   |             |            |
+| 24:mean_snow_on_grnd   | double precision    | cm   |             |            |
 </details>
 
 [back to top](#overview)
@@ -806,7 +1623,83 @@ A table containing weekly aggregate weather data from the weather station datase
 A table containing weekly aggregate weather data from the weather station dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of May, June, July, and August.
 <details><summary>Vertical view dataset_cross_weekly_station_MJJA attribute list</summary>
 
-
+| Attribute             | Type                | Unit | Description | Constraint |
+| --------------------- | ------------------- | ---- | ----------- | ---------- |
+| year                  | bigint              | -    |             |            |
+| district              | bigint              | -    |             |            |
+| 17:min_temp_x          | double precision    | °C   |             |            |
+| 17:max_temp_x          | double precision    | °C   |             |            |
+| 17:mean_temp_x         | double precision    | °C   |             |            |
+| 17:min_dew_point_temp  | double precision    | °C   |             |            |
+| 17:max_dew_point_temp  | double precision    | °C   |             |            |
+| 17:mean_dew_point_temp | double precision    | °C   |             |            |
+| 17:min_humidex         | double precision    | -    |             |            |
+| 17:max_humidex         | double precision    | -    |             |            |
+| 17:mean_humidex        | double precision    | -    |             |            |
+| 17:min_precip          | double precision    | mm   |             |            |
+| 17:max_precip          | double precision    | mm   |             |            |
+| 17:mean_precip         | double precision    | mm   |             |            |
+| 17:min_rel_humid       | double precision    | %    |             |            |
+| 17:max_rel_humid       | double precision    | %    |             |            |
+| 17:mean_rel_humid      | double precision    | %    |             |            |
+| 17:min_stn_press       | double precision    | kPa  |             |            |
+| 17:max_stn_press       | double precision    | kPa  |             |            |
+| 17:mean_stn_press      | double precision    | kPa  |             |            |
+| 17:min_visibility      | double precision    | km   |             |            |
+| 17:max_visibility      | double precision    | km   |             |            |
+| 17:mean_visibility     | double precision    | km   |             |            |
+| 17:max_temp_y          | double precision    | °C   |             |            |
+| 17:min_temp_y          | double precision    | °C   |             |            |
+| 17:mean_temp_y         | double precision    | °C   |             |            |
+| 17:min_total_rain      | double precision    | mm   |             |            |
+| 17:max_total_rain      | double precision    | mm   |             |            |
+| 17:mean_total_rain     | double precision    | mm   |             |            |
+| 17:min_total_snow      | double precision    | cm   |             |            |
+| 17:max_total_snow      | double precision    | cm   |             |            |
+| 17:mean_total_snow     | double precision    | cm   |             |            |
+| 17:min_total_precip    | double precision    | mm   |             |            |
+| 17:max_total_precip    | double precision    | mm   |             |            |
+| 17:mean_total_precip   | double precision    | mm   |             |            |
+| 17:min_snow_on_grnd    | double precision    | cm   |             |            |
+| 17:max_snow_on_grnd    | double precision    | cm   |             |            |
+| 17:mean_snow_on_grnd   | double precision    | cm   |             |            |
+| ...             | ...                | ... | ... | ... |
+| 32:min_temp_x          | double precision    | °C   |             |            |
+| 32:max_temp_x          | double precision    | °C   |             |            |
+| 32:mean_temp_x         | double precision    | °C   |             |            |
+| 32:min_dew_point_temp  | double precision    | °C   |             |            |
+| 32:max_dew_point_temp  | double precision    | °C   |             |            |
+| 32:mean_dew_point_temp | double precision    | °C   |             |            |
+| 32:min_humidex         | double precision    | -    |             |            |
+| 32:max_humidex         | double precision    | -    |             |            |
+| 32:mean_humidex        | double precision    | -    |             |            |
+| 32:min_precip          | double precision    | mm   |             |            |
+| 32:max_precip          | double precision    | mm   |             |            |
+| 32:mean_precip         | double precision    | mm   |             |            |
+| 32:min_rel_humid       | double precision    | %    |             |            |
+| 32:max_rel_humid       | double precision    | %    |             |            |
+| 32:mean_rel_humid      | double precision    | %    |             |            |
+| 32:min_stn_press       | double precision    | kPa  |             |            |
+| 32:max_stn_press       | double precision    | kPa  |             |            |
+| 32:mean_stn_press      | double precision    | kPa  |             |            |
+| 32:min_visibility      | double precision    | km   |             |            |
+| 32:max_visibility      | double precision    | km   |             |            |
+| 32:mean_visibility     | double precision    | km   |             |            |
+| 32:max_temp_y          | double precision    | °C   |             |            |
+| 32:min_temp_y          | double precision    | °C   |             |            |
+| 32:mean_temp_y         | double precision    | °C   |             |            |
+| 32:min_total_rain      | double precision    | mm   |             |            |
+| 32:max_total_rain      | double precision    | mm   |             |            |
+| 32:mean_total_rain     | double precision    | mm   |             |            |
+| 32:min_total_snow      | double precision    | cm   |             |            |
+| 32:max_total_snow      | double precision    | cm   |             |            |
+| 32:mean_total_snow     | double precision    | cm   |             |            |
+| 32:min_total_precip    | double precision    | mm   |             |            |
+| 32:max_total_precip    | double precision    | mm   |             |            |
+| 32:mean_total_precip   | double precision    | mm   |             |            |
+| 32:min_snow_on_grnd    | double precision    | cm   |             |            |
+| 32:max_snow_on_grnd    | double precision    | cm   |             |            |
+| 32:mean_snow_on_grnd   | double precision    | cm   |             |            |
 </details>
 
 [back to top](#overview)
@@ -820,7 +1713,83 @@ A table containing weekly aggregate weather data from the weather station datase
 A table containing weekly aggregate weather data from the weather station dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of July, August, September, and October.
 <details><summary>Vertical view dataset_cross_weekly_station_JASO attribute list</summary>
 
-
+| Attribute               | Type                | Unit | Description | Constraint |
+| ----------------------- | ------------------- | ---- | ----------- | ---------- |
+| year                    | bigint              | -    |             |            |
+| district                | bigint              | -    |             |            |
+| 25:min_temp_x           | double precision    | °C   |             |            |
+| 25:max_temp_x           | double precision    | °C   |             |            |
+| 25:mean_temp_x          | double precision    | °C   |             |            |
+| 25:min_dew_point_temp   | double precision    | °C   |             |            |
+| 25:max_dew_point_temp   | double precision    | °C   |             |            |
+| 25:mean_dew_point_temp  | double precision    | °C   |             |            |
+| 25:min_humidex          | double precision    | -    |             |            |
+| 25:max_humidex          | double precision    | -    |             |            |
+| 25:mean_humidex         | double precision    | -    |             |            |
+| 25:min_precip           | double precision    | mm   |             |            |
+| 25:max_precip           | double precision    | mm   |             |            |
+| 25:mean_precip          | double precision    | mm   |             |            |
+| 25:min_rel_humid        | double precision    | %    |             |            |
+| 25:max_rel_humid        | double precision    | %    |             |            |
+| 25:mean_rel_humid       | double precision    | %    |             |            |
+| 25:min_stn_press        | double precision    | kPa  |             |            |
+| 25:max_stn_press        | double precision    | kPa  |             |            |
+| 25:mean_stn_press       | double precision    | kPa  |             |            |
+| 25:min_visibility       | double precision    | km   |             |            |
+| 25:max_visibility       | double precision    | km   |             |            |
+| 25:mean_visibility      | double precision    | km   |             |            |
+| 25:max_temp_y           | double precision    | °C   |             |            |
+| 25:min_temp_y           | double precision    | °C   |             |            |
+| 25:mean_temp_y          | double precision    | °C   |             |            |
+| 25:min_total_rain       | double precision    | mm   |             |            |
+| 25:max_total_rain       | double precision    | mm   |             |            |
+| 25:mean_total_rain      | double precision    | mm   |             |            |
+| 25:min_total_snow       | double precision    | cm   |             |            |
+| 25:max_total_snow       | double precision    | cm   |             |            |
+| 25:mean_total_snow      | double precision    | cm   |             |            |
+| 25:min_total_precip     | double precision    | mm   |             |            |
+| 25:max_total_precip     | double precision    | mm   |             |            |
+| 25:mean_total_precip    | double precision    | mm   |             |            |
+| 25:min_snow_on_grnd     | double precision    | cm   |             |            |
+| 25:max_snow_on_grnd     | double precision    | cm   |             |            |
+| 25:mean_snow_on_grnd    | double precision    | cm   |             |            |
+| ...             | ...                | ... | ... | ... |
+| 40:min_temp_x          | double precision    | °C   |             |            |
+| 40:max_temp_x          | double precision    | °C   |             |            |
+| 40:mean_temp_x         | double precision    | °C   |             |            |
+| 40:min_dew_point_temp  | double precision    | °C   |             |            |
+| 40:max_dew_point_temp  | double precision    | °C   |             |            |
+| 40:mean_dew_point_temp | double precision    | °C   |             |            |
+| 40:min_humidex         | double precision    | -    |             |            |
+| 40:max_humidex         | double precision    | -    |             |            |
+| 40:mean_humidex        | double precision    | -    |             |            |
+| 40:min_precip          | double precision    | mm   |             |            |
+| 40:max_precip          | double precision    | mm   |             |            |
+| 40:mean_precip         | double precision    | mm   |             |            |
+| 40:min_rel_humid       | double precision    | %    |             |            |
+| 40:max_rel_humid       | double precision    | %    |             |            |
+| 40:mean_rel_humid      | double precision    | %    |             |            |
+| 40:min_stn_press       | double precision    | kPa  |             |            |
+| 40:max_stn_press       | double precision    | kPa  |             |            |
+| 40:mean_stn_press      | double precision    | kPa  |             |            |
+| 40:min_visibility      | double precision    | km   |             |            |
+| 40:max_visibility      | double precision    | km   |             |            |
+| 40:mean_visibility     | double precision    | km   |             |            |
+| 40:max_temp_y          | double precision    | °C   |             |            |
+| 40:min_temp_y          | double precision    | °C   |             |            |
+| 40:mean_temp_y         | double precision    | °C   |             |            |
+| 40:min_total_rain      | double precision    | mm   |             |            |
+| 40:max_total_rain      | double precision    | mm   |             |            |
+| 40:mean_total_rain     | double precision    | mm   |             |            |
+| 40:min_total_snow      | double precision    | cm   |             |            |
+| 40:max_total_snow      | double precision    | cm   |             |            |
+| 40:mean_total_snow     | double precision    | cm   |             |            |
+| 40:min_total_precip    | double precision    | mm   |             |            |
+| 40:max_total_precip    | double precision    | mm   |             |            |
+| 40:mean_total_precip   | double precision    | mm   |             |            |
+| 40:min_snow_on_grnd    | double precision    | cm   |             |            |
+| 40:max_snow_on_grnd    | double precision    | cm   |             |            |
+| 40:mean_snow_on_grnd   | double precision    | cm   |             |            |
 </details>
 
 [back to top](#overview)
@@ -834,6 +1803,73 @@ A table containing weekly aggregate weather data from the weather station datase
 A table containing daily aggregate weather data from the copernicus satellite dataset joined with soil moisture data from the satellite dataset.
 <details><summary>Vertical view dataset_daily_sat_soil attribute list</summary>
 
+| Attribute                           | Type              | Unit | Description | Constraint |
+| ----------------------------------- | ----------------- | ---- | ----------- | ---------- |
+| year                                | bigint            | -    |             |            |
+| month_x                             | bigint            | -    |             |            |
+| day_x                               | bigint            | -    |             |            |
+| cr_num                              | bigint            | -    |             |            |
+| district                            | bigint            | -    |             |            |
+| min_dewpoint_temperature            | double precision  | °C   |             |            |
+| max_dewpoint_temperature            | double precision  | °C   |             |            |
+| mean_dewpoint_temperature           | double precision  | °C   |             |            |
+| min_temperature                     | double precision  | °C   |             |            |
+| max_temperature                     | double precision  | °C   |             |            |
+| mean_temperature                    | double precision  | °C   |             |            |
+| min_evaporation_from_bare_soil      | double precision  | mm   |             |            |
+| max_evaporation_from_bare_soil      | double precision  | mm   |             |            |
+| mean_evaporation_from_bare_soil     | double precision  | mm   |             |            |
+| min_skin_reservoir_content          | double precision  | mm   |             |            |
+| max_skin_reservoir_content          | double precision  | mm   |             |            |
+| mean_skin_reservoir_content         | double precision  | mm   |             |            |
+| min_skin_temperature                | double precision  | °C   |             |            |
+| max_skin_temperature                | double precision  | °C   |             |            |
+| mean_skin_temperature               | double precision  | °C   |             |            |
+| min_snowmelt                        | double precision  | mm   |             |            |
+| max_snowmelt                        | double precision  | mm   |             |            |
+| mean_snowmelt                       | double precision  | mm   |             |            |
+| min_soil_temperature_level_1        | double precision  | °C   |             |            |
+| max_soil_temperature_level_1        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_1       | double precision  | °C   |             |            |
+| min_soil_temperature_level_2        | double precision  | °C   |             |            |
+| max_soil_temperature_level_2        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_2       | double precision  | °C   |             |            |
+| min_soil_temperature_level_3        | double precision  | °C   |             |            |
+| max_soil_temperature_level_3        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_3       | double precision  | °C   |             |            |
+| min_soil_temperature_level_4        | double precision  | °C   |             |            |
+| max_soil_temperature_level_4        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_4       | double precision  | °C   |             |            |
+| min_surface_net_solar_radiation     | double precision  | W/m² |             |            |
+| max_surface_net_solar_radiation     | double precision  | W/m² |             |            |
+| mean_surface_net_solar_radiation    | double precision  | W/m² |             |            |
+| min_surface_pressure                | double precision  | Pa   |             |            |
+| max_surface_pressure                | double precision  | Pa   |             |            |
+| mean_surface_pressure               | double precision  | Pa   |             |            |
+| min_volumetric_soil_water_layer_1   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_1   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_1  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_2   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_2   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_2  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_3   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_3   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_3  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_4   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_4   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_4  | double precision  | m³/m³|             |            |
+| min_leaf_area_index_high_vegetation | double precision  | -    |             |            |
+| max_leaf_area_index_high_vegetation | double precision  | -    |             |            |
+| mean_leaf_area_index_high_vegetation| double precision  | -    |             |            |
+| min_leaf_area_index_low_vegetation  | double precision  | -    |             |            |
+| max_leaf_area_index_low_vegetation  | double precision  | -    |             |            |
+| mean_leaf_area_index_low_vegetation | double precision  | -    |             |            |
+| day_of_year                         | integer           | -    |             |            |
+| month_y                             | double precision  | -    |             |            |
+| day_y                               | double precision  | -    |             |            |
+| soil_moisture_min                   | double precision  | m³/m³|             |            |
+| soil_moisture_max                   | double precision  | m³/m³|             |            |
+| soil_moisture_mean                  | double precision  | m³/m³|             |            |
 
 </details>
 
@@ -848,6 +1884,70 @@ A table containing daily aggregate weather data from the copernicus satellite da
 A table containing weekly aggregate weather data from the copernicus satellite dataset joined with soil moisture data from the satellite dataset.
 <details><summary>Vertical view dataset_weekly_sat_soil attribute list</summary>
 
+| Attribute                           | Type              | Unit | Description | Constraint |
+| ----------------------------------- | ----------------- | ---- | ----------- | ---------- |
+| year                                | bigint            | -    |             |            |
+| month_x                             | bigint            | -    |             |            |
+| week_of_year                        | bigint            | -    |             |            |
+| district                            | bigint            | -    |             |            |
+| min_dewpoint_temperature            | double precision  | °C   |             |            |
+| max_dewpoint_temperature            | double precision  | °C   |             |            |
+| mean_dewpoint_temperature           | double precision  | °C   |             |            |
+| min_temperature                     | double precision  | °C   |             |            |
+| max_temperature                     | double precision  | °C   |             |            |
+| mean_temperature                    | double precision  | °C   |             |            |
+| min_evaporation_from_bare_soil      | double precision  | mm   |             |            |
+| max_evaporation_from_bare_soil      | double precision  | mm   |             |            |
+| mean_evaporation_from_bare_soil     | double precision  | mm   |             |            |
+| min_skin_reservoir_content          | double precision  | mm   |             |            |
+| max_skin_reservoir_content          | double precision  | mm   |             |            |
+| mean_skin_reservoir_content         | double precision  | mm   |             |            |
+| min_skin_temperature                | double precision  | °C   |             |            |
+| max_skin_temperature                | double precision  | °C   |             |            |
+| mean_skin_temperature               | double precision  | °C   |             |            |
+| min_snowmelt                        | double precision  | mm   |             |            |
+| max_snowmelt                        | double precision  | mm   |             |            |
+| mean_snowmelt                       | double precision  | mm   |             |            |
+| min_soil_temperature_level_1        | double precision  | °C   |             |            |
+| max_soil_temperature_level_1        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_1       | double precision  | °C   |             |            |
+| min_soil_temperature_level_2        | double precision  | °C   |             |            |
+| max_soil_temperature_level_2        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_2       | double precision  | °C   |             |            |
+| min_soil_temperature_level_3        | double precision  | °C   |             |            |
+| max_soil_temperature_level_3        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_3       | double precision  | °C   |             |            |
+| min_soil_temperature_level_4        | double precision  | °C   |             |            |
+| max_soil_temperature_level_4        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_4       | double precision  | °C   |             |            |
+| min_surface_net_solar_radiation     | double precision  | W/m² |             |            |
+| max_surface_net_solar_radiation     | double precision  | W/m² |             |            |
+| mean_surface_net_solar_radiation    | double precision  | W/m² |             |            |
+| min_surface_pressure                | double precision  | Pa   |             |            |
+| max_surface_pressure                | double precision  | Pa   |             |            |
+| mean_surface_pressure               | double precision  | Pa   |             |            |
+| min_volumetric_soil_water_layer_1   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_1   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_1  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_2   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_2   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_2  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_3   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_3   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_3  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_4   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_4   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_4  | double precision  | m³/m³|             |            |
+| min_leaf_area_index_high_vegetation | double precision  | -    |             |            |
+| max_leaf_area_index_high_vegetation | double precision  | -    |             |            |
+| mean_leaf_area_index_high_vegetation| double precision  | -    |             |            |
+| min_leaf_area_index_low_vegetation  | double precision  | -    |             |            |
+| max_leaf_area_index_low_vegetation  | double precision  | -    |             |            |
+| mean_leaf_area_index_low_vegetation | double precision  | -    |             |            |
+| month_y                             | double precision  | -    |             |            |
+| soil_moisture_min                   | double precision  | m³/m³|             |            |
+| soil_moisture_max                   | double precision  | m³/m³|             |            |
+| soil_moisture_mean                  | double precision  | m³/m³|             |            |
 
 </details>
 
@@ -862,6 +1962,68 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 A table containing monthly aggregate weather data from the copernicus satellite dataset joined with soil moisture data from the satellite dataset.
 <details><summary>Vertical view dataset_monthly_sat_soil attribute list</summary>
 
+| Attribute                           | Type              | Unit | Description | Constraint |
+| ----------------------------------- | ----------------- | ---- | ----------- | ---------- |
+| year                                | bigint            | -    |             |            |
+| month                               | bigint            | -    |             |            |
+| district                            | bigint            | -    |             |            |
+| min_dewpoint_temperature            | double precision  | °C   |             |            |
+| max_dewpoint_temperature            | double precision  | °C   |             |            |
+| mean_dewpoint_temperature           | double precision  | °C   |             |            |
+| min_temperature                     | double precision  | °C   |             |            |
+| max_temperature                     | double precision  | °C   |             |            |
+| mean_temperature                    | double precision  | °C   |             |            |
+| min_evaporation_from_bare_soil      | double precision  | mm   |             |            |
+| max_evaporation_from_bare_soil      | double precision  | mm   |             |            |
+| mean_evaporation_from_bare_soil     | double precision  | mm   |             |            |
+| min_skin_reservoir_content          | double precision  | mm   |             |            |
+| max_skin_reservoir_content          | double precision  | mm   |             |            |
+| mean_skin_reservoir_content         | double precision  | mm   |             |            |
+| min_skin_temperature                | double precision  | °C   |             |            |
+| max_skin_temperature                | double precision  | °C   |             |            |
+| mean_skin_temperature               | double precision  | °C   |             |            |
+| min_snowmelt                        | double precision  | mm   |             |            |
+| max_snowmelt                        | double precision  | mm   |             |            |
+| mean_snowmelt                       | double precision  | mm   |             |            |
+| min_soil_temperature_level_1        | double precision  | °C   |             |            |
+| max_soil_temperature_level_1        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_1       | double precision  | °C   |             |            |
+| min_soil_temperature_level_2        | double precision  | °C   |             |            |
+| max_soil_temperature_level_2        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_2       | double precision  | °C   |             |            |
+| min_soil_temperature_level_3        | double precision  | °C   |             |            |
+| max_soil_temperature_level_3        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_3       | double precision  | °C   |             |            |
+| min_soil_temperature_level_4        | double precision  | °C   |             |            |
+| max_soil_temperature_level_4        | double precision  | °C   |             |            |
+| mean_soil_temperature_level_4       | double precision  | °C   |             |            |
+| min_surface_net_solar_radiation     | double precision  | W/m² |             |            |
+| max_surface_net_solar_radiation     | double precision  | W/m² |             |            |
+| mean_surface_net_solar_radiation    | double precision  | W/m² |             |            |
+| min_surface_pressure                | double precision  | Pa   |             |            |
+| max_surface_pressure                | double precision  | Pa   |             |            |
+| mean_surface_pressure               | double precision  | Pa   |             |            |
+| min_volumetric_soil_water_layer_1   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_1   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_1  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_2   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_2   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_2  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_3   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_3   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_3  | double precision  | m³/m³|             |            |
+| min_volumetric_soil_water_layer_4   | double precision  | m³/m³|             |            |
+| max_volumetric_soil_water_layer_4   | double precision  | m³/m³|             |            |
+| mean_volumetric_soil_water_layer_4  | double precision  | m³/m³|             |            |
+| min_leaf_area_index_high_vegetation | double precision  | -    |             |            |
+| max_leaf_area_index_high_vegetation | double precision  | -    |             |            |
+| mean_leaf_area_index_high_vegetation| double precision  | -    |             |            |
+| min_leaf_area_index_low_vegetation  | double precision  | -    |             |            |
+| max_leaf_area_index_low_vegetation  | double precision  | -    |             |            |
+| mean_leaf_area_index_low_vegetation | double precision  | -    |             |            |
+| soil_moisture_min                   | double precision  | m³/m³|             |            |
+| soil_moisture_max                   | double precision  | m³/m³|             |            |
+| soil_moisture_mean                  | double precision  | m³/m³|             |            |
 
 </details>
 
@@ -876,6 +2038,54 @@ A table containing monthly aggregate weather data from the copernicus satellite 
 A table containing daily aggregate weather data from the weather station dataset joined with soil moisture data from the satellite dataset.
 <details><summary>Vertical view dataset_daily_station_soil attribute list</summary>
 
+| Attribute           | Type              | Unit      | Description | Constraint |
+| ------------------- | ----------------- | --------- | ----------- | ---------- |
+| district            | bigint            | -         |             |            |
+| year                | bigint            | -         |             |            |
+| month_x             | bigint            | -         |             |            |
+| day_x               | bigint            | -         |             |            |
+| min_temp_x          | double precision  | °C        |             |            |
+| max_temp_x          | double precision  | °C        |             |            |
+| mean_temp_x         | double precision  | °C        |             |            |
+| min_dew_point_temp  | double precision  | °C        |             |            |
+| max_dew_point_temp  | double precision  | °C        |             |            |
+| mean_dew_point_temp | double precision  | °C        |             |            |
+| min_humidex         | double precision  | -         |             |            |
+| max_humidex         | double precision  | -         |             |            |
+| mean_humidex        | double precision  | -         |             |            |
+| min_precip          | double precision  | mm        |             |            |
+| max_precip          | double precision  | mm        |             |            |
+| mean_precip         | double precision  | mm        |             |            |
+| min_rel_humid       | double precision  | %         |             |            |
+| max_rel_humid       | double precision  | %         |             |            |
+| mean_rel_humid      | double precision  | %         |             |            |
+| min_stn_press       | double precision  | Pa        |             |            |
+| max_stn_press       | double precision  | Pa        |             |            |
+| mean_stn_press      | double precision  | Pa        |             |            |
+| min_visibility      | double precision  | km        |             |            |
+| max_visibility      | double precision  | km        |             |            |
+| mean_visibility     | double precision  | km        |             |            |
+| max_temp_y          | double precision  | °C        |             |            |
+| min_temp_y          | double precision  | °C        |             |            |
+| mean_temp_y         | double precision  | °C        |             |            |
+| min_total_rain      | double precision  | mm        |             |            |
+| max_total_rain      | double precision  | mm        |             |            |
+| mean_total_rain     | double precision  | mm        |             |            |
+| min_total_snow      | double precision  | cm        |             |            |
+| max_total_snow      | double precision  | cm        |             |            |
+| mean_total_snow     | double precision  | cm        |             |            |
+| min_total_precip    | double precision  | mm        |             |            |
+| max_total_precip    | double precision  | mm        |             |            |
+| mean_total_precip   | double precision  | mm        |             |            |
+| min_snow_on_grnd    | double precision  | cm        |             |            |
+| max_snow_on_grnd    | double precision  | cm        |             |            |
+| mean_snow_on_grnd   | double precision  | cm        |             |            |
+| day_of_year         | integer           | -         |             |            |
+| month_y             | double precision  | -         |             |            |
+| day_y               | double precision  | -         |             |            |
+| soil_moisture_min   | double precision  | m³/m³     |             |            |
+| soil_moisture_max   | double precision  | m³/m³     |             |            |
+| soil_moisture_mean  | double precision  | m³/m³     |             |            |
 
 </details>
 
@@ -890,6 +2100,52 @@ A table containing daily aggregate weather data from the weather station dataset
 A table containing weekly aggregate weather data from the weather station dataset joined with soil moisture data from the satellite dataset.
 <details><summary>Vertical view dataset_weekly_station_soil attribute list</summary>
 
+| Attribute           | Type              | Unit      | Description | Constraint |
+| ------------------- | ----------------- | --------- | ----------- | ---------- |
+| year                | bigint            | -         |             |            |
+| month_x             | bigint            | -         |             |            |
+| week_of_year        | bigint            | -         |             |            |
+| district            | bigint            | -         |             |            |
+| min_temp_x          | double precision  | °C        |             |            |
+| max_temp_x          | double precision  | °C        |             |            |
+| mean_temp_x         | double precision  | °C        |             |            |
+| min_dew_point_temp  | double precision  | °C        |             |            |
+| max_dew_point_temp  | double precision  | °C        |             |            |
+| mean_dew_point_temp | double precision  | °C        |             |            |
+| min_humidex         | double precision  | -         |             |            |
+| max_humidex         | double precision  | -         |             |            |
+| mean_humidex        | double precision  | -         |             |            |
+| min_precip          | double precision  | mm        |             |            |
+| max_precip          | double precision  | mm        |             |            |
+| mean_precip         | double precision  | mm        |             |            |
+| min_rel_humid       | double precision  | %         |             |            |
+| max_rel_humid       | double precision  | %         |             |            |
+| mean_rel_humid      | double precision  | %         |             |            |
+| min_stn_press       | double precision  | Pa        |             |            |
+| max_stn_press       | double precision  | Pa        |             |            |
+| mean_stn_press      | double precision  | Pa        |             |            |
+| min_visibility      | double precision  | km        |             |            |
+| max_visibility      | double precision  | km        |             |            |
+| mean_visibility     | double precision  | km        |             |            |
+| max_temp_y          | double precision  | °C        |             |            |
+| min_temp_y          | double precision  | °C        |             |            |
+| mean_temp_y         | double precision  | °C        |             |            |
+| min_total_rain      | double precision  | mm        |             |            |
+| max_total_rain      | double precision  | mm        |             |            |
+| mean_total_rain     | double precision  | mm        |             |            |
+| min_total_snow      | double precision  | cm        |             |            |
+| max_total_snow      | double precision  | cm        |             |            |
+| mean_total_snow     | double precision  | cm        |             |            |
+| min_total_precip    | double precision  | mm        |             |            |
+| max_total_precip    | double precision  | mm        |             |            |
+| mean_total_precip   | double precision  | mm        |             |            |
+| min_snow_on_grnd    | double precision  | cm        |             |            |
+| max_snow_on_grnd    | double precision  | cm        |             |            |
+| mean_snow_on_grnd   | double precision  | cm        |             |            |
+| month_y             | double precision  | -         |             |            |
+| soil_moisture_min   | double precision  | m³/m³     |             |            |
+| soil_moisture_max   | double precision  | m³/m³     |             |            |
+| soil_moisture_mean  | double precision  | m³/m³     |             |            |
 
 </details>
 
@@ -904,6 +2160,50 @@ A table containing weekly aggregate weather data from the weather station datase
 A table containing monthly aggregate weather data from the weather station dataset joined with soil moisture data from the satellite dataset.
 <details><summary>Vertical view dataset_monthly_station_soil attribute list</summary>
 
+| Attribute           | Type              | Unit      | Description | Constraint |
+| ------------------- | ----------------- | --------- | ----------- | ---------- |
+| year                | bigint            | -         |             |            |
+| month               | bigint            | -         |             |            |
+| district            | bigint            | -         |             |            |
+| min_temp_x          | double precision  | °C        |             |            |
+| max_temp_x          | double precision  | °C        |             |            |
+| mean_temp_x         | double precision  | °C        |             |            |
+| min_dew_point_temp  | double precision  | °C        |             |            |
+| max_dew_point_temp  | double precision  | °C        |             |            |
+| mean_dew_point_temp | double precision  | °C        |             |            |
+| min_humidex         | double precision  | -         |             |            |
+| max_humidex         | double precision  | -         |             |            |
+| mean_humidex        | double precision  | -         |             |            |
+| min_precip          | double precision  | mm        |             |            |
+| max_precip          | double precision  | mm        |             |            |
+| mean_precip         | double precision  | mm        |             |            |
+| min_rel_humid       | double precision  | %         |             |            |
+| max_rel_humid       | double precision  | %         |             |            |
+| mean_rel_humid      | double precision  | %         |             |            |
+| min_stn_press       | double precision  | Pa        |             |            |
+| max_stn_press       | double precision  | Pa        |             |            |
+| mean_stn_press      | double precision  | Pa        |             |            |
+| min_visibility      | double precision  | km        |             |            |
+| max_visibility      | double precision  | km        |             |            |
+| mean_visibility     | double precision  | km        |             |            |
+| max_temp_y          | double precision  | °C        |             |            |
+| min_temp_y          | double precision  | °C        |             |            |
+| mean_temp_y         | double precision  | °C        |             |            |
+| min_total_rain      | double precision  | mm        |             |            |
+| max_total_rain      | double precision  | mm        |             |            |
+| mean_total_rain     | double precision  | mm        |             |            |
+| min_total_snow      | double precision  | cm        |             |            |
+| max_total_snow      | double precision  | cm        |             |            |
+| mean_total_snow     | double precision  | cm        |             |            |
+| min_total_precip    | double precision  | mm        |             |            |
+| max_total_precip    | double precision  | mm        |             |            |
+| mean_total_precip   | double precision  | mm        |             |            |
+| min_snow_on_grnd    | double precision  | cm        |             |            |
+| max_snow_on_grnd    | double precision  | cm        |             |            |
+| mean_snow_on_grnd   | double precision  | cm        |             |            |
+| soil_moisture_min   | double precision  | m³/m³     |             |            |
+| soil_moisture_max   | double precision  | m³/m³     |             |            |
+| soil_moisture_mean  | double precision  | m³/m³     |             |            |
 
 </details>
 
