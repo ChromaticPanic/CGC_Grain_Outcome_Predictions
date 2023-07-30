@@ -1,5 +1,41 @@
-# cares about years
-# cares about aggregate naming scheme for days, weeks and months - column names are independent
+# -------------------------------------------
+# setCreator.py
+#
+# After loading the dataset, this class creates different datasets to be used in the modeling process
+#
+# Splits present:
+# -------------------------------------------
+# - Train (used to train the models)
+# - Test (used to test the models)
+# - Dev (used during hyperparameter testing, prevents overfitting the hyperparameters to the data)
+#
+# Datasets present:
+# -------------------------------------------
+# - Dataset1: Exploratory set (seasons, worst years, first 15 years, all data, different data preprocessing)
+#
+# - Dataset2: Best from dataset1 plus all data aggregated combinations (day, week, month)
+#
+# - Dataset3: Results from Feature Reduction on dataset2 (using RFECV and random forests)
+#
+# - Dataset4: Best results from dataset3, where the train and test sets are based on different years
+#   - First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]
+#
+# - Dataset5: Second best results from dataset3, where the train and test sets are based on different years
+#   - Moisture data from years with bad ergot aggregated by month [mean]|[minMax]|[straified on has_ergot]
+# 
+# Remarks: 
+# -------------------------------------------
+#   - Data is searchable by its description, this means that if you want to learn more about the data from a particular model, 
+#     get its descript and search for it using control f
+#
+#   - Dataset1, Dataset2, Dataset3, Dataset4 and Dataset5 are not that great, they have iterropolation, unbalanced data and were tested using same year Ergot data
+#   - The creation of these datasets depend heavily upon Sets, this means that while they dont have to be used these are their varying column requirements:
+#       - year
+#       - district
+#       - The last column must adhere to the formats set by the [aggregatorHelper](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/Shared/aggregatorHelper.py)
+#         i.e MO-DA:ATTRIBUTE, W:ATTRIBUTE, M:ATTRIBUTE
+#   - Due the sheer size of this class, it is a singleton. This means only one instance can be created thus making it quicker to load afterwards
+# -------------------------------------------
 from dotenv import load_dotenv
 import sqlalchemy as sq
 import pandas as pd
@@ -20,6 +56,11 @@ from Sets.fall import Fall  # type: ignore
 
 from setModifier import SetModifier  # type: ignore
 
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
+
 sys.path.append("../")
 from Shared.GenericQueryBuilder import GenericQueryBuilder
 from Shared.DataService import DataService
@@ -28,23 +69,46 @@ from Soil.soilAggregator import SoilAggregator
 from WeatherStation.hlyAggregator import HlyAggregator
 from SatelliteSoilMoisture.moistureAggregator import MoistureAggregator
 
-LOCAL_FILE_DATASETS_LOC = "./data"
 
-HLY_CSV_BY_DAY = "agg_hly_by_day.csv"
+# Where we expect the find the loaded data (stored in CSVs since there are too many columns)
+LOCAL_FILE_DATASETS_LOC = "./data"  
+
+# The CSV holding the hourly weather station data by day
+HLY_CSV_BY_DAY = "agg_hly_by_day.csv" 
+
+# The CSV holding the hourly weather station data by week
 HLY_CSV_BY_WEEK = "agg_hly_by_week.csv"
+
+# The CSV holding the hourly weather station data by month
 HLY_CSV_BY_MONTH = "agg_hly_by_month.csv"
 
+# The CSV holding the soil moisture data by day
 MOISTURE_CSV_BY_DAY = "agg_moisture_by_day.csv"
+
+# The CSV holding the soil moisture data by week
 MOISTURE_CSV_BY_WEEK = "agg_moisture_by_week.csv"
+
+# The CSV holding the soil moisture data by month
 MOISTURE_CSV_BY_MONTH = "agg_moisture_by_month.csv"
 
+# The table that holds the aggregated soil data
 AGG_SOIL_TABLE = "agg_soil_data"
+
+# The table that holds the aggregated ergot data
 AGG_ERGOT_TABLE = "agg_ergot_sample"
 
+# The queries used to get the soil and ergot data from the database
 SOIL_QUERY = sq.text(f"SELECT * FROM {AGG_SOIL_TABLE};")
 ERGOT_QUERY = sq.text(f"SELECT * FROM {AGG_ERGOT_TABLE};")
 
-load_dotenv()
+
+# Load the database connection environment variables located in the docker folder
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
+
+load_dotenv("../docker/.env")
 PG_DB = os.getenv("POSTGRES_DB")
 PG_ADDR = os.getenv("POSTGRES_ADDR")
 PG_PORT = os.getenv("POSTGRES_PORT")
@@ -53,11 +117,6 @@ PG_PW = os.getenv("POSTGRES_PW")
 
 
 class SetCreator:
-    def __new__(cls):
-        if not hasattr(cls, "instance"):
-            cls.instance = super(SetCreator, cls).__new__(cls)
-        return cls.instance
-
     def __init__(self):
         if (
             PG_DB is None
@@ -72,7 +131,7 @@ class SetCreator:
         queryBuilder = GenericQueryBuilder()
         conn = db.connect()
 
-        # checks if the data that is needed has been aggregated, if not, proceed to aggregate it
+        # checks if the data that is needed has been aggregated, if not, aggregate it
         self.__verifySoilIsAggregated(db, queryBuilder)
         self.__verifyErgotIsAggregated(db, queryBuilder)
         self.__verifyHlyIsAggregated(LOCAL_FILE_DATASETS_LOC)
@@ -177,9 +236,30 @@ class SetCreator:
             ergotDF,
         )
 
+
+    # Ensures this class is a singleton (only one instance can be created)
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(SetCreator, cls).__new__(cls)
+        return cls.instance
+
+
+
     def __verifySoilIsAggregated(
         self, db: DataService, queryBuilder: GenericQueryBuilder
     ):
+        """
+        Purpose:
+        Checks if the soil data has been aggregated, if not, proceeds to aggregate it
+
+        Table:
+        - [agg_soil_data](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_soil_data)
+
+        Pseudocode:
+        - Generate query used to check if the table exists
+        - Check if the table exists
+        - If not start the aggregation process
+        """
         query = sq.text(queryBuilder.tableExistsReq(AGG_SOIL_TABLE))
         tableExists = queryBuilder.readTableExists(db.execute(query))
 
@@ -189,6 +269,18 @@ class SetCreator:
     def __verifyErgotIsAggregated(
         self, db: DataService, queryBuilder: GenericQueryBuilder
     ):
+        """
+        Purpose:
+        Checks if the ergot data has been aggregated, if not, proceeds to aggregate it
+
+        Table:
+        - [agg_ergot_data](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_ergot_sample)
+
+        Pseudocode:
+        - Generate query used to check if the table exists
+        - Check if the table exists
+        - If not start the aggregation process
+        """
         query = sq.text(queryBuilder.tableExistsReq(AGG_ERGOT_TABLE))
         tableExists = queryBuilder.readTableExists(db.execute(query))
 
@@ -196,6 +288,18 @@ class SetCreator:
             ErgotAggregator()
 
     def __verifyHlyIsAggregated(self, path: str):
+        """
+        Purpose:
+        Checks if the hourly weather station data has been aggregated, if not, proceeds to aggregate it
+
+        Pseudocode:
+        - Ensures the current directory is pointed to the same folder this file is located within
+        - Check which csv files exist (by day, week and month)
+        - If any are missing, start the aggregation process
+        - For whichever ones are missing, continue the aggregation process (by day, week and month)
+
+        Remarks: since there are too many columns, the data is instead stored in a CSV file
+        """
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))
         except:
@@ -221,6 +325,18 @@ class SetCreator:
                 hlyAggregator.aggregateByMonth(path)
 
     def __verifyMoistureIsAggregated(self, path):
+        """
+        Purpose:
+        Checks if the soil moisture data has been aggregated, if not, proceeds to aggregate it
+
+        Pseudocode:
+        - Ensures the current directory is pointed to the same folder this file is located within
+        - Check which csv files exist (by day, week and month)
+        - If any are missing, start the aggregation process
+        - For whichever ones are missing, continue the aggregation process (by day, week and month)
+
+        Remarks: since there are too many columns, the data is instead stored in a CSV file
+        """
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))
         except:
@@ -246,9 +362,24 @@ class SetCreator:
                 moistureAggregator.aggregateByMonth(path)
 
     def getSetList1(self):
-        setList = []
-        trainTestSet = {}
-        trainDevSet = {}
+        """
+        Purpose: 
+        Creates exploratory datasets (seasons, worst years, first 15 years, all data, different data preprocessing)
+        These sets all try a variety of different data preprocessing techniques found in the [setModifier]()
+
+        Pseudocode:
+        The general way all these sets are created are as follows:
+        1. [Load the data]()
+        2. [Impute the data]() 
+        3. [Scale the data into train, test and dev]()
+        4. Create a dictionary to hold the current set
+        5. Give it a description (this also makes it easy to locate within this method)
+        6. Assign the test, train and dev splits
+        7. Append the data to the list of sets
+        """
+        setList = []  # Holds all the various datasets
+        trainTestSet = {}  # Holds the current train test sets
+        trainDevSet = {}  # Holds the current train dev sets ()
 
         # First 15 years aggregated by day [median]|[minMax]|[straified on has_ergot]
         currDF = self.first15Yrs.getCombinedDF(
@@ -1249,9 +1380,23 @@ class SetCreator:
         return setList
 
     def getSetList2(self):
-        setList = []
-        trainTestSet = {}
-        trainDevSet = {}
+        """
+        Purpose: 
+        Creates exploratory datasets (best from dataset1 plus all data aggregated combinations (day, week, month))
+
+        Pseudocode:
+        The general way all these sets are created are as follows:
+        1. [Load the data]()
+        2. [Impute the data]() 
+        3. [Scale the data into train, test and dev]()
+        4. Create a dictionary to hold the current set
+        5. Give it a description (this also makes it easy to locate within this method)
+        6. Assign the test, train and dev splits
+        7. Append the data to the list of sets
+        """
+        setList = []  # Holds all the various datasets
+        trainTestSet = {}  # Holds the current train test sets
+        trainDevSet = {}  # Holds the current train dev sets ()
 
         # First 15 years aggregated by week [median]|[minMax]|[straified on has_ergot]
         currDF = self.first15Yrs.getCombinedDF(
@@ -1313,9 +1458,23 @@ class SetCreator:
         return setList
 
     def getSetList3(self):
-        setList = []
-        trainTestSet = {}
-        trainDevSet = {}
+        """
+        Purpose: 
+        Creates exploratory datasets (Results from Feature Reduction on dataset2 (using RFECV and random forests))
+
+        Pseudocode:
+        The general way all these sets are created are as follows:
+        1. [Load the data]()
+        2. [Impute the data]() 
+        3. [Scale the data into train, test and dev]()
+        4. Create a dictionary to hold the current set
+        5. Give it a description (this also makes it easy to locate within this method)
+        6. Assign the test, train and dev splits
+        7. Append the data to the list of sets
+        """
+        setList = []  # Holds all the various datasets
+        trainTestSet = {}  # Holds the current train test sets
+        trainDevSet = {}  # Holds the current train dev sets ()
 
         # First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]
         reducedSet = [
@@ -1459,7 +1618,21 @@ class SetCreator:
         return setList
 
     def getSetList4(self):
-        setList = []
+        """
+        Purpose: 
+        Creates exploratory datasets (best results from dataset3, where the train and test sets are based on different years)
+
+        Pseudocode:
+        The general way all these sets are created are as follows:
+        1. [Load the data]()
+        2. [Impute the data]() 
+        3. [Scale the data into train, test and dev]()
+        4. Create a dictionary to hold the current set
+        5. Give it a description (this also makes it easy to locate within this method)
+        6. Assign the test, train splits
+        7. Append the data to the list of sets
+        """
+        setList = []  # Holds all the various datasets
 
         # First 15 years aggregated by week [reduced]|[median]|[minMax]|[straified on has_ergot]
         reducedSet = [
@@ -1512,7 +1685,21 @@ class SetCreator:
         return setList
 
     def getSetList5(self):
-        setList = []
+        """
+        Purpose: 
+        Creates exploratory datasets (second best results from dataset3, where the train and test sets are based on different years)
+
+        Pseudocode:
+        The general way all these sets are created are as follows:
+        1. [Load the data]()
+        2. [Impute the data]() 
+        3. [Scale the data into train, test and dev]()
+        4. Create a dictionary to hold the current set
+        5. Give it a description (this also makes it easy to locate within this method)
+        6. Assign the test, train splits
+        7. Append the data to the list of sets
+        """
+        setList = []  # Holds all the various datasets
 
         # Moisture data from years with bad ergot aggregated by month [mean]|[minMax]|[straified on has_ergot]
         currDF = self.badErgot.getCombinedDF(moistureByMonth=True)
