@@ -378,7 +378,6 @@ A table containing daily aggregate weather data from the copernicus satellite da
 |max_leaf_area_index_low_vegetation | double precision  |       |             |             |
 |mean_leaf_area_index_low_vegetation| double precision  |       |             |             |
 
-
 </details>
 
 [back to top](#overview)
@@ -666,8 +665,6 @@ A table containing monthly aggregate weather data from the copernicus satellite 
 A table containing weekly aggregate weather data from the copernicus satellite dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of January, February, March, and April.
 <details><summary>Vertical view dataset_cross_weekly_sat_JFMA attribute list</summary>
 
-
-
 | Attribute                             | Type             | Unit | Description | Constraint |
 |---------------------------------------|------------------|------|-------------|------------|
 | year                                  | bigint           |      |             |            |
@@ -795,8 +792,6 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 
 A table containing weekly aggregate weather data from the copernicus satellite dataset. The data is crossed by the week of year to help determine the importance of each parameter of each week is to the model. This table only contains data from the months of March, April, May, and June.
 <details><summary>Vertical view dataset_cross_weekly_sat_MAMJ attribute list</summary>
-
-
 
 | Attribute                             | Type             | Unit | Description | Constraint |
 |---------------------------------------|------------------|------|-------------|------------|
@@ -1165,7 +1160,6 @@ A table containing weekly aggregate weather data from the copernicus satellite d
 | 40:mean_volumetric_soil_water_layer_4 | double precision |      |             |            |
 | 40:mean_leaf_area_index_high_vegetation| double precision|      |             |            |
 | 40:mean_leaf_area_index_low_vegetation | double precision|      |             |            |
-
 
 </details>
 
