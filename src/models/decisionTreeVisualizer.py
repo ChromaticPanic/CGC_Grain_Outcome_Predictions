@@ -7,6 +7,12 @@
 #   2. Impute values (meaning replace NaN or Nulls with an aggregate value)
 #   3. Ensure predictors are removed from main data and set aside
 #   4. Run setupClassifierTree or setupRegressorTree if needed and check out the cool results!
+# 
+#  Note:
+# Decision trees:
+# - orthogonal decision boundaries (all splits are perpendicular to an axis)
+# - high variance
+# - In come random forests!
 # ------------------------------------------------------------------
 from sklearn.tree import DecisionTreeClassifier  # type: ignore
 from sklearn.tree import DecisionTreeRegressor
@@ -17,6 +23,8 @@ import pandas as pd
 import os
 
 
+#  Purpose :
+#  To visualize Decision Trees for both classification and regression tasks.
 class DecisionTreeVisualizer:
     def __init__(self, max_depth: Union[int, None] = None, random_state: int = 0):
         self.tree = None
@@ -27,6 +35,7 @@ class DecisionTreeVisualizer:
     def setupClassifierTree(
         self, max_depth: Union[int, None] = None, random_state: int = 0
     ):
+        # Initialize a DecisionTreeClassifier with specified parameters
         if max_depth:
             self.tree = DecisionTreeClassifier(
                 max_depth=max_depth, random_state=random_state
@@ -37,6 +46,7 @@ class DecisionTreeVisualizer:
     def setupRegressorTree(
         self, max_depth: Union[int, None] = None, random_state: int = 0
     ):
+        # Initialize a DecisionTreeRegressor with specified parameters
         if max_depth:
             self.tree = DecisionTreeRegressor(
                 max_depth=max_depth, random_state=random_state
@@ -51,8 +61,8 @@ class DecisionTreeVisualizer:
         saveName: str = "tree",
         savePath: str = "./",
     ):
-        data = input.drop(columns=[predictorCol])
-        predictors = input[predictorCol]
+        data = input.drop(columns=[predictorCol]) # Features for tree visualization
+        predictors = input[predictorCol] # Labels (target) for tree visualization
 
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -60,6 +70,7 @@ class DecisionTreeVisualizer:
             if not self.tree:
                 raise ValueError("[ERROR] please setup a tree")
 
+            # Fit the Decision Tree on the data and target
             self.tree.fit(data, predictors)
 
             class_names_as_string = []
