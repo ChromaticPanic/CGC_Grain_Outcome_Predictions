@@ -21,12 +21,14 @@
 #   - the columns winter sets expect from input data to run properly are:
 #       - year
 #       - district
-#       - The last column must adhere to the formats set by the aggregator classes (links above) i.e MO-DA:ATTRIBUTE, W:ATTRIBUTE, M:ATTRIBUTE
+#       - The last column must adhere to the formats set by the [aggregatorHelper](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/Shared/aggregatorHelper.py)
+#         i.e MO-DA:ATTRIBUTE, W:ATTRIBUTE, M:ATTRIBUTE
 #
 #   - empty DataFrames are provided so that there is more flexibility in loading datasets i.e not all of them need to be provided
-#   - new aggregated datasets can be easily added by adding the datatype to the constructor and creating getters and setters like so
+#   - new aggregated datasets can be added by adding the expected DataFrame to the constructor and creating similar getters/setters
+#     in both this set class as well as the [abstractSet class]()
 # -------------------------------------------
-from abstractSet import AbstractSet
+from abstractSet import AbstractSet  # type: ignore
 import pandas as pd
 
 
