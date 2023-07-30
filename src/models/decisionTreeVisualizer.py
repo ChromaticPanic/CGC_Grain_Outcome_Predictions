@@ -7,7 +7,7 @@
 #   2. Impute values (meaning replace NaN or Nulls with an aggregate value)
 #   3. Ensure predictors are removed from main data and set aside
 #   4. Run setupClassifierTree or setupRegressorTree if needed and check out the cool results!
-# 
+#
 #  Note:
 # Decision trees:
 # - orthogonal decision boundaries (all splits are perpendicular to an axis)
@@ -61,8 +61,8 @@ class DecisionTreeVisualizer:
         saveName: str = "tree",
         savePath: str = "./",
     ):
-        data = input.drop(columns=[predictorCol]) # Features for tree visualization
-        predictors = input[predictorCol] # Labels (target) for tree visualization
+        data = input.drop(columns=[predictorCol])  # Features for tree visualization
+        predictors = input[predictorCol]  # Labels (target) for tree visualization
 
         try:
             os.chdir(os.path.dirname(os.path.abspath(__file__)))
