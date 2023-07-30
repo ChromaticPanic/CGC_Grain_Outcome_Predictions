@@ -22,17 +22,18 @@ from Shared.GenericQueryBuilder import GenericQueryBuilder
 from Shared.DataService import DataService
 
 # %%
-TABLENAME = "agg_ergot_sample" # Table name that stores the aggregated ergot data
-TABLENAMEV2 = "agg_ergot_sample_v2" # Table name that stores the aggregated ergot data with different features.
+TABLENAME = "agg_ergot_sample"  # Table name that stores the aggregated ergot data
+TABLENAMEV2 = "agg_ergot_sample_v2"  # Table name that stores the aggregated ergot data with different features.
 ERGOT_DOWNGRADE_THRESHOLD = 0.04
 
-# Load the database connection environment variables 
+# Load the database connection environment variables
 load_dotenv()
 PG_DB = os.getenv("POSTGRES_DB")
 PG_ADDR = os.getenv("POSTGRES_ADDR")
 PG_PORT = os.getenv("POSTGRES_PORT")
 PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
+
 
 # %%
 # Purpose:
@@ -47,9 +48,10 @@ def pullAgRegions(conn: sq.engine.Connection) -> gpd.GeoDataFrame:
 
 # %%
 # Purpose : Self contained data retrieval data aggregation
-# Psuedocode: 
+# Psuedocode:
 # - Create the ergot data SQL query and load it into a Pandas DataFrame.
-# - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html) 
+# - [Load the data from the database directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)
+
 
 def pullErgot(conn: sq.engine.Connection) -> pd.DataFrame:
     ergotQuery = sq.text("SELECT * FROM public.ergot_sample")
@@ -61,6 +63,7 @@ def pullErgot(conn: sq.engine.Connection) -> pd.DataFrame:
 
 # Purpose:
 # - The purpose of this function is to calculate and assign unique identifiers (UIDs) to each row in the ergot DataFrame based on the combination of "province" and "crop_district" values.
+
 
 def calcUIDs(ergot: pd.DataFrame) -> pd.DataFrame:
     ergot.loc[ergot["province"] == "MB", "district"] = (
@@ -81,7 +84,8 @@ def calcUIDs(ergot: pd.DataFrame) -> pd.DataFrame:
 # %%
 
 # Purpose:
-# - The purpose of this function is to calculate the neighboring agricultural regions for each region in the agRegions GeoDataFrame based on their geometries. 
+# - The purpose of this function is to calculate the neighboring agricultural regions for each region in the agRegions GeoDataFrame based on their geometries.
+
 
 def calcNeighbors(agRegions: gpd.GeoDataFrame) -> dict:
     touches = {}
@@ -101,14 +105,15 @@ def calcNeighbors(agRegions: gpd.GeoDataFrame) -> dict:
 # %%
 
 # Purpose:
-# - The purpose of this function is to aggregate and calculate various features for each unique combination of "year" and "district" in the input ergot DataFrame. 
-# Psuedocode : 
-# - This function calculates and assigns unique identifiers (UIDs) to each row in the input Pandas DataFrame. 
-# - The UIDs are based on the combination of "province" and "crop_district" values. 
+# - The purpose of this function is to aggregate and calculate various features for each unique combination of "year" and "district" in the input ergot DataFrame.
+# Psuedocode :
+# - This function calculates and assigns unique identifiers (UIDs) to each row in the input Pandas DataFrame.
+# - The UIDs are based on the combination of "province" and "crop_district" values.
 # - converts the "district" column to integer data type.
 # - Load the current samples for the current "year" and "district" for each unique year and district.
 # - Convert the "ergotList" into a Pandas DataFrame.
 # - Create bins for "ergot_present" and "sum_severity" features based on the Interquartile Range (IQR).
+
 
 def createErgotFeatures(ergot: pd.DataFrame, touches: gpd.GeoDataFrame) -> pd.DataFrame:
     ergotList = []
@@ -225,8 +230,8 @@ def createErgotFeatures(ergot: pd.DataFrame, touches: gpd.GeoDataFrame) -> pd.Da
 
 # %%
 
-# Purpose : 
-# - This function calculates and aggregates features for each unique combination of "year" and "district" in the input Pandas DataFrame. 
+# Purpose :
+# - This function calculates and aggregates features for each unique combination of "year" and "district" in the input Pandas DataFrame.
 # Psuedocode :
 # - Load the samples for neighboring districts based on the "touches" information.
 # - Load samples for some of the previous years (year - 1, year - 2, year - 3) for the current "district".
@@ -238,6 +243,7 @@ def createErgotFeatures(ergot: pd.DataFrame, touches: gpd.GeoDataFrame) -> pd.Da
 #     - Various statistics for samples from previous years (presence, median, sum of severity).
 # - Append the calculated features to a dictionary named "currEntry".
 # - Append the "currEntry" dictionary to the "ergotList".
+
 
 def createErgotFeaturesV2(
     ergotdf: pd.DataFrame, touches: gpd.GeoDataFrame
@@ -306,6 +312,7 @@ def createErgotFeaturesV2(
 # %%
 
 # Purpose : Create a respective AggErgotTable from the attributes retrieved from previous calls of functions.
+
 
 def createAggErgotTable(db):
     query = sq.text(
@@ -400,6 +407,7 @@ def createAggErgotTableV2(db):
 
 # Purpose :
 # - This function is responsible for aggregating ergot data, creating features, and storing the aggregated data in a new table. The function connects to the database using environment variables for the connection parameters, fetches the required data from the database, calculates various features for the data, and then creates a new table to store the aggregated data.
+
 
 def createAggErgotV1() -> None:
     if (
