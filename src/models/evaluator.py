@@ -3,8 +3,30 @@
 # The purpose of the provided code is to define a class which contains methods for evaluating machine learning models for both classification and regression tasks.
 # The class provides functions to calculate various evaluation metrics for the models, such as accuracy, R-squared, precision, recall, F1 score, and area under the receiver operating characteristic curve (AUC-ROC).
 #
+# Evaluation metrics:
 # -----------------------------------------------------------
-
+# Avg_accuracy: accuracy of stratified k fold cross validation using test data set (Perfect = 100)
+# -----------------------------------------------------------
+# R2: approximately how much of the observed variation can be explained by the model’s inputs? (Perfect = 1)
+# -----------------------------------------------------------
+# Loss: summation of errors in our model (Perfect = 0)
+# -----------------------------------------------------------
+# Precision: the ability to classify positive samples in the model (Perfect = 1)
+# -----------------------------------------------------------
+# Recall: how many positive samples were correctly classified by the model (Perfect = 1)
+# -----------------------------------------------------------
+# F1: harmonic mean of precision and recall (Perfect = 1)
+# -----------------------------------------------------------
+# Auc: the ability to distinguish between all the Positive and the Negative class points (Perfect = 1)
+# -----------------------------------------------------------
+# neg_mean_squared_error: Mean squared logarithmic summation of errors in our model (Perfect = 0)
+# -----------------------------------------------------------
+#
+# Remarks:
+# - Avg_accuracy is a bad measure when working with unbalanced datasets
+# - Auc is really good when working with True and False classes
+# - Further evaluation metric documentation can be found [here](https://scikit-learn.org/stable/modules/model_evaluation.html)
+# -----------------------------------------------------------
 from sklearn.model_selection import cross_val_score  # type: ignore
 from sklearn.metrics import precision_score  # type: ignore
 from sklearn.metrics import recall_score  # type: ignore
@@ -16,10 +38,6 @@ from collections import Counter
 from typing import Dict
 import numpy as np
 import os
-
-# Purpose:
-# It intends to evaluate the performance of a given classification model using various metrics.
-# The method takes a classification model, a description of the evaluation, training and testing datasets, and optional parameters.
 
 
 class ModelEvaluator:
@@ -35,6 +53,11 @@ class ModelEvaluator:
         hasFeatImportance=True,  # Optional: Flag to calculate feature importances
         numCV=5,  # Optional: Number of cross-validation folds
     ) -> dict:  # Returns a dictionary containing the evaluation results
+        """
+        Purpose:
+        It intends to evaluate the performance of a given classification model using various metrics.
+        The method takes a classification model, a description of the evaluation, training and testing datasets, and optional parameters.
+        """
         y_train_pred = model.predict(xTrainSet)
         y_pred = model.predict(xTestSet)
         results = {}
@@ -90,10 +113,6 @@ class ModelEvaluator:
 
         return results
 
-    # Purpose:
-    #  evaluate the performance of a given regression model using cross-validation and provide various metrics for assessment.
-    #  It takes a regression model, a description of the evaluation, training and testing datasets, and optional parameters.
-
     def evaluateRegression(
         self,
         model,  # The regression model to be evaluated
@@ -106,6 +125,11 @@ class ModelEvaluator:
         hasFeatImportance=True,  # Optional: Flag to calculate feature importances
         numCV=5,  # Optional: Number of cross-validation folds
     ) -> dict:
+        """
+        Purpose:
+        Evaluate the performance of a given regression model using cross-validation and provide various metrics for assessment.
+        It takes a regression model, a description of the evaluation, training and testing datasets, and optional parameters.
+        """
         results = {}
 
         results["desc"] = desc
@@ -143,9 +167,11 @@ class ModelEvaluator:
 
         return results
 
-    # Purpose :
-    # It intends to save the top relevant features.
     def __saveRelevantFeatures(self, features, saveFactorsLoc):
+        """
+        Purpose:
+        It intends to save the top relevant features.
+        """
         if saveFactorsLoc != None:
             try:
                 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -156,9 +182,11 @@ class ModelEvaluator:
             except:
                 pass
 
-    # Purpose :
-    # It intends to read the top relevant features.
     def readRelevantFeatures(self, saveFactorsLoc) -> dict:
+        """
+        Purpose
+        It intends to read the top relevant features.
+        """
         dist: Dict[str, int] = {}
 
         try:
