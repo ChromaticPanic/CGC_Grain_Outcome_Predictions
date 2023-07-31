@@ -1,3 +1,14 @@
+# -------------------------------------------
+# DataCreation.py
+#
+# After loading the dataset, this class creates different datasets to be used in the modeling process
+#
+# Datasets present:
+# - v1: Given a district and its weather attributes -> predict if the district is gonna have ergot or not
+# - v2: Given a district and other attributes from weather, soil_moisture, soil data -> predict if the district is gonna have ergot or not
+# - v3: Given an ergot sample and its all given attributes -> predict if the district is gonna have ergot or not
+# - v4: Given a district and its all given attributes -> predict that if the district produced the crop which are sellable
+# -------------------------------------------
 from Shared.DataService import DataService
 from dotenv import load_dotenv
 import sqlalchemy as sq
