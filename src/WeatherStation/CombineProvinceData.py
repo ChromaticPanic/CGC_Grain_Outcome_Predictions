@@ -86,7 +86,7 @@ def main():
 
     try:
         dfCombined.to_sql(
-            TABLENAME, conn, schema="public", if_exists="append", index=False
+            TABLENAME, conn, schema="public", if_exists="replace", index=False
         )
     except Exception as e:
         print("An error occurred while writing to the database {}".format(e))
