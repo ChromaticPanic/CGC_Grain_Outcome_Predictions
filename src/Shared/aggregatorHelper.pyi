@@ -46,6 +46,7 @@ class AggregatorHelper:
         agg_df: pd.DataFrame,
         data: pd.DataFrame,
         dateType: str,
+        bySeason: bool = ...,
     ) -> pd.DataFrame: ...
     # ----------------------------------------------------
     # Purpose:
