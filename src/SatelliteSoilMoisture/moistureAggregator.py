@@ -90,7 +90,7 @@ class MoistureAggregator:
                 "week",
             ] = weekInt
 
-    def aggregateByDay(self, pathToSave):
+    def aggregateByDay(self, pathToSave: str, byHarvest: bool = False):
         """
         Purpose:
         Aggregate the soil moisture data by district, year, month and day
@@ -121,7 +121,7 @@ class MoistureAggregator:
 
         dates = self.helper.getDatesInYr()
         final_df = self.helper.reshapeDataByDates(
-            dates, agg_df, self.moistureData, "dates"
+            dates, agg_df, self.moistureData, "dates", byHarvest
         )
 
         try:
@@ -134,7 +134,7 @@ class MoistureAggregator:
             print("[ERROR]")
             print(e)
 
-    def aggregateByWeek(self, pathToSave):
+    def aggregateByWeek(self, pathToSave: str, byHarvest: bool = False):
         """
         Purpose:
         Aggregate the soil moisture data by district, year and week
@@ -164,7 +164,7 @@ class MoistureAggregator:
 
         dates = self.helper.getWeeksInYr()
         final_df = self.helper.reshapeDataByDates(
-            dates, agg_df, self.moistureData, "weeks"
+            dates, agg_df, self.moistureData, "weeks", byHarvest
         )
 
         try:
@@ -177,7 +177,7 @@ class MoistureAggregator:
             print("[ERROR]")
             print(e)
 
-    def aggregateByMonth(self, pathToSave):
+    def aggregateByMonth(self, pathToSave: str, byHarvest: bool = False):
         """
         Purpose:
         Aggregate the soil moisture data by district, year and month
@@ -207,7 +207,7 @@ class MoistureAggregator:
 
         dates = self.helper.getMonthsInYr()
         final_df = self.helper.reshapeDataByDates(
-            dates, agg_df, self.moistureData, "months"
+            dates, agg_df, self.moistureData, "months", byHarvest
         )
 
         try:
@@ -220,7 +220,7 @@ class MoistureAggregator:
             print("[ERROR]")
             print(e)
 
-    def __pullMoistureData(self, conn):
+    def __pullMoistureData(self, conn: sq.engine.Connection) -> pd.DataFrame:
         """
         Purpose:
         Loads the soil moisture data from the soil moisture table

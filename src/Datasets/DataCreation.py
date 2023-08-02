@@ -23,7 +23,15 @@ sys.path.append("../")
 from Shared.DataService import DataService
 
 LOG_FILE = "/data/pull_moisture.log"
-load_dotenv()
+
+
+# Load the database connection environment variables located in the docker folder
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
+
+load_dotenv("../docker/.env")
 PG_USER = os.getenv("POSTGRES_USER")
 PG_PW = os.getenv("POSTGRES_PW")
 PG_DB = os.getenv("POSTGRES_DB")

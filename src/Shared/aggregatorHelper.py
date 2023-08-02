@@ -77,10 +77,11 @@ class AggregatorHelper:
         agg_df: pd.DataFrame,
         data: pd.DataFrame,
         dateType: str,
+        byHarvest: bool = False,
     ) -> pd.DataFrame:
         """
         Purpose:
-        Reshapes columns of data by date (day, week or month)
+        Reshapes columns of data by date (day, week or month) by the full year or harvest (as indicated by the byHarvest flag)
 
         Pseudocode:
         - Calculate the yera range
@@ -132,11 +133,17 @@ class AggregatorHelper:
                     currRow = None
 
                     if dateType == "dates":
-                        currRow = self.__getDataPerDates(year, district, date, agg_df)
+                        currRow = self.__getDataPerDates(
+                            year, district, date, agg_df, byHarvest
+                        )
                     elif dateType == "weeks":
-                        currRow = self.__getDataPerWeeks(year, district, date, agg_df)
+                        currRow = self.__getDataPerWeeks(
+                            year, district, date, agg_df, byHarvest
+                        )
                     elif dateType == "months":
-                        currRow = self.__getDataPerMonths(year, district, date, agg_df)
+                        currRow = self.__getDataPerMonths(
+                            year, district, date, agg_df, byHarvest
+                        )
                     else:
                         raise ValueError(f"[ERROR] {dateType} is an invalid datetype")
 
@@ -154,28 +161,77 @@ class AggregatorHelper:
 
         return pd.DataFrame(listForDF)
 
-    def __getDataPerDates(self, year, district, date, agg_df):
+    def __getDataPerDates(self, year, district, date, agg_df, byHarvest):
+        """
+        Purpose:
+        Get the data for a given date
+
+        Psuedocode:
+        - Get the different date components (format is MO-DA)
+        - Convert them to integers
+        - If the date is from the fall, change it to the fall/winter of the previous year so that it applies to the current harvest
+        """
         dateComponents = date.split("-")
         monthInt = int(dateComponents[0])
         dayInt = int(dateComponents[1])
 
-        return agg_df.loc[
-            (agg_df["year"] == year)
-            & (agg_df["month"] == monthInt)
-            & (agg_df["day"] == dayInt)
-            & (agg_df["district"] == district)
-        ]
+        if byHarvest and monthInt >= 9:
+            return agg_df.loc[
+                (agg_df["year"] == year - 1)
+                & (agg_df["month"] == monthInt)
+                & (agg_df["day"] == dayInt)
+                & (agg_df["district"] == district)
+            ]
+        else:
+            return agg_df.loc[
+                (agg_df["year"] == year)
+                & (agg_df["month"] == monthInt)
+                & (agg_df["day"] == dayInt)
+                & (agg_df["district"] == district)
+            ]
 
-    def __getDataPerWeeks(self, year, district, week, agg_df):
-        return agg_df.loc[
-            (agg_df["year"] == int(year))
-            & (agg_df["week"] == int(week))
-            & (agg_df["district"] == int(district))
-        ]
+    def __getDataPerWeeks(self, year, district, week, agg_df, byHarvest):
+        """
+        Purpose:
+        Get the data for a given date
 
-    def __getDataPerMonths(self, year, district, month, agg_df):
-        return agg_df.loc[
-            (agg_df["year"] == int(year))
-            & (agg_df["month"] == int(month))
-            & (agg_df["district"] == int(district))
-        ]
+        Psuedocode:
+        - Get the different date components (format is W)
+        - Convert them to integers
+        - If the date is from the fall/winter, change it to the fall/winter of the previous year so that it applies to the current harvest
+        """
+        if byHarvest and int(week) >= 33:
+            return agg_df.loc[
+                (agg_df["year"] == int(year) - 1)
+                & (agg_df["week"] == int(week))
+                & (agg_df["district"] == int(district))
+            ]
+        else:
+            return agg_df.loc[
+                (agg_df["year"] == int(year))
+                & (agg_df["week"] == int(week))
+                & (agg_df["district"] == int(district))
+            ]
+
+    def __getDataPerMonths(self, year, district, month, agg_df, byHarvest):
+        """
+        Purpose:
+        Get the data for a given date
+
+        Psuedocode:
+        - Get the different date components (format is M)
+        - Convert them to integers
+        - If the date is from the fall/winter, change it to the fall/winter of the previous year so that it applies to the current harvest
+        """
+        if byHarvest and int(month) >= 9:
+            return agg_df.loc[
+                (agg_df["year"] == int(year) - 1)
+                & (agg_df["month"] == int(month))
+                & (agg_df["district"] == int(district))
+            ]
+        else:
+            return agg_df.loc[
+                (agg_df["year"] == int(year))
+                & (agg_df["month"] == int(month))
+                & (agg_df["district"] == int(district))
+            ]

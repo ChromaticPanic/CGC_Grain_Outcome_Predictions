@@ -8,7 +8,9 @@
 # Output:
 # - [agg_day_copernicus_satellite_data](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#agg_day_copernicus_satellite_data)
 #
-# Remarks: null values - na.mask, null etc... can sometimes cause issues
+# Remarks:
+# - null values - na.mask, null etc... can sometimes cause issues
+# - Copernicus needs an API key which if access has been/still is granted can be setup with the [following steps](https://cds.climate.copernicus.eu/api-how-to)
 # -------------------------------------------
 from CopernicusQueryBuilder import CopernicusQueryBuilder
 from dotenv import load_dotenv
