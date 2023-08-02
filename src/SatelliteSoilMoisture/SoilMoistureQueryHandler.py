@@ -19,7 +19,7 @@ class SoilMoistureQueryHandler(GenericQueryBuilder):
     def createSoilMoistureTableReq(self, db: DataService):
         """
         Purpose:
-        Manually creates the SQL tables to store the soil moisture Data
+        Manually creates the SQL tables to store the soil moisture data
 
         Table:
         - [soil_moisture](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_moisture)
