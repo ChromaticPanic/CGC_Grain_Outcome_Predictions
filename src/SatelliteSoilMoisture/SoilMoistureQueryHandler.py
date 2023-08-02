@@ -1,21 +1,42 @@
-import sys
+# ----------------------------------------------------
+# SoilMoistureQueryHandler.py
+#
+# Purpose: handles (builds/processes) requests to a database related to the Soil Moisture
+# ----------------------------------------------------
 import sqlalchemy as sq
-import os
+import os, sys
 
 sys.path.append("../")
-from Shared.GenericQueryBuilder import GenericQueryBuilder
 from Shared.DataService import DataService
+from Shared.GenericQueryBuilder import GenericQueryBuilder
+
+
+# Table name that stores the soil moisture data
+SOIL_MOISTURE_TABLE = "soil_moisture"
 
 
 class SoilMoistureQueryHandler(GenericQueryBuilder):
     def createSoilMoistureTableReq(self, db: DataService):
-        query = sq.text(super().tableExistsReq("soil_moisture"))
+        """
+        Purpose:
+        Manually creates the SQL tables to store the soil moisture Data
+
+        Table:
+        - [soil_moisture](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#soil_moisture)
+
+        Pseudocode:
+        - Check if the table already exists
+        - If it does not exist, create it
+
+        Remarks: Creating the table manually ensures the tables persist (usually due to the inability to locate a unique key)
+        """
+        query = sq.text(super().tableExistsReq(SOIL_MOISTURE_TABLE))
         tableExists = super().readTableExists(db.execute(query))  # type: ignore
 
         if not tableExists:
             query = sq.text(
-                """
-                CREATE TABLE soil_moisture (
+                f"""
+                CREATE TABLE {SOIL_MOISTURE_TABLE} (
                     id              SERIAL,
                     lon             FLOAT,
                     lat             FLOAT,
@@ -23,32 +44,8 @@ class SoilMoistureQueryHandler(GenericQueryBuilder):
                     cr_num          INT,
                     district        INT,
                     soil_moisture   FLOAT,
+
                     CONSTRAINT PK_SOIL_MOISTURE PRIMARY KEY(id)
-                );
-                COMMIT;
-                """
-            )
-
-            db.execute(query)
-
-    def createAggSoilMoistureTableReq(self, db: DataService):
-        query = sq.text(super().tableExistsReq("agg_soil_moisture"))
-        tableExists: bool = super().readTableExists(db.execute(query))  # type: ignore
-
-        if not tableExists:
-            query = sq.text(
-                """
-                CREATE TABLE agg_soil_moisture (
-                    id                      SERIAL,
-                    year                    INT,
-                    month                   INT,
-                    day                     INT,
-                    cr_num                  INT,
-                    district                INT,
-                    soil_moisture_min       FLOAT,
-                    soil_moisture_max       FLOAT,
-                    soil_moisture_mean      FLOAT,
-                    CONSTRAINT PK_AGG_SOIL_MOISTURE PRIMARY KEY(id)
                 );
                 COMMIT;
                 """

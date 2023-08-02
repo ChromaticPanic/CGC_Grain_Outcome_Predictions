@@ -1,20 +1,18 @@
-"""Climate Data Requester pulls weather station data.
-
-requests data from the Climate Data Online web service and returns a pandas dataframe
-
-Typical usage example:
-
-  req = ClimateDataRequester()
-  df = req.get_data(stationName: str)
-"""
-import lxml.html
+# -------------------------------------------
+# climateDataRequester.py
+#
+# Requests data from the [Climate Data Online web service](https://dd.weather.gc.ca/climate/observations/)
+#
+# Typical usage example:
+#   req = ClimateDataRequester()
+#   dlyDF = req.get_data(stationName: str)
+#   hlyDF = req.get_hourly_data(stationName: str)
+# -------------------------------------------
 import requests as rq
 import pandas as pd
+import lxml.html
 import urllib3
 import typing
-import sys
-
-# import ipyparallel as ipp
 
 
 class ClimateDataRequester:
@@ -39,13 +37,25 @@ class ClimateDataRequester:
     def get_hourly_data(
         self, stationID: str, startYear: int = 2022, endYear: int = 2022
     ) -> pd.DataFrame:
-        df = pd.DataFrame()
+        """
+        Purpose:
+        Requests hourly data from the [Climate Data Online web service](https://dd.weather.gc.ca/climate/observations/)
+
+        Pseudocode:
+        - Load the base URL (used for downloading the data), injecting it with both the start ane end year
+        - Load the URL extension (used for downloading the data)
+        - Specify how much data can be read at once
+        - Download data and add it to the DataFrame until it has all been downloaded
+        """
         baseUrl = f"https://api.weather.gc.ca/collections/climate-hourly/items?datetime={startYear}-01-01%2000:00:00/{endYear}-12-31%2000:00:00&CLIMATE_IDENTIFIER="
         midUrl = "&sortby=PROVINCE_CODE,CLIMATE_IDENTIFIER,LOCAL_DATE&f=csv&limit=10000&startindex="
-        offset = 10000
+        offset = 10000  # How much information can be read in a single request
+
+        df = pd.DataFrame()  # Creates a dataframe to load the information into
+        # The current position to read data from (since each request can only contain so much information)
+        currIndex = 0
 
         try:
-            currIndex = 0
             newData = pd.read_csv(baseUrl + stationID + midUrl + str(currIndex))
             while len(newData.index) > 0:
                 df = pd.concat([df, newData])
@@ -53,13 +63,23 @@ class ClimateDataRequester:
 
                 newData = pd.read_csv(baseUrl + stationID + midUrl + str(currIndex))
         except Exception:
-            5 + 5
+            pass
 
         return df
 
     def get_data(
         self, province: str, stationID: str, startYear: int = 2022, endYear: int = 2022
     ) -> pd.DataFrame:
+        """
+        Purpose:
+        Requests daily data from the [Climate Data Online web service](https://dd.weather.gc.ca/climate/observations/)
+
+        Psuedocode:
+        - Get the list of potential daily files to download (if none exit)
+        - Remove irrelevant files to download - does not fall within startYear - endYear (if none exit)
+        - For each remaining URL, load the data into a list of DataFrames
+        - Concatenate all DataFrames into one: https://pandas.pydata.org/docs/reference/api/pandas.concat.html
+        """
         df = pd.DataFrame()
 
         urlList = self.get_url_list(province, stationID)
@@ -79,40 +99,76 @@ class ClimateDataRequester:
 
     @typing.no_type_check
     def get_url_list(self, province: str, stationID: str = "") -> list:
-        resp = rq.get(
+        """
+        Purpose:
+        Gets the list of potential daily files to download
+
+        Psuedocode:
+        - Loads the download html page
+        - [Get the list of files that can be downloaded](lxml.html.fromstring)
+        - Add each link that ends with .csv and matches the provided stationID
+
+        Remarks: If no stationID is provided, all links that end with .csv are added
+        """
+        result = []
+
+        res = rq.get(
             self.apiBaseURL + self.defaultPath + province + "/",
             headers=self.headers,
             verify=False,
         )
-        result = []
-        if resp.status_code == 200:
-            tree = lxml.html.fromstring(resp.text)
+
+        if res.status_code == 200:
+            tree = lxml.html.fromstring(res.text)
+
             for link in tree.xpath("//a/@href"):
                 if link.endswith(".csv"):
+                    # If no stationID was provided when the function was called, add everything
                     if not stationID:
                         result.append(link)
+                    # Otherwise add only the links that correspond to the given stationID
                     elif link.find(stationID) > -1:
                         result.append(link)
 
         return result
 
     def trim_by_date(self, csvList: list, startYear: int, endYear: int) -> list:
+        """
+        Purpose:
+        Removes irrelevant files to download (does not fall within startYear - endYear)
+
+        Psuedocode:
+        - Starting at the last item, break down the data to extract the year
+        - If the year fall within the startYear - endYear range, add it
+        """
         DATEPOS = 4
         result = []
+
+        # Start at the last entry and work back down to 0 in increments of 1
         for i in range(len(csvList) - 1, -1, -1):
             item = csvList[i]
             entry = item.split("_")
             year = int(str(entry[DATEPOS])[:4])
+
             if year >= startYear and year <= endYear:
                 result.append(item)
+
         return result
 
     def pull_data(self, url: str) -> pd.DataFrame:
+        """
+        Purpose:
+        Given a csv download links, download the file
+
+        Psuedocode:
+        - Try to request the data given the default URL schema, and if possible, [load it directly into a DataFrame](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html)
+        """
         df = pd.DataFrame()
+
         try:
             path = self.apiBaseURL + self.defaultPath + url
             df = pd.read_csv(path, encoding="ISO-8859-1")
-            return df
         except Exception as e:
-            print("Error: " + str(e))
-            return df
+            print(f"[Error]: {e}")
+
+        return df

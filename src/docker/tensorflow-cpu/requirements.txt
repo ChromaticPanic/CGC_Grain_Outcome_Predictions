@@ -27,3 +27,5 @@ lxml-stubs
 types-requests
 sqlalchemy-stubs
 types-SQLAlchemy
+imblearn
+xgboost

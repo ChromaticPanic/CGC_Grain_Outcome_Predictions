@@ -19,4 +19,4 @@ jobs:
           options: "--check --diff --verbose"
           src: "./src"
           jupyter: true
-          version: "23.1.0"
+          version: "23.3.0"
