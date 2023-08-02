@@ -2,7 +2,7 @@
 # scrapeHourlyParallel.py
 #
 # After loading the hourly weather stations data the following class can be used to scrape the hourly weather station data
-#   hourly weather stations: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/WeatherStation/Data_step%20csv%20import%20geo%20boundaries%20stations.ipynb
+#   hourly weather stations: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/WeatherStation/importBoundariesAndStations.ipynb
 #
 # Output table:
 #   ab_hly_station_data: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#ab_hly_station_data

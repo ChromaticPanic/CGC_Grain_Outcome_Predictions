@@ -2,13 +2,16 @@
 # scrapeDaily.py
 #
 # After loading the daily weather stations data the following class can be used to scrape the daily weather station data
-#   daily weather stations: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/WeatherStation/Data_step%20csv%20import%20geo%20boundaries%20stations.ipynb
+#   daily weather stations: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/blob/main/src/WeatherStation/importBoundariesAndStations.ipynb
 #
 # Output table:
 #   ab_dly_station_data: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#ab_dly_station_data
 #   mb_dly_station_data: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#mb_dly_station_data
 #   sk_dly_station_data https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#sk_dly_station_data
 #   station_data_last_updated: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#station_data_last_updated
+#
+# Remarks: if the need to pull earlier data arises, changes will need to be made to avoid checking the last date pulled
+# as well as changing the minimum year from 1995
 # -------------------------------------------
 from ClimateDataRequester import ClimateDataRequester  # type: ignore
 from WeatherQueryBuilder import WeatherQueryBuilder  # type: ignore
