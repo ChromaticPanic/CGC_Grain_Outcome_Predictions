@@ -71,3 +71,5 @@
 | 70. Model Documentation on Dataset  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | True | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/120)
 | 71. Ergot Documentation on Dataset  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | True | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/120)
 | 72. Start Documentation on Project  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | False |[Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/113)
+| 73. Pipeline notebook for all exiting models  | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | False |[Link]( https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/11)
+| 74. LSTM pipeline notebook (adding new)  | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | False |[Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/11)
