@@ -10,7 +10,7 @@
 #   sk_dly_station_data https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#sk_dly_station_data
 #   station_data_last_updated: https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions#station_data_last_updated
 #
-# Remarks: if the need to pull earlier data arises, changes will need to be made to avoid checking the last date pulled 
+# Remarks: if the need to pull earlier data arises, changes will need to be made to avoid checking the last date pulled
 # as well as changing the minimum year from 1995
 # -------------------------------------------
 from ClimateDataRequester import ClimateDataRequester  # type: ignore
