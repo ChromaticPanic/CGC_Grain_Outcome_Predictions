@@ -95,7 +95,7 @@ MOISTURE_CSV_BY_MONTH = "agg_moisture_by_month.csv"
 AGG_SOIL_TABLE = "agg_soil_data"
 
 # The table that holds the aggregated ergot data
-AGG_ERGOT_TABLE = "agg_ergot_sample"
+AGG_ERGOT_TABLE = "agg_ergot_sample_v2"
 
 # The queries used to get the soil and ergot data from the database
 SOIL_QUERY = sq.text(f"SELECT * FROM {AGG_SOIL_TABLE};")
@@ -127,7 +127,7 @@ class SetCreator:
         ):
             raise ValueError("Environment variables not set")
 
-        db = DataService(PG_DB, PG_ADDR, int(PG_PORT), PG_USER, PG_PW)
+        db = DataService("postgres", "localhost", 5432, "postgres", "postgres")
         queryBuilder = GenericQueryBuilder()
         conn = db.connect()
 
@@ -315,11 +315,11 @@ class SetCreator:
                 pass
 
             if not hasHlyByDay:
-                hlyAggregator.aggregateByDay(path)
+                hlyAggregator.aggregateByDay(path, True)
             if not hasHlyByWeek:
-                hlyAggregator.aggregateByWeek(path)
+                hlyAggregator.aggregateByWeek(path, True)
             if not hasHlyByMonth:
-                hlyAggregator.aggregateByMonth(path)
+                hlyAggregator.aggregateByMonth(path, True)
 
     def __verifyMoistureIsAggregated(self, path):
         """
@@ -352,11 +352,11 @@ class SetCreator:
                 pass
 
             if not hasMoistureByDay:
-                moistureAggregator.aggregateByDay(path)
+                moistureAggregator.aggregateByDay(path, True)
             if not hasMoistureByWeek:
-                moistureAggregator.aggregateByWeek(path)
+                moistureAggregator.aggregateByWeek(path, True)
             if not hasMoistureByMonth:
-                moistureAggregator.aggregateByMonth(path)
+                moistureAggregator.aggregateByMonth(path, True)
 
     def getSetList1(self):
         """
@@ -1399,6 +1399,7 @@ class SetCreator:
         currDF = self.first15Yrs.getCombinedDF(
             hlyByWeek=True, moistureByWeek=True, soil=True
         )
+        print(currDF.columns.tolist())
         currDF = self.modder.InputeData(currDF, "median")
         currDF = self.modder.useMinMaxScaler(currDF)
         trainTestSet = self.modder.stratifiedSplit(currDF, currDF["has_ergot"])
