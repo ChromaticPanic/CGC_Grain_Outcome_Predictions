@@ -49,7 +49,7 @@
 | 47. Model documentation about results| Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | False |
 | 48. Hypertuning Model(KNN) | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | False |
 | 49. Hypertuning Model(SVM) | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
-| 50. Start Documentation on Dataset  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | False |
+
 | 51. Research on Suitable Models | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a | False |
 | 52. individual ergot sample table with engineered features we can predict on | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/97] | True |
 | 53. combined weather station data table for easier subsetting for datasets | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/98] | True |
@@ -68,3 +68,7 @@
 | 66. Block diagram | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/121) | True |
 | 67. Improve data loading | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/121) | True |
 | 68. Feature importance (part 2) | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/122) | True |
+| 69. Model Optimization  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | True | 
+| 70. Model Documentation on Dataset  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | True | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/120)
+| 71. Ergot Documentation on Dataset  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | True | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/120)
+| 72. Start Documentation on Project  | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a  | False |[Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/113)
