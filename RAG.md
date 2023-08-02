@@ -19,9 +19,9 @@
 | 17. SVM regression testing | Dane |![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | True |
 | 18. Random Forest hyperparameter tunning | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | True |
 | 19. SVM classication hyperparameter tunning | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | True |
-| 20. Model documentation | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | False |
-| 21. Neural Networks | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | False |
-| 22. Update README | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | False |
+| 20. Model documentation | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | True |
+| 21. Neural Networks | Dane | ![#FF0000](https://placehold.co/15x15/ff0000/ff0000.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | False |
+| 22. Update README | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | True |
 | 23. Evaluation module for classification | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | True |
 | 24. Evaluation module for regression | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/94] | True |
 | 25. Dataset-creation(v1) | Daniel & Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/90] | True |
@@ -58,3 +58,13 @@
 | 56. Use above dataset on RF, SVM, XGBoost models | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
 | 57. Try ensemble approach for balancing the dataset | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
 | 58. Multimodel approach | JS | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/71] | False |
+| 59. Aggregation by harvest | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/122) | True |
+| 60. Dataset documentation and refactor | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/119) | True |
+| 61. Copernicus documentation and refactor | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/111) | True |
+| 62. Soil moisture documentation and refactor | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/114) | True |
+| 63. Shared documentation and refactor | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/115) | True |
+| 64. Soil documentation and refactor | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/109) | True |
+| 65. Weather station documentation and refactor | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/110) | True |
+| 66. Block diagram | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/121) | True |
+| 67. Improve data loading | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/121) | True |
+| 68. Feature importance (part 2) | Dane | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | [Link](https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/122) | True |
