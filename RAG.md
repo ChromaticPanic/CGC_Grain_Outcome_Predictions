@@ -36,12 +36,12 @@
 | 34. Autoencoder | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Block on local | False
 | 35. Fixed the ergot visualization | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Nope | False
 | 36. Research on dimentionality reduction | Daniel | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Unapplicable (Book) | True
-| 37. feature engineering for v4 | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/96] | True| 
-| 38. testing diffrent architecture for MLP | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
-| 39. Hypertuning for MLP | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
-| 40. documenting the results | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | True | 
-| 41. attempting to make make dataset balanced | Jay |![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | True| 
-| 42. documentation on model | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
+| 37. clean model files | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/96] | True| 
+| 38. documentation of MLP | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
+| 39. testing on new dataset | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
+| 40. testing different balancing strategies | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | True | 
+| 41. Finalize MLP model folder and structure | Jay |![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | True| 
+| 42. documentation results | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/91] | False| 
 | 43. start working on regression model(if possible) | Jay | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) | a | False|
 | 44. SVM Classification | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
 | 45. KNN Classification | Dharmit | ![#c5f015](https://placehold.co/15x15/c5f015/c5f015.png) |Link[https://github.com/ChromaticPanic/CGC_Grain_Outcome_Predictions/pull/92] | True |
