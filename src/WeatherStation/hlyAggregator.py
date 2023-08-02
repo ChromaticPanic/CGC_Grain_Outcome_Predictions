@@ -87,7 +87,7 @@ class HlyAggregator:
                 (self.df["month"] == monthInt) & (self.df["day"] == dayInt), "week"
             ] = weekInt
 
-    def aggregateByDay(self, pathToSave):
+    def aggregateByDay(self, pathToSave: str, byHarvest: bool = False):
         """
         Purpose:
         Aggregate the hourly weather station data by district, year, month and day
@@ -158,7 +158,7 @@ class HlyAggregator:
 
         dates = self.helper.getDatesInYr()
         final_df = self.helper.reshapeDataByDates(
-            dates, agg_df, self.stationData, "dates"
+            dates, agg_df, self.stationData, "dates", byHarvest
         )
 
         try:
@@ -171,7 +171,7 @@ class HlyAggregator:
             print("[ERROR]")
             print(e)
 
-    def aggregateByWeek(self, pathToSave):
+    def aggregateByWeek(self, pathToSave: str, byHarvest: bool = False):
         """
         Purpose:
         Aggregate the hourly weather station data by district, year and week
@@ -241,7 +241,7 @@ class HlyAggregator:
 
         dates = self.helper.getWeeksInYr()
         final_df = self.helper.reshapeDataByDates(
-            dates, agg_df, self.stationData, "weeks"
+            dates, agg_df, self.stationData, "weeks", byHarvest
         )
 
         try:
@@ -254,7 +254,7 @@ class HlyAggregator:
             print("[ERROR]")
             print(e)
 
-    def aggregateByMonth(self, pathToSave):
+    def aggregateByMonth(self, pathToSave: str, byHarvest: bool = False):
         """
         Purpose:
         Aggregate the hourly weather station data by district, year and month
@@ -324,7 +324,7 @@ class HlyAggregator:
 
         dates = self.helper.getMonthsInYr()
         final_df = self.helper.reshapeDataByDates(
-            dates, agg_df, self.stationData, "months"
+            dates, agg_df, self.stationData, "months", byHarvest
         )
 
         try:

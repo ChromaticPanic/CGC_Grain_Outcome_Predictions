@@ -23,8 +23,15 @@
 #   - new aggregated datasets can be added by adding the expected DataFrame to the constructor and creating similar getters/setters
 #     in both this set class as well as the [abstractSet class]()
 # -------------------------------------------
-from abstractSet import AbstractSet  # type: ignore
 import pandas as pd
+import os
+
+try:
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+except:
+    pass
+
+from abstractSet import AbstractSet  # type: ignore
 
 
 class BadErgot(AbstractSet):
