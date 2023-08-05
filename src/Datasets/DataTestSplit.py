@@ -1,15 +1,23 @@
-import sys
-import pandas as pd
-
+# -------------------------------------------
+# DataTestSplit.py
+#
+# After loading any dataset, this class can be used to split the dataset into multiple train and test sets
+# -------------------------------------------
 from sklearn.model_selection import train_test_split  # type: ignore
-
-import typing
-from typing import Any, Optional, Tuple
+from typing import Optional, Tuple
+import pandas as pd
 
 
 def splitDataPivot(
     df: pd.DataFrame, drop_features: Optional[list], target_variable: str
 ) -> Tuple[pd.DataFrame, pd.Series]:
+    """
+    Purpose: preprocessing to split a set into its data (X) and target (Y)
+
+    Psuedocode:
+    - Drop irrelevant targets
+    - Split the data (X) and the target data (Y)
+    """
     if drop_features == None:
         drop_features = []
 
@@ -34,6 +42,20 @@ def splitData(
     val_size: float = 0.2,
     stratified: bool = False,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.Series, pd.Series, pd.Series,]:
+    """
+    Purpose:
+    Splits the data equally into different sets based on the target column and its possible values
+
+    Psuedocode:
+    - Take the data before a specific year and set it as the training data
+    - Take the data after a specific year and set it as the testing data
+    - Drop irrelevant data
+    - Seperate data (X) from the target Data (Y)
+    - Split the sets into multiple subsets (kfolds)
+        - [random](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
+        - [stratified](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
+    """
+
     # train set
     df_train = df[df["year"] < pivot]  # all data before PIVOT
     X_train_df, y_train_df = splitDataPivot(

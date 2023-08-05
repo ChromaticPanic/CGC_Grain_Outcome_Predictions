@@ -238,8 +238,8 @@ def addRegions(df: pd.DataFrame, agRegions: gpd.GeoDataFrame) -> pd.DataFrame:
     - [Create geometry for each set of longitude/latitude](https://geopandas.org/en/stable/docs/reference/api/geopandas.points_from_xy.html) for the data found in the soil moisture data
     - [Set the coordinate system](https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.to_crs.html) to the same one used throughout the codebase (EPSG:3347)
     - Label the data to the regions [by joining them together](https://geopandas.org/en/stable/docs/reference/api/geopandas.sjoin.html)
-        - how=left specifies that the Copernicus data is always kept even if it does not fall within a region
-        - predicate=within joins the data based on which rows of Copernicus data fall into what regions
+        - how=left specifies that the moisture data is always kept even if it does not fall within a region
+        - predicate=within joins the data based on which rows of moisture data fall into what regions
     - [Drop irrelevant columns](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.drop.html)
     - [Drop irregular data](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.notna.html)
     - [Cast cr_num to an integer](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.astype.html)
