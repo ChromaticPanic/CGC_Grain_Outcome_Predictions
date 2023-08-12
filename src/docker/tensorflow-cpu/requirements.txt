@@ -29,3 +29,5 @@ sqlalchemy-stubs
 types-SQLAlchemy
 imblearn
 xgboost
+keras_tuner
+tensorflow

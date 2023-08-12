@@ -147,6 +147,7 @@ Our current environment uses docker compose to launch containers housing [PGADMI
 - PostgreSQL is a relational database management system. It is used to store the data and can be accessed at http://localhost:5432. The default credentials are:
     - Username: xxxxxxxx
     - Password: xxxx
+    - ```pg_restore -h localhost -U postgres -d cgcoutcomes cgc_outcomes.sql```
 
 #### pgsync
 - pgsync is used to synchroniza postgres databases
