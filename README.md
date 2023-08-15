@@ -2211,7 +2211,7 @@ A table containing monthly aggregate weather data from the weather station datas
 - Schema: public  
 - Columns: 26
 
-A european satellite that tracks many of earths environmental variables. Comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview).  Please note that the naming scheme for all variables are kept consistant **with an exception of 2m_dewpoint_temperature and 2m_temperature** which due to SQL restrictions have been renamed as **dewpoint_temperature** and **temperature** respectively.
+A european satellite that tracks many of earths environmental variables. Comprehensive data descriptions can be found [here](https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview) and [here](https://confluence.ecmwf.int/display/CKB/ERA5-Land%3A+data+documentation).  Please note that the naming scheme for all variables are kept consistant **with an exception of 2m_dewpoint_temperature and 2m_temperature** which due to SQL restrictions have been renamed as **dewpoint_temperature** and **temperature** respectively.
 
 
 <details><summary>Vertical view copernicus_satellite_data attribute list</summary>
